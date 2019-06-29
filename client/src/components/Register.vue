@@ -1,0 +1,72 @@
+<template>
+  <div id="register">
+<form @submit.prevent="registerUser">
+  <div class="form-group">
+    <label for="registerName">Name</label>
+    <input v-model="register.name" type="text" class="form-control" id="registerName" placeholder="Enter name" required>
+  </div>
+  <div class="form-group">
+    <label for="registerEmail">Email address</label>
+    <input v-model="register.email" type="email" class="form-control" id="registerEmail" placeholder="Enter email" required>
+  </div>
+  <div class="form-group">
+    <label for="registerPassword">Password</label>
+    <input v-model="register.password" type="password" class="form-control" id="registerPassword" placeholder="Password" required>
+  </div>
+  <button style="border-radius: 20px;width: 100px;text-align:center" type="submit" class="btn btn-primary">Register</button>
+  <p v-if="error.length != 0" style="color:red"> {{ error }}</p>
+</form>
+  </div>
+</template>
+<script>
+const url = 'http://localhost:3000'
+export default {
+  name: 'register',
+  data () {
+    return {
+      register: {
+          name: "",
+          email: "",
+          password: ""
+      },
+      error: ""
+    }
+  },
+  components: {
+  },
+  methods: {
+      registerUser(){
+        axios({
+          method: 'POST',
+          url: `${url}/register`,
+          data: {
+            name: this.register.name,
+            email: this.register.email,
+            password: this.register.password
+          }
+        })
+        .then(({data}) => {
+          this.clearAll()
+          console.log(data)
+        })
+        .catch((error) => {
+          this.error = error.response.data.message
+          console.log(error)
+        })
+      },
+      clearAll(){
+        this.register.name = ""
+        this.register.email = ""
+        this.register.password = ""
+        this.error = ""
+      }
+  }
+}
+</script>
+
+<style>
+/* #login {
+    display: flex;
+    justify-content: center;
+} */
+</style>
