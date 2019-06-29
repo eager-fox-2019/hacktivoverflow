@@ -28,11 +28,10 @@ export default {
     }
   },
   created() {
-    console.log(this.$store.state.islogin)
     if (localStorage.getItem("token")) {
       this.$store.commit("USERLOGIN");
-      this.$router.push("/home")
-      console.log(this.$store.state.islogin)
+      this.$router.push("/home");
+      console.log(this.$store.state.islogin);
     }
   }
 };

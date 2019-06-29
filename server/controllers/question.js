@@ -33,6 +33,7 @@ class QuestionController {
       .populate("upvotes")
       .populate("downvotes")
       .then(result => {
+        console.log(result)
         res.status(200).json(result);
       })
       .catch(next);
