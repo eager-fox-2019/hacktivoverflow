@@ -11,7 +11,10 @@ export default new Vuex.Store({
       name: '',
       email: '',
       access_token: ''
-    }
+    },
+    allQuestion: [],
+    filterQuestion: [],
+    selectedQuestion: {}
   },
   mutations: {
     LOGIN (state, payload) {
@@ -23,31 +26,44 @@ export default new Vuex.Store({
       state.user.name = ''
       state.user.email = ''
       state.user.access_token = ''
+    },
+    ALL_QUESTION (state, payload) {
+      state.allQuestion = payload
+    },
+    FILTER_NONE (state) {
+      state.filterQuestion = state.allQuestion
+    },
+    SELECT_QUESTION (state, payload) {
+      for (let i = 0; i < state.allQuestion.length; i++) {
+        if (state.allQuestion[i]._id === payload) {
+          state.selectedQuestion = state.allQuestion[i]
+        }
+      }
     }
   },
   actions: {
-    register (contex, payload) {
+    register (context, payload) {
       return ax({
         method: 'post',
         url: '/user/register',
         data: payload
       })
     },
-    login (contex, payload) {
+    login (context, payload) {
       return ax({
         method: 'post',
         url: '/user/login',
         data: payload
       })
     },
-    GLogin (contex, payload) {
+    GLogin (context, payload) {
       return ax({
         method: 'post',
         url: '/user/signingoogle',
         data: { token: payload }
       })
     },
-    questionCreate (contex, payload) {
+    questionCreate (context, payload) {
       return ax({
         method: 'post',
         url: '/question/create',
@@ -56,6 +72,19 @@ export default new Vuex.Store({
           access_token: this.state.user.access_token
         }
       })
+    },
+    getAllQuestion (context) {
+      ax({
+        method: 'get',
+        url: '/question/list'
+      })
+        .then(({ data }) => {
+          context.commit('ALL_QUESTION', data)
+          context.commit('FILTER_NONE')
+        })
+        .catch(err => {
+          console.log(err)
+        })
     }
   }
 })

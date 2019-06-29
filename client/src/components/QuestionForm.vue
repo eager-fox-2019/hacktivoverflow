@@ -30,12 +30,16 @@ export default {
     formSubmit () {
       this.$store.dispatch('questionCreate', this.question)
         .then((result) => {
+          this.$store.dispatch('getAllQuestion')
           this.$swal({
             type: 'success',
             title: 'Question successfully posted to the forum!',
             showConfirmButton: false,
             timer: 3000
           })
+          this.question.title = ''
+          this.question.desc = ''
+          this.$router.push('/')
         })
         .catch((err) => {
           console.log(err)

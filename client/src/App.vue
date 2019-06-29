@@ -2,7 +2,7 @@
   <div id="app" class="d-flex flex-column">
     <Navbar/>
     <div class="d-flex flex-row col flex-grow" id="container">
-      <SideNavbar class="col-2"/>
+      <SideNavbar class="col-3"/>
       <router-view class="col"/>
     </div>
   </div>
@@ -18,6 +18,7 @@ export default {
   },
   mounted () {
     this.checkLogin()
+    this.getAllQuestion()
   },
   methods: {
     checkLogin () {
@@ -29,6 +30,9 @@ export default {
         }
         this.$store.commit('LOGIN', payload)
       }
+    },
+    getAllQuestion () {
+      this.$store.dispatch('getAllQuestion')
     }
   }
 }

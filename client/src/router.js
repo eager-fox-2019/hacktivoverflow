@@ -27,6 +27,16 @@ export default new Router({
       path: '/question/create',
       name: 'question-create',
       component: () => import(/* webpackChunkName: "question-create" */ './views/QuestionCreate.vue')
+    },
+    {
+      path: '/question/:id',
+      name: 'question-detail',
+      component: () => import(/* webpackChunkName: "question-detail" */ './views/QuestionDetail.vue')
+    },
+    {
+      path: '/question/:id/edit',
+      name: 'question-edit',
+      component: () => import(/* webpackChunkName: "question-edit" */ './views/QuestionEdit.vue')
     }
   ]
 })
