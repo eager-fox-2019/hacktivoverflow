@@ -24,7 +24,6 @@
 </template>
 
 <script>
-import ax from '../api/server'
 export default {
   name: 'QuestionFilter',
   data () {
@@ -34,76 +33,49 @@ export default {
   },
   methods: {
     getAll () {
-      this.products = []
-      ax({
-        method: 'get',
-        url: '/product/list',
-        headers: { access_token: localStorage.getItem('token') }
-      })
+      this.$store.dispatch('getAllQuestion')
         .then(({ data }) => {
-          for (let i in data) {
-            this.products.push(data[i])
-          }
-          this.$emit('getAll', this.products)
+          this.$store.commit('ALL_QUESTION', data)
+          this.$store.commit('FILTER_NONE')
         })
-        .catch((err) => {
-          this.$swal({
-            type: 'error',
-            title: `${err.response.data.message}`,
-            showConfirmButton: true
-          })
-        })
-    },
-    sortPrice () {
-      this.products = []
-      ax({
-        method: 'get',
-        url: '/product/list',
-        headers: { access_token: localStorage.getItem('token') }
-      })
-        .then(({ data }) => {
-          for (let i in data) {
-            this.products.push(data[i])
-          }
-          if (this.sort === 'desc' || this.sort === '') {
-            this.products.sort((a, b) => { return a.price - b.price })
-            this.sortUpdate = 'asc'
+        .catch(err => {
+          console.log(err)
+          if (!err.response) {
+            this.$swal({
+              type: 'error',
+              title: `Connection to Server Error`,
+              showConfirmButton: true
+            })
           } else {
-            this.products.sort((a, b) => { return b.price - a.price })
-            this.sortUpdate = 'desc'
+            this.$swal({
+              type: 'error',
+              title: `${err.response.data.message}`,
+              showConfirmButton: true
+            })
           }
-          this.$emit('sortPrice', this.products, this.sortUpdate)
-        })
-        .catch((err) => {
-          this.$swal({
-            type: 'error',
-            title: `${err.response.data.message}`,
-            showConfirmButton: true
-          })
         })
     },
-    filterByName (name) {
-      this.products = []
-      let regex = new RegExp('(' + name + ')', 'i')
-      ax({
-        method: 'get',
-        url: '/product/list',
-        headers: { access_token: localStorage.getItem('token') }
-      })
+    filterByTitle (title) {
+      this.$store.dispatch('getAllQuestion')
         .then(({ data }) => {
-          for (let i in data) {
-            if (regex.test(data[i].name)) {
-              this.products.push(data[i])
-            }
-          }
-          this.$emit('filterByName', this.products)
+          this.$store.commit('ALL_QUESTION', data)
+          this.$store.commit('FILTER_TITLE', title)
         })
-        .catch((err) => {
-          this.$swal({
-            type: 'error',
-            title: `${err.response.data.message}`,
-            showConfirmButton: true
-          })
+        .catch(err => {
+          console.log(err)
+          if (!err.response) {
+            this.$swal({
+              type: 'error',
+              title: `Connection to Server Error`,
+              showConfirmButton: true
+            })
+          } else {
+            this.$swal({
+              type: 'error',
+              title: `${err.response.data.message}`,
+              showConfirmButton: true
+            })
+          }
         })
     }
   }

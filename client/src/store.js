@@ -36,6 +36,16 @@ export default new Vuex.Store({
     FILTER_NONE (state) {
       state.filterQuestion = state.allQuestion
     },
+    FILTER_TITLE (state, payload) {
+      let regex = new RegExp('(' + payload + ')', 'i')
+      let filterQuestion = []
+      for (let i = 0; i < state.allQuestion.length; i++) {
+        if (regex.test(state.allQuestion[i].title)) {
+          filterQuestion.push(state.allQuestion[i])
+        }
+      }
+      state.filterQuestion = filterQuestion
+    },
     SELECT_QUESTION (state, payload) {
       for (let i = 0; i < state.allQuestion.length; i++) {
         if (state.allQuestion[i]._id === payload) {

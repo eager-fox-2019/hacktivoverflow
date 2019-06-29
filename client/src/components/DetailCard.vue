@@ -127,6 +127,19 @@ export default {
                 })
                 .catch(err => {
                   console.log(err)
+                  if (!err.response) {
+                    this.$swal({
+                      type: 'error',
+                      title: `Connection to Server Error`,
+                      showConfirmButton: true
+                    })
+                  } else {
+                    this.$swal({
+                      type: 'error',
+                      title: `${err.response.data.message}`,
+                      showConfirmButton: true
+                    })
+                  }
                 })
             } else {
               let index = downvoteIds.indexOf(this.$store.state.user.id)
@@ -147,6 +160,19 @@ export default {
                 })
                 .catch(err => {
                   console.log(err)
+                  if (!err.response) {
+                    this.$swal({
+                      type: 'error',
+                      title: `Connection to Server Error`,
+                      showConfirmButton: true
+                    })
+                  } else {
+                    this.$swal({
+                      type: 'error',
+                      title: `${err.response.data.message}`,
+                      showConfirmButton: true
+                    })
+                  }
                 })
             }
           }
@@ -187,6 +213,19 @@ export default {
                 })
                 .catch(err => {
                   console.log(err)
+                  if (!err.response) {
+                    this.$swal({
+                      type: 'error',
+                      title: `Connection to Server Error`,
+                      showConfirmButton: true
+                    })
+                  } else {
+                    this.$swal({
+                      type: 'error',
+                      title: `${err.response.data.message}`,
+                      showConfirmButton: true
+                    })
+                  }
                 })
             } else {
               let index = downvoteIds.indexOf(this.$store.state.user.id)
@@ -215,6 +254,19 @@ export default {
                 })
                 .catch(err => {
                   console.log(err)
+                  if (!err.response) {
+                    this.$swal({
+                      type: 'error',
+                      title: `Connection to Server Error`,
+                      showConfirmButton: true
+                    })
+                  } else {
+                    this.$swal({
+                      type: 'error',
+                      title: `${err.response.data.message}`,
+                      showConfirmButton: true
+                    })
+                  }
                 })
             }
           }
@@ -253,6 +305,19 @@ export default {
                 })
                 .catch(err => {
                   console.log(err)
+                  if (!err.response) {
+                    this.$swal({
+                      type: 'error',
+                      title: `Connection to Server Error`,
+                      showConfirmButton: true
+                    })
+                  } else {
+                    this.$swal({
+                      type: 'error',
+                      title: `${err.response.data.message}`,
+                      showConfirmButton: true
+                    })
+                  }
                 })
             } else {
               let index = upvoteIds.indexOf(this.$store.state.user.id)
@@ -273,6 +338,19 @@ export default {
                 })
                 .catch(err => {
                   console.log(err)
+                  if (!err.response) {
+                    this.$swal({
+                      type: 'error',
+                      title: `Connection to Server Error`,
+                      showConfirmButton: true
+                    })
+                  } else {
+                    this.$swal({
+                      type: 'error',
+                      title: `${err.response.data.message}`,
+                      showConfirmButton: true
+                    })
+                  }
                 })
             }
           }
@@ -313,6 +391,19 @@ export default {
                 })
                 .catch(err => {
                   console.log(err)
+                  if (!err.response) {
+                    this.$swal({
+                      type: 'error',
+                      title: `Connection to Server Error`,
+                      showConfirmButton: true
+                    })
+                  } else {
+                    this.$swal({
+                      type: 'error',
+                      title: `${err.response.data.message}`,
+                      showConfirmButton: true
+                    })
+                  }
                 })
             } else {
               let index = upvoteIds.indexOf(this.$store.state.user.id)
@@ -341,6 +432,19 @@ export default {
                 })
                 .catch(err => {
                   console.log(err)
+                  if (!err.response) {
+                    this.$swal({
+                      type: 'error',
+                      title: `Connection to Server Error`,
+                      showConfirmButton: true
+                    })
+                  } else {
+                    this.$swal({
+                      type: 'error',
+                      title: `${err.response.data.message}`,
+                      showConfirmButton: true
+                    })
+                  }
                 })
             }
           }
@@ -378,6 +482,19 @@ export default {
           })
           .catch(err => {
             console.log(err)
+            if (!err.response) {
+              this.$swal({
+                type: 'error',
+                title: `Connection to Server Error`,
+                showConfirmButton: true
+              })
+            } else {
+              this.$swal({
+                type: 'error',
+                title: `${err.response.data.message}`,
+                showConfirmButton: true
+              })
+            }
           })
       } else {
         this.$swal({
@@ -427,6 +544,19 @@ export default {
           })
           .catch(err => {
             console.log(err)
+            if (!err.response) {
+              this.$swal({
+                type: 'error',
+                title: `Connection to Server Error`,
+                showConfirmButton: true
+              })
+            } else {
+              this.$swal({
+                type: 'error',
+                title: `${err.response.data.message}`,
+                showConfirmButton: true
+              })
+            }
           })
       }
     }

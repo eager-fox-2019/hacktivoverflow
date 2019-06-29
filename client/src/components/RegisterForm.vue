@@ -53,11 +53,19 @@ export default {
         })
         .catch(err => {
           console.log(err)
-          this.$swal({
-            type: 'error',
-            title: `${err.response.data.message}`,
-            showConfirmButton: true
-          })
+          if (!err.response) {
+            this.$swal({
+              type: 'error',
+              title: `Connection to Server Error`,
+              showConfirmButton: true
+            })
+          } else {
+            this.$swal({
+              type: 'error',
+              title: `${err.response.data.message}`,
+              showConfirmButton: true
+            })
+          }
         })
     }
   }
