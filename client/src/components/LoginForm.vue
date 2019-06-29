@@ -68,7 +68,7 @@ export default {
             title: 'Login Success!',
             text: 'Welcome to Hacktiv Overflow',
             showConfirmButton: false,
-            timer: 3000
+            timer: 2000
           })
           this.$router.push('/')
         })
@@ -111,7 +111,7 @@ export default {
             title: 'Login Success!',
             text: 'Welcome to Hacktiv Overflow',
             showConfirmButton: false,
-            timer: 3000
+            timer: 2000
           })
           this.$router.push('/')
         })

@@ -349,8 +349,26 @@ export default {
     },
     deleted (id) {
       if (this.type === 'question') {
-        this.$store.dispatch('deleteQuestion', id)
+        this.$swal({
+          title: 'Are you sure?',
+          text: "You won't be able to revert this!",
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, delete it!'
+        })
+          .then((result) => {
+            return this.$store.dispatch('deleteQuestion', id)
+          })
           .then(result => {
+            if (result.value) {
+              this.$swal(
+                'Deleted!',
+                'Your question has been deleted.',
+                'success'
+              )
+            }
             return this.$store.dispatch('getAllQuestion')
           })
           .then(({ data }) => {
@@ -362,10 +380,28 @@ export default {
             console.log(err)
           })
       } else {
-        this.$store.dispatch('deleteAnswer', id)
+        this.$swal({
+          title: 'Are you sure?',
+          text: "You won't be able to revert this!",
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, delete it!'
+        })
+          .then((result) => {
+            return this.$store.dispatch('deleteAnswer', id)
+          })
           .then(result => {
+            if (result.value) {
+              this.$swal(
+                'Deleted!',
+                'Your answer has been deleted.',
+                'success'
+              )
+            }
             this.$store.commit('SELECT_QUESTION', this.$route.params.id)
-            let answer = this.$store.selectedQuestion.answer
+            let answer = this.$store.state.selectedQuestion.answer
             let index = answer.indexOf(id)
             answer.splice(index, 1)
             let payload = {

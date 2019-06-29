@@ -45,7 +45,7 @@ export default {
             type: 'success',
             title: 'Register Success',
             showConfirmButton: false,
-            timer: 3000
+            timer: 2000
           })
           this.$router.push({
             path: '/login'

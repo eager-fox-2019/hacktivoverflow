@@ -81,7 +81,7 @@ export default {
               type: 'success',
               title: 'Answer successfully added to the forum!',
               showConfirmButton: false,
-              timer: 3000
+              timer: 2000
             })
             this.$store.commit('ALL_QUESTION', data)
             this.$store.commit('FILTER_NONE')
@@ -121,7 +121,7 @@ export default {
               type: 'success',
               title: 'Answer successfully updated!',
               showConfirmButton: false,
-              timer: 3000
+              timer: 2000
             })
             this.$store.commit('SELECT_QUESTION', this.$route.params.id)
             this.answer.title = ''

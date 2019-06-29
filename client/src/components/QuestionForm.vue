@@ -52,7 +52,7 @@ export default {
               type: 'success',
               title: 'Question successfully posted to the forum!',
               showConfirmButton: false,
-              timer: 3000
+              timer: 2000
             })
             this.$store.commit('ALL_QUESTION', data)
             this.$store.commit('FILTER_NONE')
@@ -86,7 +86,7 @@ export default {
               type: 'success',
               title: 'Question successfully updated!',
               showConfirmButton: false,
-              timer: 3000
+              timer: 2000
             })
             this.$store.commit('ALL_QUESTION', data)
             this.$store.commit('FILTER_NONE')

@@ -39,7 +39,7 @@ export default {
         type: 'success',
         title: 'Logout Success!',
         showConfirmButton: false,
-        timer: 3000
+        timer: 2000
       })
     }
   }
