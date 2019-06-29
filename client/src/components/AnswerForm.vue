@@ -58,9 +58,11 @@ export default {
     formSubmit () {
       if (this.type === 'create') {
         this.$store.dispatch('answerCreate', this.answer)
-          .then(({ data }) => {
+          .then(({
+            data
+          }) => {
             let answer = []
-            for (let i = 0; i < this.$store.state.selectedQuestion.answer.length; i++){
+            for (let i = 0; i < this.$store.state.selectedQuestion.answer.length; i++) {
               answer.push(this.$store.state.selectedQuestion.answer[i])
             }
             answer.push(data._id)
@@ -72,7 +74,9 @@ export default {
           .then((result) => {
             return this.$store.dispatch('getAllQuestion')
           })
-          .then(({ data }) => {
+          .then(({
+            data
+          }) => {
             this.$swal({
               type: 'success',
               title: 'Answer successfully added to the forum!',
@@ -111,7 +115,43 @@ export default {
             }
           })
       } else if (this.type === 'edit') {
-        
+        this.$store.dispatch('answerUpdateDetail', this.answer)
+          .then(result => {
+            this.$swal({
+              type: 'success',
+              title: 'Answer successfully updated!',
+              showConfirmButton: false,
+              timer: 3000
+            })
+            this.$store.commit('SELECT_QUESTION', this.$route.params.id)
+            this.answer.title = ''
+            this.answer.desc = ''
+            return this.$store.dispatch('getAllAnswer')
+          })
+          .then(result => {
+            let answers = []
+            for (let i = 0; i < result.length; i++) {
+              answers.push(result[i].data)
+            }
+            this.$store.commit('ALL_SELECTED_ANSWER', answers)
+            this.$router.push(`/question/${this.$route.params.id}`)
+          })
+          .catch((err) => {
+            console.log(err)
+            if (!err.response) {
+              this.$swal({
+                type: 'error',
+                title: `Connection to Server Error`,
+                showConfirmButton: true
+              })
+            } else {
+              this.$swal({
+                type: 'error',
+                title: `${err.response.data.message}`,
+                showConfirmButton: true
+              })
+            }
+          })
       }
     }
   }

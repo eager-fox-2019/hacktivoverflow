@@ -52,7 +52,7 @@ export default new Vuex.Store({
           state.selectedAnswer = state.selectedQuestionAnswer[i]
         }
       }
-    },
+    }
   },
   actions: {
     register (context, payload) {
@@ -124,13 +124,51 @@ export default new Vuex.Store({
     },
     getAllAnswer (context) {
       let promise = []
-      for (let i = 0; i < this.state.selectedQuestion.answer.length; i++){
+      for (let i = 0; i < this.state.selectedQuestion.answer.length; i++) {
         promise.push(ax({
           method: 'get',
           url: `/answer/${this.state.selectedQuestion.answer[i]}`
         }))
       }
       return Promise.all(promise)
+    },
+    answerUpdateDetail (context, payload) {
+      return ax({
+        method: 'patch',
+        url: `/answer/update/detail/${this.state.selectedAnswer._id}`,
+        data: payload,
+        headers: {
+          access_token: this.state.user.access_token
+        }
+      })
+    },
+    answerUpdateNonDetail (context, payload) {
+      return ax({
+        method: 'patch',
+        url: `/answer/update/non-detail/${this.state.selectedAnswer._id}`,
+        data: payload,
+        headers: {
+          access_token: this.state.user.access_token
+        }
+      })
+    },
+    deleteQuestion (context, payload) {
+      return ax({
+        method: 'delete',
+        url: `/question/delete/${payload}`,
+        headers: {
+          access_token: this.state.user.access_token
+        }
+      })
+    },
+    deleteAnswer (context, payload) {
+      return ax({
+        method: 'delete',
+        url: `/answer/delete/${payload}`,
+        headers: {
+          access_token: this.state.user.access_token
+        }
+      })
     }
   }
 })

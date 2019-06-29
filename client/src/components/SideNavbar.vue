@@ -9,9 +9,8 @@
       <hr style="margin: 0" v-if="$route.name == 'question-detail' || $route.name == 'answer-post'"/>
       <b-nav-item :to="`/question/${$route.params.id}/answer/post`" v-if="$route.name == 'question-detail' || $route.name == 'answer-post'" :active="$route.name == 'answer-post'">Post Answer</b-nav-item>
       <hr style="margin: 0" v-if="$route.name == 'answer-edit'"/>
-      <b-nav-item :active="$route.name == 'answer-edit'" v-if="$route.name == 'answer-edit'">Edit Answer</b-nav-item>
+      <b-nav-item :to="`/question/${$route.params.id}/answer/edit/${$route.params.answerId}`" :active="$route.name == 'answer-edit'" v-if="$route.name == 'answer-edit'">Edit Answer</b-nav-item>
       <hr style="margin: 0"/>
-      <b-nav-item>Test</b-nav-item>
     </b-nav>
   </div>
 </template>

@@ -21,17 +21,16 @@ export default {
   created () {
     this.$store.commit('SELECT_QUESTION', this.$route.params.id)
     this.$store.dispatch('getAllAnswer')
-    .then(result => {
-      let answers = []
-      for (let i = 0; i < result.length; i++) {
-        answers.push(result[i].data)
-      }
-      this.$store.commit('ALL_SELECTED_ANSWER', answers)
-      console.log('last')
-    })
-    .catch(err => {
-      console.log(err)
-    })
+      .then(result => {
+        let answers = []
+        for (let i = 0; i < result.length; i++) {
+          answers.push(result[i].data)
+        }
+        this.$store.commit('ALL_SELECTED_ANSWER', answers)
+      })
+      .catch(err => {
+        console.log(err)
+      })
   }
 }
 </script>

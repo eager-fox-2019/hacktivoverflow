@@ -4,17 +4,18 @@
     <div class="d-flex flex-row" style="border-bottom: 1px solid grey; border-top: 1px solid grey">
       <div class="sides-info d-flex flex-column col-1 justify-content-center p-3" style="border-right: 1px solid grey">
         <div>
-          <b-btn @click="upvote" :class="{ 'activate' : (active === 'upvote'), 'normal' : (active != 'upvote')}" variant="outline-light"><i class="far fa-thumbs-up"></i></b-btn>
+          <b-btn @click="upvote(detail._id)" :class="{ 'activate' : (active === 'upvote'), 'normal' : (active != 'upvote')}" variant="outline-light"><i class="far fa-thumbs-up"></i></b-btn>
         </div>
         <div>
           <h4 class="p-2">{{totalVote}}</h4>
         </div>
         <div>
-          <b-btn @click="downvote" :class="{ 'activate' : (active === 'downvote') , 'normal' : (active != 'downvote') }" variant="outline-light"><i class="far fa-thumbs-down"></i></b-btn>
+          <b-btn @click="downvote(detail._id)" :class="{ 'activate' : (active === 'downvote') , 'normal' : (active != 'downvote') }" variant="outline-light"><i class="far fa-thumbs-down"></i></b-btn>
         </div>
       </div>
       <div class="detail-info col d-flex flex-column justify-content-between p-3" style="text-align: left">
         <div>
+          <p v-if="type == 'answer'" style="text-align: left">Title: {{detail.title}}</p>
           <p>Description: {{detail.desc}}</p>
         </div>
         <div>
@@ -29,7 +30,7 @@
           <div v-if="detail.user.email == $store.state.user.email" class="mt-2">
             <b-btn variant="success" class="mr-2" v-if="type == 'question'" :to="`/question/${$route.params.id}/edit`">Edit</b-btn>
             <b-btn variant="success" class="mr-2" v-if="type == 'answer'" :to="`/question/${$route.params.id}/answer/edit/${detail._id}`">Edit</b-btn>
-            <b-btn variant="danger">Delete</b-btn>
+            <b-btn variant="danger" @click="deleted(detail._id)">Delete</b-btn>
           </div>
         </div>
       </div>
@@ -66,6 +67,22 @@ export default {
       } else {
         this.active = ''
       }
+    } else {
+      let upvoteIds = []
+      let downvoteIds = []
+      for (let i = 0; i < this.$store.state.selectedQuestionAnswer[this.index].upvote.length; i++) {
+        upvoteIds.push(this.$store.state.selectedQuestionAnswer[this.index].upvote[i])
+      }
+      for (let i = 0; i < this.$store.state.selectedQuestionAnswer[this.index].downvote.length; i++) {
+        downvoteIds.push(this.$store.state.selectedQuestionAnswer[this.index].downvote[i])
+      }
+      if (upvoteIds.includes(this.$store.state.user.id)) {
+        this.active = 'upvote'
+      } else if (downvoteIds.includes(this.$store.state.user.id)) {
+        this.active = 'downvote'
+      } else {
+        this.active = ''
+      }
     }
   },
   computed: {
@@ -78,7 +95,7 @@ export default {
     }
   },
   methods: {
-    upvote () {
+    upvote (id) {
       if (!localStorage.getItem('token')) {
         this.$router.push('/login')
       } else {
@@ -134,11 +151,77 @@ export default {
             }
           }
         } else {
-          // 
+          let upvoteIds = []
+          let downvoteIds = []
+          this.$store.commit('SELECT_ANSWER', id)
+          for (let i = 0; i < this.$store.state.selectedAnswer.upvote.length; i++) {
+            upvoteIds.push(this.$store.state.selectedAnswer.upvote[i])
+          }
+          for (let i = 0; i < this.$store.state.selectedAnswer.downvote.length; i++) {
+            downvoteIds.push(this.$store.state.selectedAnswer.downvote[i])
+          }
+          if (!upvoteIds.includes(this.$store.state.user.id)) {
+            if (!downvoteIds.includes(this.$store.state.user.id)) {
+              upvoteIds.push(this.$store.state.user.id)
+              let payload = {
+                upvote: upvoteIds,
+                downvote: downvoteIds
+              }
+              this.$store.dispatch('answerUpdateNonDetail', payload)
+                .then(result => {
+                  return this.$store.dispatch('getAllQuestion')
+                })
+                .then(({ data }) => {
+                  this.active = 'upvote'
+                  this.$store.commit('ALL_QUESTION', data)
+                  this.$store.commit('FILTER_NONE')
+                  this.$store.commit('SELECT_QUESTION', this.$route.params.id)
+                  return this.$store.dispatch('getAllAnswer')
+                })
+                .then(result => {
+                  let answers = []
+                  for (let i = 0; i < result.length; i++) {
+                    answers.push(result[i].data)
+                  }
+                  this.$store.commit('ALL_SELECTED_ANSWER', answers)
+                })
+                .catch(err => {
+                  console.log(err)
+                })
+            } else {
+              let index = downvoteIds.indexOf(this.$store.state.user.id)
+              downvoteIds.splice(index, 1)
+              let payload = {
+                upvote: upvoteIds,
+                downvote: downvoteIds
+              }
+              this.$store.dispatch('answerUpdateNonDetail', payload)
+                .then(result => {
+                  return this.$store.dispatch('getAllQuestion')
+                })
+                .then(({ data }) => {
+                  this.active = ''
+                  this.$store.commit('ALL_QUESTION', data)
+                  this.$store.commit('FILTER_NONE')
+                  this.$store.commit('SELECT_QUESTION', this.$route.params.id)
+                  return this.$store.dispatch('getAllAnswer')
+                })
+                .then(result => {
+                  let answers = []
+                  for (let i = 0; i < result.length; i++) {
+                    answers.push(result[i].data)
+                  }
+                  this.$store.commit('ALL_SELECTED_ANSWER', answers)
+                })
+                .catch(err => {
+                  console.log(err)
+                })
+            }
+          }
         }
       }
     },
-    downvote () {
+    downvote (id) {
       if (!localStorage.getItem('token')) {
         this.$router.push('/login')
       } else {
@@ -194,8 +277,121 @@ export default {
             }
           }
         } else {
-          // 
+          let upvoteIds = []
+          let downvoteIds = []
+          this.$store.commit('SELECT_ANSWER', id)
+          for (let i = 0; i < this.$store.state.selectedAnswer.upvote.length; i++) {
+            upvoteIds.push(this.$store.state.selectedAnswer.upvote[i])
+          }
+          for (let i = 0; i < this.$store.state.selectedAnswer.downvote.length; i++) {
+            downvoteIds.push(this.$store.state.selectedAnswer.downvote[i])
+          }
+          if (!downvoteIds.includes(this.$store.state.user.id)) {
+            if (!upvoteIds.includes(this.$store.state.user.id)) {
+              downvoteIds.push(this.$store.state.user.id)
+              let payload = {
+                upvote: upvoteIds,
+                downvote: downvoteIds
+              }
+              this.$store.dispatch('answerUpdateNonDetail', payload)
+                .then(result => {
+                  return this.$store.dispatch('getAllQuestion')
+                })
+                .then(({ data }) => {
+                  this.active = 'downvote'
+                  this.$store.commit('ALL_QUESTION', data)
+                  this.$store.commit('FILTER_NONE')
+                  this.$store.commit('SELECT_QUESTION', this.$route.params.id)
+                  return this.$store.dispatch('getAllAnswer')
+                })
+                .then(result => {
+                  let answers = []
+                  for (let i = 0; i < result.length; i++) {
+                    answers.push(result[i].data)
+                  }
+                  this.$store.commit('ALL_SELECTED_ANSWER', answers)
+                })
+                .catch(err => {
+                  console.log(err)
+                })
+            } else {
+              let index = upvoteIds.indexOf(this.$store.state.user.id)
+              upvoteIds.splice(index, 1)
+              let payload = {
+                upvote: upvoteIds,
+                downvote: downvoteIds
+              }
+              this.$store.dispatch('answerUpdateNonDetail', payload)
+                .then(result => {
+                  return this.$store.dispatch('getAllQuestion')
+                })
+                .then(({ data }) => {
+                  this.active = ''
+                  this.$store.commit('ALL_QUESTION', data)
+                  this.$store.commit('FILTER_NONE')
+                  this.$store.commit('SELECT_QUESTION', this.$route.params.id)
+                  return this.$store.dispatch('getAllAnswer')
+                })
+                .then(result => {
+                  let answers = []
+                  for (let i = 0; i < result.length; i++) {
+                    answers.push(result[i].data)
+                  }
+                  this.$store.commit('ALL_SELECTED_ANSWER', answers)
+                })
+                .catch(err => {
+                  console.log(err)
+                })
+            }
+          }
         }
+      }
+    },
+    deleted (id) {
+      if (this.type === 'question') {
+        this.$store.dispatch('deleteQuestion', id)
+          .then(result => {
+            return this.$store.dispatch('getAllQuestion')
+          })
+          .then(({ data }) => {
+            this.$store.commit('ALL_QUESTION', data)
+            this.$store.commit('FILTER_NONE')
+            this.$router.push('/')
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      } else {
+        this.$store.dispatch('deleteAnswer', id)
+          .then(result => {
+            this.$store.commit('SELECT_QUESTION', this.$route.params.id)
+            let answer = this.$store.selectedQuestion.answer
+            let index = answer.indexOf(id)
+            answer.splice(index, 1)
+            let payload = {
+              answer: answer
+            }
+            return this.$store.dispatch('questionUpdateNonDetail', payload)
+          })
+          .then(result => {
+            return this.$store.dispatch('getAllQuestion')
+          })
+          .then(({ data }) => {
+            this.$store.commit('ALL_QUESTION', data)
+            this.$store.commit('FILTER_NONE')
+            this.$store.commit('SELECT_QUESTION', this.$route.params.id)
+            return this.$store.dispatch('getAllAnswer')
+          })
+          .then(result => {
+            let answers = []
+            for (let i = 0; i < result.length; i++) {
+              answers.push(result[i].data)
+            }
+            this.$store.commit('ALL_SELECTED_ANSWER', answers)
+          })
+          .catch(err => {
+            console.log(err)
+          })
       }
     }
   }
