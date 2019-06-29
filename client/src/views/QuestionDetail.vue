@@ -1,9 +1,9 @@
 <template>
-  <div style="padding: 0">
+  <div style="padding: 0; height: 92vh; overflow-y: scroll">
     <DetailCard :type="type[0]" :detail="$store.state.selectedQuestion" />
     <h2 class="p-2" style="text-align: left">Answers:</h2>
     <h4 class="p-2" v-if="$store.state.selectedQuestion.answer.length == 0">No Answer yet...</h4>
-    <DetailCard :type="'answer'" v-for="detail in $store.state.selectedQuestion.answer" :key="detail._id"/>
+    <DetailCard :type="'answer'" v-for="(detail, index) in $store.state.selectedQuestionAnswer" :key="detail._id" :index="index" :detail="detail"/>
   </div>
 </template>
 
@@ -18,8 +18,20 @@ export default {
       type: ['question', 'answer']
     }
   },
-  mounted () {
+  created () {
     this.$store.commit('SELECT_QUESTION', this.$route.params.id)
+    this.$store.dispatch('getAllAnswer')
+    .then(result => {
+      let answers = []
+      for (let i = 0; i < result.length; i++) {
+        answers.push(result[i].data)
+      }
+      this.$store.commit('ALL_SELECTED_ANSWER', answers)
+      console.log('last')
+    })
+    .catch(err => {
+      console.log(err)
+    })
   }
 }
 </script>

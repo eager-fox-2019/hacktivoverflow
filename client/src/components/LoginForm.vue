@@ -53,12 +53,14 @@ export default {
           data
         }) => {
           let payload = {
+            id: data._id,
             name: data.name,
             email: data.email,
-            token: data.access_token
+            access_token: data.access_token
           }
           this.$store.commit('LOGIN', payload)
           localStorage.setItem('token', data.access_token)
+          localStorage.setItem('id', data._id)
           localStorage.setItem('name', data.name)
           localStorage.setItem('email', data.email)
           this.$swal({
@@ -94,12 +96,14 @@ export default {
           data
         }) => {
           let payload = {
+            id: data._id,
             name: data.name,
             email: data.email,
-            token: data.access_token
+            access_token: data.access_token
           }
           this.$store.commit('LOGIN', payload)
           localStorage.setItem('token', data.access_token)
+          localStorage.setItem('id', data._id)
           localStorage.setItem('name', data.name)
           localStorage.setItem('email', data.email)
           this.$swal({

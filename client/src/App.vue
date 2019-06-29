@@ -24,6 +24,7 @@ export default {
     checkLogin () {
       if (localStorage.getItem('token')) {
         let payload = {
+          id: localStorage.getItem('id'),
           name: localStorage.getItem('name'),
           email: localStorage.getItem('email'),
           access_token: localStorage.getItem('token')
@@ -33,6 +34,13 @@ export default {
     },
     getAllQuestion () {
       this.$store.dispatch('getAllQuestion')
+        .then(({ data }) => {
+          this.$store.commit('ALL_QUESTION', data)
+          this.$store.commit('FILTER_NONE')
+        })
+        .catch(err => {
+          console.log(err)
+        })
     }
   }
 }

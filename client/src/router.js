@@ -26,7 +26,14 @@ export default new Router({
     {
       path: '/question/create',
       name: 'question-create',
-      component: () => import(/* webpackChunkName: "question-create" */ './views/QuestionCreate.vue')
+      component: () => import(/* webpackChunkName: "question-create" */ './views/QuestionCreate.vue'),
+      beforeEnter (to, from, next) {
+        if (localStorage.getItem('token')) {
+          next()
+        } else {
+          next({ path: '/login' })
+        }
+      }
     },
     {
       path: '/question/:id',
@@ -37,6 +44,16 @@ export default new Router({
       path: '/question/:id/edit',
       name: 'question-edit',
       component: () => import(/* webpackChunkName: "question-edit" */ './views/QuestionEdit.vue')
+    },
+    {
+      path: '/question/:id/answer/post',
+      name: 'answer-post',
+      component: () => import(/* webpackChunkName: "answer-post" */ './views/AnswerPost.vue')
+    },
+    {
+      path: '/question/:id/answer/edit/:answerId',
+      name: 'answer-edit',
+      component: () => import(/* webpackChunkName: "answer-edit" */ './views/AnswerEdit.vue')
     }
   ]
 })

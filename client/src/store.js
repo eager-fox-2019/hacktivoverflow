@@ -8,13 +8,16 @@ export default new Vuex.Store({
   state: {
     isLogin: false,
     user: {
+      id: '',
       name: '',
       email: '',
       access_token: ''
     },
     allQuestion: [],
     filterQuestion: [],
-    selectedQuestion: {}
+    selectedQuestion: {},
+    selectedQuestionAnswer: [],
+    selectedAnswer: {}
   },
   mutations: {
     LOGIN (state, payload) {
@@ -39,7 +42,17 @@ export default new Vuex.Store({
           state.selectedQuestion = state.allQuestion[i]
         }
       }
-    }
+    },
+    ALL_SELECTED_ANSWER (state, payload) {
+      state.selectedQuestionAnswer = payload
+    },
+    SELECT_ANSWER (state, payload) {
+      for (let i = 0; i < state.selectedQuestionAnswer.length; i++) {
+        if (state.selectedQuestionAnswer[i]._id === payload) {
+          state.selectedAnswer = state.selectedQuestionAnswer[i]
+        }
+      }
+    },
   },
   actions: {
     register (context, payload) {
@@ -73,18 +86,51 @@ export default new Vuex.Store({
         }
       })
     },
+    answerCreate (context, payload) {
+      return ax({
+        method: 'post',
+        url: '/answer/create',
+        data: payload,
+        headers: {
+          access_token: this.state.user.access_token
+        }
+      })
+    },
     getAllQuestion (context) {
-      ax({
+      return ax({
         method: 'get',
         url: '/question/list'
       })
-        .then(({ data }) => {
-          context.commit('ALL_QUESTION', data)
-          context.commit('FILTER_NONE')
-        })
-        .catch(err => {
-          console.log(err)
-        })
+    },
+    questionUpdateDetail (context, payload) {
+      return ax({
+        method: 'patch',
+        url: `/question/update/detail/${this.state.selectedQuestion._id}`,
+        data: payload,
+        headers: {
+          access_token: this.state.user.access_token
+        }
+      })
+    },
+    questionUpdateNonDetail (context, payload) {
+      return ax({
+        method: 'patch',
+        url: `/question/update/non-detail/${this.state.selectedQuestion._id}`,
+        data: payload,
+        headers: {
+          access_token: this.state.user.access_token
+        }
+      })
+    },
+    getAllAnswer (context) {
+      let promise = []
+      for (let i = 0; i < this.state.selectedQuestion.answer.length; i++){
+        promise.push(ax({
+          method: 'get',
+          url: `/answer/${this.state.selectedQuestion.answer[i]}`
+        }))
+      }
+      return Promise.all(promise)
     }
   }
 })
