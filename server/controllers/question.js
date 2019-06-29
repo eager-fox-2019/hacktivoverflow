@@ -13,14 +13,14 @@ class QuestionController {
       UserId: id
     };
     Question.create(newQuestion)
-      .then((result) => {
+      .then(result => {
         res.status(201).json(result);
       })
       .catch(next);
   }
   static read(req, res, next) {
     let myQuestion = req.query.myQuestion;
-    let search = req.query.search
+    let search = req.query.search;
     let id = req.decoded.id;
     let userQuestion = {
       _id: search,
@@ -55,6 +55,80 @@ class QuestionController {
     Question.deleteOne({
       _id: id
     })
+      .then(result => {
+        res.status(200).json(result);
+      })
+      .catch(next);
+  }
+  static upvote(req, res, next) {
+    let id = req.decoded.id;
+    let questionId = req.params.questionId;
+    Question.findById(questionId)
+      .populate("UserId")
+      .then(question => {
+        let order = {};
+        if (question.upvotes.includes(id)) {
+          order = { $pull: { upvotes: id } };
+          return Question.findByIdAndUpdate(questionId, order, { new: true });
+        } else if (question.downvotes.includes(id)) {
+          order = { $pull: { downvotes: id } };
+          return Question.findByIdAndUpdate(questionId, order, { new: true })
+            .then(result => {
+              return Question.findByIdAndUpdate(
+                questionId,
+                { $push: { upvotes: id } },
+                { new: true }
+              );
+            })
+            .catch(next);
+        } else {
+          return Question.findByIdAndUpdate(
+            questionId,
+            { $push: { upvotes: id } },
+            { new: true }
+          );
+        }
+      })
+      .then(question => {
+        return Question.populate(question, { path: "upvotes" });
+      })
+      .then(result => {
+        res.status(200).json(result);
+      })
+      .catch(next);
+  }
+  static downvote(req, res, next) {
+    let id = req.decoded.id;
+    let questionId = req.params.questionId;
+    Question.findById(questionId)
+      .populate("UserId")
+      .then(question => {
+        let order = {};
+        if (question.upvotes.includes(id)) {
+          order = { $pull: { upvotes: id } };
+          return Question.findByIdAndUpdate(questionId, order, { new: true })
+            .then(result => {
+              return Question.findByIdAndUpdate(
+                questionId,
+                { $push: { downvotes: id } },
+                { new: true }
+              );
+            })
+            .catch(next);
+        } else if (question.downvotes.includes(id)) {
+          order = { $pull: { downvotes: id } };
+          return Question.findByIdAndUpdate(questionId, order, { new: true });
+        } else {
+          return Question.findByIdAndUpdate(
+            questionId,
+            { $push: { downvotes: id } },
+            { new: true }
+          );
+        }
+      })
+      .then(question => {
+        return Question.populate(question, { path: "downvotes" });
+      })
       .then(result => {
         res.status(200).json(result);
       })

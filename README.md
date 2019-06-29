@@ -148,6 +148,55 @@ User can not update Question that does not belongs to his/her it is authorized i
 User can not delete Question that does not belongs to his/her, it is authorized in middleware.
 ```
 
+## Upvote Question
+
+- route:
+  - `PATCH /question/upvote/:id`
+- request
+  - headers
+    - `{ token, access }`
+  - params
+    - `{ id: questionId }`
+  - decoded
+    - `{ id: _id }`
+- response
+  - `200`: `{
+        _id,
+        title,
+        comment,
+        created_at,
+        upvotes,
+        downvotes,
+        QuestionId,
+        UserId
+    }`
+- error:
+  - `500 internal server error`
+
+## Downvote Question
+
+- route:
+  - `PATCH /question/upvote/:id`
+- request
+  - headers
+    - `{ token, access }`
+  - params
+    - `{ id: questionId }`
+  - decoded
+    - `{ id: _id }`
+- response
+  - `200`: `{
+        _id,
+        title,
+        comment,
+        created_at,
+        upvotes,
+        downvotes,
+        QuestionId,
+        UserId
+    }`
+- error:
+  - `500 internal server error`
 
 ## Create Answer
 
@@ -221,6 +270,8 @@ Token is decoded via JWT to get UserId.
 - request
   - headers
     - `{ token, access }`
+  - params
+    - `{ id: answerId }`
   - decoded
     - `{ id: _id }`
   - body
@@ -260,5 +311,55 @@ User can not update Answer that does not belongs to his/her it is authorized in 
 ```
 User can not delete Answer that does not belongs to his/her, it is authorized in middleware.
 ```
+
+## Upvote Answer
+
+- route:
+  - `PATCH /answer/upvote/:id`
+- request
+  - headers
+    - `{ token, access }`
+  - params
+    - `{ id: answerId }`
+  - decoded
+    - `{ id: _id }`
+- response
+  - `200`: `{
+        _id,
+        title,
+        comment,
+        created_at,
+        upvotes,
+        downvotes,
+        QuestionId,
+        UserId
+    }`
+- error:
+  - `500 internal server error`
+
+## Downvote Answer
+
+- route:
+  - `PATCH /answer/upvote/:id`
+- request
+  - headers
+    - `{ token, access }`
+  - params
+    - `{ id: answerId }`
+  - decoded
+    - `{ id: _id }`
+- response
+  - `200`: `{
+        _id,
+        title,
+        comment,
+        created_at,
+        upvotes,
+        downvotes,
+        QuestionId,
+        UserId
+    }`
+- error:
+  - `500 internal server error`
 
 

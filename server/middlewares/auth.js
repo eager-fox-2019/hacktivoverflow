@@ -51,6 +51,7 @@ module.exports = {
     let id = req.params.id;
     Answer.findById(id)
       .then(result => {
+        console.log('-=-')
         if (result.UserId.toString() == req.decoded.id) {
           next();
         } else {

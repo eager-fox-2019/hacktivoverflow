@@ -6,7 +6,8 @@ routes.post("/:questionId", AnswerController.create)
 routes.get("/:questionId", AnswerController.read)
 routes.patch("/:id", Authorization2, AnswerController.update)
 routes.delete("/:id", Authorization2, AnswerController.delete)
-
+routes.patch("/upvote/:id", AnswerController.upvote)
+routes.patch("/downvote/:id", AnswerController.downvote)
 // add upvotes and downvotes
 //remove upvotes and downvotes
 
