@@ -5,20 +5,7 @@
       <br />
       <div style="display:flex;flex-direction:row;flex-wrap:wrap;">
         <div class="col-4" v-for="question in questions" :key="question._id">
-          <div class="card" style="width: 300px;cursor:pointer" v-on:click="detail(question._id)">
-            <div class="card-header" style="height:47px">{{ question.category }}</div>
-            <div class="card-body">
-              <blockquote class="blockquote mb-0">
-                <p>{{ question.title }}</p>
-                <footer class="blockquote-footer">
-                  Created by
-                  <cite title="Source Title">{{ question.UserId.name }}</cite>
-                </footer>
-                <br />
-                Vote: {{ question.upvotes.length - question.downvotes.length }}
-              </blockquote>
-            </div>
-          </div>
+          <HomeCard :question="question"></HomeCard>
         </div>
       </div>
     </div>
@@ -27,26 +14,29 @@
       <br />
       <div class="card" style="width: 18rem;">
         <ul class="list-group list-group-flush">
-          <li
-            style="cursor:pointer"
-            v-for="category in categories"
-            class="list-group-item"
-            :key="category"
-            v-on:click="filtering(category)"
-          >{{ category }}</li>
+          <div v-for="category in categories" :key="category">
+            <li class="list-group-item">
+              <Category @fetchQuestions="fetchQuestions" :category="category"></Category>
+            </li>
+          </div>
         </ul>
       </div>
     </div>
   </div>
 </template>
 <script>
+import HomeCard from "@/components/HomeCard.vue";
+import Category from "@/components/Category.vue";
 export default {
   name: "home",
   props: ["islogin"],
   data() {
     return {};
   },
-  components: {},
+  components: {
+    HomeCard,
+    Category
+  },
   computed: {
     url() {
       return this.$store.state.url;
@@ -64,10 +54,7 @@ export default {
         this.$store.commit("CATEGORY", cat);
       });
     },
-    detail(id) {
-      this.$router.push({ path: `/questions/${id}` });
-    },
-    fetchQuestions(cb) {
+    fetchQuestions(order) {
       this.$store
         .dispatch("FETCHQUESTIONS")
         .then(({ data }) => {
@@ -79,8 +66,8 @@ export default {
           });
           this.$store.commit("FILTER", arr);
           this.$store.commit("ALLQUESTIONS", data);
-          if(cb){
-            cb()
+          if (order) {
+            this.$store.commit("CATEGORY", order);
           }
         })
         .catch(error => {

@@ -4,7 +4,6 @@ const User = require("./user.js")
 const Question = require("./question.js")
 const Answer = require("./answer.js")
 
-
 routes.use("/", User)
 routes.use(Authentication)
 routes.use("/question", Question)

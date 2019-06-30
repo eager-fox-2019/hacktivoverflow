@@ -173,6 +173,14 @@ User can not delete Question that does not belongs to his/her, it is authorized 
 - error:
   - `500 internal server error`
 
+```
+- Upvote +1.
+
+- Upvote again 0.
+
+- If User is present in Downvote, Downvote will be removed then Upvoted +1.
+```
+
 ## Downvote Question
 
 - route:
@@ -197,6 +205,14 @@ User can not delete Question that does not belongs to his/her, it is authorized 
     }`
 - error:
   - `500 internal server error`
+
+```
+- Downvote +1.
+
+- Downvote again 0.
+
+- If User is present in Upvote, Upvote will be removed then Downvoted -1.
+```
 
 ## Create Answer
 
@@ -337,6 +353,14 @@ User can not delete Answer that does not belongs to his/her, it is authorized in
 - error:
   - `500 internal server error`
 
+```
+- Upvote +1.
+
+- Upvote again 0.
+
+- If User is present in Downvote, Downvote will be removed then Upvoted +1.
+```
+
 ## Downvote Answer
 
 - route:
@@ -362,4 +386,11 @@ User can not delete Answer that does not belongs to his/her, it is authorized in
 - error:
   - `500 internal server error`
 
+```
+- Downvote +1.
+
+- Downvote again 0.
+
+- If User is present in Upvote, Upvote will be removed then Downvoted -1.
+```
 

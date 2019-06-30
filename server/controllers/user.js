@@ -10,7 +10,6 @@ class UserController{
             email: req.body.email,
             password: req.body.password,
         }
-        console.log(newUser)
         User.create(newUser)
         .then((result) => {
             res.status(201).json(result)
@@ -36,7 +35,6 @@ class UserController{
                         token: temp,
                         id: result._id
                     }
-                    console.log(token)
                     res.status(200).json(token)
                 } else {
                     throw {

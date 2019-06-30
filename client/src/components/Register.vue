@@ -75,7 +75,6 @@ export default {
       })
         .then(({ data }) => {
           this.clearAll();
-          console.log(data);
         })
         .catch(error => {
           this.error = error.response.data.message;

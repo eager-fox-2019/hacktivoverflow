@@ -2,7 +2,6 @@ const Answer = require("../models/answer.js");
 
 class AnswerController {
   static create(req, res, next) {
-    console.log(req.body);
     let id = req.decoded.id;
     let questionId = req.params.questionId;
     let newAnswer = {
@@ -40,14 +39,12 @@ class AnswerController {
       .catch(next);
   }
   static update(req, res, next) {
-    console.log(req.body)
     let id = req.params.id;
     let input = req.body;
     let update = {};
     for (let keys in input) {
       update[keys] = req.body[keys];
     }
-    console.log(update)
     Answer.findByIdAndUpdate(id, { $set: update }, { new: true })
       .then(result => {
         res.status(200).json(result);

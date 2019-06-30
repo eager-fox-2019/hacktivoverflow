@@ -9,7 +9,4 @@ routes.delete("/:questionId", Authorization, QuestionController.delete)
 routes.patch("/upvote/:questionId", QuestionController.upvote)
 routes.patch("/downvote/:questionId", QuestionController.downvote)
 
-// add upvotes and downvotes
-//remove upvotes and downvotes
-
 module.exports = routes
