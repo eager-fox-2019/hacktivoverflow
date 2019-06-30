@@ -1,4 +1,4 @@
-# Hacktive Overflow
+# Hacktiv Overflow
 ----------------------------------------
 
 ## Endpoint
@@ -20,7 +20,7 @@
 | `/question/list`| GET | -| `{ data }`| 500 (Internal Server Error) | Get all the questions |
 | `/question/detail/:id` | GET | -| `{ data }`| 404 (question with id `{ :id }` not found!)<br> 500 (Internal Server Error) | Get question match with id |
 
-#### *Require Token* (`{ headers: { token } }`) 
+#### *Require Token* (`{ headers: { access_token } }`) 
 | Routes | Method | Request Body | Response Success | Response Error | Description|
 |-----------------------------------|--------|----------------------------------|------------------|---------------------|------------------------------------------------------------------------------|
 | `/question/create`| POST | `{ title, desc }` | `{ data }`| 400 (Invalid Token) <br> 400 (Question must have a title!) <br> 400 (Question must be have description!) <br> 401 (Please login first) <br> 404 (User not found) <br> 500 (Internal Server Error) | Create question (authenticated user only) |
@@ -36,7 +36,7 @@
 | `/answer/list`| GET | -| `{ data }`| 500 (Internal Server Error) | Get all the answers |
 | `/answer/detail/:id` | GET | -| `{ data }`| 404 (Answer with id `{ :id }` not found!)<br> 500 (Internal Server Error) | Get answer match with id |
 
-#### *Require Token* (`{ headers: { token } }`) 
+#### *Require Token* (`{ headers: { access_token } }`) 
 | Routes | Method | Request Body | Response Success | Response Error | Description|
 |-----------------------------------|--------|----------------------------------|------------------|---------------------|------------------------------------------------------------------------------|
 | `/answer/create`| POST | `{ title, desc }` | `{ data }`| 400 (Invalid Token) <br> 400 (Answer must have a title!) <br> 400 (Answer must be have description!) <br> 401 (Please login first) <br> 404 (User not found) <br> 500 (Internal Server Error) | Create answer (authenticated user only) |

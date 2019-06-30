@@ -46,8 +46,7 @@ class AnswerCont {
 
   static list(req, res, next) {
     Answer.find({}).populate({
-      path: 'user',
-      select: 'name'
+      path: 'user'
     }).exec(function (err, answers) {
       if (err) {
         next({
@@ -65,7 +64,11 @@ class AnswerCont {
   }
 
   static detail(req, res, next) {
-    Answer.findById(req.params.id).exec(function (err, answer) {
+    Answer.findById(req.params.id)
+    .populate({
+      path: 'user'
+    })
+    .exec(function (err, answer) {
       if (err) {
         next({
           code: 500,
@@ -166,8 +169,12 @@ class AnswerCont {
         })
       } else {
         if (answer) {
-          answer.upvote = req.body.upvote
-          answer.downvote = req.body.downvote
+          if (req.body.upvote){
+            answer.upvote = req.body.upvote
+          }
+          if (req.body.downvote){
+            answer.downvote = req.body.downvote
+          }
           answer.save()
             .then(answer => {
               res.status(200).json(answer)

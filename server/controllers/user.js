@@ -37,6 +37,7 @@ class UserCont {
       })
       .then(user => {
         let {
+          _id,
           name,
           email
         } = user
@@ -49,7 +50,8 @@ class UserCont {
         let data = {
           access_token,
           name,
-          email
+          email,
+          _id
         }
         if (newPass) data.newPass = newPass
         res.status(201).json(data)
@@ -79,13 +81,15 @@ class UserCont {
           if (isSame) {
             let payload = {
               _id: user._id,
+              name: user.name,
               email: user.email
             }
             let access_token = jwt.sign(payload)
             res.status(201).json({
-              token: access_token,
+              access_token: access_token,
               name: user.name,
-              email: user.email
+              email: user.email,
+              _id: user._id
             })
           } else next({
             code: 400,

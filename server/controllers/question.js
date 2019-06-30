@@ -47,8 +47,7 @@ class QuestionCont {
 
   static list(req, res, next) {
     Question.find({}).populate({
-      path: 'user',
-      select: 'name'
+      path: 'user'
     }).exec(function (err, questions) {
       if (err) {
         next({
@@ -66,7 +65,11 @@ class QuestionCont {
   }
 
   static detail(req, res, next) {
-    Question.findById(req.params.id).exec(function (err, question) {
+    Question.findById(req.params.id)
+    .populate({
+      path: 'user'
+    })
+    .exec(function (err, question) {
       if (err) {
         next({
           code: 500,
@@ -168,9 +171,15 @@ class QuestionCont {
         })
       } else {
         if (question) {
-          question.upvote = req.body.upvote
-          question.downvote = req.body.downvote
-          question.answer = req.body.answer
+          if (req.body.upvote){
+            question.upvote = req.body.upvote
+          }
+          if (req.body.downvote){
+            question.downvote = req.body.downvote
+          }
+          if (req.body.answer){
+            question.answer = req.body.answer
+          }
           question.save()
             .then(question => {
               res.status(200).json(question)
