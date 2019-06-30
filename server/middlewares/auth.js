@@ -33,9 +33,11 @@ module.exports = {
       .catch(next);
   },
   Authorization: function(req, res, next) {
-    let id = req.params.id;
+    let id = req.params.questionId;
+    console.log(id)
     Question.findById(id)
       .then(result => {
+        console.log(result)
         if (result.UserId.toString() == req.decoded.id) {
           next();
         } else {

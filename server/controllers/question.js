@@ -1,4 +1,5 @@
 const Question = require("../models/question.js");
+const Answer = require("../models/answer.js");
 
 class QuestionController {
   static create(req, res, next) {
@@ -33,7 +34,7 @@ class QuestionController {
       .populate("upvotes")
       .populate("downvotes")
       .then(result => {
-        console.log(result)
+        console.log(result);
         res.status(200).json(result);
       })
       .catch(next);
@@ -57,6 +58,11 @@ class QuestionController {
       _id: id
     })
       .then(result => {
+        console.log(result)
+        return Answer.deleteMany({QuestionId: id})
+      })
+      .then(result => {
+        console.log(result)
         res.status(200).json(result);
       })
       .catch(next);

@@ -18,6 +18,56 @@
                   >{{ question.UserId.name }} in {{ question.category }}</cite>
                 </footer>
               </blockquote>
+              <br />
+              <li v-if="userId == question.UserId._id" class="list-group-item">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  style="margin-right:10px"
+                  data-toggle="collapse"
+                  :data-target="`#a${question._id}`"
+                  aria-expanded="false"
+                >Edit</button>
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  v-on:click="deleteQuestion(question._id)"
+                >Delete</button>
+                <div class="collapse" :id="`a${question._id}`" style="margin-top:30px">
+                  <div class="card card-body">
+                    <form @submit.prevent="editQuestion(question)">
+                      <div class="form-group">
+                        <label :for="`#${question._id}title`">Edit Title</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          :id="`${question._id}title`"
+                          v-model="question.title"
+                        />
+                      </div>
+                      <div class="form-group">
+                        <label :for="`#${question._id}category`">Edit Category</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          :id="`${question._id}category`"
+                          v-model="question.category"
+                        />
+                      </div>
+                      <div class="form-group">
+                        <label :for="`#${question._id}question`">Edit Question</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          :id="`${question._id}question`"
+                          v-model="question.description"
+                        />
+                      </div>
+                      <button type="submit" class="btn btn-secondary">Edit</button>
+                    </form>
+                  </div>
+                </div>
+              </li>
             </div>
           </div>
           <div v-if="islogin" style="margin-top:20px">
@@ -141,6 +191,50 @@ export default {
     }
   },
   methods: {
+    editQuestion(editQ) {
+      axios({
+        method: "PATCH",
+        url: `${this.url}/question/${this.$route.params.id}`,
+        data: {
+          title: editQ.title,
+          description: editQ.description,
+          category: editQ.category
+        },
+        headers: {
+          token: localStorage.getItem("token")
+        }
+      })
+        .then(({ data }) => {
+          this.clearAll();
+          this.fetchQuestion();
+          let hiding = (document.getElementById(`a${editQ._id}`).className =
+            "collapse");
+          console.log(hiding);
+        })
+        .catch(error => {
+          this.error = error.response.data.message;
+          console.log(error);
+        });
+    },
+    deleteQuestion() {
+      console.log(this.$route.params.id, "====");
+      axios({
+        method: "DELETE",
+        url: `${this.url}/question/${this.$route.params.id}`,
+        headers: {
+          token: localStorage.getItem("token")
+        }
+      })
+        .then(({ data }) => {
+          console.log(data);
+          this.clearAll();
+          this.$router.push("/questions");
+        })
+        .catch(error => {
+          this.error = error.response.data.message;
+          console.log(error);
+        });
+    },
     editAnswer(ans) {
       axios({
         method: "PATCH",
@@ -156,8 +250,9 @@ export default {
         .then(({ data }) => {
           this.clearAll();
           this.fetchQuestion();
-          let hiding = document.getElementById(`a${ans._id}`).className= 'collapse'
-          console.log(hiding)
+          let hiding = (document.getElementById(`a${ans._id}`).className =
+            "collapse");
+          console.log(hiding);
         })
         .catch(error => {
           this.error = error.response.data.message;
