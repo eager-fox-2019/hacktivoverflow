@@ -19,6 +19,21 @@
                 </footer>
               </blockquote>
               <br />
+              <button
+                @click="addUpvote"
+                type="button"
+                class="btn btn-primary"
+                style="margin-right:10px;height:40px;width:40px"
+              >+</button>
+              {{ question.upvotes.length - question.downvotes.length}}
+              <button
+                @click="addDownvote"
+                type="button"
+                class="btn btn-danger"
+                style="margin-left:10px;height:40px;width:40px"
+              >-</button>
+              <br />
+              <br />
               <li v-if="userId == question.UserId._id" class="list-group-item">
                 <button
                   type="button"
@@ -119,6 +134,21 @@
                   by {{ answer.UserId.name }}
                 </cite>
               </li>
+              <li class="list-group-item">
+                <button
+                  @click="addUpvote2(answer._id)"
+                  type="button"
+                  class="btn btn-primary"
+                  style="margin-right:10px;height:40px;width:40px"
+                >+</button>
+                {{ answer.upvotes.length - answer.downvotes.length}}
+                <button
+                  @click="addDownvote2(answer._id)"
+                  type="button"
+                  class="btn btn-danger"
+                  style="margin-left:10px;height:40px;width:40px"
+                >-</button>
+              </li>
               <li v-if="userId == answer.UserId._id" class="list-group-item">
                 <button
                   type="button"
@@ -191,6 +221,74 @@ export default {
     }
   },
   methods: {
+    addUpvote2(id) {
+      axios({
+        method: "PATCH",
+        url: `${this.url}/answer/upvote/${id}`,
+        headers: {
+          token: localStorage.getItem("token")
+        }
+      })
+        .then(({ data }) => {
+          this.clearAll();
+          this.fetchQuestion();
+        })
+        .catch(error => {
+          this.error = error.response.data.message;
+          console.log(error);
+        });
+    },
+    addDownvote2(id) {
+      axios({
+        method: "PATCH",
+        url: `${this.url}/answer/downvote/${id}`,
+        headers: {
+          token: localStorage.getItem("token")
+        }
+      })
+        .then(({ data }) => {
+          this.clearAll();
+          this.fetchQuestion();
+        })
+        .catch(error => {
+          this.error = error.response.data.message;
+          console.log(error);
+        });
+    },
+    addUpvote() {
+      axios({
+        method: "PATCH",
+        url: `${this.url}/question/upvote/${this.$route.params.id}`,
+        headers: {
+          token: localStorage.getItem("token")
+        }
+      })
+        .then(({ data }) => {
+          this.clearAll();
+          this.fetchQuestion();
+        })
+        .catch(error => {
+          this.error = error.response.data.message;
+          console.log(error);
+        });
+    },
+    addDownvote() {
+      axios({
+        method: "PATCH",
+        url: `${this.url}/question/downvote/${this.$route.params.id}`,
+        headers: {
+          token: localStorage.getItem("token")
+        }
+      })
+        .then(({ data }) => {
+          this.clearAll();
+          this.fetchQuestion();
+        })
+        .catch(error => {
+          this.error = error.response.data.message;
+          console.log(error);
+        });
+    },
     editQuestion(editQ) {
       axios({
         method: "PATCH",
@@ -271,7 +369,6 @@ export default {
         }
       })
         .then(({ data }) => {
-          console.log(data[0]);
           this.question = data[0];
           return axios({
             method: "GET",
@@ -283,7 +380,6 @@ export default {
         })
         .then(({ data }) => {
           this.answers = data;
-          console.log(data);
         })
         .catch(error => {
           console.log(error);

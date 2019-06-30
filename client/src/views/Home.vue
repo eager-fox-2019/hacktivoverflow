@@ -14,6 +14,8 @@
                   Created by
                   <cite title="Source Title">{{ question.UserId.name }}</cite>
                 </footer>
+                <br>
+                Vote: {{ question.upvotes.length - question.downvotes.length }}
               </blockquote>
             </div>
           </div>
