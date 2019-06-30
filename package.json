@@ -1,0 +1,24 @@
+{
+  "name": "hacktivoverflow",
+  "version": "1.0.0",
+  "description": "Buatlah clone sederhana dari Stack Overflow menggunakan Client-server model",
+  "main": "app.js",
+  "scripts": {
+    "test": "NODE_ENV=test npx mocha --exit",
+    "dev": "NODE_ENV=development nodemon app.js",
+    "start": "NODE_ENV=production node app.js",
+    "testWin": "SET \"NODE_ENV=test\" && npx mocha --exit",
+    "devWin": "SET \"NODE_ENV=development\" && nodemon app.js",
+    "startWin": "SET \"NODE_ENV=production\" && node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stefkwan/hacktivoverflow.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/stefkwan/hacktivoverflow/issues"
+  },
+  "homepage": "https://github.com/stefkwan/hacktivoverflow#readme"
+}
