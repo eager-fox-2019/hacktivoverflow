@@ -8,11 +8,14 @@ export default new Vuex.Store({
     url: "http://localhost:3000",
     islogin: false,
     id: "",
+    token: "",
     questions: []
   },
   mutations: {
     USERLOGIN(state, payload) {
-      state.id = payload
+      console.log(payload);
+      state.id = payload.id;
+      state.token = payload.token;
       state.islogin = true;
     },
     USERLOGOUT(state, payload) {
@@ -23,5 +26,15 @@ export default new Vuex.Store({
       state.questions = payload;
     }
   },
-  actions: {}
+  actions: {
+    FETCHQUESTIONS(context, payload) {
+      return axios({
+        method: "GET",
+        url: `${this.state.url}/question`,
+        headers: {
+          token: this.state.token
+        }
+      });
+    }
+  }
 });

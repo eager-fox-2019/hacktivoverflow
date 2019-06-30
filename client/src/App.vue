@@ -29,7 +29,7 @@ export default {
   },
   created() {
     if (localStorage.getItem("token")) {
-      this.$store.commit("USERLOGIN", localStorage.getItem("id"));
+      this.$store.commit("USERLOGIN", localStorage);
       this.$router.push("/questions");
     }
   }

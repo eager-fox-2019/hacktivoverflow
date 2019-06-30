@@ -8,7 +8,7 @@
 
     <div v-if="islogin" class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
+        <!-- <li class="nav-item active">
           <router-link to="/mystore">
             <a class="nav-link active" style="cursor:pointer">My Question</a>
           </router-link>
@@ -17,7 +17,7 @@
           <router-link to="/sell">
             <a class="nav-link active" style="cursor:pointer">My Answer</a>
           </router-link>
-        </li>
+        </li> -->
         <li class="nav-item">
           <router-link to="/ask">
             <a class="nav-link active" style="cursor:pointer">Ask</a>

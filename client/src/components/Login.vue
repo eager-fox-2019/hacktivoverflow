@@ -66,8 +66,8 @@ export default {
           console.log(data);
           localStorage.setItem("token", data.token);
           localStorage.setItem("id", data.id);
-          this.$store.commit("USERLOGIN", data.id);
-          this.$router.push("/home");
+          this.$store.commit("USERLOGIN", data);
+          this.$router.push("/questions");
         })
         .catch(error => {
           this.error = error.response.data.message;
