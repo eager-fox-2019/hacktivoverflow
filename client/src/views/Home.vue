@@ -4,7 +4,7 @@
       <h2 style="text-align:center">Questions</h2>
       <br />
       <div style="display:flex;flex-direction:row;flex-wrap:wrap;">
-        <div class="col-4" v-for="question in questions">
+        <div class="col-4" v-for="question in questions" :key="question._id">
           <div class="card" style="width: 300px;cursor:pointer" v-on:click="detail(question._id)">
             <div class="card-header" style="height:47px">{{ question.category }}</div>
             <div class="card-body">
@@ -14,7 +14,7 @@
                   Created by
                   <cite title="Source Title">{{ question.UserId.name }}</cite>
                 </footer>
-                <br>
+                <br />
                 Vote: {{ question.upvotes.length - question.downvotes.length }}
               </blockquote>
             </div>
@@ -27,12 +27,13 @@
       <br />
       <div class="card" style="width: 18rem;">
         <ul class="list-group list-group-flush">
-          <li class="list-group-item">Cras justo odio</li>
-          <li class="list-group-item">Dapibus ac facilisis in</li>
-          <li class="list-group-item">Vestibulum at eros</li>
-          <li class="list-group-item">Cras justo odio</li>
-          <li class="list-group-item">Dapibus ac facilisis in</li>
-          <li class="list-group-item">Vestibulum at eros</li>
+          <li
+            style="cursor:pointer"
+            v-for="category in categories"
+            class="list-group-item"
+            :key="category"
+            v-on:click="filtering(category)"
+          >{{ category }}</li>
         </ul>
       </div>
     </div>
@@ -52,17 +53,35 @@ export default {
     },
     questions() {
       return this.$store.state.questions;
+    },
+    categories() {
+      return this.$store.state.categories;
     }
   },
   methods: {
+    filtering(cat) {
+      this.fetchQuestions(() => {
+        this.$store.commit("CATEGORY", cat);
+      });
+    },
     detail(id) {
       this.$router.push({ path: `/questions/${id}` });
     },
-    fetchQuestions() {
+    fetchQuestions(cb) {
       this.$store
         .dispatch("FETCHQUESTIONS")
         .then(({ data }) => {
+          let arr = [];
+          data.forEach(x => {
+            if (arr.indexOf(x.category) == -1) {
+              arr.push(x.category);
+            }
+          });
+          this.$store.commit("FILTER", arr);
           this.$store.commit("ALLQUESTIONS", data);
+          if(cb){
+            cb()
+          }
         })
         .catch(error => {
           console.log(error);

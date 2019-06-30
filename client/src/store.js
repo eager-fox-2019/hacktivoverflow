@@ -9,7 +9,8 @@ export default new Vuex.Store({
     islogin: false,
     id: "",
     token: "",
-    questions: []
+    questions: [],
+    categories: []
   },
   mutations: {
     USERLOGIN(state, payload) {
@@ -24,6 +25,18 @@ export default new Vuex.Store({
     },
     ALLQUESTIONS(state, payload) {
       state.questions = payload;
+    },
+    FILTER(state, payload){
+      state.categories = payload
+    },
+    CATEGORY(state, payload){
+      let arr = []
+      state.questions.forEach((x) => {
+        if (x.category == payload){
+          arr.push(x)
+        }
+      })
+      state.questions = arr
     }
   },
   actions: {

@@ -2,7 +2,7 @@
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style>
     <a v-if="!islogin" class="navbar-brand" style="cursor:pointer;color:white">Hacktiv-Overflow</a>
     <router-link v-if="islogin" to="/questions">
-      <a class="navbar-brand" style="cursor:pointer;color:white">Hacktiv-Overflow</a>
+      <a @click="fetchQuestions" class="navbar-brand" style="cursor:pointer;color:white">Hacktiv-Overflow</a>
     </router-link>
     <button class="navbar-toggler" type="button"></button>
 
@@ -17,7 +17,7 @@
           <router-link to="/sell">
             <a class="nav-link active" style="cursor:pointer">My Answer</a>
           </router-link>
-        </li> -->
+        </li>-->
         <li class="nav-item">
           <router-link to="/ask">
             <a class="nav-link active" style="cursor:pointer">Ask</a>
@@ -45,6 +45,23 @@ export default {
     logout() {
       this.$store.commit("USERLOGOUT");
       localStorage.clear();
+    },
+    fetchQuestions() {
+      this.$store
+        .dispatch("FETCHQUESTIONS")
+        .then(({ data }) => {
+          let arr = [];
+          data.forEach(x => {
+            if (arr.indexOf(x.category) == -1) {
+              arr.push(x.category);
+            }
+          });
+          this.$store.commit("FILTER", arr);
+          this.$store.commit("ALLQUESTIONS", data);
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
   }
 };
