@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <Navbar :islogin="islogin"></Navbar>
-    <router-view :islogin="islogin" />
+    <router-view style="margin:50px" :islogin="islogin" />
   </div>
 </template>
 <script>
@@ -29,9 +29,8 @@ export default {
   },
   created() {
     if (localStorage.getItem("token")) {
-      this.$store.commit("USERLOGIN");
-      this.$router.push("/home");
-      console.log(this.$store.state.islogin);
+      this.$store.commit("USERLOGIN", localStorage.getItem("id"));
+      this.$router.push("/questions");
     }
   }
 };

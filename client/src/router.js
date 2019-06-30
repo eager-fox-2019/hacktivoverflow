@@ -13,9 +13,21 @@ export default new Router({
       component: () => import('./views/LoginRegister.vue')
     },
     {
-      path: '/home',
-      name: 'home-view',
-      component: () => import('./views/Home.vue')
+      path: '/questions',
+      name: 'questions-view',
+      component: () => import('./views/Home.vue'),
+      children: [
+      ]
+    },
+    {
+      path: '/questions/:id',
+      name: 'questions-detail',
+      component: () => import('./views/Question.vue')
+    },
+    {
+      path: '/ask',
+      name: 'ask-view',
+      component: () => import('./views/Ask.vue')
     }
   ]
 })
