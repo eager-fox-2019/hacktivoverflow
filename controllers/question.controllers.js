@@ -19,7 +19,7 @@ class ControllerQuestion {
   }
 
   static findOne(req, res, next){
-    // returns question object with attached answerList
+    // returns question object
     let questionId = req.params.id
     Question.findOne({_id: questionId})
     .then (found => {
@@ -71,7 +71,43 @@ class ControllerQuestion {
   }
 
   static vote(req, res, next) {
+    let vote = req.params.vote
+    let validVotes = ['up', 'down', 'reset']
+    if (!validVotes.includes(vote)) throw ({message: 'invalid vote. only vote up, down, or reset'})
+      
+    let questionId = req.params.id
+    let userId = req.decode.id
+    let updatedQuestion
 
+    Question.findOne({_id: questionId})
+    .then (foundQuestion => {
+      if (!foundQuestion) throw ({message: 'selected question not found'})
+      
+      // check if user has voted before, if user has, remove the old vote
+      let upIndex = foundQuestion.upvotes.indexOf(userId)
+      let downIndex = foundQuestion.downvotes.indexOf(userId)
+      if (upIndex > -1) foundQuestion.upvotes.splice(upIndex, 1) 
+      if (downIndex > -1) foundQuestion.downvotes.splice(downIndex, 1) 
+
+      // add the user's new vote
+      if (vote === 'up'){
+        foundQuestion.upvotes.push(userId)
+      } else if (vote === 'down'){
+        foundQuestion.downvotes.push(userId)
+      } else if (vote === 'reset'){
+        // user removed their vote and does not add a new one
+      } else {
+        throw ({message: 'invalid vote. only vote up, down, or reset'})
+      }
+
+      // finally, update the question
+      updatedQuestion = foundQuestion
+      return Question.update({_id: foundQuestion._id}, foundQuestion, {new: true})
+    })
+    .then ( result => {
+      res.json(updatedQuestion)
+    })
+    .catch(next)
   }
 }
 
