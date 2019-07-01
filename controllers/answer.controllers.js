@@ -44,7 +44,11 @@ class ControllerAnswer {
     let owner = req.decode.id
     let input = {title, description, question, owner}
 
-    Answer.create(input)
+    Question.findOne({_id: question})
+    .then( found => {
+      if (!found) throw ({message: "question not found"})
+      return Answer.create(input)
+    })
     .then(result => {
       res.status(201).json(result)
     })

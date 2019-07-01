@@ -4,7 +4,7 @@ const isAuthenticated = require('../middlewares/auth.js').authentication
 const isAuthorized = require('../middlewares/auth.js').authAnswer
 
 // /answer
-router.get('/:questionId', controllerAnswer.findAll)
+router.get('/question/:questionId', controllerAnswer.findAll)
 router.get('/:id', controllerAnswer.findOne)
 
 router.use(isAuthenticated)
