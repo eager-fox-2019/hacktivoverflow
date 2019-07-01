@@ -54,11 +54,11 @@ export default {
     if (this.type === 'question') {
       let upvoteIds = []
       let downvoteIds = []
-      for (let i = 0; i < this.$store.state.selectedQuestion.upvote.length; i++) {
-        upvoteIds.push(this.$store.state.selectedQuestion.upvote[i])
+      for (let i = 0; i < this.detail.upvote.length; i++) {
+        upvoteIds.push(this.detail.upvote[i])
       }
-      for (let i = 0; i < this.$store.state.selectedQuestion.downvote.length; i++) {
-        downvoteIds.push(this.$store.state.selectedQuestion.downvote[i])
+      for (let i = 0; i < this.detail.downvote.length; i++) {
+        downvoteIds.push(this.detail.downvote[i])
       }
       if (upvoteIds.includes(this.$store.state.user.id)) {
         this.active = 'upvote'
@@ -70,11 +70,11 @@ export default {
     } else {
       let upvoteIds = []
       let downvoteIds = []
-      for (let i = 0; i < this.$store.state.selectedQuestionAnswer[this.index].upvote.length; i++) {
-        upvoteIds.push(this.$store.state.selectedQuestionAnswer[this.index].upvote[i])
+      for (let i = 0; i < this.detail.upvote.length; i++) {
+        upvoteIds.push(this.detail.upvote[i])
       }
-      for (let i = 0; i < this.$store.state.selectedQuestionAnswer[this.index].downvote.length; i++) {
-        downvoteIds.push(this.$store.state.selectedQuestionAnswer[this.index].downvote[i])
+      for (let i = 0; i < this.detail.downvote.length; i++) {
+        downvoteIds.push(this.detail.downvote[i])
       }
       if (upvoteIds.includes(this.$store.state.user.id)) {
         this.active = 'upvote'
@@ -88,9 +88,9 @@ export default {
   computed: {
     totalVote: function () {
       if (this.type === 'question') {
-        return this.$store.state.selectedQuestion.upvote.length - this.$store.state.selectedQuestion.downvote.length
+        return this.detail.upvote.length - this.detail.downvote.length
       } else {
-        return this.$store.state.selectedQuestionAnswer[this.index].upvote.length - this.$store.state.selectedQuestionAnswer[this.index].downvote.length
+        return this.detail.upvote.length - this.detail.downvote.length
       }
     }
   },
@@ -102,11 +102,11 @@ export default {
         if (this.type === 'question') {
           let upvoteIds = []
           let downvoteIds = []
-          for (let i = 0; i < this.$store.state.selectedQuestion.upvote.length; i++) {
-            upvoteIds.push(this.$store.state.selectedQuestion.upvote[i])
+          for (let i = 0; i < this.detail.upvote.length; i++) {
+            upvoteIds.push(this.detail.upvote[i])
           }
-          for (let i = 0; i < this.$store.state.selectedQuestion.downvote.length; i++) {
-            downvoteIds.push(this.$store.state.selectedQuestion.downvote[i])
+          for (let i = 0; i < this.detail.downvote.length; i++) {
+            downvoteIds.push(this.detail.downvote[i])
           }
           if (!upvoteIds.includes(this.$store.state.user.id)) {
             if (!downvoteIds.includes(this.$store.state.user.id)) {
@@ -280,11 +280,11 @@ export default {
         if (this.type === 'question') {
           let upvoteIds = []
           let downvoteIds = []
-          for (let i = 0; i < this.$store.state.selectedQuestion.upvote.length; i++) {
-            upvoteIds.push(this.$store.state.selectedQuestion.upvote[i])
+          for (let i = 0; i < this.detail.upvote.length; i++) {
+            upvoteIds.push(this.detail.upvote[i])
           }
-          for (let i = 0; i < this.$store.state.selectedQuestion.downvote.length; i++) {
-            downvoteIds.push(this.$store.state.selectedQuestion.downvote[i])
+          for (let i = 0; i < this.detail.downvote.length; i++) {
+            downvoteIds.push(this.detail.downvote[i])
           }
           if (!downvoteIds.includes(this.$store.state.user.id)) {
             if (!upvoteIds.includes(this.$store.state.user.id)) {
@@ -518,7 +518,7 @@ export default {
               )
             }
             this.$store.commit('SELECT_QUESTION', this.$route.params.id)
-            let answer = this.$store.state.selectedQuestion.answer
+            let answer = this.detail.answer
             let index = answer.indexOf(id)
             answer.splice(index, 1)
             let payload = {

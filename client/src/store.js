@@ -15,7 +15,12 @@ export default new Vuex.Store({
     },
     allQuestion: [],
     filterQuestion: [],
-    selectedQuestion: {},
+    selectedQuestion: {
+      user: {},
+      upvote: [],
+      downvote: [],
+      answer: []
+    },
     selectedQuestionAnswer: [],
     selectedAnswer: {}
   },
