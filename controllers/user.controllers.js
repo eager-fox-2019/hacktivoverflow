@@ -6,13 +6,22 @@ const verifyToken = require('../helpers/jwt.js').verifyToken
 
 class ControllerUser {
   static update(req, res, next){
-    let userEmail = req.decode.email
+    let userId = req.decode.id
     let {name, password} = req.body
     let input = {name, password} //user cannot change email
 
-    User.findOneAndUpdate({email: userEmail}, input, {new: true})
+    User.findOneAndUpdate({_id: userId}, input, {new: true})
     .then(updated => {
       res.json(updated)
+    })
+    .catch(next)
+  }
+
+  static findOne(req, res, next){
+    let userId = req.decode.id
+    User.findOne({_id: userId})
+    .then (found => {
+      res.json(found)
     })
     .catch(next)
   }
@@ -28,8 +37,10 @@ class ControllerUser {
 
   static register(req, res, next) {
     const { email, password } = req.body
-    let name = email.split('@')[0]
-    const input = { name, email, password }
+    if (!email || !password) next({message: 'invalid input for user registration'})
+    
+    let input = { email, password }
+    if (email && email.includes('@')) input.name = email.split('@')[0]
 
     User.create(input)
     .then(result => {

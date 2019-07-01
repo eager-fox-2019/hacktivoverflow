@@ -8,6 +8,7 @@ router.post('/', controllerUser.register) //register
 router.post('/login', controllerUser.login)
 
 router.use(isAuthenticated)
+router.get('/', controllerUser.findOne)
 router.patch('/', isAuthorized, controllerUser.update)
 
 router.get('/questions', controllerUser.findQuestions)
