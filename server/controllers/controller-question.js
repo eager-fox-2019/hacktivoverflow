@@ -1,4 +1,5 @@
 const Question = require('../models/model-question')
+const Answer = require('../models/model-answer')
 
 class ControllerQuestion {
   static create(req, res, next) {
@@ -21,6 +22,7 @@ class ControllerQuestion {
 
     Question.find(query)
       .populate('user_id', 'full_name email username _id')
+      .populate('answers')
       .then((questions) => {
         res.json(questions)
       })
@@ -29,7 +31,9 @@ class ControllerQuestion {
 
   static readOne(req, res, next) {
     Question.findById(req.params.id)
-      .populate('user_id', 'full_name email username _id')
+      // .populate('user_id', 'full_name email username _id')
+      .populate('answers')
+      .populate('user_id')
       .then((question) => {
         res.json(question)
       })
@@ -49,12 +53,43 @@ class ControllerQuestion {
   
   static delete(req, res, next) {
     let id = req.params.id
-    Question.findByIdAndDelete(id)
-      .then((data) => {
-        res.status(201).json(data)
+    let promAnswer = Answer.deleteMany({ question_id: id })
+    let promQuestion = Question.deleteOne({ _id: id })
+    Promise.all([promAnswer, promQuestion])
+      .then((values) => {
+        res.status(201).json(values)
       })
       .catch(next)
-  }  
+  }
+
+  static vote(req, res, next) {
+    Question.findById(req.params.id)
+      .then((question) => {
+        if (!question) throw { code: 404, message: 'Question not found' }
+        else {
+          let indexVote = question.votes.findIndex(el => el.userId == req.userId)
+          let endPath = req.path.split('/')
+          let voteType = (endPath[endPath.length - 1] === 'voteup') ? 'voteup' : 'votedown'
+          if (indexVote > -1) {
+            if (question.votes[indexVote].voteType === voteType) {
+              throw { code: 400, message: "You've upvote this answer"}
+            } else {
+              question.votes[indexVote].voteType = voteType
+            }
+          } else {
+            question.votes.push({
+              userId: req.userId,
+              voteType
+            })
+          }
+          return question.save()
+        }
+      })
+      .then((question) => {
+        res.status(201).json(question)
+      })
+      .catch(next)
+  }
 }
 
 module.exports = ControllerQuestion

@@ -15,6 +15,12 @@ var questionSchema = new Schema({
   image_url: String,
 }, {timestamps: true});
 
+questionSchema.pre('remove', function(next) {
+  let Answer = this.model('Answer')
+  Answer.remove({ question_id: this._id }).exec();
+  next()
+})
+
 var Question = mongoose.model('Question', questionSchema);
 
 module.exports = Question

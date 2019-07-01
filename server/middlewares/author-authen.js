@@ -34,7 +34,6 @@ module.exports = {
     console.log('########## Checking authorization question');
     Question.findOne({ user_id: req.userId })
       .then((result) => {
-        console.log('ini result', result)
         if (!result) {
           throw next({ code: 404 })
         } else {
