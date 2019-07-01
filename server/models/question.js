@@ -12,7 +12,8 @@ const questionSchema = new Schema({
   desc: String,
   upvote: [{ type: Schema.Types.ObjectId, ref: 'User'}],
   downvote: [{ type: Schema.Types.ObjectId, ref: 'User'}],
-  answer: [{ type: Schema.Types.ObjectId, ref: 'Answer'}]
+  answer: [{ type: Schema.Types.ObjectId, ref: 'Answer'}],
+  created_at: Date
 })
 const Question = mongoose.model('Question', questionSchema)
 module.exports = Question

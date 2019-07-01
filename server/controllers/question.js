@@ -32,7 +32,8 @@ class QuestionCont {
               desc: req.body.desc,
               upvote: [],
               downvote: [],
-              answer: []
+              answer: [],
+              created_at: new Date()
             }
             Question.create(newQuestion)
               .then(question => {

@@ -9,6 +9,9 @@ const index = require('./routers/index.js')
 const cors = require('cors')
 const mongoose = require('mongoose')
 const error = require('./helpers/error')
+const kue = require('kue')
+const kue_app = require('./middlewares/kue_app')
+const CronJob = require('cron').CronJob
 let url
 if (process.env.NODE_ENV === 'test') {
   url = process.env.DATABASE_URL_TEST
@@ -35,6 +38,11 @@ app.use(express.urlencoded({
 }))
 app.use(express.json())
 
+const job = new CronJob('0 0 6 1 */1 *', function() {
+  kue_app()
+});
+job.start();
+
 app.use('/', index)
 app.use(error)
 
@@ -42,4 +50,7 @@ app.listen(port, () => {
   console.log('listening to port', port)
 })
 
+kue.app.listen(3001, () => {
+  console.log('listening to port', 3001)
+})
 // module.exports = app

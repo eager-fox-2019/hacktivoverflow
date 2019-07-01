@@ -61,12 +61,13 @@ class UserCont {
 
   static register(req, res, next) {
     User.create({
-        name: req.body.name,
-        email: req.body.email,
-        password: req.body.password,
-      })
+      name: req.body.name,
+      email: req.body.email,
+      password: req.body.password,
+    })
       .then(user => {
         res.status(201).json(user)
+        done()
       })
       .catch(next)
   }
