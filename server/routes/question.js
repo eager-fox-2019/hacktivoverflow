@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const questionController = require('../controllers/questionController')
+const questionController = require('../controllers/question')
 const { authentication, authorizationQuestion } = require('../middlewares/auth')
 
 router.get('/', questionController.getAllQuestion)

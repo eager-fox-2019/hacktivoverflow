@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const answerController = require('../controllers/answerController')
+const answerController = require('../controllers/answer')
 const { authentication, authorizationAnswer } = require('../middlewares/auth')
 
 router.get('/:answerId', answerController.getAnswer)
