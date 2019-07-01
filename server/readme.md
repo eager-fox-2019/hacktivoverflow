@@ -18,17 +18,23 @@
 - content
 - userId
 - answers [{ ObjectId, ref 'Answer' }]
-- votes [{ ObjectId, ref 'User' }]
+- votes: [{
+  userId: { type: Schema.Types.ObjectId, ref: 'User' },
+  voteType: String
+}],
 
 3. Jawaban
 - title
 - content
 - userId
 - questionId { ObjectId, ref 'pertanyaan' }
-- votes [{ ObjectId, ref 'votes'}]
+- votes: [{
+  userId: { type: Schema.Types.ObjectId, ref: 'Users' },
+  voteType: String
+}]
 
 # routing
-## Users
+## Users DONE
 /users/login
 /users/logout
 /users/register
