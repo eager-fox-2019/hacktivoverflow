@@ -1,5 +1,5 @@
 const Models = require('../models/')
-const { User } = Models
+const { User, Question, Answer } = Models
 const verifyPassword = require('../helpers/bcrypt.js').verifyPassword
 const generateToken = require('../helpers/jwt.js').generateToken
 const verifyToken = require('../helpers/jwt.js').verifyToken

@@ -27,7 +27,7 @@ const answerSchema = new Schema({
 		ref: 'User'
 	}
 });
-
+// delete answer when question is deleted, keep answer when user is deleted
 const Answer = mongoose.model('Answer', answerSchema)
 
 module.exports = Answer
