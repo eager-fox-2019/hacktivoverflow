@@ -51,13 +51,14 @@ const authUser = (req, res, next) => {
 const authQuestion = (req, res, next) => {
 	let userId = req.decode.id
 	let questionId = req.params.id
-
+	console.log({userId})
+	console.log({req})
 	if (questionId){
-		Question.findOne({_id: questionId})
+		Question.findOne({_id: questionId, owner: userId})
 			.then(found => {
 				if (!found) {
 					throw ({status: 404, message: 'question not found'}) //question not found
-				} else if (found.owner.id == req.decode.id){
+				} else if (found.owner == userId){
 					//question is registered in our database and the owner is the logged in user
 					next()
 				} else {

@@ -34,10 +34,18 @@ class ControllerUser {
       })
       .catch(next)
   }
+  static findAnswers(req, res, next){
+    let userId = req.decode.id
+    Answer.find({owner: userId})
+      .then ( result => {
+        res.json(result)
+      })
+      .catch(next)
+  }
 
   static register(req, res, next) {
     const { email, password } = req.body
-    if (!email || !password) next({message: 'invalid input for user registration'})
+    if (!email || !password) throw ({message: 'invalid input for user registration'})
     
     let input = { email, password }
     if (email && email.includes('@')) input.name = email.split('@')[0]

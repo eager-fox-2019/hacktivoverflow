@@ -12,5 +12,6 @@ router.get('/', controllerUser.findOne)
 router.patch('/', isAuthorized, controllerUser.update)
 
 router.get('/questions', controllerUser.findQuestions)
+router.get('/answers', controllerUser.findQuestions)
 
 module.exports = router
