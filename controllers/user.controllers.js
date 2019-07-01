@@ -17,31 +17,18 @@ class ControllerUser {
     .catch(next)
   }
 
-  static findAll(req, res, next) {
-    User.find()
-    .then(result => {
-      res.json(result)
-    })
-    .catch(next)
-  }
-
-  static findHistory(req, res, next){
-    let userIdbyAdmin = req.params.id
-    let userIdbyUser = req.decode.id
-    // find all checked-out carts from said user if id params given (is admin)
-    // or if logged in user wants to check their own history
-    if (userIdbyAdmin || userIdbyUser) {
-      let userId = userIdbyAdmin || userIdbyUser
-      Cart.find({userId: userId, status: "checked-out"})
+  static findQuestions(req, res, next){
+    let userId = req.decode.id
+    Question.find({owner: userId})
       .then ( result => {
         res.json(result)
       })
       .catch(next)
-    }
   }
 
   static register(req, res, next) {
-    const { name, email, password } = req.body
+    const { email, password } = req.body
+    let name = email.split('@')[0]
     const input = { name, email, password }
 
     User.create(input)
