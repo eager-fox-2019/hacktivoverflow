@@ -38,27 +38,27 @@
 </template>
 <script>
 export default {
-  name: "ask-component",
-  data() {
+  name: 'ask-component',
+  data () {
     return {
       question: {
-        title: "",
-        category: "",
-        description: ""
+        title: '',
+        category: '',
+        description: ''
       },
-      error: ""
-    };
+      error: ''
+    }
   },
   computed: {
-    url() {
-      return this.$store.state.url;
+    url () {
+      return this.$store.state.url
     }
   },
   components: {},
   methods: {
-    postQuestion() {
+    postQuestion () {
       axios({
-        method: "POST",
+        method: 'POST',
         url: `${this.url}/question`,
         data: {
           title: this.question.title,
@@ -66,26 +66,26 @@ export default {
           description: this.question.description
         },
         headers: {
-            token: localStorage.getItem("token")
+          token: localStorage.getItem('token')
         }
       })
         .then(({ data }) => {
-          this.clearAll();
-          this.$router.push("/questions");
+          this.clearAll()
+          this.$router.push('/questions')
         })
         .catch(error => {
-          this.error = error.response.data.message;
-          console.log(error);
-        });
+          this.error = error.response.data.message
+          console.log(error)
+        })
     },
-    clearAll() {
-      this.question.title = "";
-      this.question.category = "";
-      this.question.description = "";
-      this.error = "";
+    clearAll () {
+      this.question.title = ''
+      this.question.category = ''
+      this.question.description = ''
+      this.error = ''
     }
   }
-};
+}
 </script>
 
 <style>

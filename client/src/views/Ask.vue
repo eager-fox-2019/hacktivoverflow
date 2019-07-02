@@ -6,13 +6,13 @@
   </div>
 </template>
 <script>
-import Ask from "@/components/Ask.vue";
+import Ask from '@/components/Ask.vue'
 export default {
-  name: "ask-view",
-  props: ["islogin"],
-  data() {
+  name: 'ask-view',
+  props: ['islogin'],
+  data () {
     return {
-    };
+    }
   },
   computed: {
   },
@@ -21,7 +21,7 @@ export default {
   },
   methods: {
   }
-};
+}
 </script>
 
 <style>

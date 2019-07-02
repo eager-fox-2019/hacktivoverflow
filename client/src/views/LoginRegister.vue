@@ -19,7 +19,7 @@ import Register from '@/components/Register.vue'
 
 export default {
   name: 'login-register',
-  props: ["islogin"],
+  props: ['islogin'],
   data () {
     return {
     }

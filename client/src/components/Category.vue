@@ -1,24 +1,24 @@
 <template>
   <div
       style="cursor:pointer"
-      v-on:click="filtering(category)"
+      v-on:click="FETCHQUESTIONS(category)"
     >{{ category }}
   </div>
 </template>
 <script>
+import { mapActions } from 'vuex'
 export default {
-  name: "category-component",
-  props: ["category"],
-  data() {
-    return {};
+  name: 'category-component',
+  props: ['category'],
+  data () {
+    return {}
   },
   components: {},
   computed: {},
   methods: {
-    filtering(cat) {
-      this.$emit("fetchQuestions", cat);
-    }
+    ...mapActions(['FETCHQUESTIONS'])
   },
-  created() {}
-};
+  created () {
+  }
+}
 </script>

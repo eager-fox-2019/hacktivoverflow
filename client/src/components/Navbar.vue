@@ -3,7 +3,7 @@
     <a v-if="!islogin" class="navbar-brand" style="cursor:pointer;color:white">Hacktiv-Overflow</a>
     <router-link v-if="islogin" to="/questions">
       <a
-        @click="fetchQuestions"
+        @click="FETCHQUESTIONS"
         class="navbar-brand"
         style="cursor:pointer;color:white"
       >Hacktiv-Overflow</a>
@@ -31,32 +31,17 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
-  name: "navbar",
-  props: ["islogin"],
+  name: 'navbar',
+  props: ['islogin'],
   components: {},
   methods: {
-    logout() {
-      this.$store.commit("USERLOGOUT");
-      localStorage.clear();
+    logout () {
+      this.$store.commit('USERLOGOUT')
+      localStorage.clear()
     },
-    fetchQuestions() {
-      this.$store
-        .dispatch("FETCHQUESTIONS")
-        .then(({ data }) => {
-          let arr = [];
-          data.forEach(x => {
-            if (arr.indexOf(x.category) == -1) {
-              arr.push(x.category);
-            }
-          });
-          this.$store.commit("FILTER", arr);
-          this.$store.commit("ALLQUESTIONS", data);
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    }
+    ...mapActions(['FETCHQUESTIONS'])
   }
-};
+}
 </script>

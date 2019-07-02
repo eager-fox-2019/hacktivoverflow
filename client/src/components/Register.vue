@@ -45,27 +45,27 @@
 </template>
 <script>
 export default {
-  name: "register",
-  data() {
+  name: 'register',
+  data () {
     return {
       register: {
-        name: "",
-        email: "",
-        password: ""
+        name: '',
+        email: '',
+        password: ''
       },
-      error: ""
-    };
+      error: ''
+    }
   },
   components: {},
   computed: {
-    url() {
-      return this.$store.state.url;
+    url () {
+      return this.$store.state.url
     }
   },
   methods: {
-    registerUser() {
+    registerUser () {
       axios({
-        method: "POST",
+        method: 'POST',
         url: `${this.url}/register`,
         data: {
           name: this.register.name,
@@ -74,21 +74,21 @@ export default {
         }
       })
         .then(({ data }) => {
-          this.clearAll();
+          this.clearAll()
         })
         .catch(error => {
-          this.error = error.response.data.message;
-          console.log(error);
-        });
+          this.error = error.response.data.message
+          console.log(error)
+        })
     },
-    clearAll() {
-      this.register.name = "";
-      this.register.email = "";
-      this.register.password = "";
-      this.error = "";
+    clearAll () {
+      this.register.name = ''
+      this.register.email = ''
+      this.register.password = ''
+      this.error = ''
     }
   }
-};
+}
 </script>
 
 <style>

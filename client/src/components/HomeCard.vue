@@ -16,22 +16,22 @@
 </template>
 <script>
 export default {
-  name: "home-card",
-  props: ["question"],
-  data() {
-    return {};
+  name: 'home-card',
+  props: ['question'],
+  data () {
+    return {}
   },
   components: {},
   computed: {
   },
   methods: {
-    detail(id) {
-      this.$router.push({ path: `/questions/${id}` });
+    detail (id) {
+      this.$router.push({ path: `/questions/${id}` })
     }
   },
-  created() {
+  created () {
   }
-};
+}
 </script>
 <style>
 .card {

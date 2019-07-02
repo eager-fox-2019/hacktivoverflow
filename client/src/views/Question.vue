@@ -1,39 +1,35 @@
 <template>
   <div>
-    <p v-if="error.length != 0" style="color:red;text-align:center">{{ error }}</p>
     <div style="display:flex" v-if="question.length != 0">
       <div class="col-6" v-if="islogin">
         <h2 style="text-align:center">{{ question.title }}</h2>
         <br />
         <div style="display:flex;flex-direction:column">
-          <QuestionCard v-if="islogin" :question="question" @fetchQuestion="fetchQuestion"></QuestionCard>
-          <AnswerPost v-if="islogin" @fetchQuestion="fetchQuestion"></AnswerPost>
+          <QuestionCard
+          ></QuestionCard>
+          <AnswerPost v-if="islogin"></AnswerPost>
         </div>
       </div>
       <div class="col-6">
         <h2 style="text-align:center">Answers</h2>
         <br />
-
         <div v-for="answer in answers" :key="answer._id">
-          <Answer :answer="answer" @fetchQuestion="fetchQuestion"></Answer>
+          <Answer :answer="answer"></Answer>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
-import Answer from "@/components/Answer.vue";
-import AnswerPost from "@/components/AnswerPost.vue";
-import QuestionCard from "@/components/QuestionCard.vue";
+import Answer from '@/components/Answer.vue'
+import AnswerPost from '@/components/AnswerPost.vue'
+import QuestionCard from '@/components/QuestionCard.vue'
+import { mapActions } from 'vuex'
 export default {
-  name: "question-detail",
-  props: ["islogin"],
-  data() {
-    return {
-      question: "",
-      answers: [],
-      error: ""
-    };
+  name: 'question-detail',
+  props: ['islogin'],
+  data () {
+    return {}
   },
   components: {
     Answer,
@@ -41,39 +37,21 @@ export default {
     QuestionCard
   },
   computed: {
-    url() {
-      return this.$store.state.url;
+    url () {
+      return this.$store.state.url
+    },
+    question () {
+      return this.$store.state.question
+    },
+    answers () {
+      return this.$store.state.answers
     }
   },
   methods: {
-    fetchQuestion() {
-      axios({
-        method: "GET",
-        url: `${this.url}/question?search=${this.$route.params.id}`,
-        headers: {
-          token: localStorage.getItem("token")
-        }
-      })
-        .then(({ data }) => {
-          this.question = data[0];
-          return axios({
-            method: "GET",
-            url: `${this.url}/answer/${this.$route.params.id}`,
-            headers: {
-              token: localStorage.getItem("token")
-            }
-          });
-        })
-        .then(({ data }) => {
-          this.answers = data;
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    }
+    ...mapActions(['FETCHQUESTION'])
   },
-  created() {
-    this.fetchQuestion();
+  created () {
+    this.FETCHQUESTION(this.$route.params.id)
   }
-};
+}
 </script>

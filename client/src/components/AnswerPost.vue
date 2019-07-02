@@ -23,61 +23,67 @@
             placeholder="Answer.."
           ></textarea>
         </div>
-        <p v-if="error.length != 0" style="color:red;text-align:center">{{ error }} <br><br></p>
+        <p v-if="error.length != 0" style="color:red;text-align:center">
+          {{ error }}
+          <br />
+          <br />
+        </p>
         <button type="submit" class="btn btn-dark">Answer!</button>
-
       </form>
     </div>
   </div>
 </template>
 <script>
+import { mapActions } from 'vuex'
+import axios from 'axios'
 export default {
-  name: "answer-post",
-  data() {
+  name: 'answer-post',
+  data () {
     return {
       answer: {
-        title: "",
-        comment: ""
+        title: '',
+        comment: ''
       },
-      error: ""
-    };
+      error: ''
+    }
   },
   components: {},
   computed: {
-    url() {
-      return this.$store.state.url;
+    url () {
+      return this.$store.state.url
     }
   },
   methods: {
-    postAnswer() {
+    ...mapActions(['FETCHQUESTION']),
+    postAnswer () {
       axios({
-        method: "POST",
+        method: 'POST',
         url: `${this.url}/answer/${this.$route.params.id}`,
         data: {
           title: this.answer.title,
           comment: this.answer.comment
         },
         headers: {
-          token: localStorage.getItem("token")
+          token: localStorage.getItem('token')
         }
       })
         .then(({ data }) => {
-          this.clearAll();
-          this.$emit("fetchQuestion");
+          this.clearAll()
+          this.FETCHQUESTION(this.$route.params.id)
         })
         .catch(error => {
-          this.error = error.response.data.message;
-          console.log(error);
-        });
+          this.error = error.response.data.message
+          console.log(error)
+        })
     },
-    clearAll() {
-      this.answer.title = "";
-      this.answer.comment = "";
-      this.error = "";
+    clearAll () {
+      this.answer.title = ''
+      this.answer.comment = ''
+      this.error = ''
     }
   },
-  created() {}
-};
+  created () {}
+}
 </script>
 <style>
 #answerQuestion {

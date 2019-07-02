@@ -5,35 +5,34 @@
   </div>
 </template>
 <script>
-import Navbar from "@/components/Navbar.vue";
-
+import Navbar from '@/components/Navbar.vue'
 export default {
-  name: "app",
-  data() {
-    return {};
+  name: 'app',
+  data () {
+    return {}
   },
   components: {
     Navbar
   },
   computed: {
-    islogin() {
-      return this.$store.state.islogin;
+    islogin () {
+      return this.$store.state.islogin
     }
   },
   watch: {
-    islogin() {
-      if (this.islogin == false) {
-        this.$router.push("/");
+    islogin () {
+      if (this.islogin === false) {
+        this.$router.push('/')
       }
     }
   },
-  created() {
-    if (localStorage.getItem("token")) {
-      this.$store.commit("USERLOGIN", localStorage);
-      this.$router.push("/questions");
+  created () {
+    if (localStorage.getItem('token')) {
+      this.$store.commit('USERLOGIN', localStorage)
+      this.$router.push('/questions')
     }
   }
-};
+}
 </script>
 <style>
 #app {

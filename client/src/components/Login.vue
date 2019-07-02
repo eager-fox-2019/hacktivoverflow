@@ -34,26 +34,26 @@
 </template>
 <script>
 export default {
-  name: "login",
-  data() {
+  name: 'login',
+  data () {
     return {
       login: {
-        email: "",
-        password: ""
+        email: '',
+        password: ''
       },
-      error: ""
-    };
+      error: ''
+    }
   },
   components: {},
   computed: {
-    url() {
-      return this.$store.state.url;
+    url () {
+      return this.$store.state.url
     }
   },
   methods: {
-    loginUser() {
+    loginUser () {
       axios({
-        method: "POST",
+        method: 'POST',
         url: `${this.url}/login`,
         data: {
           name: this.login.name,
@@ -62,24 +62,24 @@ export default {
         }
       })
         .then(({ data }) => {
-          this.clearAll();
-          console.log(data);
-          localStorage.setItem("token", data.token);
-          localStorage.setItem("id", data.id);
-          this.$store.commit("USERLOGIN", data);
-          this.$router.push("/questions");
+          this.clearAll()
+          console.log(data)
+          localStorage.setItem('token', data.token)
+          localStorage.setItem('id', data.id)
+          this.$store.commit('USERLOGIN', data)
+          this.$router.push('/questions')
         })
         .catch(error => {
-          this.error = error.response.data.message;
-          console.log(error);
-        });
+          this.error = error.response.data.message
+          console.log(error)
+        })
     },
-    clearAll() {
-      this.login.name = "";
-      this.login.email = "";
-      this.login.password = "";
-      this.error = "";
+    clearAll () {
+      this.login.name = ''
+      this.login.email = ''
+      this.login.password = ''
+      this.error = ''
     }
   }
-};
+}
 </script>

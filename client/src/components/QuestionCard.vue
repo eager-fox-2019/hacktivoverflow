@@ -1,5 +1,5 @@
 <template>
-  <div class="card" style="width: 600px;">
+  <div class="card" style="width: 600px;" v-if="question.UserId != undefined">
     <div class="card-header" style="height:47px">{{ question.title }}</div>
     <div class="card-body">
       <blockquote class="blockquote mb-0">
@@ -10,87 +10,92 @@
         </footer>
       </blockquote>
       <br />
-      <button
-        @click="addUpvote"
-        type="button"
-        class="btn btn-primary"
-        style="margin-right:10px;height:40px;width:40px"
-      >+</button>
-      {{ question.upvotes.length - question.downvotes.length}}
-      <button
-        @click="addDownvote"
-        type="button"
-        class="btn btn-danger"
-        style="margin-left:10px;height:40px;width:40px"
-      >-</button>
+      <UpvoteButton2 :question="question" :addUpvote="addUpvote" :addDownvote="addDownvote">
+        <button
+          @click="addUpvote"
+          type="button"
+          class="btn btn-primary"
+          style="margin-right:10px;height:40px;width:40px"
+        >+</button>
+        {{ question.upvotes.length - question.downvotes.length}}
+        <button
+          @click="addDownvote"
+          type="button"
+          class="btn btn-danger"
+          style="margin-left:10px;height:40px;width:40px"
+        >-</button>
+      </UpvoteButton2>
+
       <br />
       <br />
-      <EditQuestion
-        v-if="userId == question.UserId._id"
-        @fetchQuestion="fetchQuestion"
-        :question="question"
-      ></EditQuestion>
+      <EditQuestion v-if="userId == question.UserId._id" :question="question"></EditQuestion>
     </div>
   </div>
 </template>
 <script>
-import EditQuestion from "@/components/EditQuestion.vue";
+import EditQuestion from '@/components/EditQuestion.vue'
+import UpvoteButton2 from '@/components/UpvoteButton2.vue'
+import { mapActions } from 'vuex'
+import axios from 'axios'
 export default {
-  name: "question-card",
-  props: ["question"],
-  data() {
+  name: 'question-card',
+  data () {
     return {
-      error: ""
-    };
+      error: ''
+    }
   },
   components: {
-    EditQuestion
+    EditQuestion,
+    UpvoteButton2
   },
   computed: {
-    url() {
-      return this.$store.state.url;
+    url () {
+      return this.$store.state.url
     },
-    userId() {
-      return this.$store.state.id;
+    userId () {
+      return this.$store.state.id
+    },
+    question () {
+      return this.$store.state.question
     }
   },
   methods: {
-    fetchQuestion() {
-      this.$emit("fetchQuestion");
-    },
-    addUpvote() {
+    ...mapActions(['FETCHQUESTION']),
+    addUpvote () {
       axios({
-        method: "PATCH",
+        method: 'PATCH',
         url: `${this.url}/question/upvote/${this.$route.params.id}`,
         headers: {
-          token: localStorage.getItem("token")
+          token: localStorage.getItem('token')
         }
       })
         .then(({ data }) => {
-          this.$emit("fetchQuestion");
+          this.FETCHQUESTION(this.$route.params.id)
         })
         .catch(error => {
-          console.log(error);
-          this.error = error.response.data.message;
-        });
+          console.log(error)
+          this.error = error.response.data.message
+        })
     },
-    addDownvote() {
+    addDownvote () {
       axios({
-        method: "PATCH",
+        method: 'PATCH',
         url: `${this.url}/question/downvote/${this.$route.params.id}`,
         headers: {
-          token: localStorage.getItem("token")
+          token: localStorage.getItem('token')
         }
       })
         .then(({ data }) => {
-          this.$emit("fetchQuestion");
+          this.FETCHQUESTION(this.$route.params.id)
         })
         .catch(error => {
-          console.log(error);
-          this.error = error.response.data.message;
-        });
+          console.log(error)
+          this.error = error.response.data.message
+        })
     }
   },
-  created() {}
-};
+  created () {
+    this.FETCHQUESTION(this.$route.params.id)
+  }
+}
 </script>
