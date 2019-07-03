@@ -1,8 +1,7 @@
 const User = require('../models/user')
 const { verifyPassword } = require('../helpers/bcrypt')
 const { generateToken } = require('../helpers/jwt')
-
-
+const { verifyToken } = require('../helpers/jwt')
 
 class UserController {
   static register(req, res, next) {
@@ -15,6 +14,12 @@ class UserController {
       .catch(next)
   }
 
+  static decodeToken(req,res,next) {
+    const decode = verifyToken(req.body.access_token)
+    
+    res.status(200).json(decode)
+  }
+
   static login(req, res, next) {
     console.log(req.body.email, req.body.password)
     User.findOne({
@@ -24,6 +29,8 @@ class UserController {
         if (user) {
           if (verifyPassword(req.body.password, user.password)) {
             const payload = {
+              firstName: user.firstName,
+              lastName: user.lastName,
               email: user.email,
               id: user.id
             }

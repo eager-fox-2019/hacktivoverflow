@@ -37,6 +37,6 @@ app.use(function(err,req,res,next){
   }
 });
 
-app.listen(port, () => console.log(`listening on port port`))
+app.listen(port, () => console.log(`listening on port ${port}`))
 
 //install axios, bcrypt, cors, dotenv, express, jwt, mongoose

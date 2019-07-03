@@ -33,7 +33,7 @@
           <v-list-tile
             v-else
             :key="i"
-            @click=""
+            :to="item.path"
           >
             <v-list-tile-action>
               <v-icon>{{ item.icon }}</v-icon>
@@ -47,15 +47,16 @@
         </template>
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar color="amber" app absolute clipped-left>
+    <v-toolbar color="amber" app absolute clipped-left flat>
       <v-toolbar-side-icon @click="drawer = !drawer"></v-toolbar-side-icon>
-      <span class="title ml-3 mr-5">Hacktiv&nbsp;<span class="font-weight-light">Overflow</span></span>
+      <div style="cursor: pointer;" @click="toHome"><span class="title ml-3 mr-5">Hacktiv&nbsp;<span class="font-weight-light">Overflow</span></span></div>
       <v-text-field
         solo-inverted
         flat
         hide-details
         label="Search"
         prepend-inner-icon="search"
+        style="margin-left: 2%;"
       ></v-text-field>
       <v-spacer></v-spacer>
     </v-toolbar>
@@ -78,12 +79,17 @@ export default {
         { icon: 'archive', text: 'Archive' },
         { icon: 'delete', text: 'Trash' },
         { divider: true },
-        { icon: 'settings', text: 'Settings' },
+        { icon: 'input', text: 'Sign in', path: '/signin' },
         { icon: 'chat_bubble', text: 'Trash' },
         { icon: 'help', text: 'Help' },
         { icon: 'phonelink', text: 'App downloads' },
         { icon: 'keyboard', text: 'Keyboard shortcuts' }
       ]
+    }
+  },
+  methods: {
+    toHome() {
+      this.$router.push('/')
     }
   }
 }

@@ -1,19 +1,22 @@
 <template>
   <div id="app">
+    <NavBar />
     <v-app id="keep">
-      <NavBar />
       <v-content>
-        <v-layout>
-          <Posts /> 
-        </v-layout>
+     
+     
+      <router-view></router-view>
       </v-content>
     </v-app>
   </div>
 </template>
 
 <script>
-import Posts from '@/components/posts'
+
 import NavBar from '@/components/navbar'
+
+import SignIn from '@/components/signin'
+
 
 export default {
   data() {
@@ -23,8 +26,14 @@ export default {
   },
 
   components: {
-    Posts,
-    NavBar
+    NavBar,
+    SignIn
+  },
+
+  created() {
+    if(localStorage.access_token) {
+      this.$store.dispatch('decodeToken')
+    }
   }
 }
 </script>
