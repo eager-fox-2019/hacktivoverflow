@@ -36,10 +36,22 @@ export default new Vuex.Store({
     setQuestions(state,payload){
       state.questions = payload
     },
-    addNewQuestion(state, payload){
+    ADD_QUESTIONS(state, payload){
       state.questions.push(payload);
     },
-    deleteQuestion(state, payload) {
+    ADD_MY_QUESTIONS(state, payload){
+      state.myQuestions.push(payload);
+    },
+    EDIT_QUESTIONS(state, payload) {
+      state.questions = state.questions.map(question=> {
+        if(question._id === payload._id) {
+          question = payload
+        }
+
+        return question
+      })
+    },
+    DELETE_QUESTIONS(state, payload) {
       state.questions = state.questions.filter(
         e => {
           if(e._id !== payload._id) {
@@ -50,6 +62,24 @@ export default new Vuex.Store({
     },
     SET_MY_QUESTIONS(state, payload) {
       state.myQuestions = payload
+    },
+    EDIT_MY_QUESTIONS(state, payload) {
+      state.myQuestions = state.myQuestions.map(question=> {
+        if(question._id === payload._id) {
+          question = payload
+        }
+
+        return question
+      })
+    },
+    DELETE_MY_QUESTIONS(state, payload) {
+      state.myQuestions = state.myQuestions.filter(
+        e => {
+          if(e._id !== payload._id) {
+              return e;
+          }
+        }
+      )
     }
   },
   // this.$store.dispatch
@@ -84,10 +114,11 @@ export default new Vuex.Store({
       myaxios
       .post('/questions/ask', payload)
       .then(({ data }) => {
-        context.commit('addNewQuestion', data)
+        context.commit('ADD_QUESTIONS', data)
+        context.commit('ADD_MY_QUESTIONS', data)
       })
       .catch(error => {
-        console.log(error);
+        console.log(error.response);
       })
     },
     deleteQuestion(context, id) {
@@ -96,7 +127,8 @@ export default new Vuex.Store({
       myaxios
       .delete(`/questions/${id}`)
       .then(({ data }) => {
-        context.commit('deleteQuestion', data)
+        context.commit('DELETE_QUESTIONS', data)
+        context.commit('DELETE_MY_QUESTIONS', data)
       })
       .catch(error => {
         console.log(error);

@@ -45,14 +45,14 @@ export default {
     },
     ...mapState(['questions'])
   },
-  watch: {
-    questions(val) {
-      this.stateQuestion = val
-    }
-  },
-  created() {
+  // watch: {
+  //   questions(val) {
+  //     this.stateQuestion = val
+  //   }
+  // },
+  // created() {
     
-  },
+  // },
 }
 </script>
 

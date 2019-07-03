@@ -39,7 +39,7 @@ class QuestionController {
     static create(req, res) {
         const { title, description, tags } = req.body
 
-        let userId = req.headers.id
+        let userId = req.decoded.id
 
         Question.create({
             title,
@@ -49,13 +49,13 @@ class QuestionController {
         })
         .then(question => {
             
-        queue
-        .create("queue example", {
-        title: "This testing request",
-        data: i
-        })
-        .priority("high")
-        .save();
+        // queue
+        // .create("queue example", {
+        // title: "This testing request",
+        // data: i
+        // })
+        // .priority("high")
+        // .save();
     
         res.status(200).json(question)
         })
@@ -72,7 +72,9 @@ class QuestionController {
             description,
             tags
         }, {new:true})
+        .populate('userId', 'username')
         .then(question => {
+            console.log(question);
             res.status(200).json(question)
         })
         .catch(err => {

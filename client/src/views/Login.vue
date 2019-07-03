@@ -48,7 +48,7 @@ export default {
     methods: {
         login() {
             myaxios
-            .post('/users/login', this.form)
+            .post('/login', this.form)
             .then(({ data }) => {
                 this.$store.dispatch('setLoggedInUser')
                 .then(() => {
@@ -64,7 +64,7 @@ export default {
 
             })
             .catch(error => {
-                console.log(error);
+                console.log(error.response);
             })
         }
     },

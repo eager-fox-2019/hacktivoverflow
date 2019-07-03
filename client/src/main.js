@@ -5,7 +5,7 @@ import store from './store'
 import VueAlertify from 'vue-alertify';
 import './registerServiceWorker'
 
-// Vue.use(require('vue-moment'));
+Vue.use(require('vue-moment'));
 Vue.use(VueAlertify);
 
 Vue.config.productionTip = false

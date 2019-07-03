@@ -8,7 +8,7 @@
             >
             <div class="response">
                 <div class="response__answer">
-                    <div>{{question.answers.length}}</div>
+                    <div>{{question.answerId.length}}</div>
                     <div class="desc">Answer</div>
                 </div>
                 <div class="response__answer">
@@ -59,20 +59,19 @@ export default {
             this.$router.push(`/question/edit/${id}`)
         },
         deleteQuestion(id) {
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
-            }).then((result) => {
-                if (result.value) {
+            this.$alertify.confirm("This is a confirm dialog.",
+                () => {
                     this.$store.dispatch('deleteQuestion', id)
-                    this.$router.push('/')
+                    .then(() => {
+                        if(!this.$store.getters.error){
+                            this.$alertify.success('Question deleted');
+                        }
+                    })
+                },
+                () => {
+                    this.$alertify.error('Failed, please check your internet connection or try again');
                 }
-            })
+            );
         }
     },
 }

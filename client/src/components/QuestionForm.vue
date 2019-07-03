@@ -24,6 +24,7 @@
                         display:block;
                         overflow:auto;
                         resize:none;"
+                    rows="10"
                 ></textarea>
             </div>
 
@@ -74,6 +75,11 @@ export default {
             tagValue: ''
         }
     },
+    computed: {
+        myQuestions() {
+            return this.$store.getters.myQuestions
+        }
+    },
     methods: {
         clickAddTags() {
             if(this.question.tags===undefined) {
@@ -109,11 +115,18 @@ export default {
 
             myaxios
             .patch(`questions/${this.$route.params.id}`, this.question)
-            .then(() => {
+            .then(({data}) => {
+                this.$store.commit('EDIT_MY_QUESTIONS', data)
+                this.$store.commit('EDIT_QUESTIONS', data)
+
+                setTimeout(() => {
+                    this.$alertify.success(`Question successfully edited`);
+                }, 500);
+
                 this.$router.push('/question/user')
             })
             .catch(err => {
-                console.log(err);
+                console.log(err.response);
             })
         }
     },

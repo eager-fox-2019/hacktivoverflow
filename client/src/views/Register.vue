@@ -58,7 +58,7 @@ export default {
     methods: {
         register() {
             myaxios
-            .post('/users/register', this.form)
+            .post('/register', this.form)
             .then(user=> {
                 setTimeout(() => {
                     this.$alertify.success(`Success, login to continue`);

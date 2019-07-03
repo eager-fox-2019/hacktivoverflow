@@ -19,7 +19,9 @@ export default {
   },
   created() {
       this.$store.dispatch('getQuestion')
-      this.$store.dispatch('fetchMyQuestions')
+      if(localStorage.token) {
+        this.$store.dispatch('fetchMyQuestions')
+      }
 
       this.checkLogin()
   },

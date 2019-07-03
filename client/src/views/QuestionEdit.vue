@@ -4,7 +4,7 @@
             :name="form-title"
             :question="question"
             class="mb-3 text-center"
-        > Question</h3>        
+        >Edit Question</h3>        
     </QuestionForm>
 </template>
 
@@ -24,10 +24,6 @@ export default {
     },
     components: {
         QuestionForm
-    },
-    methods: {
-        
-    },
-    
+    }
 }
 </script>

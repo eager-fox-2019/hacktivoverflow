@@ -97,8 +97,19 @@ export default {
             })
         },
         submitQuestion() {
-            this.$store.dispatch('addNewQuestion', this.question)
-            this.$router.push('/')
+            this.$store.dispatch('addNewQuestion', this.question).then(() => {
+                if(!this.$store.getters.error){
+                    setTimeout(() => {
+                        this.$alertify.success(`Question published`);
+                    }, 500);
+                    this.$router.push('/')
+                }
+            })
+            .catch((err) => {
+                setTimeout(() => {
+                    this.$alertify.error(`Failed, please check your internet connection or try again`);
+                }, 1500);
+            })
         }
     },
 }   
