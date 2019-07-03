@@ -169,6 +169,7 @@ export default new Vuex.Store({
         })
     },
     sendNewAnswer (context, payload) {
+      console.log('ini payload di sendNewAnswer', payload)
       axios({
         method: 'POST',
         data: payload,
@@ -179,6 +180,7 @@ export default new Vuex.Store({
       })
         .then(() => {
           context.commit('setSendAnswerStatus', true)
+          context.dispatch('getQuestionDetail', payload.question_id)
           Swal.fire(
             'Success!',
             'Succesfully add new answer for this question',
@@ -192,6 +194,54 @@ export default new Vuex.Store({
             err.response.data.message,
             'error'
           )
+        })
+    },
+    deleteQuestion (context, payload) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'Are you sure you want to delete this question?',
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.value) {
+          axios({
+            method: 'DELETE',
+            headers: {
+              token: JSON.parse(localStorage.token).token
+            },
+            url: `${context.state.url_server}/questions/${payload}`
+          })
+            .then(({ data }) => {
+              Swal.fire(
+                'Deleted!',
+                'Your file has been deleted.',
+                'success'
+              )
+              context.dispatch('getQuestions')
+            })
+            .catch(err => {
+              console.log(err)
+            })
+        }
+      })
+    },
+    sendVote (context, payload) {
+      let sendId = (payload.type === 'answers') ? payload.answer_id : payload.question_id
+      axios({
+        method: 'POST',
+        headers: {
+          token: JSON.parse(localStorage.token).token
+        },
+        url: `${context.state.url_server}/${payload.type}/${sendId}/${payload.val}`
+      })
+        .then(({ data }) => {
+          context.dispatch('getQuestionDetail', payload.question_id)
+        })
+        .catch(err => {
+          console.log(err)
         })
     }
   }

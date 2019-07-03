@@ -6,7 +6,7 @@
     <v-layout row wrap>
       <v-flex xs12 lg8 offset-lg2>
         <v-list three-line>
-          <homeBox pb2 v-for="item in $store.state.questions"
+          <homeBox v-for="item in $store.state.questions"
             :key="item._id" :item="item"></homeBox>
         </v-list>
       </v-flex>

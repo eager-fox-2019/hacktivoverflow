@@ -6,19 +6,21 @@
         <v-layout row wrap>
           <v-flex>
             <v-layout row wrap align-center justify-center fill-height>
-              <v-btn fab dark small>
+              <v-btn @click="vote('upvote')"
+                :disabled="upvoteStatus" fab dark small>
                 <v-icon>fas fa-chevron-up</v-icon>
               </v-btn>
             </v-layout>
           </v-flex>
           <v-flex xs12>
             <v-layout align-center justify-center row fill-height>
-              <span>{{ totalVotes }}</span>
+              <span>{{ question.upvotes.length - question.downvotes.length }}</span>
             </v-layout>
           </v-flex>
           <v-flex xs12>
             <v-layout align-center justify-center row fill-height>
-              <v-btn fab dark small>
+              <v-btn @click="vote('downvote')"
+                :disabled="downvoteStatus" fab dark small>
                 <v-icon>fas fa-chevron-down</v-icon>
               </v-btn>
             </v-layout>
@@ -46,13 +48,22 @@
 export default {
   name: 'questionBox',
   props: ['question'],
-  computed: {
-    totalVotes () {
-      let vote = {
-        upvotes: this.question.upvotes,
-        downvotes: this.question.downvotes
+  methods: {
+    vote (val) {
+      let sendVote = {
+        question_id: this.question._id,
+        val,
+        type: 'questions'
       }
-      return this.$store.commit('computedVotes', vote)
+      this.$store.dispatch('sendVote', sendVote)
+    }
+  },
+  computed: {
+    upvoteStatus () {
+      return this.question.upvotes.includes(this.$store.state.loginUser.id)
+    },
+    downvoteStatus () {
+      return this.question.downvotes.includes(this.$store.state.loginUser.id)
     }
   }
 }

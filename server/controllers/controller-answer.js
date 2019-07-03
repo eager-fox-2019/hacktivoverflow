@@ -72,22 +72,30 @@ class ControllerAnswer {
       .then((answer) => {
         if (!answer) throw { code: 404, message: 'Answer not found' }
         else {
-          let indexVote = answer.votes.findIndex(el => el.userId == req.userId)
-          let endPath = req.path.split('/')
-          let voteType = (endPath[endPath.length - 1] === 'voteup') ? 'voteup' : 'votedown'
-          if (indexVote > -1) {
-            if (answer.votes[indexVote].voteType === voteType) {
-              throw { code: 400, message: "You've upvote this answer"}
-            } else {
-              answer.votes[indexVote].voteType = voteType
-            }
+          let indexUpVote = answer.upvotes.findIndex(el => el._id == req.userId)
+          let indexDownVote = answer.downvotes.findIndex(el => el._id == req.userId)
+          let endPath = req.path.split('/')          
+          let voteType = (endPath[endPath.length - 1] === 'upvote') ? 'upvote' : 'downvote'
+          if ((indexDownVote > -1 && voteType == 'downvote') 
+            || (indexUpVote > -1 && voteType == 'upvote')) {
+            throw { code: 400, message: `You've ${voteType} this answer`}
           } else {
-            answer.votes.push({
-              userId: req.userId,
-              voteType
-            })
+            if (indexDownVote > -1) {
+              answer.downvotes.splice(indexDownVote, 1)
+              answer.upvotes.push(req.userId)
+            } else if (indexUpVote > -1) {
+              answer.upvotes.splice(indexUpVote, 1)
+              answer.downvotes.push(req.userId)
+            } else {
+              console.log('belum pernah vote')
+              if (voteType === 'upvote') {
+                answer.upvotes.push(req.userId)
+              } else if (voteType === 'downvote') {
+                answer.downvotes.push(req.userId)
+              }
+            }
+            return answer.save()
           }
-          return answer.save()
         }
       })
       .then((answer) => {

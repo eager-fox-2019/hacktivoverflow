@@ -1,14 +1,14 @@
 <template>
   <v-container>
-    <v-layout col wrap>
+    <v-layout column wrap>
       <v-flex xs12 lg8 offset-lg2>
-        <v-layout col wrap>
+        <v-layout column wrap>
           <v-flex xs12>
             <v-layout align-center justify-center fill-height>
               <h1>{{ $store.state.questionDetail.title }}</h1>
             </v-layout>
           </v-flex>
-          <v-flex xs12>
+          <v-flex xs12 v-if="$store.state.questionDetail._id">
             <questionBox :question="$store.state.questionDetail"></questionBox>
           </v-flex>
         </v-layout>
@@ -18,7 +18,7 @@
       </v-flex>
       <v-flex xs12 lg8 offset-lg2>
         <v-list three-line
-          v-if="noAnswerStatus"
+          v-if="$store.state.questionDetail._id"
           >
           <answerBox
             v-for="answer in $store.state.questionDetail.answers"
@@ -67,20 +67,16 @@ export default {
   methods: {
     sendAnswer (val) {
       let answerData = {
-        title: this.title,
-        content: this.content,
-        user_id: val
+        title: this.answer.title,
+        content: this.answer.content,
+        user_id: val,
+        question_id: this.$route.params.id
       }
       this.$store.dispatch('sendNewAnswer', answerData)
     }
   },
   created () {
     this.$store.dispatch('getQuestionDetail', this.$route.params.id)
-  },
-  mounted () {
-    if (this.$store.state.questionDetail.answers) {
-      this.noAnswerStatus = true
-    }
   },
   watch: {
     '$store.state.sendAnswerStatus' (val) {

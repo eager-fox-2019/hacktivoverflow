@@ -1,5 +1,5 @@
 <template>
-    <v-layout col align-center justify-center fill-height wrap>
+    <v-layout column align-center justify-center fill-height wrap>
       <v-card wrap>
         <v-avatar tile
           size="200">
