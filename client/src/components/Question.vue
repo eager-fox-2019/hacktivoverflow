@@ -2,35 +2,27 @@
   <div>
     <v-layout class="question-container">
       <v-flex xs2 text-xs-center class="votes-container py-4">
-        <div><i class="material-icons votes-icon-up">thumb_up</i></div>
-        <div class="votes-diff">0</div>
-        <div><i class="material-icons votes-icon-down">thumb_down</i></div>
+        <div><i @click="upvote" class="material-icons votes-icon-up">thumb_up</i></div>
+        <div class="votes-diff">{{votesDiff}}</div>
+        <div><i @click="downvote" class="material-icons votes-icon-down">thumb_down</i></div>
       </v-flex>
       <v-flex xs10 class="py-4 px-4">
-        <h4 class="display-1 my-2">Title</h4>
-        <p class="question-text">Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a
-          piece of classical Latin
-          literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney
-          College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage,
-          and
-          going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum
-          comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by
-          Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the
-          Renaissance.
-          The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.</p>
+        <small>Author: {{question.author.firstName+' '+question.author.lastName}}</small>
+        <h4 class="display-1 my-2">{{question.title}}</h4>
+        <p class="question-text" v-html="question.description"></p>
         <v-btn @click="addAnswer" color="info">{{addAnswerText}}</v-btn>
       </v-flex>
     </v-layout>
     <v-layout class="answer-text-container">
       <p class="answer-text">
-        2 Answer
+        {{question.answers.length}} Answer
       </p>
     </v-layout>
     <v-layout v-if="isAddAnswer">
-      <AddAnswerForm></AddAnswerForm>
+      <AddAnswerForm :question="question"></AddAnswerForm>
     </v-layout>
     <v-layout>
-      <Answer></Answer>
+      <Answer v-for="answer in question.answers" :key="answer._id" :answer="answer"></Answer>
     </v-layout>
   </div>
 </template>
@@ -43,16 +35,17 @@
       Answer,
       AddAnswerForm
     },
+    props: ['question'],
     data() {
       return {
         isAddAnswer: false,
-        addAnswerText: 'Add Answer'
+        addAnswerText: 'Add Answer',
+        upvoteAmount: 0,
+        downvoteAmount: 0
       }
     },
     methods: {
       addAnswer() {
-        console.log('hehe');
-        
         if (this.isAddAnswer) {
           this.isAddAnswer = false;
           this.addAnswerText = 'Add Answer'
@@ -60,6 +53,55 @@
           this.isAddAnswer = true;
           this.addAnswerText = 'Close Form'
         }
+      },
+      upvote() {
+        for (let i = 0; i < this.question.upvotes.length; i++) {
+          if (this.question.upvotes[i].includes(localStorage.getItem('_id'))) {
+            this.upvoteAmount = 1;
+            break;
+          }
+        }
+        if (this.upvoteAmount < 1) {
+          let index = -1;
+          for (let i = 0; i < this.question.downvotes.length; i++) {
+            if (this.question.downvotes[i].includes(localStorage.getItem('_id'))) {
+              index = i;
+            }
+          }
+          if (index != -1) {
+            this.question.downvotes.splice(index, 1);
+            this.downvoteAmount = 0;
+          }
+          this.question.upvotes.push(localStorage.getItem('_id'));
+          this.$store.dispatch('updateQuestion', this.question);
+        }
+      },
+      downvote() {
+        for (let i = 0; i < this.question.downvotes.length; i++) {
+          if (this.question.downvotes[i].includes(localStorage.getItem('_id'))) {
+            this.downvoteAmount = 1;
+            break;
+          }
+        }
+        if (this.downvoteAmount < 1) {
+          let index = -1;
+          for (let i = 0; i < this.question.upvotes.length; i++) {
+            if (this.question.upvotes[i].includes(localStorage.getItem('_id'))) {
+              index = i;
+            }
+          }
+          if (index != -1) {
+            this.question.upvotes.splice(index, 1);
+            this.upvoteAmount = 0;
+          }
+          this.question.downvotes.push(localStorage.getItem('_id'));
+          this.$store.dispatch('updateQuestion', this.question);
+        }
+      }
+    },
+    computed: {
+      votesDiff() {
+        return this.question.upvotes.length - this.question.downvotes.length
       }
     }
   }

@@ -11,7 +11,8 @@ const baseUrl = `http://localhost:3000`;
 export default new Vuex.Store({
   state: {
     isLogin: false,
-    clientToken: localStorage.getItem('access_token')
+    clientToken: localStorage.getItem('access_token'),
+    questions: []
   },
   mutations: {
 
@@ -49,10 +50,11 @@ export default new Vuex.Store({
           'success'
         )
         localStorage.setItem('access_token', response.data.access_token);
+        localStorage.setItem('_id', response.data.user._id);
         localStorage.setItem('firstName', response.data.user.firstName);
-        localStorage.setItem('lastName', response.data.lastName);
+        localStorage.setItem('lastName', response.data.user.lastName);
         context.state.isLogin = true;
-        console.log(response);
+        router.push('/home');
       })
       .catch((err) => {
         Swal.fire(
@@ -66,7 +68,89 @@ export default new Vuex.Store({
     logout(context) {
       context.state.isLogin = false;
       localStorage.clear();
-      router.push('/')
+      router.push('/landing_page');
+    },
+    readAllQuestions(context) {
+      axios({
+        method: 'GET',
+        url: baseUrl+'/questions'
+      })
+      .then(({data}) => {
+        context.state.questions = data;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    },
+    createQuestion(context, payload) {
+      axios({
+        method: 'POST',
+        url: baseUrl+'/questions',
+        data: payload,
+        headers: {
+          access_token: localStorage.getItem('access_token')
+        }
+      })
+      .then((response) => {
+        Swal.fire(
+          'Successful!',
+          'Question Posted',
+          'success'
+        )
+        context.dispatch('readAllQuestions');
+        router.push('/home')
+      })
+      .catch((err) => {
+        Swal.fire(
+          'Oooops!',
+          'Something wrong, we are sorry for the incovenient',
+          'error'
+        )
+        console.log(err);
+      });
+    },
+    updateQuestion(context, payload) {
+      axios({
+        method: 'PATCH',
+        url: baseUrl+'/questions',
+        data: payload,
+        headers: {
+          access_token: localStorage.getItem('access_token')
+        }
+      })
+      .then((response) => {
+
+        context.dispatch('readAllQuestions');
+        console.log(response);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    },
+    createAnswer(context, payload) {
+      // console.log(payload[0],payload[1]);
+      
+      axios({
+        method: 'POST',
+        url: baseUrl+'/answers',
+        data: payload[0],
+        headers: {
+          access_token: localStorage.getItem('access_token')
+        }
+      })
+      .then((response) => {
+        payload[1].answers.push(response.data._id);
+        context.dispatch('updateQuestion', payload[1]);
+            Swal.fire(
+              'Successful!',
+              'Answer Posted',
+              'success'
+            )
+        router.push('/home')
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     }
   }
 })

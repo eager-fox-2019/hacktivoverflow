@@ -1,6 +1,6 @@
 <template>
   <div>
-  <Question></Question>
+  <Question v-for="question in $store.state.questions" :key="question._id" :question="question"></Question>
   </div>
 </template>
 

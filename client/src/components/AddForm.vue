@@ -1,22 +1,55 @@
 <template>
-  <v-form class="form-create mt-5">
-    <v-text-field label="Title"></v-text-field>
-    <v-textarea label="Description" hint="Write your question here"></v-textarea>
-    <v-btn color="success">
+  <v-content>
+  <h4 class="add-form-header display-1" >Ask a Question</h4>
+  <v-form class="form-create mt-5" ref="form" v-model="valid" lazy-validation>
+    <v-text-field :rules="titleRules" v-model="questionObj.title" label="Title"></v-text-field>
+    <wysiwyg v-model="questionObj.description"></wysiwyg>
+    <v-btn color="success" @click="createQuestion" class="button-form">
       Submit
     </v-btn>
   </v-form>
+  </v-content>
 </template>
 
 <script>
   export default {
-
+    data() {
+      return {
+        valid: true,
+        questionObj: {
+          title: '',
+          descrpition: ''
+        },
+        titleRules: [
+          v => !!v || 'title cannot be empty',
+        ]
+      }
+    },
+    methods: {
+      createQuestion() {
+        if (this.$refs.form.validate()) {
+          this.$store.dispatch('createQuestion', this.questionObj);
+        }
+      }
+    }
   }
 </script>
 
 <style scoped>
+  @import '../../node_modules/vue-wysiwyg/dist/vueWysiwyg.css';
+
   .form-create {
     width: 80%;
     margin: 0 auto;
+  }
+
+  .add-form-header {
+    font-weight: bold;
+    text-align: center;
+    margin-top: 40px;
+  }
+
+  .button-form {
+    margin-top: 20px;
   }
 </style>

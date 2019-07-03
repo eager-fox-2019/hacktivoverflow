@@ -1,5 +1,5 @@
-const authentication = require('./authentication');
-const authorization = require('./authorization');
+const authentication = require('../middlewares/authentication');
+const authorization = require('../middlewares/authorization');
 const verifyPassword = require('./verifyPassword');
 const encryptPassword = require('./encryptPassword');
 const generateToken = require('./generateToken');

@@ -1,19 +1,16 @@
 <template>
   <v-app>
-      <MainPage v-if="$store.state.isLogin || $store.state.clientToken"></MainPage>
-      <LandingPage v-else-if="!$store.state.isLogin"></LandingPage>
+    <router-view></router-view>
   </v-app>
 </template>
 
 <script>
-import LandingPage from './components/LandingPage'
-import MainPage from './components/MainPage'
+import FrontPage from './views/FrontPage'
 
 export default {
   name: 'App',
   components: {
-    MainPage,
-    LandingPage
+    FrontPage
   },
   data () {
     return {
@@ -21,8 +18,7 @@ export default {
     }
   },
   mounted() {
-    console.log();
-    
+    this.$store.dispatch('readAllQuestions');
   }
 }
 </script>

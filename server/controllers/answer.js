@@ -1,17 +1,15 @@
 const Model = require('../models');
 
 class Answer {
-
-  static Create(req, res, next) {
+  static create(req, res, next) {
     let answerObj = {
       title: req.body.title,
       description: req.body.description,
       upvotes: [],
       downvotes: [],
-      answer: [],
       author: req.decode._id
     }
-    Model.answer.create(answerObj)
+    Model.Answer  .create(answerObj)
     .then((response) => {
       res.status(201).json(response);
     })

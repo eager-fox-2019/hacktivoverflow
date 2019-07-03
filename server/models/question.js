@@ -22,7 +22,7 @@ let questionSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'User'
   }],
-  answer: [{
+  answers: [{
     type: Schema.Types.ObjectId,
     ref: 'Answer'
   }]

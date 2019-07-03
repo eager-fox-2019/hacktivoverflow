@@ -2,7 +2,7 @@
 
   <v-layout id="left-section" text-xs-center>
     <v-flex>
-      <v-btn to="/" class="nav-button white--text" flat>
+      <v-btn to="/home" class="nav-button white--text" flat>
         <i class="material-icons mr-2">format_list_bulleted</i>Question List
       </v-btn>
       <v-btn to="/add_question" class="nav-button white--text" flat>

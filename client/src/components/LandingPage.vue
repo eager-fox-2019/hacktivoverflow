@@ -3,7 +3,7 @@
     <v-parallax dark src="https://images.unsplash.com/photo-1511376777868-611b54f68947?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80">
       <v-layout align-center column justify-center>
         <h1 class="display-2 font-weight-thin mb-3">Welcome to HacktivOverflow</h1>
-        <h4 class="subheading">Be curious here! Start asking questions!</h4>
+        <h4 class="subheading">do not worry, be curious!</h4>
       </v-layout>
     </v-parallax>
     <v-layout class="landing-page-toolbar" row justify-center>

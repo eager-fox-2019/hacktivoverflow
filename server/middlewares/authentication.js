@@ -1,6 +1,7 @@
-const {
-  decodeToken
-} = require('../helpers');
+// const {
+//   decodeToken
+// } = require('../helpers');
+const decodeToken = require('../helpers/decodeToken')
 
 module.exports = (req, res, next) => {
   if (req.headers.hasOwnProperty('access_token')) {
