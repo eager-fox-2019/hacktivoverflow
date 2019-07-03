@@ -12,9 +12,9 @@
         </v-layout>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-spacer></v-spacer>
       <v-flex>
         <v-text-field
+          v-model="$store.state.searchQuestion"
           class="mx-3"
           flat
           label="Search"
@@ -22,7 +22,7 @@
           solo-inverted
         ></v-text-field>
       </v-flex>
-      <v-toolbar-items>
+      <v-toolbar-items class="hidden-sm-and-down">
         <v-btn to="/" flat><v-icon>home</v-icon></v-btn>
         <v-btn v-if="!$store.state.isLogin"
           to="/register" flat>Sign In</v-btn>
@@ -35,6 +35,66 @@
 
     <v-content class="grey">
       <router-view></router-view>
+      <v-speed-dial
+      fab bottom right
+      fixed
+      transition="slide-y-reverse-transition"
+    >
+        <template v-slot:activator>
+          <v-btn fab color="black" dark>
+            <v-icon>fas fa-chevron-up</v-icon>
+            <v-icon>close</v-icon>
+          </v-btn>
+        </template>
+        <v-btn @click="logout" 
+          fab dark small color="red"
+          v-if="!$store.state.isLogin">
+          <v-tooltip left>
+            <template v-slot:activator="{ on }">
+              <v-icon v-on="on">fas fa-sign-in-alt</v-icon>
+            </template>
+            <span>Sign In</span>
+          </v-tooltip>
+        </v-btn>
+        <v-btn @click="logout" 
+          fab dark small color="red"
+          v-if="$store.state.isLogin">
+          <v-tooltip left>
+            <template v-slot:activator="{ on }">
+              <v-icon v-on="on">fas fa-sign-out-alt</v-icon>
+            </template>
+            <span>Sign Out</span>
+          </v-tooltip>
+        </v-btn>
+        <v-btn to="/" fab dark small color="green">
+          <v-tooltip left>
+            <template v-slot:activator="{ on }">
+              <v-icon v-on="on">home</v-icon>
+            </template>
+            <span>Home</span>
+          </v-tooltip>
+        </v-btn>
+        <v-btn @click="showAddEdit" 
+          fab dark small color="indigo"
+          v-if="$store.state.isLogin">
+          <v-tooltip left>
+            <template v-slot:activator="{ on }">
+              <v-icon v-on="on">fas fa-plus</v-icon>
+            </template>
+            <span>Add Question</span>
+          </v-tooltip>
+        </v-btn>
+        <v-btn :to="'/profile/' + $store.state.loginUser.id"
+          fab dark small color="blue darken-2"
+          v-if="$store.state.isLogin">
+          <v-tooltip left>
+            <template v-slot:activator="{ on }">
+              <v-icon v-on="on">account_circle</v-icon>
+            </template>
+          </v-tooltip>
+          <span>My Profile</span>
+        </v-btn>
+      </v-speed-dial>
     </v-content>
     <addedit></addedit>
   </v-app>
@@ -56,7 +116,18 @@ export default {
   methods: {
     logout () {
       this.$store.dispatch('sendLogout')
-    }
+    },
+    showAddEdit () {
+      if (this.$store.state.loginUser.id) {
+        this.$store.commit('setAddEditDialog', { show: true, type: 'questions' })
+      } else {
+        Swal.fire(
+          'Login First!',
+          'Please login to ask a question',
+          'error'
+        )
+      }
+    },
   },
   created () {
     if (localStorage.token) {

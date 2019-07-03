@@ -3,8 +3,8 @@
       <v-layout row>
         <v-card width="300px">
           <v-layout row align-center justify-center>
-            <v-avatar size="200">
-              <img src="https://cdn-images-1.medium.com/max/1600/1*7rG4-5l7pCggislvU2RTbQ.jpeg">
+            <v-avatar size="200" aspect-ratio="2">
+              <img src="https://st2.depositphotos.com/2101611/9885/v/950/depositphotos_98850500-stock-illustration-man-silhouette-icon-with-question.jpg">
             </v-avatar>
           </v-layout>
           <v-card-title>

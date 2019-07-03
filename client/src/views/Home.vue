@@ -10,8 +10,8 @@
     </v-layout>
     <v-container>
       <v-flex xs12 md8 offset-md2>
-        <v-list three-line v-if="$store.state.questions.length">
-          <homeBox v-for="item in questions"
+        <v-list py-0 my-0 three-line v-if="$store.state.questions.length">
+          <homeBox v-for="item in filteredQuestions"
             :key="item._id" :item="item"></homeBox>
         </v-list>
       </v-flex>
@@ -46,15 +46,21 @@ export default {
           'error'
         )
       }
-    }
-  },
-  watch: {
-    sortBy (val) {
+    },
+    updateQuestions (val) {
       if (val === 'Newest') {
         this.questions = this.sortedByDate
       } else if (val === 'Votes') {
         this.questions = this.sortedByVotes
       }
+    }
+  },
+  watch: {
+    sortBy (val) {
+      this.updateQuestions(val)
+    },
+    '$store.state.questions' () {
+      this.updateQuestions(this.sortBy)
     }
   },
   computed: {
@@ -64,6 +70,11 @@ export default {
     sortedByVotes () {
       return this.$store.state.questions.sort((q1, q2) => {
         return (q2.upvotes.length - q2.downvotes.length) - (q1.upvotes.length - q1.downvotes.length)
+      })
+    },
+    filteredQuestions () {
+      return this.questions.filter((question) => {
+        return question.title.includes(this.$store.state.searchQuestion)
       })
     }
   },

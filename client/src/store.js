@@ -20,6 +20,7 @@ export default new Vuex.Store({
       show: false,
       type: ''
     },
+    searchQuestion: '',
     editedAnswerQuestion: {}
   },
   mutations: {
