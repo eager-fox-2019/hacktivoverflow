@@ -13,13 +13,13 @@
                 </div>
                 <div class="response__answer">
                     <div>
-                        {{question.upvote.length}}
+                        {{question.upvote ? question.upvote.length : 0}}
                     </div>
                     <span class="desc">Upvote</span>
                 </div>
                 <div class="response__answer">
                     <div>
-                        {{question.downvote.length}}
+                        {{question.downvote ? question.downvote.length : 0}}
                     </div>
                     <span class="desc">Downvote</span>
                 </div>

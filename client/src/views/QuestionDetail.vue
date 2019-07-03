@@ -5,9 +5,13 @@
         <div>
             <div id="question" style="display: flex; width: 740px;">
                 <div class="mr-5">
-                    <div class="vote" @click="upvoteQuestion"><i class="fas fa-chevron-up"></i></div>
-                    <div class="text-center">{{question.upvote.length - question.downvote.length}}</div>
-                    <div class="vote" @click="downvoteQuestion"><i class="fas fa-chevron-down"></i></div>
+                    <div class="vote" @click="upvoteQuestion"><i class="fas fa-chevron-up color-orangered" v-if="question.upvote.includes(loginUserId)"></i><i 
+                    v-else
+                    class="fas fa-chevron-up"></i></div>
+                    <div class="text-center">{{totalVote}}</div>
+                    <div class="vote" @click="downvoteQuestion"><i class="fas fa-chevron-down color-orangered" v-if="question.downvote.includes(loginUserId)"></i><i 
+                    v-else
+                    class="fas fa-chevron-down"></i></div>
                 </div>
 
                 <div style="width: 100%;">
@@ -47,16 +51,16 @@
                     <div style="width: 100%;" class="mb-3">
                         <div class="mb-5" style="display: flex; justify-content: space-between;">
                             <div v-html="answer.description"></div>
-                            <button v-if="answer.userId._id===loginUserId" class="btn btn-link" @click="showEditTextArea">Edit</button>
+                            <button v-if="answer.userId._id===loginUserId" class="btn btn-link" @click="showEditTextArea(answer._id)">Edit</button>
                         </div>
-                        <div v-if="showEdit">
+                        <div v-if="showEdit && editAnswerActiveForm === answer._id">
                             <h6>Edit Answer</h6>
                             <form @submit.prevent="submitEditAnswer(answer._id)">
                                 <textarea 
                                     v-model="editAnswer" 
-                                    cols="60"
-                                    class="form-control" 
-                                    rows="10"
+                                    cols="10"
+                                    class="form-control mb-3" 
+                                    rows="5"
                                     style="overflow:auto;
                                         resize:none"
                                 ></textarea>
@@ -103,7 +107,8 @@ export default {
             answers: [],
             username: '',
             editAnswer: '',
-            showEdit: false
+            showEdit: false,
+            editAnswerActiveForm: ''
         }
     },
     methods: {
@@ -116,7 +121,7 @@ export default {
                 this.question = data
             })
             .catch(err=> {
-                console.log(err);
+                console.log(err.response);
             })
         },
         fetchAnswer() {
@@ -208,8 +213,13 @@ export default {
                 this.$router.push('/login')
             }      
         },
-        showEditTextArea() {
-            this.showEdit= !this.showEdit
+        showEditTextArea(answerId) {
+            if(answerId === this.editAnswerActiveForm) {
+                this.showEdit= !this.showEdit
+            }else{
+                this.editAnswerActiveForm = answerId
+                this.showEdit = true
+            }
         },
         submitEditAnswer(answerId) {
             myaxios.defaults.headers.common['token'] = localStorage.token
@@ -225,9 +235,12 @@ export default {
                         return answer
                     }
                 })
+
+                this.$alertify.success('Answer edited');
+                this.editAnswer = ''
             })
             .catch(err=>{
-                console.log(err);
+                this.$alertify.error('Failed, please check your internet connection or try again');
             })  
         },
         submitAnswer(payload) {
@@ -241,6 +254,15 @@ export default {
     computed: {
         loginUserId() {
             return this.$store.getters.loginUserId
+        },
+        totalVote() {
+            let upvote = this.question.upvote ? this.question.upvote.length : 0
+            let downvote = this.question.downvote ? this.question.downvote.length : 0
+            
+            return upvote - downvote
+        },
+        questionAuthor() {
+            return this.question.userId.username
         }
     },
     watch: {
@@ -282,4 +304,7 @@ export default {
 .vote:hover {
     cursor: pointer;
 } 
+.color-orangered {
+    color: #ff7008;
+}
 </style>

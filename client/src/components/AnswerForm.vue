@@ -22,6 +22,7 @@
                         style="padding: 10px; overflow:auto;
                         resize:none"
                         class="form-group"
+                        cols="65"
                         rows="10"
                         v-model="description"
                     ></textarea>
@@ -50,11 +51,10 @@ export default {
             myaxios
             .post(`/answers/${this.$route.params.id}`, {description: this.description})
             .then(({data}) => {
-                // console.log(data);
-                this.$emit('submit-answer', data)                
+                this.$emit('submit-answer', data)             
             })
             .catch(err => {
-                console.log(err);
+                console.log(err.response);
             })
         },
         fetchAnswer() {

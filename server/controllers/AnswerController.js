@@ -37,7 +37,7 @@ class AnswerController{
             next(err)
         })
     }
-    static create(req,res,next){
+    static create(req, res){
         const {description} = req.body
         let questionId = req.params.questionId
         let userId = req.headers.id
@@ -54,12 +54,12 @@ class AnswerController{
             answerDesc = result
             return Question.findByIdAndUpdate(
                 questionId,
-                {$push: {answers: result._id}},
+                {$push: {answerId: result._id}},
                 {new:true}
             )
         })
         .then(result=>{
-            return Question.findOne(result._id).populate({path : 'answers', populate : {path : 'userId'}}).populate("userId")  
+            return Question.findOne(result._id).populate({path : 'answerId', populate : {path : 'userId'}}).populate("userId")  
         })
         .then(result=>{
             res.status(201).json(answerDesc)
