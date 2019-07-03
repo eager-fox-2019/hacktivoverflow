@@ -6,6 +6,6 @@ const answerRoutes = require('./answer')
 
 router.use('/user', userRoutes)
 router.use('/answer', answerRoutes)
-router.use('/', questionRoutes)
+router.use('/question', questionRoutes)
 
 module.exports = router

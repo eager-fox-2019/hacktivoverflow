@@ -4,7 +4,18 @@ const { hashPassword } = require('../helpers/bcrypt.js')
 const userSchema = new mongoose.Schema({
   username: {
       type: String,
-      required: [ true, 'User must input username']
+      required: [ true, 'User must input username'],
+      validate: {
+        validator: function(input){
+            return User.findOne({username: input})
+                .then(user => {
+                    if(user){
+                        return false
+                    }
+                })
+        },
+        message: props => `Username has been registered!`
+    }
   },
   email: {
     type: String,
