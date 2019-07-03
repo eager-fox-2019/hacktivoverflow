@@ -125,8 +125,38 @@ export default new Vuex.Store({
         headers: {access_token: state.access_token}
       })
       .then(({data}) => {
-        // dispatch('getAnswers', )
+
+        let tempArray = state.answerList
+        for (let i =0; i < tempArray.length; i++){
+          if (tempArray[i]._id == data._id){
+            tempArray[i] = data
+            console.log({updated:data})
+            i = tempArray.length
+          }
+        }
+        commit('UPDATECURRENTANSWERLIST', [])
+        commit('UPDATECURRENTANSWERLIST', tempArray)
         //data is answer with updated upvotes and downvotes array
+        console.log(data)
+      })
+      .catch(({response}) => {
+        console.log(response.data);
+      });
+    },
+    postQuestion({state, commit, dispatch}, form){
+      axios({
+        method: 'post',
+        url: state.baseURL+'/question/',
+        headers: {access_token: state.access_token},
+        data: form
+      })
+      .then(({data}) => {
+        let tempArray = state.questionList
+        tempArray.unshift(data)
+
+        commit('UPDATEQUESTIONLIST', [])
+        commit('UPDATEQUESTIONLIST', tempArray)
+        
         console.log(data)
       })
       .catch(({response}) => {

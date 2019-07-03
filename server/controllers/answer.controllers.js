@@ -83,8 +83,14 @@ class ControllerAnswer {
       // check if user has voted before, if user has, remove the old vote
       let upIndex = found.upvotes.indexOf(userId)
       let downIndex = found.downvotes.indexOf(userId)
-      if (upIndex > -1) found.upvotes.splice(upIndex, 1) 
-      if (downIndex > -1) found.downvotes.splice(downIndex, 1) 
+      if (upIndex > -1) {
+        found.upvotes.splice(upIndex, 1)
+        vote = 'reset'
+      }
+      if (downIndex > -1) {
+        found.downvotes.splice(downIndex, 1)
+        vote = 'reset'
+      }
 
       // add the user's new vote
       if (vote === 'up'){
