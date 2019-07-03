@@ -25,7 +25,7 @@ export default {
   },
   computed: {
     totalVotes() {
-      return this.card.upvotes.length + this.card.downvotes.length
+      return this.card.upvotes.length - this.card.downvotes.length
     }
   },
   methods: {

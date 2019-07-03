@@ -32,7 +32,7 @@ export default {
   computed: {
     totalVotes() {
       if (!this.currentQuestion) return 'loading'
-      return this.currentQuestion.upvotes.length + this.currentQuestion.downvotes.length
+      return this.currentQuestion.upvotes.length - this.currentQuestion.downvotes.length
     },
     title() {
     	if (!this.currentQuestion) return 'loading'

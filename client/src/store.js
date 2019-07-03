@@ -72,10 +72,19 @@ export default new Vuex.Store({
     voteQuestion({state, commit, dispatch}, payload){
       let qId = payload.questionId
       let vote = payload.type
-      axios.patch(state.baseURL+'/question/'+qId+'/'+vote,
-        {headers: {access_token: state.token}
-        })
+      // console.log('di vote question')
+      // console.log({access_token:state.access_token})
+      // console.log('di vote question--------------')
+      // console.log(state.baseURL+'/question/'+qId+'/'+vote)
+      // console.log({qId})
+
+      axios({
+        method: 'patch',
+        url: state.baseURL+'/question/'+qId+'/'+vote,
+        headers: {access_token: state.access_token}
+      })
       .then(({data}) => {
+        dispatch('getQuestions') //update questions
         //data is question with updated upvotes and downvotes array
         console.log(data)
       })
@@ -83,9 +92,10 @@ export default new Vuex.Store({
         console.log(response.data);
       });
     },
-    voteQuestion({state, commit, dispatch}, payload){
+    voteAnswer({state, commit, dispatch}, payload){
       let aId = payload.answerId
       let vote = payload.type
+      console.log({access_token:state.access_token})
       axios.patch(state.baseURL+'/answer/'+aId+'/'+vote,
         {headers: {access_token: state.access_token}
         })

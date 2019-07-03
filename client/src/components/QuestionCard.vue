@@ -24,7 +24,7 @@ export default {
   },
   computed: {
     totalVotes() {
-      return this.card.upvotes.length + this.card.downvotes.length
+      return this.card.upvotes.length - this.card.downvotes.length
     },
     questionId() {
       return this.card._id
@@ -36,10 +36,10 @@ export default {
       this.$router.push('/question/' + this.questionId)
     },
     upvote(){
-      this.$store.dispatch('voteQuestion', {questionId:this.questionId, type:'up'})
+      this.$store.dispatch('voteQuestion', {questionId:this.card._id, type:'up'})
     },
     downvote(){
-      this.$store.dispatch('voteQuestion', {questionId:this.questionId, type:'down'})
+      this.$store.dispatch('voteQuestion', {questionId:this.card._id, type:'down'})
     }
   }
 }
