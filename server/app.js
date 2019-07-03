@@ -1,20 +1,22 @@
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+const express = require('express')
+const app = express() 
+const cors = require('cors')
+const userRoute = require('./routes/user.routes')
 
-var app = express();
+const errorMiddleware = require('./middleware/error.middleware')
+const mongoConnect = require('./helpers/mongoose.connect.helper')
+const PORT = process.env.PORT || 3000
 
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+mongoConnect()
+app.use(cors())
+app.use(express.json())
+app.use(express.urlencoded({extended: false}))
+app.use('/user', userRoute)
+app.use(errorMiddleware)
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-
-module.exports = app;
+app.listen(PORT, () => {console.log('App jalan di:', PORT)})
+module.exports = app
