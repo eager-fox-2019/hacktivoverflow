@@ -3,6 +3,8 @@ import Router from 'vue-router'
 import Home from './views/Home.vue'
 import Logform from './views/Logform.vue'
 import QuestionForm from './views/QuestionForm.vue'
+import QuestionAnswer from './views/QuestionAnswer.vue'
+import AnswerForm from './views/AnswerForm.vue'
 
 Vue.use(Router)
 
@@ -24,6 +26,16 @@ export default new Router({
       path: '/add-question',
       name: 'questionform',
       component: QuestionForm
+    },
+    {
+      path: '/question/:questionId',
+      name: 'questionanswer',
+      component: QuestionAnswer
+    },    
+    {
+      path: '/add-answer/:questionId',
+      name: 'answerform',
+      component: AnswerForm
     }
   ]
 })

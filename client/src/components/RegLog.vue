@@ -93,6 +93,7 @@ export default {
         dispatch('LOGIN', this.form)
           .then(({ data }) => {
             localStorage.setItem('token', data.token)
+            localStorage.setItem('id', data.id)
             this.$swal({
               type: 'success',
               title: 'Login success'

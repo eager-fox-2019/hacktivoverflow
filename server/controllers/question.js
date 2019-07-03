@@ -10,6 +10,7 @@ class QuestionController{
     }
 
     static getQuestion(req, res, next){
+        console.log("Masuk get question")
         Question.findOne({ _id: req.params.questionId })
             .then(question => {
                 if(!question){
@@ -24,11 +25,7 @@ class QuestionController{
     static getUserQuestion(req, res, next){
         Question.find({ owner: req.params.userId })
             .then(questions => {
-                if(!questions){
-                    throw {code: 404, message: 'Question not found'}
-                } else {
-                    res.json(questions)
-                }
+                res.json(questions)
             })
             .catch(next)
     }

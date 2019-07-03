@@ -1,71 +1,97 @@
 <template>
-    <b-button-group vertical>
-        <b-button v-if="$store.state.isLogin" :class="{ active: upvoted }" @click="upvote(que)">Up</b-button>
-        <b-button disabled>{{ quevote }}</b-button>
-        <b-button v-if="$store.state.isLogin" :class="{ active: downvoted }" @click="downvote(que)">Down</b-button>
-    </b-button-group>
+    <div v-if="inside">
+        <b-button-group vertical>
+                <b-button v-if="$store.state.isLogin" :class="{ active: upvoted }" @click="upvote(inside)">Up</b-button>
+                <b-button disabled>{{ totalvote }}</b-button>
+                <b-button v-if="$store.state.isLogin" :class="{ active: downvoted }" @click="downvote(inside)">Down</b-button>
+        </b-button-group>
+    </div>
 </template>
 
 <script>
 export default {
-  props: ['que'],
+  props: ['inside', 'type'],
   methods: {
-    upvote (que) {
-      let checkUp = false
-      let upvotesArr = this.que.upvotes
+    upvote (inside) {
+      let upvotesArr = this.inside.upvotes
+      let downvotesArr = this.inside.downvotes
       let updateObj = {}
-      for (let i = 0; i < this.que.upvotes.length; i++) {
-        if (this.que.upvotes[i] === localStorage.getItem('id')) {
-          checkUp = true
-          upvotesArr.splice(i, 1)
-        }
-      }
-      if (!checkUp) {
+      let foundUp = upvotesArr.indexOf(localStorage.getItem('id'))
+      if (foundUp !== -1) {
+        upvotesArr.splice(foundUp, 1)
+      } else {
         upvotesArr.push(localStorage.getItem('id'))
-        let downvotesArr = this.que.downvotes
-        for (let i = 0; i < this.que.downvotes.length; i++) {
-          if (this.que.downvotes === localStorage.getItem('id')) {
-            downvotesArr.splice(i, 1)
-            updateObj['downvotes'] = downvotesArr
-          }
+        let foundDown = downvotesArr.indexOf(localStorage.getItem('id'))
+        if (foundDown !== -1) {
+          downvotesArr.splice(foundDown, 1)
+          updateObj['downvotes'] = downvotesArr
         }
       }
       updateObj['upvotes'] = upvotesArr
-      this.$store.dispatch('UPDATE_DETAILED_QUESTION', updateObj)
-    },
-    downvote (que) {
-      let checkDown = false
-      let downvotesArr = this.que.downvotes
-      let updateObj = {}
-      for (let i = 0; i < this.que.downvotes.length; i++) {
-        if (this.que.downvotes[i] === localStorage.getItem('id')) {
-          checkDown = true
-          downvotesArr.splice(i, 1)
-        }
+      updateObj['id'] = this.inside._id
+      if (this.type === 'question') {
+        this.$store.dispatch('UPDATE_DETAILED_QUESTION', updateObj)
+          .then(({ data }) => {
+            this.$store.dispatch('GET_QUESTION')
+          })
+          .catch(e => {
+            console.log(e.response)
+          })
+      } else if (this.type === 'answer') {
+        this.$store.dispatch('UPDATE_DETAILED_ANSWER', updateObj)
+          .then(({ data }) => {
+            this.$store.dispatch('GET_ANSWER')
+          })
+          .catch(e => {
+            console.log(e.response)
+          })
       }
-      if (!checkDown) {
+    },
+    downvote (inside) {
+      let downvotesArr = this.inside.downvotes
+      let upvotesArr = this.inside.upvotes
+      let updateObj = {}
+      let foundDown = downvotesArr.indexOf(localStorage.getItem('id'))
+      if (foundDown !== -1) {
+        downvotesArr.splice(foundDown, 1)
+      } else {
         downvotesArr.push(localStorage.getItem('id'))
-        let upvotesArr = this.que.upvotes
-        for (let i = 0; i < this.que.upvotes.length; i++) {
-          if (this.que.upvotes === localStorage.getItem('id')) {
-            upvotesArr.splice(i, 1)
-            updateObj['upvotes'] = upvotesArr
-          }
+        let foundUp = upvotesArr.indexOf(localStorage.getItem('id'))
+        if (foundUp !== -1) {
+          upvotesArr.splice(foundUp, 1)
+          updateObj['upvotes'] = upvotesArr
         }
       }
       updateObj['downvotes'] = downvotesArr
-      this.$store.dispatch('UPDATE_DETAILED_QUESTION', updateObj)
+      updateObj['id'] = this.inside._id
+      if (this.type === 'question') {
+        this.$store.dispatch('UPDATE_DETAILED_QUESTION', updateObj)
+          .then(({ data }) => {
+            this.$store.dispatch('GET_QUESTION')
+          })
+          .catch(e => {
+            console.log(e.response)
+          })
+      } else if (this.type === 'answer') {
+        this.$store.dispatch('UPDATE_DETAILED_ANSWER', updateObj)
+          .then(({ data }) => {
+            this.$store.dispatch('GET_ANSWER')
+          })
+          .catch(e => {
+            console.log(e.response)
+          })
+      }
     }
   },
   computed: {
-    quevote: function () {
-      return this.que.upvotes.length - this.que.downvotes.length
+    totalvote: function () {
+      return this.inside.upvotes.length - this.inside.downvotes.length
     },
     upvoted: function () {
-      return this.que.upvotes.filter(id => id === localStorage.getItem('id')).length !== 0
+      return this.inside.upvotes.filter(id => id === localStorage.getItem('id')).length !== 0
     },
     downvoted: function () {
-      return this.que.downvotes.filter(id => id === localStorage.getItem('id')).length !== 0
+      return this.inside.downvotes.filter(id => id === localStorage.getItem('id')).length !== 0
     }
   }
 }

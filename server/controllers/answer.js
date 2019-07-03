@@ -39,6 +39,7 @@ class AnswerController{
         const input = { title, description }
         Answer.create(input)
             .then(result => {
+                console.log("Berhasil add Answer")
                 res.status(201).json(result)
             })
             .catch(next)

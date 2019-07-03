@@ -9,7 +9,8 @@ export default new Vuex.Store({
     isLogin: false,
     baseUrl: `http://localhost:3000`,
     questions: [],
-    answers: []
+    answers: [],
+    questionShowed: {}
   },
   mutations: {
     SET_LOGIN (state, payload) {
@@ -17,6 +18,9 @@ export default new Vuex.Store({
     },
     SET_QUESTION_LIST (state, payload) {
       state.questions = payload
+    },
+    SET_A_QUESTION (state, payload) {
+      state.questionShowed = payload
     },
     SET_ANSWER_LIST (state, payload) {
       state.answer = payload
@@ -57,8 +61,19 @@ export default new Vuex.Store({
       })
         .then(({ data }) => {
           this.commit('SET_QUESTION_LIST', data)
-          console.log(data)
-          console.log('GET question')
+        })
+        .catch(e => {
+          console.log(e)
+        })
+    },
+    GET_A_QUESTION ({ state }, payload) {
+      console.log('get a detailed question')
+      axios({
+        method: 'get',
+        url: `${state.baseUrl}/question/${payload}`
+      })
+        .then(({ data }) => {
+          this.commit('SET_A_QUESTION', data)
         })
         .catch(e => {
           console.log(e)
@@ -67,7 +82,7 @@ export default new Vuex.Store({
     UPDATE_DETAILED_QUESTION ({ state }, payload) {
       return axios({
         method: 'patch',
-        url: `${state.baseUrl}/question/update-detail/${payload._id}`,
+        url: `${state.baseUrl}/question/update-detail/${payload.id}`,
         data: payload,
         headers: {
           token: localStorage.getItem('token')
@@ -88,6 +103,16 @@ export default new Vuex.Store({
       return axios({
         method: 'delete',
         url: `${state.baseUrl}/question/${payload._id}`,
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
+    },
+    ADD_ANSWER ({ state }, payload) {
+      return axios({
+        method: 'post',
+        url: `${state.baseUrl}/answer`,
+        data: payload,
         headers: {
           token: localStorage.getItem('token')
         }

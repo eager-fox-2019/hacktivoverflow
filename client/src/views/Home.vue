@@ -27,9 +27,6 @@ export default {
   computed: {
     ...mapState(['questions'])
   },
-  mounted () {
-    this.$store.dispatch('GET_QUESTION')
-  },
   methods: {
     answering (question) {
       // this.$store.router

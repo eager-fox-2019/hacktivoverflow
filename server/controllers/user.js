@@ -41,7 +41,7 @@ class UserController{
                         res.json({
                             token,
                             username: user.username,
-                            email: user.email
+                            id: user._id
                         })
                     } else {
                         throw({code: 400, message: 'Email/Password invalid!'})
