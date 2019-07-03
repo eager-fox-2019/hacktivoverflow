@@ -12,7 +12,7 @@
     </div>
     <div class="detail-info col d-flex flex-column justify-content-between p-3" style="text-align: left">
       <div>
-        <a :href="`/question/${question._id}`" style="text-decoration: none; font-size: 20px">{{question.title}}</a>
+        <b-link :to="`/question/${question._id}`" style="text-decoration: none; font-size: 20px">{{question.title}}</b-link>
         <p v-if="question.desc.length < 200">{{question.desc}}</p>
         <p v-else>{{question.desc.slice(0,200)}}...</p>
       </div>
