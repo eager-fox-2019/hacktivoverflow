@@ -26,7 +26,7 @@
 export default {
   name: 'post',
   props: [],
-  data() {
+  data () {
     return {
 
     }
@@ -35,7 +35,7 @@ export default {
 
   },
   components: {
-    
+
   }
 
 }
@@ -45,13 +45,13 @@ export default {
   $primary: #311B92;
   #post-card {
     width: 100%;
-    border-bottom: 1.5px solid $primary;
+    border-bottom: 2px solid $primary;
     height: 120px;
     padding: 20px;
     display: flex;
     margin: 10px auto;
     // align-items: center;
-  } 
+  }
 
   #arrow-vote {
     display: flex;
@@ -68,7 +68,7 @@ export default {
   }
 
   .arrow:hover{
-    cursor: pointer;		
+    cursor: pointer;
   }
 
   .arrow-clicked {
@@ -82,10 +82,10 @@ export default {
   }
   #post {
     border: 1px solid $primary;
+    border-radius: 8px;
     padding: 15px;
   }
   #post:hover{
-    cursor: pointer;		
+    cursor: pointer;
   }
 </style>
-

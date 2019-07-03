@@ -5,17 +5,17 @@
     <form @submit.prevent="userRegister" class="column">
       <div class="field">
         <b-field label="Username">
-            <b-input placeholder="Username" rounded class="text-input"></b-input>
+            <b-input placeholder="Username" rounded class="text-input" v-model="inputRegister.username"></b-input>
         </b-field>
       </div>
       <div class="field">
         <b-field label="Email">
-            <b-input placeholder="Email" rounded class="text-input"></b-input>
+            <b-input placeholder="Email" rounded class="text-input" v-model="inputRegister.email"></b-input>
         </b-field>
       </div>
       <div class="field">
         <b-field label="Password">
-            <b-input placeholder="Password" type="password" rounded password-reveal class="text-input"></b-input>
+            <b-input placeholder="Password" type="password" rounded password-reveal class="text-input" v-model="inputRegister.password"></b-input>
         </b-field>
       </div>
       <p id="note">Already have an account ? <router-link to="/login">Login</router-link></p>
@@ -28,7 +28,8 @@ export default {
   name: 'login',
   data () {
     return {
-      login: {
+      inputRegister: {
+        username: '',
         email: '',
         password: ''
       }
@@ -36,6 +37,10 @@ export default {
   },
   methods: {
     userRegister () {
+      this.$store.dispatch('register', this.inputRegister)
+        .then(({ data }) => {
+          this.$router.push({ path: 'login', query: { isRegister: true } })
+        })
     }
   }
 }
@@ -89,9 +94,9 @@ export default {
   }
 
   #button-login:hover{
-    cursor: pointer;		
+    cursor: pointer;
   }
-  
+
   a {
     color: #311B92;
     text-decoration: none;

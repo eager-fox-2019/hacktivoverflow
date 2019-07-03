@@ -9,5 +9,3 @@ router.post('/login', ControllerUser.login)
 
 
 module.exports = router
-
-hash

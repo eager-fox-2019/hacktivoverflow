@@ -1,7 +1,6 @@
 const User = require('../models/users')
 const comparePassword = require('../helpers/comparePassword')
 const getToken = require('../helpers/getToken')
-const getPassword = require('../helpers/getPassword')
 
 class ControllerUser {
 
@@ -14,8 +13,15 @@ class ControllerUser {
   }
 
   static create(req, res, next) {
-    const { email, password } = req.body
-    const input = { email, password }
+    if(!req.body.email) {
+      throw {status: 400, message: 'email is required !'}
+    } else if (!req.body.username) {
+      throw {status: 400, message: 'username is required !'}
+    } else if(!req.body.username) {
+      throw {status: 400, message: 'password is required !'}
+    }
+    const { email, password, username } = req.body
+    const input = { email, password, username }
     User.create(input)
     .then(result => {
       res.json(result)
@@ -32,8 +38,10 @@ class ControllerUser {
       if(user){
         let check = comparePassword(user.password, input.password)
         if(check) {
-          let token = getToken(email)
-          res.json({token, user})
+          let token = getToken(user)
+          let { _id, email, username } = user
+          let payload = { _id, email, username } 
+          res.json({token, payload})
         } else {
           throw {status: 400, message: 'Wrong email / password'}
         }

@@ -80,9 +80,9 @@ export default {
 
   #button-login:hover{
     border: 2px solid #607D8B;
-    cursor: pointer;		
+    cursor: pointer;
   }
-  
+
   a {
     color: white;
     text-decoration: none;

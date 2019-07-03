@@ -12,7 +12,7 @@ class ControllerQuestion {
   static create(req, res, next) {
     let {title, content} = req.body
     let input = {title, content}
-
+    input.user = req.user.id
     Question.create(input)
     .then(result => {
       res.status(200).json(result)

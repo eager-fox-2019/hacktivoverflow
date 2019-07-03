@@ -9,15 +9,14 @@ import '@/main.scss'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faCheck, faCheckCircle, faInfoCircle, faExclamationTriangle, faExclamationCircle,
   faArrowUp, faAngleRight, faAngleLeft, faAngleDown,
-  faEye, faEyeSlash, faCaretDown, faCaretUp, faUpload } from "@fortawesome/free-solid-svg-icons";
+  faEye, faEyeSlash, faCaretDown, faCaretUp, faUpload } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import axios from 'axios'
 
- 
 library.add(faCheck, faCheckCircle, faInfoCircle, faExclamationTriangle, faExclamationCircle,
   faArrowUp, faAngleRight, faAngleLeft, faAngleDown,
-  faEye, faEyeSlash, faCaretDown, faCaretUp, faUpload);
-Vue.component('vue-fontawesome', FontAwesomeIcon);
+  faEye, faEyeSlash, faCaretDown, faCaretUp, faUpload)
+Vue.component('vue-fontawesome', FontAwesomeIcon)
 
 Vue.config.productionTip = false
 

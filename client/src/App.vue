@@ -4,15 +4,39 @@
       <div id="first-item">
         <p id="judul">Hacktiv Overflow</p>
         <router-link to="/">Home</router-link>
+        <router-link to="/submit">Ask a question</router-link>
       </div>
-      <div id="nav-login-register">
+      <div id="nav-login-register" class="second-item" v-if="!isLogin">
         <router-link to="/login">Login</router-link>
         <router-link to="/register">Register</router-link>
       </div>
+      <div v-else class="second-item">
+        <p class="item">User</p>
+        <p class="item" id="logout" @click="logout">Log Out</p>
+      </div>
     </div>
-    <router-view/>
+    <router-view class="animated fadeIn"/>
   </div>
 </template>
+
+<script>
+import { mapState } from 'vuex'
+export default {
+  data () {
+    return {
+
+    }
+  },
+  computed: {
+    ...mapState(['isLogin'])
+  },
+  methods: {
+    logout () {
+
+    }
+  }
+}
+</script>
 
 <style lang="scss">
    #app, body, html { margin: 0; width: 100%; height: 100%; padding: 0; overflow-y: hidden; overflow-x: hidden;}
@@ -43,9 +67,26 @@
   #first-item {
     display: flex;
     align-items: center;
-    width: 20%;
+    // width: 20%;
   }
 
+  .second-item {
+    width: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+
+  #logout:hover{
+    cursor: pointer;
+    color: rgba(255, 0, 0, 0.473);
+  }
+  .item:hover {
+    cursor: pointer;
+  }
+  .item {
+    font-weight: bold;
+  }
 
   #nav a {
     font-weight: bold;

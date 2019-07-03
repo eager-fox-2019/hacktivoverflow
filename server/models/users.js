@@ -30,8 +30,27 @@ const usersSchema = new Schema({
     }]
   },
   password: String,
-  first_name: String,
-  last_name: String
+  username: {
+    type: String,
+    validate: [{
+      validator: function(value) {
+        return new Promise ((resolve, reject) => {
+          User.findOne({username: value})
+          .then (member => {
+            if (member){
+              resolve (false)
+            } else {
+              resolve (true)
+            }
+          })
+          .catch(err => {
+            reject (err)
+          })
+        })
+      },
+      message: props => `${props.value} is already used!`
+    }]
+  }
 });
 
 

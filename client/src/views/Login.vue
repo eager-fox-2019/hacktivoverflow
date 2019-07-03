@@ -3,14 +3,15 @@
     <div id="sidebar" class="column is-5">
     </div>
     <form @submit.prevent="userLogin" class="column">
+      <div v-if="isRegister" id="successRegister">{{successRegisterMsg}}</div>
       <div class="field">
         <b-field label="Email">
-            <b-input placeholder="Email" rounded class="text-input"></b-input>
+            <b-input placeholder="Email" rounded class="text-input" v-model="inputLogin.email"></b-input>
         </b-field>
       </div>
       <div class="field">
         <b-field label="Password">
-            <b-input placeholder="Password" type="password" rounded password-reveal class="text-input"></b-input>
+            <b-input placeholder="Password" type="password" rounded password-reveal class="text-input" v-model="inputLogin.password"></b-input>
         </b-field>
       </div>
       <p id="note">Don't have an account ? <router-link to="/register">Register</router-link></p>
@@ -23,10 +24,12 @@ export default {
   name: 'login',
   data () {
     return {
-      login: {
+      inputLogin: {
         email: '',
         password: ''
-      }
+      },
+      isRegister: false,
+      successRegisterMsg: 'Successfully created an account !'
     }
   },
   methods: {
@@ -37,13 +40,14 @@ export default {
 </script>
 
 <style scoped>
+  #successRegister {
+    color: #311B92;
+    font-size: 24px;
+  }
   #sidebar {
     border-right: 2px solid rgba(49, 27, 146, 0.671);
     margin-right: 20px;
   }
-  /* form {
-    text-align: center;
-  } */
   #note {
     font-size: 14px;
   }
@@ -84,9 +88,9 @@ export default {
   }
 
   #button-login:hover{
-    cursor: pointer;		
+    cursor: pointer;
   }
-  
+
   a {
     color: #311B92;
     text-decoration: none;
