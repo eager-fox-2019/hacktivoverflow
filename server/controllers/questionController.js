@@ -219,6 +219,7 @@ class QuestionController {
                 })
             })
     }
+    // besok ditambahkan ketika menghapus question maka answer2 yang ada di question terebut akan iku terhapus mengikuti questionnya
 }
 
 module.exports = QuestionController
