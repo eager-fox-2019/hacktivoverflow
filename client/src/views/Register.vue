@@ -60,9 +60,7 @@ export default {
             myaxios
             .post('/register', this.form)
             .then(user=> {
-                setTimeout(() => {
-                    this.$alertify.success(`Success, login to continue`);
-                }, 500);
+                this.$alertify.success(`Success, login to continue`);
                 this.form={}
                 this.$router.push('/login')
             })

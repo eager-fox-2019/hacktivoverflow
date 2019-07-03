@@ -53,9 +53,7 @@ export default {
                 this.$store.dispatch('setLoggedInUser')
                 .then(() => {
                     if(!this.$store.getters.error){
-                        setTimeout(() => {
-                            this.$alertify.success(`Welcome ${data.username}`);
-                        }, 500);
+                        this.$alertify.success(`Welcome ${data.username}`);
                         this.$store.state.isLogin = true
                         localStorage.token = data.token
                         this.$router.push('/')

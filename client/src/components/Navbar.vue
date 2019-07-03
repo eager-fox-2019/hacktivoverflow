@@ -62,9 +62,7 @@ export default {
         logout() {
             localStorage.clear()
             this.$store.commit('SET_IS_LOGIN_STATUS', false)
-            setTimeout(() => {
-                this.$alertify.message(`Logout, See you around :)`);
-            }, 500);
+            this.$alertify.message(`Logout, See you around :)`);
         }
     },
 }

@@ -116,17 +116,19 @@ export default {
             myaxios
             .patch(`questions/${this.$route.params.id}`, this.question)
             .then(({data}) => {
-                this.$store.commit('EDIT_MY_QUESTIONS', data)
-                this.$store.commit('EDIT_QUESTIONS', data)
-
-                setTimeout(() => {
-                    this.$alertify.success(`Question successfully edited`);
-                }, 500);
-
-                this.$router.push('/question/user')
+                if(!this.$store.getters.error){
+                    this.$store.commit('EDIT_MY_QUESTIONS', data)
+                    this.$store.commit('EDIT_QUESTIONS', data)
+    
+                    this.$alertify.success(`Question successfully edited`);                
+    
+                    this.$router.push('/question/user')
+                }else{
+                    this.$alertify.error('Failed, please check your internet connection or try again');
+                }
             })
             .catch(err => {
-                console.log(err.response);
+                this.$alertify.error('Failed, please check your internet connection or try again');
             })
         }
     },
