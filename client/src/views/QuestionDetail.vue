@@ -44,9 +44,9 @@
                 </div>
                 <div :key="index" v-for="(answer,index) in answers" style="display: flex; width: 740px;">
                     <div class="mr-5">
-                        <div class="vote" @click="upvoteAnswer(answer._id)"><i class="fas fa-chevron-up"></i></div>
+                        <div class="vote" @click="upvoteAnswer(answer._id)"><i class="fas fa-chevron-up color-orangered" v-if="answer.upvote.includes(loginUserId)"></i><i class="fas fa-chevron-up" v-else></i></div>
                         <div class="text-center">{{answer.upvote.length - answer.downvote.length}}</div>
-                        <div class="vote" @click="downvoteAnswer(answer._id)"><i class="fas fa-chevron-down"></i></div>
+                        <div class="vote" @click="downvoteAnswer(answer._id)"><i class="fas fa-chevron-down color-orangered" v-if="answer.downvote.includes(loginUserId)"></i><i class="fas fa-chevron-down" v-else></i></div>
                     </div>
                     <div style="width: 100%;" class="mb-3">
                         <div class="mb-5" style="display: flex; justify-content: space-between;">
@@ -144,7 +144,8 @@ export default {
                 .patch(`questions/vote/${this.question._id}/upvote`)
                 .then(({data})=>{
                     this.question = data
-
+                    this.$store.commit('EDIT_QUESTIONS', data)
+                    this.$store.commit('EDIT_MY_QUESTIONS', data)
                 })
                 .catch(err=>{
                     console.log(err);
@@ -161,6 +162,8 @@ export default {
                 .patch(`questions/vote/${this.question._id}/downvote`)
                 .then(({data})=>{
                     this.question = data
+                    this.$store.commit('EDIT_QUESTIONS', data)
+                    this.$store.commit('EDIT_MY_QUESTIONS', data)
                 })
                 .catch(err=>{
                     console.log(err);
