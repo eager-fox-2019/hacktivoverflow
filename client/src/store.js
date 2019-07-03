@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import Swal from 'sweetalert2'
 import axios from 'axios'
+import router from './router'
 
 Vue.use(Vuex)
 
@@ -61,6 +62,11 @@ export default new Vuex.Store({
         )
         console.log(err);
       });
+    },
+    logout(context) {
+      context.state.isLogin = false;
+      localStorage.clear();
+      router.push('/')
     }
   }
 })
