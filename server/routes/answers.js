@@ -4,7 +4,7 @@ const AnswerController = require('../controllers/AnswerController')
 const Authentication = require('../middlewares/authenticate')
 
 routes.get('/', AnswerController.findAll)
-routes.get('/:questionId', Authentication, AnswerController.findBelongs)
+routes.get('/:questionId', AnswerController.findBelongs)
 routes.post('/:questionId', Authentication, AnswerController.create)
 routes.get('/:id', AnswerController.findOne)
 routes.patch("/:id", Authentication, AnswerController.update);

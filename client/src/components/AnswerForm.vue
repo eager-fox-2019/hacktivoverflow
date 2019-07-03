@@ -51,8 +51,8 @@ export default {
             myaxios
             .post(`/answers/${this.$route.params.id}`, {description: this.description})
             .then(({data}) => {
-                this.$store.commit('')
-                this.$emit('submit-answer', data)          
+                this.$store.commit('ADD_ANSWERS', data)
+                this.description = ''
             })
             .catch(err => {
                 console.log(err.response);

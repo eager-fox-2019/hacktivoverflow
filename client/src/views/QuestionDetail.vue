@@ -5,11 +5,11 @@
         <div>
             <div id="question" style="display: flex; width: 740px;">
                 <div class="mr-5">
-                    <div class="vote" @click="upvoteQuestion"><i class="fas fa-chevron-up color-orangered" v-if="question.upvote.includes(loginUserId)"></i><i 
+                    <div class="vote" @click="upvoteQuestion"><i class="fas fa-chevron-up color-orangered" v-if="question.upvote && question.upvote.includes(loginUserId)"></i><i 
                     v-else
                     class="fas fa-chevron-up"></i></div>
                     <div class="text-center">{{totalVote}}</div>
-                    <div class="vote" @click="downvoteQuestion"><i class="fas fa-chevron-down color-orangered" v-if="question.downvote.includes(loginUserId)"></i><i 
+                    <div class="vote" @click="downvoteQuestion"><i class="fas fa-chevron-down color-orangered" v-if="question.downvote && question.downvote.includes(loginUserId)"></i><i 
                     v-else
                     class="fas fa-chevron-down"></i></div>
                 </div>
@@ -28,7 +28,7 @@
                     </ul>
                     <div class="created-by__container">
                         <div class="created-by">
-                            <div><i class="far fa-user"></i> {{question.userId.username}}</div>
+                            <div><i class="far fa-user"></i> {{questionAuthor}}</div>
                             <div><small>{{question.createdAt | moment("dddd, MMMM Do")}}</small></div>
                         </div>
 
@@ -111,8 +111,6 @@ export default {
     },
     methods: {
         getQuestion() {
-            myaxios.defaults.headers.common['token'] = localStorage.token
-
             myaxios
             .get(`/questions/${this.$route.params.id}`)
             .then(({data}) => {
@@ -123,15 +121,13 @@ export default {
             })
         },
         fetchAnswer() {
-            myaxios.defaults.headers.common['token'] = localStorage.token
-
             myaxios
             .get(`/answers/${this.$route.params.id}`)
             .then(({data}) => {
                 this.$store.commit('SET_ANSWERS', data)
             })
             .catch(err=> {
-                console.log(err);
+                console.log(err.response);
             })
         },
         upvoteQuestion(){
@@ -229,7 +225,7 @@ export default {
             this.$store.commit('ADD_ANSWERS', payload)
         }
     },
-    mounted() {
+    created() {
         this.getQuestion()
         this.fetchAnswer()
     },

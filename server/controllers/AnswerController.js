@@ -62,7 +62,12 @@ class AnswerController{
             return Question.findOne(result._id).populate({path : 'answerId', populate : {path : 'userId'}}).populate("userId")  
         })
         .then(result=>{
-            res.status(201).json(answerDesc)
+            return Answer
+            .findOne({_id: answerDesc._id})
+            .populate('userId', 'username')
+        })
+        .then(execc => {
+            res.status(201).json(execc)
         })
         .catch(err=>{
             res.status(400).json(err)

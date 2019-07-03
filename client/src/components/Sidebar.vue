@@ -2,7 +2,7 @@
     <div class="sidebar-container">
         <ul class="list-group list-group-flush" style="position: fixed;">
             <li class="link list-group-item" @click="goToHome()">Home</li>
-            <li class="link list-group-item" @click="goToMyQuestion()">My Questions</li>
+            <li v-if="isLogin" class="link list-group-item" @click="goToMyQuestion()">My Questions</li>
             <li class="link list-group-item" @click="goToWatchedTags()">Watched Tags</li>
             <li class="link list-group-item" @click="goToTags()">Tags</li>
         </ul>
@@ -23,6 +23,11 @@ export default {
         },
         goToWatchedTags() {
             this.$router.push('/tags/watch')
+        }
+    },
+    computed: {
+        isLogin() {
+            return this.$store.getters.isLogin
         }
     },
 }
