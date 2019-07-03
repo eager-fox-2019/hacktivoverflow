@@ -14,28 +14,28 @@ class UserController {
     };
     User.create(newUser)
       .then(result => {
-        // var CronJob = require("cron").CronJob;
-        // new CronJob(
-        //   "0 0 0 1 * *",
-        //   function() {
-        //     console.log("You will see this message every month");
-        //     const emailJob = queue
-        //       .create("sendEmail", {
-        //         title: "Welcome to HacktivOverflow",
-        //         email: newUser.email,
-        //         message: `<h1> Welcome ${
-        //           newUser.email
-        //         }, Thanks for registering to our website!</h1>`
-        //       })
-        //       .save();
-        //     emailJob.on("failed", error => {
-        //       console.log(JSON.parse(error));
-        //     });
-        //   },
-        //   null,
-        //   true,
-        //   "America/Los_Angeles"
-        // );
+        var CronJob = require("cron").CronJob;
+        new CronJob(
+          "0 0 0 1 * *",
+          function() {
+            console.log("You will see this message every month");
+            const emailJob = queue
+              .create("sendEmail", {
+                title: "Welcome to HacktivOverflow",
+                email: newUser.email,
+                message: `<h1> Welcome ${
+                  newUser.email
+                }, Thanks for registering to our website!</h1>`
+              })
+              .save();
+            emailJob.on("failed", error => {
+              console.log(JSON.parse(error));
+            });
+          },
+          null,
+          true,
+          "America/Los_Angeles"
+        );
         res.status(201).json(result);
       })
       .catch(next);
