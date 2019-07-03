@@ -3,12 +3,12 @@
 
   <VoteButtons :totalVotes="totalVotes" @upvote="upvote" @downvote="downvote"/>
 
-  <b-card style="width: 80%;" :title="card.title" :sub-title="card.owner.name">
+  <b-card style="width: 80%;" :title="card.title" :sub-title="cardOwner">
     <b-card-text>
       {{card.description}}
     </b-card-text>
-
-    <b-link href="#" class="card-link">Edit</b-link>
+    <slot></slot>
+    <!-- <b-link href="#" class="card-link">Edit</b-link> -->
   </b-card>
 
   </div>
@@ -26,6 +26,9 @@ export default {
   computed: {
     totalVotes() {
       return this.card.upvotes.length - this.card.downvotes.length
+    },
+    cardOwner(){
+      return 'by ' + this.card.owner.name
     }
   },
   methods: {

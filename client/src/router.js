@@ -43,7 +43,7 @@ export default new Router({
           meta: {title: 'register'} 
         },
         { path: 'edit', 
-          name: 'edit profile',
+          name: 'editProfile',
           component: () => import('./views/EditProfile.vue'),
           meta: {title: 'edit profile'} 
         },

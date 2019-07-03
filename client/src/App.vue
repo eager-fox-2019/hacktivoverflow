@@ -26,9 +26,10 @@ export default {
     let access_token = localStorage.getItem('access_token')
     console.log({access_token})
     if (access_token){
+      let id = localStorage.getItem('id')
       let name = localStorage.getItem('name')
       let email = localStorage.getItem('email')
-      this.$store.commit('SAVEUSER', {name, email, access_token})
+      this.$store.commit('SAVEUSER', {id, name, email, access_token})
     }
   }
 }

@@ -29,12 +29,14 @@ export default new Vuex.Store({
       localStorage.clear()
     },
     SAVEUSER(state, payload){
-      state.user = {name:payload.name, email:payload.email}
+      console.log({saveuser:payload})
+      state.user = {id:payload.id, name:payload.name, email:payload.email}
       state.access_token = payload.access_token
       state.isLoggedin = true
       localStorage.setItem('access_token', state.access_token)
       localStorage.setItem('name', payload.name)
       localStorage.setItem('email', payload.email)
+      localStorage.setItem('id', payload.id)
     }
   },
   actions: {
@@ -164,6 +166,13 @@ export default new Vuex.Store({
       return axios({
         method: 'delete',
         url: state.baseURL+'/question/'+ questionId,
+        headers: {access_token: state.access_token}
+      })
+    },
+    deleteAnswer({state, commit, dispatch}, answerId){
+      return axios({
+        method: 'delete',
+        url: state.baseURL+'/answer/'+ answerId,
         headers: {access_token: state.access_token}
       })
     }

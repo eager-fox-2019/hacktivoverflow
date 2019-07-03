@@ -31,18 +31,21 @@ import { mapState } from 'vuex'
 import VoteButtons from '@/components/VoteButtons.vue'
 import AnswerList from '@/components/AnswerList.vue'
 import AnswerForm from '@/components/AnswerForm.vue'
+import EditQuestionForm from '@/components/EditQuestionForm.vue'
 
 export default {
   name: 'Question',
   data () {
     return {
-      showAnswerForm: false
+      showAnswerForm: false,
+      showEditForm: false
     }
   },
   components: {
   	VoteButtons,
     AnswerList,
-    AnswerForm
+    AnswerForm,
+    EditQuestionForm
   },
   mounted(){
     this.$store.dispatch('getQuestionDetail', this.$route.params.id)
@@ -102,7 +105,7 @@ export default {
 
         commit('UPDATEQUESTIONLIST', [])
         commit('UPDATEQUESTIONLIST', tempArray)
-        
+
         this.$router.push('/')
       })
       .catch(({response}) => {

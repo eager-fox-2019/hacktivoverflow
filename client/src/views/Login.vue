@@ -88,7 +88,8 @@ export default {
           //save user detail
           // console.log('before commit')
           this.$store.commit('SAVEUSER', 
-            { name: data.name, 
+            { id: data.id,
+              name: data.name, 
               email: this.form.email,
               access_token: data.access_token
             })

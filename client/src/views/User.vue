@@ -1,14 +1,11 @@
 <template>
-  <div>
-  <router-view></router-view>
-  <div v-if="isLoggedin" class="user">
-    <h1>This is your user page</h1>
-    <h2><label>Name: </label></h2>
-    <h2>{{$store.state.user.name}}</h2>
-    <h2><label>Email: </label></h2>
-    <h2>{{$store.state.user.email}}</h2>
-    <h2><b-button variant="secondary" @click="editProfileForm">Edit Profile?</b-button></h2>
-  </div>
+  <div class="d-flex justify-content-center">
+    <div v-if="isLoggedin" class="user">
+      <h2><label>Hello,</label> {{$store.state.user.name}}</h2>
+      <h2><label>Your Email: </label> {{$store.state.user.email}}</h2>
+      <h2><b-button v-if="showEditButton" variant="secondary" @click="editProfileForm">Edit Profile?</b-button></h2>
+    </div>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -16,9 +13,15 @@
 import {mapState} from 'vuex'
 export default {
   name: 'user',
-  computed: mapState(['isLoggedin']),
+  computed: {
+    showEditButton(){
+      return this.$route.name == 'user'
+    },
+    ...mapState(['isLoggedin'])
+  },
   methods: {
   	editProfileForm(){
+      console.log(this.$router.history.current.fullPath)
   		this.$router.push('/user/edit')
   	}
   }
@@ -33,9 +36,9 @@ export default {
   padding: 1em;
   border-radius: 1em;
   font-weight: bold;
-  min-width: 30em;
+  min-width: 15em;
   width: 100%;
-  max-width: 90em;
+  max-width: 30em;
 }
 
 label {

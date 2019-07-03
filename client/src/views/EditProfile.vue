@@ -1,5 +1,5 @@
 <template>
-  <div class="d-inline-flex flex-column">
+  <div class="formArea d-inline-flex flex-column">
     <b-alert :show="dismissCountDown" dismissible :variant="msgType" @dismissed="dismissCountDown=0" @dismiss-count-down="countDownChanged">
       <p>{{msg}}. Dimissing in {{dismissCountDown}} seconds...</p>
       <b-progress :variant="msgType" :max="dismissSecs" :value="dismissCountDown" height="4px"></b-progress>
@@ -10,13 +10,15 @@
     </div>
 
     <b-form v-else @submit.prevent="onSubmit" @reset.prevent="onReset">
-      <b-form-group id="group-name" label="Name:" label-for="name" description="Let us know what to call you">
+      <b-form-group id="group-name" label="New Name:" label-for="name">
         <b-form-input id="name" v-model="form.name" type="text" required placeholder="Enter Name"></b-form-input>
+        <small>Let us know what to call you</small>
       </b-form-group>
       <b-form-group id="group-email" label="Email address:" label-for="email">
         <b-form-input id="email" v-model="form.email" type="email" required placeholder="Enter email"></b-form-input>
+        <small>Update your email address</small>
       </b-form-group>
-      <b-form-group id="group-password" label="Password:" label-for="password">
+      <b-form-group id="group-password" label="New Password:" label-for="password">
         <b-form-input id="password" v-model="form.password" type="password" required></b-form-input>
       </b-form-group>
       <b-button class="m-1" type="submit" variant="primary">Update</b-button>
@@ -29,7 +31,7 @@
 import axios from 'axios'
 import { mapState } from 'vuex'
 export default {
-  name: 'edit profile',
+  name: 'editProfile',
   data() {
     return {
       form: {
@@ -70,9 +72,20 @@ export default {
 
 </script>
 <style scoped>
-#registerArea {
+.formArea {
+  color: #F7C331;
+  background-color: #6B7A8F;
+  margin: 1em;
   padding: 1em;
+  border-radius: 1em;
+  font-weight: bold;
+  min-width: 15em;
+  width: 100%;
   max-width: 30em;
+}
+
+small {
+  color: black;
 }
 
 </style>

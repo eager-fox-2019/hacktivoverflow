@@ -33,6 +33,7 @@ class ControllerAnswer {
     //returns all answers associated with a question
     let questionId = req.params.questionId
     Answer.find({question: questionId})
+    .populate('owner')
     .then (found => {
       res.json(found)
     })
