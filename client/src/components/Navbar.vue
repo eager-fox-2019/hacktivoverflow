@@ -11,7 +11,7 @@
           <b-nav-item :to="{ path: '/register'}" v-if="$store.state.isLogin == false">Register</b-nav-item>
           <b-nav-item :to="{ path: '/login'}" v-if="$store.state.isLogin == false">Login</b-nav-item>
           <b-nav-item disable v-if="$store.state.isLogin == true">{{$store.state.user.name}}</b-nav-item>
-          <b-nav-item v-if="$store.state.isLogin == true"><b-link to="/login"  @click="logout" class="disableHover">Logout</b-link></b-nav-item>
+          <b-nav-item v-if="$store.state.isLogin == true"><b-link @click="logout" class="disableHover">Logout</b-link></b-nav-item>
         </b-nav>
       </b-navbar>
   </div>
@@ -22,25 +22,35 @@ export default {
   name: 'Navbar',
   methods: {
     logout () {
-      localStorage.clear()
-      setTimeout(() => {
-        gapi.load('auth2', function () {
+      if (gapi.auth2) {
+        gapi.load('auth2', () => {
           console.log('ready to use auth2')
           setTimeout(() => {
             var auth2 = gapi.auth2.getAuthInstance()
-            auth2.signOut().then(function () {
+            auth2.signOut().then(() => {
               console.log('User signed out.')
+              localStorage.clear()
+              this.$store.commit('LOGOUT')
+              this.$swal({
+                type: 'success',
+                title: 'Logout Success!',
+                showConfirmButton: false,
+                timer: 2000
+              })
+              this.$router.push('/login')
             })
-          }, 2000)
+          }, 500)
         })
-      }, 500)
-      this.$store.commit('LOGOUT')
-      this.$swal({
-        type: 'success',
-        title: 'Logout Success!',
-        showConfirmButton: false,
-        timer: 2000
-      })
+      } else {
+        localStorage.clear()
+        this.$store.commit('LOGOUT')
+        this.$swal({
+          type: 'success',
+          title: 'Logout Success!',
+          showConfirmButton: false,
+          timer: 2000
+        })
+      }
     }
   }
 }

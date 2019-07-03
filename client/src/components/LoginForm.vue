@@ -91,46 +91,48 @@ export default {
     },
     onSignIn (googleUser) {
       let idToken = googleUser.getAuthResponse().id_token
-      this.$store.dispatch('GLogin', idToken)
-        .then(({
-          data
-        }) => {
-          let payload = {
-            id: data._id,
-            name: data.name,
-            email: data.email,
-            access_token: data.access_token
-          }
-          this.$store.commit('LOGIN', payload)
-          localStorage.setItem('token', data.access_token)
-          localStorage.setItem('id', data._id)
-          localStorage.setItem('name', data.name)
-          localStorage.setItem('email', data.email)
-          this.$swal({
-            type: 'success',
-            title: 'Login Success!',
-            text: 'Welcome to Hacktiv Overflow',
-            showConfirmButton: false,
-            timer: 2000
+      if (!this.$store.state.isLogin) {
+        this.$store.dispatch('GLogin', idToken)
+          .then(({
+            data
+          }) => {
+            let payload = {
+              id: data._id,
+              name: data.name,
+              email: data.email,
+              access_token: data.access_token
+            }
+            this.$store.commit('LOGIN', payload)
+            localStorage.setItem('token', data.access_token)
+            localStorage.setItem('id', data._id)
+            localStorage.setItem('name', data.name)
+            localStorage.setItem('email', data.email)
+            this.$swal({
+              type: 'success',
+              title: 'Login Success!',
+              text: 'Welcome to Hacktiv Overflow',
+              showConfirmButton: false,
+              timer: 2000
+            })
+            this.$router.push('/')
           })
-          this.$router.push('/')
-        })
-        .catch(err => {
-          console.log(err)
-          if (!err.response) {
-            this.$swal({
-              type: 'error',
-              title: `Connection to Server Error`,
-              showConfirmButton: true
-            })
-          } else {
-            this.$swal({
-              type: 'error',
-              title: `${err.response.data.message}`,
-              showConfirmButton: true
-            })
-          }
-        })
+          .catch(err => {
+            console.log(err)
+            if (!err.response) {
+              this.$swal({
+                type: 'error',
+                title: `Connection to Server Error`,
+                showConfirmButton: true
+              })
+            } else {
+              this.$swal({
+                type: 'error',
+                title: `${err.response.data.message}`,
+                showConfirmButton: true
+              })
+            }
+          })
+      }
     }
   }
 }
