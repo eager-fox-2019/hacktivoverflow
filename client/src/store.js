@@ -9,7 +9,8 @@ export default new Vuex.Store({
     isLogin: false,
     loginUser: {},
     questions: [],
-    myQuestions: []
+    myQuestions: [],
+    answers: []
   },
   getters: {
     loginUserId: state => {
@@ -23,6 +24,9 @@ export default new Vuex.Store({
     },
     myQuestions: state => {
       return state.myQuestions
+    },
+    answers: state => {
+      return state.answers
     }
   },
   // this.$store.commit
@@ -33,14 +37,11 @@ export default new Vuex.Store({
     SET_USER (state, payload) {
       state.loginUser = payload
     },
-    setQuestions(state,payload){
+    SET_QUESTIONS(state,payload){
       state.questions = payload
     },
     ADD_QUESTIONS(state, payload){
       state.questions.push(payload);
-    },
-    ADD_MY_QUESTIONS(state, payload){
-      state.myQuestions.push(payload);
     },
     EDIT_QUESTIONS(state, payload) {
       state.questions = state.questions.map(question=> {
@@ -63,6 +64,9 @@ export default new Vuex.Store({
     SET_MY_QUESTIONS(state, payload) {
       state.myQuestions = payload
     },
+    ADD_MY_QUESTIONS(state, payload){
+      state.myQuestions.push(payload);
+    },
     EDIT_MY_QUESTIONS(state, payload) {
       state.myQuestions = state.myQuestions.map(question=> {
         if(question._id === payload._id) {
@@ -80,6 +84,30 @@ export default new Vuex.Store({
           }
         }
       )
+    },
+    SET_ANSWERS(state, payload) {
+      state.answers = payload
+    },
+    ADD_ANSWERS(state, payload) {
+      state.answers.push(payload);
+    },
+    EDIT_ANSWERS(state, payload) {
+      state.answers = state.answers.map(answer => {
+        if(answer._id === payload._id) {
+          answer = payload
+        }
+
+        return answer
+      })
+    },
+    DELETE_ANSWERS(state, payload) {
+      state.answers = state.answers.filter(
+        e => {
+          if(e._id !== payload._id) {
+              return e;
+          }
+        }
+      )
     }
   },
   // this.$store.dispatch
@@ -88,7 +116,7 @@ export default new Vuex.Store({
       myaxios
       .get('/questions')
       .then(({ data }) => {
-        context.commit('setQuestions', data)
+        context.commit('SET_QUESTIONS', data)
       })
       .catch(error => {
         console.log(error);

@@ -68,6 +68,7 @@ class AnswerController{
             res.status(400).json(err)
         })
     }
+
     static update(req,res, next){
         let objUpdate = {}
         for(let key in req.body) {

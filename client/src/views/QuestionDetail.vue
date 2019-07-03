@@ -81,7 +81,6 @@
             </div>
 
             <AnswerForm
-                @submit-answer="submitAnswer"
                 :question-id="question.userId._id"
                 :login-user-id="loginUserId"
             />
@@ -104,7 +103,6 @@ export default {
     data() {
         return {
             question:[],
-            answers: [],
             username: '',
             editAnswer: '',
             showEdit: false,
@@ -130,7 +128,7 @@ export default {
             myaxios
             .get(`/answers/${this.$route.params.id}`)
             .then(({data}) => {
-                this.answers = data
+                this.$store.commit('SET_ANSWERS', data)
             })
             .catch(err=> {
                 console.log(err);
@@ -179,13 +177,14 @@ export default {
                 myaxios
                 .patch(`answers/vote/${id}/upvote`)
                 .then(({data})=>{
-                    this.answers = this.answers.map(answer => {
-                        if(answer._id === data._id) {
-                            return data
-                        }else{
-                            return answer
-                        }
-                    })
+                    this.$store.commit('EDIT_ANSWERS', data)
+                    // this.answers = this.answers.map(answer => {
+                    //     if(answer._id === data._id) {
+                    //         return data
+                    //     }else{
+                    //         return answer
+                    //     }
+                    // })
                 })
                 .catch(err=>{
                     console.log(err);
@@ -201,13 +200,14 @@ export default {
                 myaxios
                 .patch(`answers/vote/${id}/downvote`)
                 .then(({data})=>{
-                    this.answers = this.answers.map(answer => {
-                        if(answer._id === data._id) {
-                            return data
-                        }else{
-                            return answer
-                        }
-                    })
+                    this.$store.commit('EDIT_ANSWERS', data)
+                    // this.answers = this.answers.map(answer => {
+                    //     if(answer._id === data._id) {
+                    //         return data
+                    //     }else{
+                    //         return answer
+                    //     }
+                    // })
                 })
                 .catch(err=>{
                     console.log(err);
@@ -230,16 +230,9 @@ export default {
             myaxios
             .patch(`answers/${answerId}`,{description:this.editAnswer} )
             .then(({data})=>{
-                this.answers = this.answers.map(answer => {
-                    if(answer._id === data._id) {
-                        this.showEdit=false
-                        return data
-                    }else{
-                        return answer
-                    }
-                })
-
+                this.$store.commit('EDIT_ANSWERS', data)
                 this.$alertify.success('Answer edited');
+                this.showEdit = false
                 this.editAnswer = ''
             })
             .catch(err=>{
@@ -247,7 +240,7 @@ export default {
             })  
         },
         submitAnswer(payload) {
-            this.answers.push(payload)
+            this.$store.commit('ADD_ANSWERS', payload)
         }
     },
     mounted() {
@@ -266,6 +259,9 @@ export default {
         },
         questionAuthor() {
             return this.question.userId.username
+        },
+        answers() {
+            return this.$store.getters.answers
         }
     },
     watch: {

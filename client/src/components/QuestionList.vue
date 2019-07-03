@@ -50,7 +50,6 @@
 
 <script>
 import myaxios from '@/api/axios'
-// import Swal from 'sweetalert2'
 
 export default {
     props: ['questions', 'manipulate'],

@@ -44,15 +44,7 @@ export default {
       return this.$store.state.questions
     },
     ...mapState(['questions'])
-  },
-  // watch: {
-  //   questions(val) {
-  //     this.stateQuestion = val
-  //   }
-  // },
-  // created() {
-    
-  // },
+  }
 }
 </script>
 
