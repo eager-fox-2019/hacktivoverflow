@@ -5,7 +5,7 @@
         app
         style="background-color: RGBA(115, 84, 81, 0.4) ; font-family : Josefin Sans"
         >
-            <v-toolbar-side-icon class="white--text" @click="drawer = !drawer"></v-toolbar-side-icon>
+            <v-toolbar-side-icon v-if="isLogin" class="white--text" @click="drawer = !drawer"></v-toolbar-side-icon>
             <v-toolbar-title class="white--text" >
             <span>Tanya</span>
             <span>Aja</span>
@@ -95,7 +95,7 @@
                     <v-container grid-list-md>
                         <v-layout row wrap>
                             <v-flex xs12 sm12 md12>
-                                <v-text-field v-model="login.email" label="email" required></v-text-field>
+                                <v-text-field v-model="login.username" label="username" required></v-text-field>
                             </v-flex><br>
                             <v-flex xs12 sm12 md12>
                                 <v-text-field v-model="login.password" label="password" type="password" hint="example of helper text only on focus"></v-text-field>
@@ -121,6 +121,9 @@
                     <v-card-text>
                     <v-container grid-list-md>
                         <v-layout wrap>
+                        <v-flex xs12>
+                            <v-text-field v-model="register.username" label="username*" required></v-text-field>
+                        </v-flex>
                         <v-flex xs12>
                             <v-text-field v-model="register.email" label="Email*" required></v-text-field>
                         </v-flex>
@@ -164,10 +167,11 @@ export default {
                     {icon : 'people', text: 'user profile', route: `/userPage/${localStorage.userId}`},
                 ],
             login : {
-                email : '',
+                username : '',
                 password : '',
             },
             register : {
+                username : '',
                 email : '',
                 password : '',
                 selectedTags : [],
@@ -202,48 +206,43 @@ export default {
 
         toLogin(){
             this.$store.dispatch('login',this.login)
-            this.clearLogin()
+            setTimeout(()=>{
+                if(localStorage.token){
+                    this.$swal('successfully logged in', '', 'success')
+                    this.clearLogin()
+                }else{
+                    this.$swal('Ooohh', 'something went wrong', 'error')
+                }
+            })
+        
         },
-        // setSelectedTags(){
-        //     let objTag = []
-        //     this.selectedTags.forEach(element => {
-        //         // console.log(element);
-        //         objTag[element.value] = element.value
-        //     });
-        //     this.selectedTags = objTag
-        // },
-        toRegister(){
-            // this.setSelectedTags()
-            console.log('cccccccc',this.register.selectedTags);
-            // this.register.selectedTags.forEach(element => {
-            //     element.key = element.value
-            // });
-            // console.log('xxxxxxx',this.register.selectedTags);
 
-            // console.log(this.register);
-            // let data = this.register
-            // data.tags = this.selectedTags
-            // console.log(data);
-            
+        toRegister(){
+            let arrTag = []
+            this.register.selectedTags.forEach(element => {
+                arrTag.push(element.value)
+            });
+            this.register.selectedTags = arrTag
             this.$store.dispatch('register',this.register)
-            // setTimeout(()=>{
-            //     this.$swal('successfully registered your account','','success')
-            //     this.clearRegister()
-            // },1000)
+            setTimeout(()=>{
+                this.$swal('successfully registered your account','','success')
+                this.clearRegister()
+            },1000)
         },
+
         clearLogin(){
             this.login = {
-                email : '',
+                username : '',
                 password : '',
             }
         },
 
         clearRegister(){
             this.register = {
-                firstName : '',
-                lastName : '',
+                username : '',
                 email : '',
-                password : ''
+                password : '',
+                selectedTags : []
             }
         }
 

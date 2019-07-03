@@ -62,6 +62,9 @@ const UserSchema = new Schema({
       },
       message: props => `Password length must be between 5 to 10`
     }
+  },
+  watchedTags : {
+    type : Array
   }
 });
 

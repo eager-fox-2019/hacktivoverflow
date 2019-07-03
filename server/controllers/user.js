@@ -18,7 +18,8 @@ class UserController{
                         msg : 'logged in',
                         token,
                         email: user.email,
-                        id : user._id
+                        id : user._id,
+                        username : user.username
                     })
                 }else{
                     throw ({ code : 404, message : 'username / password wrong'})
@@ -31,11 +32,13 @@ class UserController{
     }
 
     static register(req,res,next){
-
+        console.log('masuk controller regist',req.body);
+        
         let newUser = new User({
             username : req.body.username,
             email : req.body.email,
-            password : req.body.password
+            password : req.body.password,
+            watchedTags : req.body.selectedTags
         })
 
         newUser.save()

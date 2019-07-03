@@ -18,7 +18,12 @@ export default {
   },
   data () {
     return {
-      //
+      
+    }
+  },
+  created(){
+    if(localStorage.token){
+      this.$store.commit('setIsLogin',true)
     }
   }
 }
