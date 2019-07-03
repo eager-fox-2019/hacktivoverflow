@@ -2,20 +2,23 @@ const Question = require('../models/question')
 
 class Controller {
   static async postQuestion (req, res, next) {
+      let user = req.user
       let { title, description } = req.body
       try {
-        let res = await Question.create({title, description})
-        res.status(201).json(res)
+        let question = await Question.create({title, description, user})
+        res.status(201).json(question)
       } catch (err) {
+        console.log('post question error',  {err})
         next(err)
       }
   }
 
   static async getQuestion (req, res, next) {
     try {
-      let res = await Question.find({}).exec()
-      res.json(res)
+      let questions = await Question.find({}).exec()
+      res.json(questions)
     } catch (err) {
+      console.log('get question error', { err })
       next(err)
     }
   }
