@@ -42,7 +42,7 @@
             this.downvoteAmount = 0;
           }
           this.answer.upvotes.push(localStorage.getItem('_id'));
-          this.$store.dispatch('updateanswer', this.answer);
+          this.$store.dispatch('updateAnswer', this.answer);
         }
       },
       downvote() {
