@@ -27,6 +27,7 @@ export default new Vuex.Store({
       user: '',
       isAdmin: false
     },
+    questions: []
   },
   mutations: {
     SET_LOGIN(state, payload) {
@@ -41,6 +42,9 @@ export default new Vuex.Store({
       state.loggedUser.email = ''
       state.loggedUser.user = ''
       state.loggedUser.isAdmin = false
+    },
+    FETCH_QUESTION(state, payload) {
+      state.questions = payload
     },
   },
   actions: {
@@ -93,5 +97,25 @@ export default new Vuex.Store({
         return false
       }
     },
+    async postQuestion (context, payload) {
+      let { title, description } = payload
+      try {
+        let res = await axios.post(`${BASE_URL}/question`, {title, description}, axiosConfig())
+        toastifyHelper('Question posted!')
+        return res
+      } catch (err) {
+        errorHandler(err)
+        return false
+      }
+    }, 
+    async fetchQuestion (context, payload) {
+      try {
+        let res = await axios.get(`${BASE_URL}/question`)
+        context.commit('FETCH_QUESTION', res.data)
+      } catch (err) {
+        errorHandler(err)
+        return false
+      }
+    }
   }
 })

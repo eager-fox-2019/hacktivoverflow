@@ -38,6 +38,11 @@ export default new Router({
       path: '/newQuestion',
       name: 'questionform',
       component: () => import(/* webpackChunkName: "questionform" */ './views/QuestionForm.vue')
+    },
+    {
+      path: '/question/:id',
+      name: 'questionDetail',
+      component: () => import(/* webpackChunkName: "questionDetail" */ './views/QuestionDetail.vue')
     }
   ]
 })
