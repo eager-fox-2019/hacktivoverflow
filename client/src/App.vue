@@ -23,6 +23,12 @@ export default {
   },
   created(){
     this.$store.dispatch('getQuestions')
+    let access_token = localStorage.getItem('access_token')
+    console.log({access_token})
+    if (access_token){
+      let {name, email} = localStorage.getItem('user')
+      this.$store.commit('SAVEUSER', {name, email, access_token})
+    }
   }
 }
 </script>

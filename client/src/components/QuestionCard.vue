@@ -25,19 +25,21 @@ export default {
   computed: {
     totalVotes() {
       return this.card.upvotes.length + this.card.downvotes.length
+    },
+    questionId() {
+      return this.card._id
     }
   },
   methods: {
     questionDetail(){
-      let questionId = this.card._id
       // this.$store.dispatch('getQuestionDetail', questionId)
-      this.$router.push('/question/' + questionId)
+      this.$router.push('/question/' + this.questionId)
     },
     upvote(){
-      this.$store.dispatch('voteQuestion', {questionId, type:'up'})
+      this.$store.dispatch('voteQuestion', {questionId:this.questionId, type:'up'})
     },
     downvote(){
-      this.$store.dispatch('voteQuestion', {questionId, type:'down'})
+      this.$store.dispatch('voteQuestion', {questionId:this.questionId, type:'down'})
     }
   }
 }

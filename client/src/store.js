@@ -8,12 +8,11 @@ export default new Vuex.Store({
   state: {
   	baseURL: 'http://localhost:3000',
   	isLoggedin: false,
-    token: '',
+    access_token: null,
   	questionList: [],
   	currentQuestion: null,
   	answerList: [],
-    user: null,
-    token: null
+    user: null
   },
   mutations: {
   	UPDATEQUESTIONLIST(state, payload){
@@ -30,14 +29,11 @@ export default new Vuex.Store({
       localStorage.clear()
     },
     SAVEUSER(state, payload){
-      // console.log('di commit SAVEUSER')
       state.user = {name:payload.name, email:payload.email}
-      // console.log('di commit SAVEUSER')
-      state.token = payload.access_token
-      // console.log('di commit SAVEUSER')
+      state.access_token = payload.access_token
       state.isLoggedin = true
-      // console.log('di commit SAVEUSER')
-      localStorage.setItem('access_token', state.token)
+      localStorage.setItem('access_token', state.access_token)
+      localStorage.setItem('user', state.user)
       // console.log('di commit SAVEUSER')
     }
   },
@@ -91,7 +87,7 @@ export default new Vuex.Store({
       let aId = payload.answerId
       let vote = payload.type
       axios.patch(state.baseURL+'/answer/'+aId+'/'+vote,
-        {headers: {access_token: state.token}
+        {headers: {access_token: state.access_token}
         })
       .then(({data}) => {
         //data is answer with updated upvotes and downvotes array

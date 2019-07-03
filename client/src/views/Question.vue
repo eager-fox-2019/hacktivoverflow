@@ -2,7 +2,7 @@
   <div>
 
 	<div class="question d-flex flex-row justify-content-center">
-		<VoteButtons :totalVotes="totalVotes" />
+		<VoteButtons :totalVotes="totalVotes" @upvote="upvote" @downvote="downvote"/>
 	  	<div>
 		    <h1>{{title}}</h1>
 		    <p>{{description}}</p>
