@@ -30,10 +30,10 @@ export default {
   },
   methods: {
     upvote(){
-      this.$store.dispatch('voteAnswer', {questionId, type:'up'})
+      this.$store.dispatch('voteAnswer', {answerId:this.card_id, type:'up'})
     },
     downvote(){
-      this.$store.dispatch('voteAnswer', {questionId, type:'down'})
+      this.$store.dispatch('voteAnswer', {answerId:this.card._id, type:'down'})
     }
   }
 }

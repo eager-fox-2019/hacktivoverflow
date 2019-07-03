@@ -1,16 +1,18 @@
 <template>
   <div>
 
-	<div class="question d-flex flex-row justify-content-center">
-		<VoteButtons :totalVotes="totalVotes" @upvote="upvote" @downvote="downvote"/>
-	  	<div>
-		    <h1>{{title}}</h1>
-		    <p>{{description}}</p>
-		</div>
+  	<div v-if="loaded" class="question d-flex flex-row justify-content-center">
+  		<VoteButtons :totalVotes="totalVotes" @upvote="upvote" @downvote="downvote"/>
+  	  	<div>
+  		    <h1>{{title}}</h1>
+  		    <p>{{description}}</p>
+  		</div>
     </div>
     
     <!-- answers to the question listed here -->
-    <AnswerList />
+    <AnswerList v-if="loaded" />
+
+    <h3 v-if="loaded==false">loading...</h3>
 
   </div>
 </template>
@@ -30,6 +32,9 @@ export default {
     this.$store.dispatch('getQuestionDetail', this.$route.params.id)
   },
   computed: {
+    loaded() {
+      return (this.currentQuestion)
+    },
     totalVotes() {
       if (!this.currentQuestion) return 'loading'
       return this.currentQuestion.upvotes.length - this.currentQuestion.downvotes.length
@@ -47,6 +52,14 @@ export default {
     	return this.currentQuestion._id
     },
   	...mapState(['currentQuestion'])
+  },
+  methods: {
+    upvote(){
+      this.$store.dispatch('voteQuestion', {questionId:this.currentQuestion._id, type:'up'})
+    },
+    downvote(){
+      this.$store.dispatch('voteQuestion', {questionId:this.currentQuestion._id, type:'down'})
+    }
   }
 }
 </script>

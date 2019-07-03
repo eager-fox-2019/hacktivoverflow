@@ -59,6 +59,16 @@ export default new Vuex.Store({
 		    console.log(response.data);
 		  });
   	},
+    getQuestion({state, commit, dispatch}, payload){
+      axios.get(state.baseURL+'/question/'+payload)
+        .then(({data}) => {
+          console.log(data)
+          commit('UPDATECURRENTQUESTION', data)
+        })
+      .catch(({response}) => {
+        console.log(response.data);
+      });
+    },
   	getAnswers({state, commit, dispatch}, payload){
   		axios.get(state.baseURL+'/answer/question/'+payload)
   			.then(({data}) => {
@@ -72,11 +82,6 @@ export default new Vuex.Store({
     voteQuestion({state, commit, dispatch}, payload){
       let qId = payload.questionId
       let vote = payload.type
-      // console.log('di vote question')
-      // console.log({access_token:state.access_token})
-      // console.log('di vote question--------------')
-      // console.log(state.baseURL+'/question/'+qId+'/'+vote)
-      // console.log({qId})
 
       axios({
         method: 'patch',
@@ -85,6 +90,7 @@ export default new Vuex.Store({
       })
       .then(({data}) => {
         dispatch('getQuestions') //update questions
+        dispatch('getQuestion', qId)
         //data is question with updated upvotes and downvotes array
         console.log(data)
       })
@@ -96,10 +102,13 @@ export default new Vuex.Store({
       let aId = payload.answerId
       let vote = payload.type
       console.log({access_token:state.access_token})
-      axios.patch(state.baseURL+'/answer/'+aId+'/'+vote,
-        {headers: {access_token: state.access_token}
-        })
+      axios({
+        method: 'patch',
+        url: state.baseURL+'/answer/'+aId+'/'+vote,
+        headers: {access_token: state.access_token}
+      })
       .then(({data}) => {
+        // dispatch('getAnswers', )
         //data is answer with updated upvotes and downvotes array
         console.log(data)
       })
