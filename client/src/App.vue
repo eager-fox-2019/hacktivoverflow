@@ -20,13 +20,16 @@ export default {
   name: 'app',
   components: {
     Nav
+  },
+  created(){
+    this.$store.dispatch('getQuestions')
   }
 }
 </script>
 
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: 'Calibri', 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;

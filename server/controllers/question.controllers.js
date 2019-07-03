@@ -31,6 +31,7 @@ class ControllerQuestion {
 
   static findAll(req, res, next){
     Question.find()
+    .populate('owner')
     .then (found => {
       res.json(found)
     })
