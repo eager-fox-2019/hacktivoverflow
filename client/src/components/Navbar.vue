@@ -2,7 +2,7 @@
   <div>
     <b-navbar toggleable="lg" type="dark" variant="info">
       <router-link to="/">
-        <b-navbar-brand>L U M S</b-navbar-brand>
+        <b-navbar-brand>HCTOVRL</b-navbar-brand>
       </router-link>
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
       <b-collapse id="nav-collapse" is-nav>
@@ -16,7 +16,7 @@
           </div>
           <div v-else-if="$store.state.loggedUser.user !== ''" class="mr-3">
             <router-link to="/user/cart">
-              <b-button variant="light">Cart ({{ carts.length }})</b-button>
+              <b-button variant="light">My Question</b-button>
             </router-link>
           </div>
           <div v-if="$store.state.loggedUser.fullName !== ''">
