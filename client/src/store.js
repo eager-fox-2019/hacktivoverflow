@@ -11,7 +11,8 @@ export default new Vuex.Store({
     questions: [],
     myQuestions: [],
     answers: [],
-    questionsByTag: []
+    questionsByTag: [],
+    watchedTagsQuestions: []
   },
   getters: {
     loginUserId: state => {
@@ -32,8 +33,11 @@ export default new Vuex.Store({
     questionsByTag: state => {
       return state.questionsByTag
     },
-    getWatchedTags: state => {
+    watchedTags: state => {
       return state.loginUser.watchedTags
+    },
+    watchedTagsQuestions: state => {
+      return state.watchedTagsQuestions
     },
   },
   // this.$store.commit
@@ -121,6 +125,9 @@ export default new Vuex.Store({
     },
     SET_WATCHED_TAGS(state, payload) {
       state.watchedTags = payload
+    },
+    SET_WATCHED_TAGS_QUESTION(state, payload) {
+      state.watchedTagsQuestions = payload
     }
   },
   // this.$store.dispatch
@@ -225,5 +232,19 @@ export default new Vuex.Store({
         console.log(err.response);
       })
     },
+    getWatchedTagsQuestions({commit, getters},) {
+      myaxios.defaults.headers.common['token'] = localStorage.token 
+
+      setTimeout(() => {
+        myaxios
+        .post('/tags/watchedtags', {tags:getters.watchedTagsQuestions})
+        .then(({data}) => {
+            commit('SET_WATCHED_TAGS_QUESTION', data)
+        })
+        .catch(err => {
+            console.log(err.response);
+        })
+      }, 400);
+    }
   }
 })

@@ -55,9 +55,19 @@ export default {
                 this.$store.dispatch('setLoggedInUser')
                 .then(() => {
                     if(!this.$store.getters.error){
-                        this.$alertify.success(`Welcome ${data.username}`);
-                        this.$store.state.isLogin = true
-                        this.$router.push('/')
+                        this.$store.dispatch('fetchMyQuestions')
+                        .then(() => {
+                            if(!this.$store.getters.error) {
+                                this.$store.dispatch('getWatchedTagsQuestions', this.watchedTags)
+                                .then(()=> {
+                                    if(!this.$store.getters.error) {
+                                        this.$alertify.success(`Welcome ${data.username}`);
+                                        this.$store.state.isLogin = true
+                                        this.$router.push('/')
+                                    }
+                                })
+                            }
+                        })
                     }
                 })
 

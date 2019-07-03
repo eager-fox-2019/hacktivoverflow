@@ -87,18 +87,21 @@
 
         </div>
         
+        <Widget />
     </div>
 </template>
 
 <script>
 import myaxios from '@/api/axios'
 import Sidebar from '@/components/Sidebar.vue'
+import Widget from '@/components/Widget';
 import AnswerForm from '@/components/AnswerForm.vue'
 
 export default {
     components: {
+        AnswerForm,
         Sidebar,
-        AnswerForm
+        Widget
     },
     data() {
         return {

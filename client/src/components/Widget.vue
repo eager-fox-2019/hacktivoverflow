@@ -35,7 +35,7 @@ export default {
     },
     computed: {
         watchedTags() {
-            return this.$store.getters.getWatchedTags
+            return this.$store.getters.watchedTags
         }
     },
     methods: {
@@ -44,6 +44,7 @@ export default {
             .then(() => {
                 if(!this.$store.getters.error) {
                     this.tagName = ''
+                    this.$store.dispatch('')
                 }
             })
         },

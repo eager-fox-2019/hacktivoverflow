@@ -9,6 +9,11 @@
             <small>
                 Watched tags like subscribe to topic of question that you interest
             </small>
+            <div v-if="loginUser.watchedTags">
+                <QuestionList
+                    :questions="watchedTagsQuestions"
+                />
+            </div>
         </div>
 
         <Widget />
@@ -18,11 +23,24 @@
 <script>
 import Sidebar from '@/components/Sidebar'
 import Widget from '@/components/Widget';
+import QuestionList from '@/components/QuestionList'
 
 export default {
     components: {
         Sidebar,
-        Widget
+        Widget,
+        QuestionList
+    },
+    computed: {
+        watchedTags() {
+            return this.$store.getters.watchedTags
+        },
+        loginUser() {
+            return this.$store.getters.loginUser
+        },
+        watchedTagsQuestions() {
+            return this.$store.getters.watchedTagsQuestions
+        }
     }
 }
 </script>

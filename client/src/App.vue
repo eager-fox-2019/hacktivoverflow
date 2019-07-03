@@ -20,13 +20,27 @@ export default {
   mounted() {
       this.$store.dispatch('getQuestion')
       if(localStorage.token) {
-        this.$store.dispatch('fetchMyQuestions')
         this.checkLogin()
       }
+  },
+  computed: {
+    watchedTags() {
+      return this.$store.getters.watchedTags
+    }
   },
   methods: {
     checkLogin() {
       this.$store.dispatch('setLoggedInUser')
+      .then(() => {
+        if(!this.$store.getters.error) {
+          this.$store.dispatch('fetchMyQuestions')
+          .then(() => {
+            if(!this.$store.getters.error) {
+              this.$store.dispatch('getWatchedTagsQuestions')
+            }
+          })
+        }
+      })
     }
   }
 }

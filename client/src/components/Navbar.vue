@@ -51,6 +51,7 @@ export default {
             localStorage.clear()
             this.$store.commit('SET_IS_LOGIN_STATUS', false)
             this.$store.commit('SET_USER', {})
+            this.$store.commit('SET_MY_QUESTIONS', {})
             this.$alertify.message(`Logout, See you around :)`);
         }
     },
