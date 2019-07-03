@@ -16,22 +16,44 @@
                         <input 
                             type="search" 
                             class="form-control"
+                            v-model="searchValue"
                             placeholder="Filter by tag name"
                         >
                     </div>
                 </form>
             </div>
+            <QuestionList
+                :questions="questionsByTag"
+            />
         </div>
     </div>
 </template>
 
 <script>
 import Sidebar from '@/components/Sidebar.vue'
+import QuestionList from '@/components/QuestionList.vue'
 
 export default {
     components: {
-        Sidebar
-    }
+        Sidebar,
+        QuestionList
+    },
+    data() {
+        return {
+            searchValue: '',
+            searchTags: []
+        }
+    },
+    methods: {
+        submitSearchTag() {            
+            this.$store.dispatch('getQuestionByTags', this.searchValue)
+        }
+    },
+    computed: {
+        questionsByTag() {
+            return this.$store.getters.questionsByTag
+        }
+    },
 }
 </script>
 

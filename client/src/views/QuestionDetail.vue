@@ -178,13 +178,6 @@ export default {
                 .patch(`answers/vote/${id}/upvote`)
                 .then(({data})=>{
                     this.$store.commit('EDIT_ANSWERS', data)
-                    // this.answers = this.answers.map(answer => {
-                    //     if(answer._id === data._id) {
-                    //         return data
-                    //     }else{
-                    //         return answer
-                    //     }
-                    // })
                 })
                 .catch(err=>{
                     console.log(err);
@@ -201,13 +194,6 @@ export default {
                 .patch(`answers/vote/${id}/downvote`)
                 .then(({data})=>{
                     this.$store.commit('EDIT_ANSWERS', data)
-                    // this.answers = this.answers.map(answer => {
-                    //     if(answer._id === data._id) {
-                    //         return data
-                    //     }else{
-                    //         return answer
-                    //     }
-                    // })
                 })
                 .catch(err=>{
                     console.log(err);
@@ -237,7 +223,7 @@ export default {
             })
             .catch(() =>{
                 this.$alertify.error('Failed, please check your internet connection or try again');
-            })  
+            })
         },
         submitAnswer(payload) {
             this.$store.commit('ADD_ANSWERS', payload)

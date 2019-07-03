@@ -14,7 +14,6 @@
 </template>
 
 <script>
-// @ is an alias to /src
 import QuestionList from '@/components/QuestionList.vue'
 import Sidebar from '@/components/Sidebar.vue'
 import {mapState} from 'vuex'

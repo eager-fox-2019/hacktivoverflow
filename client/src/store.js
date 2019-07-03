@@ -10,7 +10,8 @@ export default new Vuex.Store({
     loginUser: {},
     questions: [],
     myQuestions: [],
-    answers: []
+    answers: [],
+    questionsByTag: []
   },
   getters: {
     loginUserId: state => {
@@ -27,7 +28,10 @@ export default new Vuex.Store({
     },
     answers: state => {
       return state.answers
-    }
+    },
+    questionsByTag: state => {
+      return state.questionsByTag
+    },
   },
   // this.$store.commit
   mutations: {
@@ -108,6 +112,9 @@ export default new Vuex.Store({
           }
         }
       )
+    },
+    SET_QUESTIONS_BY_TAG(state, payload) {
+      state.questionsByTag = payload
     }
   },
   // this.$store.dispatch
@@ -169,6 +176,18 @@ export default new Vuex.Store({
       .get('/questions/user')
       .then(({data}) => {
           context.commit('SET_MY_QUESTIONS', data)
+      })
+      .catch(err => {
+          console.log(err);
+      })
+    },
+    getQuestionByTags(context, tags) {
+      myaxios
+      .post('/tags', {
+          tags
+      })
+      .then(({data}) => {
+        context.commit('SET_QUESTIONS_BY_TAG', data)
       })
       .catch(err => {
           console.log(err);
