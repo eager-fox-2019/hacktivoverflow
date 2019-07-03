@@ -1,7 +1,7 @@
 <template>
   <div id="nav">
       <b-navbar variant="faded" type="light">
-        <b-navbar-brand href="#" md="auto" class="col-4 brand">
+        <b-navbar-brand md="auto" class="col-4 brand">
           Hacktiv Overflow
         </b-navbar-brand>
         <b-nav align="center" class="col" md="auto">
@@ -11,7 +11,7 @@
           <b-nav-item :to="{ path: '/register'}" v-if="$store.state.isLogin == false">Register</b-nav-item>
           <b-nav-item :to="{ path: '/login'}" v-if="$store.state.isLogin == false">Login</b-nav-item>
           <b-nav-item disable v-if="$store.state.isLogin == true">{{$store.state.user.name}}</b-nav-item>
-          <b-nav-item v-if="$store.state.isLogin == true"><a href="/login"  @click="logout" class="disableHover">Logout</a></b-nav-item>
+          <b-nav-item v-if="$store.state.isLogin == true"><b-link to="/login"  @click="logout" class="disableHover">Logout</b-link></b-nav-item>
         </b-nav>
       </b-navbar>
   </div>

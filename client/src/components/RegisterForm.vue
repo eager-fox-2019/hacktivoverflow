@@ -13,7 +13,7 @@
       <input type="password" class="form-control" v-model="newUser.password" placeholder="Password" required>
     </div>
     <div class="form-group">
-      <p>Already have an account? <a href="#" class="login-button" @click="login">Login Here</a></p>
+      <p>Already have an account? <b-link :to="{path: '/login'}" href="#" class="login-button" @click="login">Login Here</b-link></p>
     </div>
     <div class="col text-center">
       <button type="submit" class="btn btn-success center">Submit</button>

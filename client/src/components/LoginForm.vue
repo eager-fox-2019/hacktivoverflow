@@ -9,7 +9,7 @@
       <input type="password" class="form-control" v-model="user.password" placeholder="Password" required>
     </div>
     <div class="form-group">
-      <p>Don't have an account? <a href="#" class="register-button" @click="register">Register Here</a></p>
+      <p>Don't have an account? <b-link :to="{path: '/register'}" href="#" class="register-button" @click="register">Register Here</b-link></p>
     </div>
     <p>Or login with:</p>
     <div class="row justify-content-center">
