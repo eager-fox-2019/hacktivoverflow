@@ -33,8 +33,8 @@ export default new Vuex.Store({
       state.access_token = payload.access_token
       state.isLoggedin = true
       localStorage.setItem('access_token', state.access_token)
-      localStorage.setItem('user', state.user)
-      // console.log('di commit SAVEUSER')
+      localStorage.setItem('name', payload.name)
+      localStorage.setItem('email', payload.email)
     }
   },
   actions: {
@@ -144,24 +144,20 @@ export default new Vuex.Store({
       });
     },
     postQuestion({state, commit, dispatch}, form){
-      axios({
+      return axios({
         method: 'post',
         url: state.baseURL+'/question/',
         headers: {access_token: state.access_token},
         data: form
       })
-      .then(({data}) => {
-        let tempArray = state.questionList
-        tempArray.unshift(data)
-
-        commit('UPDATEQUESTIONLIST', [])
-        commit('UPDATEQUESTIONLIST', tempArray)
-        
-        console.log(data)
+    },
+    postAnswer({state, commit, dispatch}, form){
+      return axios({
+        method: 'post',
+        url: state.baseURL+'/answer/',
+        headers: {access_token: state.access_token},
+        data: form
       })
-      .catch(({response}) => {
-        console.log(response.data);
-      });
     }
   }
 })

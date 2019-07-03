@@ -1,6 +1,5 @@
 <template>
   <div>
-
   	<div v-if="loaded" class="question d-flex flex-row justify-content-center">
   		<VoteButtons :totalVotes="totalVotes" @upvote="upvote" @downvote="downvote"/>
   	  	<div>
@@ -8,6 +7,9 @@
   		    <p>{{description}}</p>
   		</div>
     </div>
+    <!-- Add your own answer -->
+    <b-button v-if="showAnswerForm==false" variant="success" @click="toggleAnswerForm">Add Answer</b-button>
+    <AnswerForm v-if="showAnswerForm" :questionId="questionId" @hideForm="toggleAnswerForm" />
     
     <!-- answers to the question listed here -->
     <AnswerList v-if="loaded" />
@@ -21,12 +23,19 @@
 import { mapState } from 'vuex'
 import VoteButtons from '@/components/VoteButtons.vue'
 import AnswerList from '@/components/AnswerList.vue'
+import AnswerForm from '@/components/AnswerForm.vue'
 
 export default {
   name: 'Question',
+  data () {
+    return {
+      showAnswerForm: false
+    }
+  },
   components: {
   	VoteButtons,
-    AnswerList
+    AnswerList,
+    AnswerForm
   },
   mounted(){
     this.$store.dispatch('getQuestionDetail', this.$route.params.id)
@@ -59,6 +68,9 @@ export default {
     },
     downvote(){
       this.$store.dispatch('voteQuestion', {questionId:this.currentQuestion._id, type:'down'})
+    },
+    toggleAnswerForm(){
+      this.showAnswerForm = !this.showAnswerForm
     }
   }
 }
@@ -68,6 +80,7 @@ export default {
 .question {
   padding: 1em;
   margin-bottom: 1em;
+  border-bottom: dotted 1px;
 }
 
 </style>
