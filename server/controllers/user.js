@@ -19,7 +19,8 @@ class UserController{
                         token,
                         email: user.email,
                         id : user._id,
-                        username : user.username
+                        username : user.username,
+                        tags : user.watchedTags
                     })
                 }else{
                     throw ({ code : 404, message : 'username / password wrong'})

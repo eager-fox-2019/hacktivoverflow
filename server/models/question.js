@@ -10,6 +10,9 @@ let questionSchema = new Schema({
         type : String,
         required : [true , 'description is required']
     },
+    tags : {
+        type : Array,
+    },
     userId      : {
         type : String,
         required : [true , 'userId is required']

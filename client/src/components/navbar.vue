@@ -30,8 +30,8 @@
                         <img src="https://images.unsplash.com/photo-1527082395-e939b847da0d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80" width="100px" height="100px" alt="profile-pict" style="border-radius : 50%">
                 </v-layout>
                 <v-layout column justify-center align-center style="font-size : 18px; font-family : Suez One;">
-                    <span>Rizzk</span>
-                    <span>adin@mail.com</span>
+                    <span>{{loggedUser.username}}</span>
+                    <span>{{loggedUser.email}}</span>
                 </v-layout>
             </v-container>
             <v-list>
@@ -54,7 +54,9 @@
                             solo-inverted
                         ></v-text-field>
                         <h3>Watched Tags</h3>
+                        <!-- {{loggedUser.watchedTags}} -->
                         <v-card style=" min-height : 150px; background-color : rgba(255, 255, 255, 0.12)">
+                            <v-btn v-for="(tag,index) in loggedUser.watchedTags" :key="index" color="#260101" dark>{{tag}}</v-btn>
                             
                         </v-card>
                     </v-flex>
@@ -131,7 +133,7 @@
                             <v-text-field v-model="register.password" label="Password*" type="password" required></v-text-field>
                         </v-flex>
                         <v-flex>
-                            <tags-input element-id="tags" v-model="register.selectedTags" :typeahead="true"></tags-input>
+                            <tags-input element-id="tags" v-model="userTags" :typeahead="true"></tags-input>
                         </v-flex>
                         </v-layout>
                     </v-container>
@@ -141,6 +143,33 @@
                     <v-spacer></v-spacer>
                     <v-btn color="blue darken-1" flat @click="dialog3 = false, clearRegister()">Close</v-btn>
                     <v-btn color="blue darken-1" flat @click="dialog3 = false, toRegister()" >Register</v-btn>
+                    </v-card-actions>
+                </v-card>
+        </v-dialog>
+        <v-dialog v-model="dialog4" persistent max-width="600px">
+                <v-card>
+                    <v-card-title>
+                    <span class="headline">createPost</span>
+                    </v-card-title>
+                    <v-card-text>
+                    <v-container grid-list-md>
+                        <v-layout row wrap>
+                            <v-flex xs12 sm12 md12>
+                                <v-text-field v-model="newQuestion.title" label="title" required></v-text-field>
+                            </v-flex><br>
+                            <v-flex xs12 sm12 md12>
+                                <v-textarea v-model="newQuestion.description" label="description" type="text" hint="example of helper text only on focus"></v-textarea>
+                            </v-flex>
+                            <v-flex>
+                                <tags-input element-id="tags" v-model="questionTags" :typeahead="true"></tags-input>
+                            </v-flex>
+                        </v-layout>
+                    </v-container>
+                    </v-card-text>
+                    <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="blue darken-1" flat @click="dialog4 = false, clearFormCreate()">Close</v-btn>
+                    <v-btn color="blue darken-1" flat @click="dialog4 = false, toCreate()">Create</v-btn>
                     </v-card-actions>
                 </v-card>
         </v-dialog>
@@ -157,14 +186,16 @@ export default {
     },
     data(){
         return{
+            questionTags : [],
+            userTags : [],
             drawer : false,
             dialog1 : false,
             dialog2 : false,
             dialog3 : false,
+            dialog4: false,
             links : [
                     {icon : 'dashboard', text: 'Home', route: '/'},
-                    {icon : 'list', text: 'Products', route: '/productPage'},
-                    {icon : 'people', text: 'user profile', route: `/userPage/${localStorage.userId}`},
+                    {icon : 'people', text: 'user profile', route: `/myProfile`},
                 ],
             login : {
                 username : '',
@@ -173,11 +204,17 @@ export default {
             register : {
                 username : '',
                 email : '',
-                password : '',
-                selectedTags : [],
-
+                password : ''
             },
-            firstNameRegister : '',
+            newQuestion : {
+                title : '',
+                description : ''
+            },
+            loggedUser : {
+                username : localStorage.username,
+                email : localStorage.email,
+                watchedTags : []
+            }
 
         }
     },
@@ -185,22 +222,39 @@ export default {
         signOut(){
             console.log('masuk signout');
             this.drawer = false
-            this.$swal(`goodbye ${localStorage.name}`,'','success')
+            this.$swal(`goodbye ${localStorage.username}`,'','success')
             this.$store.dispatch('signout')
             localStorage.clear()
+            this.clearLogin()
             this.$router.push('/')
             this.links = [
                 {icon : 'dashboard', text: 'Home', route: '/'},
-                {icon : 'list', text: 'Products', route: '/productPage'},
                 {icon : 'people', text: 'user profile', route: `/userPage/${localStorage.userId}`},
             ]
         },
         addQuestion(){
             if(this.isLogin){
-                // this.$router.push('/cartPage')
-                // this.$store.dispatch('getCart')
+                this.dialog4 = true
             }else{
                 this.dialog1 = true
+            }
+        },
+
+        toCreate(){
+            console.log(this.newQuestion);
+            // this.newQuestion.tags = this.tags
+            // console.log(this.newQuestion,'=========');
+            this.newQuestion.tags = this.tagsQ
+            console.log(this.newQuestion);
+            
+            this.$store.dispatch('createQuestion',this.newQuestion)
+            this.clearFormCreate()
+        },
+
+        clearFormCreate(){
+            this.newPost = {
+                title : '',
+                description : ''
             }
         },
 
@@ -218,11 +272,14 @@ export default {
         },
 
         toRegister(){
-            let arrTag = []
-            this.register.selectedTags.forEach(element => {
-                arrTag.push(element.value)
-            });
-            this.register.selectedTags = arrTag
+            // let arrTag = []
+            // this.register.selectedTags.forEach(element => {
+            //     arrTag.push(element.value)
+            // });
+            // this.register.selectedTags = arrTag
+            this.register.selectedTags = this.tagsR
+            console.log(this.register);
+            
             this.$store.dispatch('register',this.register)
             setTimeout(()=>{
                 this.$swal('successfully registered your account','','success')
@@ -248,23 +305,16 @@ export default {
 
     },
     mounted(){
-       
+        
     },
     watch : {
         isLogin(){
             if(this.isLogin){
                 this.$swal('Login Success', '', 'success')
                 // this.$router.push('/')
-            }
-        },
-        access(){
-            if(this.access === 'root'){
-                this.links = [
-                {icon : 'dashboard', text: 'Home', route: '/'},
-                {icon : 'list', text: 'Products', route: '/productPage'},
-                {icon : 'library_add', text: 'Add product', route: '/addProduct'},
-                {icon : 'people', text: 'Admin Page', route: `/adminPage`}
-                ]
+                this.loggedUser.username = localStorage.username
+                this.loggedUser.email = localStorage.email
+                this.loggedUser.watchedTags = localStorage.tags.split(',')
             }
         }
     },
@@ -272,28 +322,27 @@ export default {
         // this.isLogin = this.$store.state.isLogin
         // console.log('haleeeew',this.isLogin);
         if(localStorage.token){
+            this.loggedUser.watchedTags = localStorage.tags.split(',')
             // this.$store.dispatch('getCart')
-            if(this.access === 'root' || localStorage.email === 'master@holygrail.com'){
-                this.links = [
-                {icon : 'dashboard', text: 'Home', route: '/'},
-                {icon : 'list', text: 'Products', route: '/productPage'},
-                {icon : 'library_add', text: 'Add product', route: '/addProduct'},
-                {icon : 'people', text: 'Admin Page', route: `/adminPage`}
-                ]
-            }else{
-                this.links = [
-                    {icon : 'dashboard', text: 'Home', route: '/'},
-                    {icon : 'list', text: 'Products', route: '/productPage'},
-                    {icon : 'people', text: 'user profile', route: `/userPage/${localStorage.userId}`},
-                ]
-            }
-            // this.$router.push('/productPage')
         }else{
             this.drawer = false
         }
     },
     computed : {
-        ...mapState(['isLogin', 'totalItem','access'])
+        tagsQ(){
+            let array = this.questionTags.map(tag =>{
+                return tag.value
+            })
+            return array
+        },
+        tagsR(){
+            let array = this.userTags.map(tag =>{
+                return tag.value
+            })
+            return array
+        },
+        ...mapState(['isLogin', 'userTag','access'])
+
     }
 }
 </script>

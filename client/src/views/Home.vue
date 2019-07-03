@@ -1,8 +1,9 @@
 <template>
   <div class="homepage" style="height : 100%">
-    <v-container fluid style=" margin : 0; margin-top : -65px ; background-color : #260101 ;height : auto">
+    <v-container fluid style=" margin : 0;background-color : #260101 ;height : 100%">
     <navbar/>
-      <v-layout row justify-center style="margin-top: 75px">
+    <v-container></v-container>
+      <v-layout row justify-center>
         <v-flex lg9 md12 xs12 mr-2 style="justify-content:center; text-align : center;background-color : #735451; height : 100%">
           <h1>List of Question</h1>
           <v-flex lg6 offset-lg3>
@@ -16,25 +17,9 @@
               solo-inverted
             ></v-text-field>
           </v-flex>
+          <router-view/>
           <v-layout column align-center lg12 style="">
-            <v-card v-for="i in 6" :key="i" class="ma-2" color="#8C7672" dark width="800" min-height="150px" height="auto">
-              <v-card-title>
-               <a href="" style="text-decoration : none; color : white"><h2><b>Question Title</b></h2></a>
-              </v-card-title>
-              <v-card-text style ="padding : 10px; font-size : 20px" class="text-truncate">
-                <span style="text-align : justify">
-                  lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit ametlorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit ametlorem ipsum dolor sit amet
-                </span>
-              </v-card-text>
-              <v-card-actions>
-                <v-layout row align-center>
-                  <v-btn>Answer 5</v-btn>
-                  <v-spacer></v-spacer>
-                  <v-btn><i class="fas fa-thumbs-up fa-lg mr-3"></i> 5</v-btn>
-                  <v-btn><i class="fas fa-thumbs-down fa-lg mr-3"></i> 10</v-btn>
-                </v-layout>
-              </v-card-actions>
-            </v-card>
+            <card v-for="question in allQuestion" :key="question._id" :question="question"/>
           </v-layout>
         </v-flex>
         <v-flex lg3 md12 xs6 ml2 style="background-color : #D9D9D9">
@@ -49,9 +34,40 @@
 
 <script>
   import navbar from '../components/navbar'
+  import card from '../components/card'
+  import { mapState } from 'vuex'
   export default {
     components: {
-      navbar
+      navbar,
+      card
+    },
+    data(){
+      return{
+
+      }
+    },
+    computed : {
+      ...mapState(['allQuestion'])
+    },
+    watch : {
+      '$route'(){
+          console.log(this.$route)
+          if(this.$route.name === 'home'){
+            localStorage.page = 'home'
+            this.$store.dispatch('fetchAllQuestion')
+          }else if(this.$route.name === 'profile'){
+            this.$store.dispatch('fetchUserQuestion')
+          }
+        }
+      },
+    created(){
+      if(localStorage.page === 'profile'){
+        this.$router.push('/myProfile')
+      }else{
+        this.$store.dispatch('fetchAllQuestion')
+
+      }
+
     }
   }
 </script>

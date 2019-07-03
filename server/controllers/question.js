@@ -28,6 +28,7 @@ class QuestionController{
         let newQuestion = new Question({
             title : req.body.title,
             description : req.body.description,
+            tags : req.body.tags,
             userId : req.loggedUser.id
         })
         newQuestion.save()
@@ -38,11 +39,11 @@ class QuestionController{
     }
 
     static getUserQuestion(req,res,next){
-        console.log('masuk ke sini malahan');
+        console.log('masuk ke sini malahan',req.params.userId);
         
-        let userId = req.params.userId
+        // let userId = req.params.userId
         Question
-        .find({userId : userId})
+        .find({userId : req.params.userId})
         .then(questions => {
             res.status(201).json(questions)
         })
