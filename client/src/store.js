@@ -18,6 +18,7 @@ export default new Vuex.Store({
     SET_LOGIN(state, user) {
       state.isLoggedIn = true
       state.loggedUser = {
+        id: user.id,
         firstName: user.firstName,
         lastName: user.lastName
       }
@@ -55,6 +56,50 @@ export default new Vuex.Store({
         .catch(({response}) => {
           console.log(response)
         })
-    }
+    },
+
+    voteQuestion(context, question) {
+      axios({
+        method: 'PATCH',
+        url: `${this.state.baseURL}/questions/vote/${question._id}`,
+        data: {
+          upvotes: question.upvotes,
+          downvotes: question.downvotes
+        },
+        headers: {
+          access_token: localStorage.access_token
+        }
+      })
+        .then(({ data }) => {
+          context.dispatch('getPublicQuestions')
+        })
+        .catch(({ response }) => {
+          console.log(response)
+        })
+    },
+
+    voteAnswer(context, answer) {
+      console.log('MASUK JURAGAN')
+      axios({
+        method: 'PATCH',
+        url: `${this.state.baseURL}/answers/vote/${answer._id}`,
+        data: {
+          upvotes: answer.upvotes,
+          downvotes: answer.downvotes
+        },
+        headers: {
+          access_token: localStorage.access_token
+        }
+      })
+        .then(({ data }) => {
+          console.log(data)
+          // context.dispatch('getPublicanswers')
+        })
+        .catch(({ response }) => {
+          console.log(response)
+        })
+    },
+
+
   }
 })

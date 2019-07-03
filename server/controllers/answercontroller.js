@@ -40,6 +40,24 @@ class AnswerController {
     // const { title, description, question}
   }
 
+  static voteAnswer(req, res, next) {
+    // console.log(req.body)
+    Answer.findOne({
+      _id: req.params.id
+    })
+      .then(answer => {
+        answer.upvotes = req.body.upvotes
+        answer.downvotes = req.body.downvotes
+        return answer.save()
+      })
+      .then(edited => {
+        res.status(200).json(edited)
+      })
+      .catch(err => {
+        console.log(err.message)
+      })
+  }
+
   static deleteAnswer(req,res,next) {
     Answer.deleteOne({
       _id: req.params.id

@@ -29,6 +29,21 @@ class QuestionController {
       .catch(next)
   }
 
+  static voteQuestion(req,res,next) {  
+    Question.findOne({ 
+      _id: req.params.id 
+    })
+      .then(question => {
+        question.upvotes = req.body.upvotes
+        question.downvotes = req.body.downvotes
+        return question.save()
+      })
+      .then(edited => {
+        res.status(200).json(edited)
+      })
+      .catch(next)  
+  }
+
   static addQuestion(req,res,next) {
     const { question, description } = req.body
 

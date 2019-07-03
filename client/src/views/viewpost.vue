@@ -1,26 +1,26 @@
 <template>
-  <v-container>
+  <v-container v-if="rendered">
     <v-layout row wrap>
       <v-flex xs8 offset-xs2 style="border: 1px solid #BEBEBE; background-color: white;" class="pt-4 pb-4 pl-5 pr-5 mt-4">
         <v-layout align-center>
           <v-flex xs1>
             <v-layout column align-center mr-3>
-              <v-icon style="cursor:pointer;" color="orange" large>keyboard_arrow_up</v-icon>
-              <div>0</div>
-              <v-icon style="cursor:pointer;" large>keyboard_arrow_down</v-icon>
+              <v-icon :class="upvoted ? 'orange--text' : 'black--text'" large v-on:click="upvote">keyboard_arrow_up</v-icon>
+              <div>{{ question.upvotes.length - question.downvotes.length }}</div>
+              <v-icon :class=" downvoted ? 'orange--text' : 'black--text'" large v-on:click="downvote">keyboard_arrow_down</v-icon>
             </v-layout>
           </v-flex>
           <v-flex xs11>
             <v-layout align-center> 
-              <div class="display-1 mb-3 font-weight-medium"> {{ post.question }}  </div>
+              <div class="display-1 mb-3 font-weight-medium"> {{ question.question }}  </div>
               <v-spacer></v-spacer>
-              <div class="subheading"> Asked {{ getTime(post.createdAt)}} by <span style="color: #929292">{{post.user.username}}</span></div>
+              <div class="subheading"> Asked {{ getTime }} by <span style="color: #929292">{{question.user.username}}</span></div>
             </v-layout>
             <v-divider></v-divider>
           </v-flex>
         </v-layout>
         <div class="pa-4">
-          <div v-html="post.description"></div>
+          <div v-html="question.description"></div>
         </div>
         <v-divider></v-divider>
         <v-layout class="mt-3" column>
@@ -39,7 +39,7 @@
           </v-flex>
         </v-layout>
         
-        <Answers v-for="(answer, index) in post.answers" :key="index" :answer="answer"/>
+        <Answers v-for="(answer, index) in question.answers" :key="index" :answer="answer"/>
       </v-flex>
     </v-layout> -
   </v-container>
@@ -49,6 +49,7 @@
 import axios from 'axios'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import Answers from '@/components/answers.vue'
+import moment from 'moment'
 
 export default {
   name: 'ViewPost',
@@ -57,7 +58,7 @@ export default {
   },
   data() {
     return {
-      post: '',
+      question: '',
       editor: ClassicEditor,
       editorData: '',
       editorConfig: {
@@ -65,7 +66,15 @@ export default {
       },
       title: '',
       description: '',
-      questionId: ''
+      questionId: '',
+      upvoted: false,
+      downvoted: false,
+      rendered: false
+    }
+  },
+  computed: {
+    getTime() {
+      return moment(this.question.createdAt).fromNow()
     }
   },
   created() {
@@ -75,8 +84,20 @@ export default {
       url: `${this.$store.state.baseURL}/questions/${this.questionId}`,
     })
       .then(({data}) => {
-        console.log(data)
-        this.post = data
+        this.question = data
+        for(let user of data.upvotes) {
+          if(user === this.$store.state.loggedUser.id) {
+            this.upvoted = true
+          }
+        }
+
+        for(let user of data.downvotes) {
+          if(user === this.$store.state.loggedUser.id) {
+            this.downvoted = true
+          }
+        }
+
+        this.rendered = true
       })
       .catch(({ response }) => {
         console.log(response)
@@ -84,29 +105,6 @@ export default {
   },
 
   methods: {
-    getTime(createdAt) {
-      let now = new Date()
-      let date = new Date(createdAt)
-      let diff = now - date
-      
-      let time = Math.floor(diff/(1000 * 60 * 60))
-      if(diff < (1000 * 60 * 60)) {
-        if(time === 0) {
-          return 'Just now'
-        } else {
-          return `${Math.floor(diff/ (1000 * 60))} mins ago`
-        }
-      } else if (diff < (1000 * 60 * 60 * 24)) {
-        if(time === 1) {
-          return `${time} hour ago`
-        } else {
-          return `${time} hours ago`
-        }
-      } else {
-        return `${Math.floor(diff/(1000 * 60 * 60 * 24))} days ago`
-      }
-    },
-
     submit() {
       axios({ 
         method: 'POST',
@@ -121,12 +119,50 @@ export default {
         }
       })
         .then(({data}) => {
-          this.post = data
-          console.log(data)
+          this.question = data
+          this.$store.dispatch('getPublicQuestions')
         })
         .catch(({response}) => {
           console.log(response)
         })
+    },
+
+    upvote() {
+      let user = this.$store.state.loggedUser.id
+      if(this.upvoted === false) {
+        this.upvoted = true
+        this.question.upvotes.push(user)
+        if(this.downvoted === true) {
+          this.downvoted = false
+          let index = this.question.downvotes.indexOf(user)
+          this.question.downvotes.splice(index,1)
+        }
+      }
+      else if(this.upvoted === true) {
+        this.upvoted = false
+        let index = this.question.upvotes.indexOf(user)
+        this.question.upvotes.splice(index,1)
+      }
+      this.$store.dispatch('voteQuestion', this.question)
+    },
+
+    downvote() {
+      let user = this.$store.state.loggedUser.id
+      if(this.downvoted === false) {
+        this.downvoted = true
+        this.question.downvotes.push(user)
+        if(this.upvoted === true) {
+          this.upvoted = false
+          let index = this.question.upvotes.indexOf(user)
+          this.question.upvotes.splice(index,1)
+        }
+      }
+      else if(this.downvoted === true) {
+        this.downvoted = false
+        let index = this.question.downvotes.indexOf(user)
+        this.question.downvotes.splice(index, 1)
+      }
+      this.$store.dispatch('voteQuestion', this.question)
     }
   }
 }

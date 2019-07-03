@@ -19,7 +19,7 @@ class UserController {
     
     res.status(200).json(decode)
   }
-
+  
   static login(req, res, next) {
     User.findOne({
       email: req.body.email
@@ -32,7 +32,7 @@ class UserController {
               lastName: user.lastName,
               username: user.username,
               email: user.email,
-              id: user.id
+              id: user._id
             }
             const token = generateToken(payload)
             res.status(200).json({
