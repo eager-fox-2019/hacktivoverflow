@@ -15,7 +15,7 @@ class QuestionController {
     }
 
     static findBelongs(req, res) {
-        Question.find({userId:req.headers.id})
+        Question.find({userId:req.decoded.id})
         .populate('userId', 'username')
         .then(questions => {
             res.status(200).json(questions)
@@ -56,8 +56,12 @@ class QuestionController {
         // })
         // .priority("high")
         // .save();
-    
-        res.status(200).json(question)
+            return Question
+            .findOne({_id: question._id})
+            .populate('userId', 'username')
+        })
+        .then(questionDetail => {
+            res.status(200).json(questionDetail)
         })
         .catch(err => {
             res.status(500).json({msg: err})
@@ -95,7 +99,7 @@ class QuestionController {
     static updateVote(req,res){
         let voteType = req.params.voteType;
         let questionId = req.params.questionId;
-        let userId = req.headers.id
+        let userId = req.decoded.id
 
         Question.findOne({_id:questionId})
         .populate('userId', 'username')

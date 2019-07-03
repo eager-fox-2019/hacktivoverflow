@@ -40,7 +40,7 @@ class AnswerController{
     static create(req, res){
         const {description} = req.body
         let questionId = req.params.questionId
-        let userId = req.headers.id
+        let userId = req.decoded.id
         let answerDesc = ''
         
         Answer.create({
@@ -91,7 +91,7 @@ class AnswerController{
     static updateVote(req,res){
         let voteType = req.params.voteType;
         let answerId = req.params.answerId;
-        let userId = req.headers.id
+        let userId = req.decoded.id
 
         Answer.findOne({_id:answerId})
         .populate('userId', 'username')

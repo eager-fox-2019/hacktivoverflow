@@ -56,7 +56,7 @@ export default {
             this.$router.push(`/question/edit/${id}`)
         },
         deleteQuestion(id) {
-            this.$alertify.confirm("This is a confirm dialog.",
+            this.$alertify.confirm("Are you sure?",
                 () => {
                     this.$store.dispatch('deleteQuestion', id)
                     .then(() => {
