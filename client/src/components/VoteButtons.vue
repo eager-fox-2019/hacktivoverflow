@@ -1,15 +1,23 @@
 <template>
   <div class="btnGroup d-flex flex-column">
-    <b-button><img src="../assets/arrow-up.png"></b-button>
+    <b-button @click="upvote"><img src="../assets/arrow-up.png"></b-button>
     <b-button disabled>{{totalVotes}}</b-button>
-    <b-button><img src="../assets/arrow-down.png"></b-button>
+    <b-button @click="downvote"><img src="../assets/arrow-down.png"></b-button>
   </div>
 </template>
 
 <script>
 export default {
   name: 'VoteButtons',
-  props: ['totalVotes']
+  props: ['totalVotes'],
+  methods:{
+    upvote(){
+      this.$emit('upvote')
+    },
+    downvote(){
+      this.$emit('downvote')
+    }
+  }
 }
 </script>
 

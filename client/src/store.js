@@ -8,6 +8,7 @@ export default new Vuex.Store({
   state: {
   	baseURL: 'http://localhost:3000',
   	isLoggedin: false,
+    token: '',
   	questionList: [],
   	currentQuestion: null,
   	answerList: [],
@@ -30,8 +31,8 @@ export default new Vuex.Store({
 		    console.log(data);
 		    commit('UPDATEQUESTIONLIST', data)
 		  })
-		  .catch(({data}) => {
-		    console.log(data);
+		  .catch(({response}) => {
+		    console.log(response.data);
 		  });
   	},
   	getQuestionDetail({state, commit, dispatch}, payload){
@@ -41,8 +42,8 @@ export default new Vuex.Store({
   				commit('UPDATECURRENTQUESTION', data)
           dispatch('getAnswers', data._id)
   			})
-		  .catch(({data}) => {
-		    console.log(data);
+		  .catch(({response}) => {
+		    console.log(response.data);
 		  });
   	},
   	getAnswers({state, commit, dispatch}, payload){
@@ -51,9 +52,37 @@ export default new Vuex.Store({
   				console.log(data)
   				commit('UPDATECURRENTANSWERLIST', data)
   			})
-		  .catch(({data}) => {
-		    console.log(data);
+		  .catch(({response}) => {
+		    console.log(response.data);
 		  });
-  	}
+  	},
+    voteQuestion({state, commit, dispatch}, payload){
+      let qId = payload.questionId
+      let vote = payload.type
+      axios.patch(state.baseURL+'/question/'+qId+'/'+vote,
+        {headers: {access_token: state.token}
+        })
+      .then(({data}) => {
+        //data is question with updated upvotes and downvotes array
+        console.log(data)
+      })
+      .catch(({response}) => {
+        console.log(response.data);
+      });
+    },
+    voteQuestion({state, commit, dispatch}, payload){
+      let aId = payload.answerId
+      let vote = payload.type
+      axios.patch(state.baseURL+'/answer/'+aId+'/'+vote,
+        {headers: {access_token: state.token}
+        })
+      .then(({data}) => {
+        //data is answer with updated upvotes and downvotes array
+        console.log(data)
+      })
+      .catch(({response}) => {
+        console.log(response.data);
+      });
+    }
   }
 })

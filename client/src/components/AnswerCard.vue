@@ -1,7 +1,7 @@
 <template>
   <div class="answer d-flex flex-row justify-content-center">
 
-  <VoteButtons :totalVotes="totalVotes" />
+  <VoteButtons :totalVotes="totalVotes" @upvote="upvote" @downvote="downvote"/>
 
   <b-card style="width: 80%;" :title="card.title" :sub-title="card.owner.name">
     <b-card-text>
@@ -29,6 +29,12 @@ export default {
     }
   },
   methods: {
+    upvote(){
+      this.$store.dispatch('voteAnswer', {questionId, type:'up'})
+    },
+    downvote(){
+      this.$store.dispatch('voteAnswer', {questionId, type:'down'})
+    }
   }
 }
 </script>

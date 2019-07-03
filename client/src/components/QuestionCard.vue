@@ -1,7 +1,7 @@
 <template>
   <div class="question d-flex flex-row justify-content-center">
 
-  <VoteButtons :totalVotes="totalVotes" />
+  <VoteButtons :totalVotes="totalVotes" @upvote="upvote" @downvote="downvote"/>
 
   <b-card style="width: 80%;" :title="card.title" :sub-title="card.owner.name">
     <b-card-text>
@@ -32,6 +32,12 @@ export default {
       let questionId = this.card._id
       // this.$store.dispatch('getQuestionDetail', questionId)
       this.$router.push('/question/' + questionId)
+    },
+    upvote(){
+      this.$store.dispatch('voteQuestion', {questionId, type:'up'})
+    },
+    downvote(){
+      this.$store.dispatch('voteQuestion', {questionId, type:'down'})
     }
   }
 }

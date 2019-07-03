@@ -14,10 +14,6 @@ export default {
   components: {
   	AnswerCard
   },
-  // props: ['questionId'],
-  // created(){
-  // 	this.$store.dispatch('getAnswerList', this.questionId)
-  // },
   computed: mapState(['answerList'])
 }
 </script>
