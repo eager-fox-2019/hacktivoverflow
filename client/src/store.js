@@ -15,7 +15,12 @@ export default new Vuex.Store({
     questionDetail: {},
     sendRegisterStatus: false,
     sendLoginStatus: false,
-    sendAnswerStatus: false
+    sendAnswerStatus: false,
+    addEditDialog: {
+      show: false,
+      type: ''
+    },
+    editedAnswerQuestion: {}
   },
   mutations: {
     computedVotes (state, payload) {
@@ -41,6 +46,19 @@ export default new Vuex.Store({
     },
     setSendAnswerStatus (state, payload) {
       state.sendAnswerStatus = payload
+    },
+    setAddEditDialog (state, payload) {
+      if (payload.val) {
+        state.editedAnswerQuestion = payload.val
+      } else {
+        state.editedAnswerQuestion = {}
+      }
+      state.addEditDialog.show = payload.show
+      if (payload.type) {
+        state.addEditDialog.type = payload.type
+      } else {
+        state.addEditDialog.type = ''
+      }
     }
   },
   actions: {
@@ -101,6 +119,38 @@ export default new Vuex.Store({
           )
         })
     },
+    sendLogout (context) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'Are you sure you want to logout?',
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes!'
+      }).then((result) => {
+        if (result.value) {
+          return axios({
+            method: 'POST',
+            headers: {
+              token: JSON.parse(localStorage.token).token
+            },
+            url: `${context.state.url_server}/users/logout`
+          })
+        }
+      })
+        .then((val) => {
+          if (val.message) {
+            localStorage.removeItem('token')
+            context.commit('setLoginUser', {})
+            context.commit('setIsLogin', false)
+            router.push('/')
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
     getMyProfile (context) {
       axios({
         method: 'GET',
@@ -141,23 +191,38 @@ export default new Vuex.Store({
           console.log(err)
         })
     },
-    sendNewQuestion (context, payload) {
+    sendQuestionAnswer (context, payload) {
+      let sendData = {
+        title: payload.title,
+        content: payload.content
+      }
+      let val = (payload.method === 'PUT') ? `/${context.state.editedAnswerQuestion._id}` : ''
+      console.log('ini sendData di send questionanswer', sendData)
+      console.log('ini val di send questionanswer', val)
+      console.log('ini payload di send questionanswer', payload)
+      let url = `${context.state.url_server}/${payload.type}${val}`
+      console.log('ini url di send questionanswer', url)
+      
       axios({
-        method: 'POST',
-        data: payload,
+        method: payload.method,
+        data: sendData,
         headers: {
           token: JSON.parse(localStorage.token).token
         },
-        url: `${context.state.url_server}/questions`
+        url
       })
         .then(({ data }) => {
           Swal.fire(
             'Success!',
-            'Successfully add new question',
+            `Successfully ${payload.dialogTitle} question`,
             'success'
           )
+          context.commit('setAddEditDialog', { dialog: false })
           context.dispatch('getQuestions')
-          router.push('/')
+          context.dispatch('getQuestionDetail', context.state.editedAnswerQuestion._id)
+          if (payload.type === 'questions') {
+            router.push('/')
+          }
         })
         .catch(err => {
           console.log(err)
@@ -196,10 +261,10 @@ export default new Vuex.Store({
           )
         })
     },
-    deleteQuestion (context, payload) {
+    deleteQuestionAnswer (context, payload) {
       Swal.fire({
         title: 'Are you sure?',
-        text: 'Are you sure you want to delete this question?',
+        text: `Are you sure you want to delete this ${payload.type}?`,
         type: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -212,7 +277,7 @@ export default new Vuex.Store({
             headers: {
               token: JSON.parse(localStorage.token).token
             },
-            url: `${context.state.url_server}/questions/${payload}`
+            url: `${context.state.url_server}/${payload.type}/${payload.val}`
           })
             .then(({ data }) => {
               Swal.fire(

@@ -84,6 +84,9 @@ export default {
         this.answer.title = ''
         this.answer.content = ''
       }
+    },
+    '$store.state.questionDetail' (val) {
+      this.$store.dispatch('getQuestionDetail', this.$route.params.id)      
     }
   }
 }

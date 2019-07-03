@@ -1,11 +1,11 @@
 <template>
   <v-container>
     <v-layout row wrap align-center justify-center fill-height>
-      <v-btn to="/addquestion">Ask a question</v-btn>
+      <v-btn @click="showAddEdit">Ask a question</v-btn>
     </v-layout>
     <v-layout row wrap>
       <v-flex xs12 lg8 offset-lg2>
-        <v-list three-line>
+        <v-list three-line v-if="$store.state.loginUser.id">
           <homeBox v-for="item in $store.state.questions"
             :key="item._id" :item="item"></homeBox>
         </v-list>
@@ -28,7 +28,9 @@ export default {
     }
   },
   methods: {
-    //
+    showAddEdit () {
+      this.$store.commit('setAddEditDialog', { show: true, type: 'questions' })
+    }
   },
   created () {
     this.$store.dispatch('getQuestions')

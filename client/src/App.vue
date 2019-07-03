@@ -27,6 +27,8 @@
         <v-btn v-if="!$store.state.isLogin"
           to="/register" flat>Sign In</v-btn>
         <v-btn v-if="$store.state.isLogin"
+          @click="logout" flat>Sign Out</v-btn>
+        <v-btn v-if="$store.state.isLogin"
           :to="'/profile/' + $store.state.loginUser.id" flat>My Profile</v-btn>
       </v-toolbar-items>
     </v-toolbar>
@@ -34,19 +36,26 @@
     <v-content>
       <router-view></router-view>
     </v-content>
+    <addedit></addedit>
   </v-app>
 </template>
 
 <script>
+import addedit from '@/components/addEdit.vue'
 
 export default {
   name: 'App',
   components: {
-    //
+    addedit
   },
   data () {
     return {
       //
+    }
+  },
+  methods: {
+    logout () {
+      this.$store.dispatch('sendLogout')
     }
   },
   created () {

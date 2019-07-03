@@ -27,6 +27,7 @@ class ControllerAnswer {
 
   static readAllAnswerOneUser(req, res, next) {
     Answer.find({ user_id: req.params.userId })
+      .populate('user_id', 'full_name email username _id')
       .then((answers) => {
         res.json(answers)
       })

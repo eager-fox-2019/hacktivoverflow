@@ -7,7 +7,7 @@
           <v-flex>
             <v-layout row wrap align-center justify-center fill-height>
               <v-btn @click="vote('upvote')"
-                :disabled="upvoteStatus" fab dark small>
+                :disabled="upvoteStatus" fab small>
                 <v-icon>fas fa-chevron-up</v-icon>
               </v-btn>
             </v-layout>
@@ -20,7 +20,7 @@
           <v-flex xs12>
             <v-layout align-center justify-center row fill-height>
               <v-btn @click="vote('downvote')"
-                :disabled="downvoteStatus" fab dark small>
+                :disabled="downvoteStatus" fab small>
                 <v-icon>fas fa-chevron-down</v-icon>
               </v-btn>
             </v-layout>
