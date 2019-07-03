@@ -45,7 +45,8 @@ const userSchema = new Schema({
         type: String,
         required: true,
         minlength: [4, 'Password min length is 4'],
-    }
+    },
+    watchedTags: [ String ]
 });
 
 userSchema.pre('save', function(next, done) {

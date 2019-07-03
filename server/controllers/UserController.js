@@ -108,6 +108,28 @@ class UserController {
             res.status(400).json(err)
         })
     }
+
+    static updateTags(req, res) {
+        User
+        .findOne({_id: req.decoded.id})
+        .then(user => {
+            if( req.params.type === 'push' && !user.watchedTags.includes(req.body.tags) ) {
+                user.watchedTags.push(req.body.tags)
+            } else if( req.params.type === 'pull' && user.watchedTags.includes(req.body.tags) ) {
+                user.watchedTags.pull(req.body.tags)
+            }else {
+                res.status(400).json('Invalid input')
+            }
+
+            return user.save({ validateBeforeSave: false })
+        })
+        .then(user2=> {
+            res.status(200).json(user2)
+        })
+        .catch(err=> {
+            res.status(500).json(err)
+        })
+    }
 }
 
 module.exports = UserController

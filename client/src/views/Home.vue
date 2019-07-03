@@ -9,6 +9,7 @@
         <QuestionList
           :questions="stateQuestion"
         />
+        <Widget />
       </div>
   </div>
 </template>
@@ -16,13 +17,15 @@
 <script>
 import QuestionList from '@/components/QuestionList.vue'
 import Sidebar from '@/components/Sidebar.vue'
+import Widget from '@/components/Widget.vue'
 import {mapState} from 'vuex'
 
 export default {
   name: 'home',
   components: {
     QuestionList,
-    Sidebar
+    Sidebar,
+    Widget
   },
   data() {
     return {

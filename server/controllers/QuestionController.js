@@ -78,7 +78,6 @@ class QuestionController {
         }, {new:true})
         .populate('userId', 'username')
         .then(question => {
-            console.log(question);
             res.status(200).json(question)
         })
         .catch(err => {

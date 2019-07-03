@@ -32,6 +32,9 @@ export default new Vuex.Store({
     questionsByTag: state => {
       return state.questionsByTag
     },
+    getWatchedTags: state => {
+      return state.loginUser.watchedTags
+    },
   },
   // this.$store.commit
   mutations: {
@@ -115,6 +118,9 @@ export default new Vuex.Store({
     },
     SET_QUESTIONS_BY_TAG(state, payload) {
       state.questionsByTag = payload
+    },
+    SET_WATCHED_TAGS(state, payload) {
+      state.watchedTags = payload
     }
   },
   // this.$store.dispatch
@@ -191,6 +197,18 @@ export default new Vuex.Store({
       })
       .catch(err => {
           console.log(err);
+      })
+    },
+    addWatchedTags(context, tags) {
+      myaxios.defaults.headers.common['token'] = localStorage.token
+
+      myaxios
+      .patch(`/users/tags/push`, {tags: tags})
+      .then(({data}) => {
+        context.commit('SET_WATCHED_TAGS', data.watchedTags)
+      })
+      .catch(err => {
+        console.log(err.response);
       })
     }
   }
