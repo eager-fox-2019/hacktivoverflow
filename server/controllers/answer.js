@@ -48,14 +48,16 @@ class AnswerController{
     }
 
     static update(req, res, next){
-        console.log("Masuk ke update answer")
+        console.log("Masuk ke update answer (edit)")
         let searchObj = {
             _id: req.params.answerId
         }
         let updateObj = {}
         let updateKeys = Object.keys(req.body)
         for(let i = 0; i < updateKeys.length; i++){
-            updateObj[updateKeys[i]] = req.body[updateKeys[i]]
+            if(updateKeys[i] !== 'question'){
+                updateObj[updateKeys[i]] = req.body[updateKeys[i]]
+            }
         }
         let setObj = {
             $set: updateObj

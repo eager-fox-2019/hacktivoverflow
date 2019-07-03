@@ -18,7 +18,14 @@
                 {{ inside.description }}
               </b-card-text>
               <b-button-group v-if="(inside.owner == userId)">
-                <b-button variant="primary" @click="edit(inside._id)">Edit</b-button>
+                <!-- <b-button variant="primary" @click="edit(inside._id)">Edit</b-button> -->
+                <div>
+                  <b-button v-b-modal.modal-scrollable-edit variant="primary" @click="edit(inside._id)">Edit</b-button>
+                  <b-modal :id="'modal-scrollable-edit'" size="lg" scrollable title="Edit Form">
+                  <!-- <b-modal :id="'modal-scrollable-edit-' + inside._id" size="lg" scrollable title="Edit Form"> -->
+                    <AFComponent :typeform="'edit'"  :type="type"/>
+                  </b-modal>
+                </div>
                 <b-button variant="danger" @click="del(inside._id)">Delete</b-button>
               </b-button-group>
             </b-card-body>
@@ -31,10 +38,12 @@
 
 <script>
 import VoteButton from '@/components/VoteButton.vue'
+import AFComponent from '@/components/AFComponent.vue'
 export default {
   props: ['inside', 'type'],
   components: {
-    VoteButton
+    VoteButton,
+    AFComponent
   },
   computed: {
     shortdesc: function () {
@@ -50,9 +59,17 @@ export default {
   },
   methods: {
     edit (id) {
-      // this
+      let { dispatch } = this.$store
+      if (this.type === 'answer') {
+        dispatch('GET_AN_ANSWER', id)
+      } else if (this.type === 'question') {
+        dispatch('GET_A_QUESTION', id)
+      }
     },
     del (id) {
+      // tanya soal delete yang error tapi tetap terdelete
+      // filter button nya pas buka suatu question --> error tapi jalan juga
+      // modal multiple edit
       let { dispatch } = this.$store
       let swalconfirm = false
       this.$swal.fire({
@@ -74,19 +91,16 @@ export default {
           }
         })
         .then((result) => {
-          if (this.type === 'answer') {
-              return dispatch('DELETE_ANSWER', id)
-          }
-        })
-        .then((result) => {
           if (swalconfirm) {
             this.$swal({
               type: 'success',
               title: `Delete ${this.type} success`
-            })            
+            })
             if (this.type === 'question') {
+              dispatch('GET_QUESTION')
               this.$router.push('/')
             } else if (this.type === 'answer') {
+              dispatch('GET_A_QUESTION', this.$route.params.questionId)
               this.$router.push('/')
               // this.$store.dispatch('GET_A_QUESTION', this.$route.params.questionId)
             }
@@ -101,10 +115,6 @@ export default {
           })
         })
     }
-    // getQuestion (id) {
-    //   console.log('Masuk getquestion')
-    //   this.$store.dispatch('GET_A_QUESTION', id)
-    // }
   }
 }
 </script>

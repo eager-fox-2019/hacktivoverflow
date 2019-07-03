@@ -14,7 +14,13 @@
                         <b-card-text>
                             {{ questionShowed.description }}
                         </b-card-text>
-                        <b-button variant="primary" :to="`/add-answer/${questionShowed._id}`">Give answer</b-button>
+                        <!-- <b-button variant="primary" :to="`/add-answer/${questionShowed._id}`">Give answer</b-button> -->
+                        <b-button v-b-modal.modal-scrollable-add variant="primary" @click="add(questionShowed._id)">Give answer</b-button>
+
+                        <b-modal id="modal-scrollable-add" size="lg" scrollable title="Add answer">
+                            <AFComponent :typeform="'add'" :type="'answer'"/>
+                        </b-modal>
+
                     </b-card-body>
                 </b-card>
                 <b-row>
@@ -33,6 +39,7 @@
 import NavBar from '@/components/NavBar.vue'
 import VoteButton from '@/components/VoteButton.vue'
 import CardList from '@/components/CardList.vue'
+import AFComponent from '@/components/AFComponent.vue'
 import { mapState } from 'vuex'
 
 export default {
@@ -44,20 +51,22 @@ export default {
   components: {
     NavBar,
     VoteButton,
-    CardList
+    CardList,
+    AFComponent
   },
   computed: {
-    ...mapState(['questionShowed']),
-    answers: function () {
-      return this.$store.dispatch('GET_ANSWER')
-    }
+    ...mapState(['questionShowed'])
+    // answers: function () {
+    //   return this.$store.dispatch('GET_ANSWER')
+    // }
   },
   created () {
     this.$store.dispatch('GET_A_QUESTION', this.$route.params.questionId)
   },
   methods: {
-    answering (question) {
-      // this.$store.router
+    add (id) {
+      console.log('Masuk ke add id di question answer dng id:', id)
+      this.$store.dispatch('GET_A_QUESTION', id)
     }
   }
 }

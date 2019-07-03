@@ -9,8 +9,8 @@ export default new Vuex.Store({
     isLogin: false,
     baseUrl: `http://localhost:3000`,
     questions: [],
-    answers: [],
-    questionShowed: {}
+    questionShowed: {},
+    answerShowed: {}
   },
   mutations: {
     SET_LOGIN (state, payload) {
@@ -21,14 +21,10 @@ export default new Vuex.Store({
     },
     SET_A_QUESTION (state, payload) {
       state.questionShowed = payload
+    },
+    SET_AN_ANSWER (state, payload) {
+      state.answerShowed = payload
     }
-    // SET_ANSWER_LIST (state, payload) {
-    //   state.answer = payload
-    // },
-    // ADD_ANSWER_LIST (state, payload) {
-    //   console.log("Masuk add answer in list")
-    //   state.answers.push(payload)
-    // }
   },
   actions: {
     REGISTER ({ state }, payload) {
@@ -68,7 +64,6 @@ export default new Vuex.Store({
         })
     },
     GET_A_QUESTION ({ state }, payload) {
-      console.log('get a detailed question')
       axios({
         method: 'get',
         url: `${state.baseUrl}/question/${payload}`
@@ -93,7 +88,7 @@ export default new Vuex.Store({
     EDIT_QUESTION ({ state }, payload) {
       return axios({
         method: 'patch',
-        url: `${state.baseUrl}/question/${payload._id}`,
+        url: `${state.baseUrl}/question/${this.questionShowed._id}`,
         data: payload,
         headers: {
           token: localStorage.getItem('token')
@@ -119,21 +114,20 @@ export default new Vuex.Store({
         }
       })
     },
-    // GET_ANSWER ({ state }, payload) {
-    //   console.log("Masuk get answer client")
-    //   axios({
-    //     method: 'get',
-    //     url: `${state.baseUrl}/answer/${payload}`
-    //   })
-    //     .then(({ data }) => {
-    //       console.log("Berhasil get answer")
-    //       console.log(data, "ini datanya")
-    //       this.commit('ADD_ANSWER_LIST', data)
-    //     })
-    //     .catch(e => {
-    //       console.log(e)
-    //     })
-    // },
+    GET_AN_ANSWER ({ state }, payload) {
+      console.log('Masuk get answer client')
+      axios({
+        method: 'get',
+        url: `${state.baseUrl}/answer/${payload}`
+      })
+        .then(({ data }) => {
+          console.log(data, 'ini datanya')
+          this.commit('SET_AN_ANSWER', data)
+        })
+        .catch(e => {
+          console.log(e)
+        })
+    },
     UPDATE_DETAILED_ANSWER ({ state }, payload) {
       return axios({
         method: 'patch',
@@ -145,9 +139,11 @@ export default new Vuex.Store({
       })
     },
     EDIT_ANSWER ({ state }, payload) {
+      console.log('Masuk store edit answer')
+      console.log('answershowed id', state.answerShowed._id)
       return axios({
         method: 'patch',
-        url: `${state.baseUrl}/answer/${payload._id}`,
+        url: `${state.baseUrl}/answer/${state.answerShowed._id}`,
         data: payload,
         headers: {
           token: localStorage.getItem('token')
