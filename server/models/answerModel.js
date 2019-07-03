@@ -1,12 +1,9 @@
 const mongoose = require('mongoose')
 
-let answerSchema = ({
-    titel: {
-        type: String
-    },
+let answerSchema = new mongoose.Schema ({
     description: {
         type: String,
-        reuired: [true, `Description needed`]
+        required: [true, `Description needed`]
     },
     userId: {
         type: mongoose.Schema.Types.ObjectId,
@@ -20,10 +17,12 @@ let answerSchema = ({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     }],
-    question: {
+    questionId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Question'
     }
+},{
+    timestamps: true
 })
 
 // answerSchema.set('timestamps', true)

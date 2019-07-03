@@ -47,6 +47,8 @@ class UserController {
                     }
                     
                     let token = sign(payload)
+                    req.headers.token = token
+
                     res.status(200).json({token})
                 }
             })

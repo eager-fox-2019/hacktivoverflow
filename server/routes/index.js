@@ -6,9 +6,9 @@ const answerRoute = require('./answerRoute')
 const tagRoute = require('./tagRoute')
 
 router.use('/users', userRoute)
-router.use('/questions',questionRoute)
+router.use('/questions', questionRoute)
 router.use('/answers', answerRoute)
-router.use('/tags',tagRoute)
+router.use('/tags', tagRoute)
 
 router.use('/*', (req, res) => {
     console.log()

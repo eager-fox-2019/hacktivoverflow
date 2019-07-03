@@ -18,14 +18,14 @@ let questionSchema = new mongoose.Schema({
         ref: 'User',
     }],
     userId: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     },
-    Answer: [{
-        type: String,
+    answers: [{
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'Answer',
     }],
-    Tags: [{
+    tags: [{
         type: String,
         ref: 'Tag'
     }]
