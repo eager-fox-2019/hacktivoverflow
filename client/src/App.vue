@@ -5,13 +5,24 @@
         <p id="judul">Hacktiv Overflow</p>
         <router-link to="/">Home</router-link>
         <router-link to="/submit">Ask a question</router-link>
+        <div id="user-control">
+          <b-dropdown aria-role="list">
+            <button class="button is-primary" slot="trigger">
+                <span>Click me!</span>
+                <b-icon icon="menu-down"></b-icon>
+            </button>
+
+            <b-dropdown-item aria-role="listitem">Action</b-dropdown-item>
+            <b-dropdown-item aria-role="listitem">Another action</b-dropdown-item>
+            <b-dropdown-item aria-role="listitem">Something else</b-dropdown-item>
+        </b-dropdown>
+        </div>
       </div>
       <div id="nav-login-register" class="second-item" v-if="!isLogin">
         <router-link to="/login">Login</router-link>
         <router-link to="/register">Register</router-link>
       </div>
       <div v-else class="second-item">
-        <p class="item">User</p>
         <p class="item" id="logout" @click="logout">Log Out</p>
       </div>
     </div>
@@ -27,12 +38,22 @@ export default {
 
     }
   },
+  created() {
+    if(localStorage.getItem('token')) {
+      this.$store.commit('updateLoginStatus', true)
+      this.$store.commit('INPUTLOGGEDUSER', JSON.parse(localStorage.getItem('user')))
+      this.$toast.open({ message: 'You logged in !', type: 'is-success'})
+    }
+  },
   computed: {
-    ...mapState(['isLogin'])
+    ...mapState(['isLogin', 'loggedUser'])
   },
   methods: {
     logout () {
-
+      this.$store.commit('updateLoginStatus', false)
+      localStorage.clear()
+      this.$router.push('/')
+      this.$toast.open({ message: 'Successfully logged out', type: 'is-success'})
     }
   }
 }
@@ -45,6 +66,9 @@ export default {
     margin: 0;
   }
 
+  #user-control {
+    margin-left: 30px;
+  }
   #app {
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -71,7 +95,6 @@ export default {
   }
 
   .second-item {
-    width: 10%;
     display: flex;
     align-items: center;
     justify-content: space-evenly;

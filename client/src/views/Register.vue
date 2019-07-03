@@ -3,6 +3,7 @@
     <div id="sidebar" class="column is-5">
     </div>
     <form @submit.prevent="userRegister" class="column">
+      <div v-if="error" id="error">{{error}}</div>
       <div class="field">
         <b-field label="Username">
             <b-input placeholder="Username" rounded class="text-input" v-model="inputRegister.username"></b-input>
@@ -32,14 +33,20 @@ export default {
         username: '',
         email: '',
         password: ''
-      }
+      },
+      error: ''
     }
   },
   methods: {
     userRegister () {
       this.$store.dispatch('register', this.inputRegister)
         .then(({ data }) => {
+          this.$toast.open({ message: 'Successfully created an account !', type: 'is-success'})
           this.$router.push({ path: 'login', query: { isRegister: true } })
+        })
+        .catch(err => {
+          console.log(err)
+          this.error = err.response.data.message.split(':').slice(2).join('<br/>')
         })
     }
   }
@@ -47,6 +54,11 @@ export default {
 </script>
 
 <style scoped>
+  #error {
+    color: red;
+    font-weight: bold;
+    font-size: 24px;
+  }
   #sidebar {
     border-right: 2px solid rgba(49, 27, 146, 0.671);
     margin-right: 20px;

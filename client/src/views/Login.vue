@@ -4,13 +4,20 @@
     </div>
     <form @submit.prevent="userLogin" class="column">
       <div v-if="isRegister" id="successRegister">{{successRegisterMsg}}</div>
+      <div v-if="error" id="error">{{error}}</div>
       <div class="field">
-        <b-field label="Email">
-            <b-input placeholder="Email" rounded class="text-input" v-model="inputLogin.email"></b-input>
+        <b-field>
+          <template slot="label">
+              <span class="has-text-primary label">Email</span>
+          </template>
+          <b-input placeholder="Email" rounded class="text-input" v-model="inputLogin.email"></b-input>
         </b-field>
       </div>
       <div class="field">
         <b-field label="Password">
+            <template slot="label">
+              <span class="has-text-primary label">Password</span>
+            </template> 
             <b-input placeholder="Password" type="password" rounded password-reveal class="text-input" v-model="inputLogin.password"></b-input>
         </b-field>
       </div>
@@ -29,17 +36,40 @@ export default {
         password: ''
       },
       isRegister: false,
-      successRegisterMsg: 'Successfully created an account !'
+      successRegisterMsg: 'Successfully created an account !',
+      error: ''
     }
   },
   methods: {
     userLogin () {
+      this.$store.dispatch('login', this.inputLogin)
+      .then(({data}) => {
+        console.log(data)
+        localStorage.setItem('token', data.token)
+        localStorage.setItem('user', JSON.stringify(data.payload))
+        this.$store.commit('updateLoginStatus', true)
+        this.$store.commit('INPUTLOGGEDUSER', data.payload)
+        this.$toast.open({ message: 'You logged in!', type: 'is-success'})
+        this.$router.push('/')
+      })
+      .catch(err => {
+        this.error = err.response.data.message
+      })
     }
   }
 }
 </script>
 
 <style scoped>
+  .label {
+    font-weight: bold;
+    font-size: 24px;
+  }
+  #error {
+    color: red;
+    font-weight: bold;
+    font-size: 24px;
+  }
   #successRegister {
     color: #311B92;
     font-size: 24px;
