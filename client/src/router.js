@@ -31,8 +31,13 @@ export default new Router({
       name: 'user',
       component: () => import(/* webpackChunkName: "user" */ './views/User.vue'),
       children: [
-        
+
       ]
+    },
+    {
+      path: '/newQuestion',
+      name: 'questionform',
+      component: () => import(/* webpackChunkName: "questionform" */ './views/QuestionForm.vue')
     }
   ]
 })
