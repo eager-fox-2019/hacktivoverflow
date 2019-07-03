@@ -7,15 +7,20 @@
         <b-col sm="11">
           <b-card no-body align="left">
             <b-card-body>
-              <b-link :to="`/${type}/${inside._id}`">
+              <b-link :to="`/${type}/${inside._id}`" v-if="(type === 'question')">
                 <h4>{{ inside.title }}</h4>
               </b-link>
               <b-card-text v-if="(type === 'question')">
                 {{ shortdesc }}
               </b-card-text>
+              <h4 v-if="(type === 'answer')">{{ inside.title }}</h4>
               <b-card-text v-if="(type === 'answer')">
                 {{ inside.description }}
               </b-card-text>
+              <div v-if="(inside.owner == userId)">
+                <b-button variant="primary" @click="edit(inside._id)">Edit</b-button>
+                <b-button variant="danger" @click="del(inside._id)">Delete</b-button>
+              </div>
             </b-card-body>
           </b-card>
         </b-col>
@@ -38,9 +43,18 @@ export default {
         desc += '...'
       }
       return desc
+    },
+    userId: function() {
+      return localStorage.getItem('id')
     }
   },
   methods: {
+    edit(id) {
+      // this
+    },
+    del(id) {
+      // this
+    }
     // getQuestion (id) {
     //   console.log('Masuk getquestion')
     //   this.$store.dispatch('GET_A_QUESTION', id)

@@ -9,7 +9,7 @@
             <b-col sm="10">
                     <b-card no-body align="left">
                         <b-card-body>
-                            <pre>{{this.$store.state.questionShowed}}</pre>
+                            <!-- <pre>{{this.$store.state.questionShowed}}</pre> -->
                         <h4>{{ questionShowed.title }}</h4>
                         <b-card-text>
                             {{ questionShowed.description }}

@@ -38,6 +38,7 @@ class AnswerController{
         console.log("Masuk ke add Answer")
         const { title, description } = req.body
         const input = { title, description }
+        input.owner = req.decode.id
         Answer.create(input)
             .then(result => {
                 console.log("Berhasil add Answer")
