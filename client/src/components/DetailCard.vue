@@ -52,46 +52,48 @@ export default {
   },
   created () {
     if (this.type === 'question') {
-      let upvoteIds = []
-      let downvoteIds = []
-      for (let i = 0; i < this.detail.upvote.length; i++) {
-        upvoteIds.push(this.detail.upvote[i])
-      }
-      for (let i = 0; i < this.detail.downvote.length; i++) {
-        downvoteIds.push(this.detail.downvote[i])
-      }
-      if (upvoteIds.includes(this.$store.state.user.id)) {
-        this.active = 'upvote'
-      } else if (downvoteIds.includes(this.$store.state.user.id)) {
-        this.active = 'downvote'
-      } else {
-        this.active = ''
-      }
+      this.$store.dispatch('getAllQuestion')
+        .then(({ data }) => {
+          this.$store.commit('ALL_QUESTION', data)
+          this.$store.commit('FILTER_NONE')
+          this.$store.commit('SELECT_QUESTION', this.$route.params.id)
+        })
+        .catch(err => {
+          console.log(err)
+          if (!err.response) {
+            this.$swal({
+              type: 'error',
+              title: `Connection to Server Error`,
+              showConfirmButton: true
+            })
+          } else {
+            this.$swal({
+              type: 'error',
+              title: `${err.response.data.message}`,
+              showConfirmButton: true
+            })
+          }
+        })
+    }
+    let upvoteIds = []
+    let downvoteIds = []
+    for (let i = 0; i < this.detail.upvote.length; i++) {
+      upvoteIds.push(this.detail.upvote[i])
+    }
+    for (let i = 0; i < this.detail.downvote.length; i++) {
+      downvoteIds.push(this.detail.downvote[i])
+    }
+    if (upvoteIds.includes(this.$store.state.user.id)) {
+      this.active = 'upvote'
+    } else if (downvoteIds.includes(this.$store.state.user.id)) {
+      this.active = 'downvote'
     } else {
-      let upvoteIds = []
-      let downvoteIds = []
-      for (let i = 0; i < this.detail.upvote.length; i++) {
-        upvoteIds.push(this.detail.upvote[i])
-      }
-      for (let i = 0; i < this.detail.downvote.length; i++) {
-        downvoteIds.push(this.detail.downvote[i])
-      }
-      if (upvoteIds.includes(this.$store.state.user.id)) {
-        this.active = 'upvote'
-      } else if (downvoteIds.includes(this.$store.state.user.id)) {
-        this.active = 'downvote'
-      } else {
-        this.active = ''
-      }
+      this.active = ''
     }
   },
   computed: {
     totalVote: function () {
-      if (this.type === 'question') {
-        return this.detail.upvote.length - this.detail.downvote.length
-      } else {
-        return this.detail.upvote.length - this.detail.downvote.length
-      }
+      return this.detail.upvote.length - this.detail.downvote.length
     }
   },
   methods: {
@@ -99,176 +101,111 @@ export default {
       if (!localStorage.getItem('token')) {
         this.$router.push('/login')
       } else {
+        let upvoteIds = []
+        let downvoteIds = []
+        let upvoted = false
+        for (let i = 0; i < this.detail.upvote.length; i++) {
+          upvoteIds.push(this.detail.upvote[i])
+        }
+        for (let i = 0; i < this.detail.downvote.length; i++) {
+          downvoteIds.push(this.detail.downvote[i])
+        }
         if (this.type === 'question') {
-          let upvoteIds = []
-          let downvoteIds = []
-          for (let i = 0; i < this.detail.upvote.length; i++) {
-            upvoteIds.push(this.detail.upvote[i])
-          }
-          for (let i = 0; i < this.detail.downvote.length; i++) {
-            downvoteIds.push(this.detail.downvote[i])
-          }
           if (!upvoteIds.includes(this.$store.state.user.id)) {
             if (!downvoteIds.includes(this.$store.state.user.id)) {
               upvoteIds.push(this.$store.state.user.id)
-              let payload = {
-                upvote: upvoteIds,
-                downvote: downvoteIds
-              }
-              this.$store.dispatch('questionUpdateNonDetail', payload)
-                .then(result => {
-                  return this.$store.dispatch('getAllQuestion')
-                })
-                .then(({ data }) => {
-                  this.$store.commit('ALL_QUESTION', data)
-                  this.$store.commit('FILTER_NONE')
-                  this.$store.commit('SELECT_QUESTION', this.$route.params.id)
-                  this.active = 'upvote'
-                })
-                .catch(err => {
-                  console.log(err)
-                  if (!err.response) {
-                    this.$swal({
-                      type: 'error',
-                      title: `Connection to Server Error`,
-                      showConfirmButton: true
-                    })
-                  } else {
-                    this.$swal({
-                      type: 'error',
-                      title: `${err.response.data.message}`,
-                      showConfirmButton: true
-                    })
-                  }
-                })
+              upvoted = true
             } else {
               let index = downvoteIds.indexOf(this.$store.state.user.id)
               downvoteIds.splice(index, 1)
-              let payload = {
-                upvote: upvoteIds,
-                downvote: downvoteIds
-              }
-              this.$store.dispatch('questionUpdateNonDetail', payload)
-                .then(result => {
-                  return this.$store.dispatch('getAllQuestion')
-                })
-                .then(({ data }) => {
-                  this.$store.commit('ALL_QUESTION', data)
-                  this.$store.commit('FILTER_NONE')
-                  this.$store.commit('SELECT_QUESTION', this.$route.params.id)
-                  this.active = ''
-                })
-                .catch(err => {
-                  console.log(err)
-                  if (!err.response) {
-                    this.$swal({
-                      type: 'error',
-                      title: `Connection to Server Error`,
-                      showConfirmButton: true
-                    })
-                  } else {
-                    this.$swal({
-                      type: 'error',
-                      title: `${err.response.data.message}`,
-                      showConfirmButton: true
-                    })
-                  }
-                })
             }
+            let payload = {
+              upvote: upvoteIds,
+              downvote: downvoteIds
+            }
+            this.$store.dispatch('questionUpdateNonDetail', payload)
+              .then(result => {
+                return this.$store.dispatch('getAllQuestion')
+              })
+              .then(({ data }) => {
+                this.$store.commit('ALL_QUESTION', data)
+                this.$store.commit('FILTER_NONE')
+                this.$store.commit('SELECT_QUESTION', this.$route.params.id)
+                if (upvoted) {
+                  this.active = 'upvote'
+                } else {
+                  this.active = ''
+                }
+              })
+              .catch(err => {
+                console.log(err)
+                if (!err.response) {
+                  this.$swal({
+                    type: 'error',
+                    title: `Connection to Server Error`,
+                    showConfirmButton: true
+                  })
+                } else {
+                  this.$swal({
+                    type: 'error',
+                    title: `${err.response.data.message}`,
+                    showConfirmButton: true
+                  })
+                }
+              })
           }
         } else {
-          let upvoteIds = []
-          let downvoteIds = []
           this.$store.commit('SELECT_ANSWER', id)
-          for (let i = 0; i < this.$store.state.selectedAnswer.upvote.length; i++) {
-            upvoteIds.push(this.$store.state.selectedAnswer.upvote[i])
-          }
-          for (let i = 0; i < this.$store.state.selectedAnswer.downvote.length; i++) {
-            downvoteIds.push(this.$store.state.selectedAnswer.downvote[i])
-          }
           if (!upvoteIds.includes(this.$store.state.user.id)) {
             if (!downvoteIds.includes(this.$store.state.user.id)) {
               upvoteIds.push(this.$store.state.user.id)
-              let payload = {
-                upvote: upvoteIds,
-                downvote: downvoteIds
-              }
-              this.$store.dispatch('answerUpdateNonDetail', payload)
-                .then(result => {
-                  return this.$store.dispatch('getAllQuestion')
-                })
-                .then(({ data }) => {
-                  this.active = 'upvote'
-                  this.$store.commit('ALL_QUESTION', data)
-                  this.$store.commit('FILTER_NONE')
-                  this.$store.commit('SELECT_QUESTION', this.$route.params.id)
-                  return this.$store.dispatch('getAllAnswer')
-                })
-                .then(result => {
-                  let answers = []
-                  for (let i = 0; i < result.length; i++) {
-                    answers.push(result[i].data)
-                  }
-                  this.$store.commit('ALL_SELECTED_ANSWER', answers)
-                })
-                .catch(err => {
-                  console.log(err)
-                  if (!err.response) {
-                    this.$swal({
-                      type: 'error',
-                      title: `Connection to Server Error`,
-                      showConfirmButton: true
-                    })
-                  } else {
-                    this.$swal({
-                      type: 'error',
-                      title: `${err.response.data.message}`,
-                      showConfirmButton: true
-                    })
-                  }
-                })
+              upvoted = true
             } else {
               let index = downvoteIds.indexOf(this.$store.state.user.id)
               downvoteIds.splice(index, 1)
-              let payload = {
-                upvote: upvoteIds,
-                downvote: downvoteIds
-              }
-              this.$store.dispatch('answerUpdateNonDetail', payload)
-                .then(result => {
-                  return this.$store.dispatch('getAllQuestion')
-                })
-                .then(({ data }) => {
-                  this.active = ''
-                  this.$store.commit('ALL_QUESTION', data)
-                  this.$store.commit('FILTER_NONE')
-                  this.$store.commit('SELECT_QUESTION', this.$route.params.id)
-                  return this.$store.dispatch('getAllAnswer')
-                })
-                .then(result => {
-                  let answers = []
-                  for (let i = 0; i < result.length; i++) {
-                    answers.push(result[i].data)
-                  }
-                  this.$store.commit('ALL_SELECTED_ANSWER', answers)
-                })
-                .catch(err => {
-                  console.log(err)
-                  if (!err.response) {
-                    this.$swal({
-                      type: 'error',
-                      title: `Connection to Server Error`,
-                      showConfirmButton: true
-                    })
-                  } else {
-                    this.$swal({
-                      type: 'error',
-                      title: `${err.response.data.message}`,
-                      showConfirmButton: true
-                    })
-                  }
-                })
             }
+            let payload = {
+              upvote: upvoteIds,
+              downvote: downvoteIds
+            }
+            this.$store.dispatch('answerUpdateNonDetail', payload)
+              .then(result => {
+                return this.$store.dispatch('getAllQuestion')
+              })
+              .then(({ data }) => {
+                this.$store.commit('ALL_QUESTION', data)
+                this.$store.commit('FILTER_NONE')
+                this.$store.commit('SELECT_QUESTION', this.$route.params.id)
+                return this.$store.dispatch('getAllAnswer')
+              })
+              .then(result => {
+                let answers = []
+                for (let i = 0; i < result.length; i++) {
+                  answers.push(result[i].data)
+                }
+                this.$store.commit('ALL_SELECTED_ANSWER', answers)
+                if (upvoted) {
+                  this.active = 'upvote'
+                } else {
+                  this.active = ''
+                }
+              })
+              .catch(err => {
+                console.log(err)
+                if (!err.response) {
+                  this.$swal({
+                    type: 'error',
+                    title: `Connection to Server Error`,
+                    showConfirmButton: true
+                  })
+                } else {
+                  this.$swal({
+                    type: 'error',
+                    title: `${err.response.data.message}`,
+                    showConfirmButton: true
+                  })
+                }
+              })
           }
         }
       }
@@ -277,176 +214,111 @@ export default {
       if (!localStorage.getItem('token')) {
         this.$router.push('/login')
       } else {
+        let upvoteIds = []
+        let downvoteIds = []
+        let downvoted = false
+        for (let i = 0; i < this.detail.upvote.length; i++) {
+          upvoteIds.push(this.detail.upvote[i])
+        }
+        for (let i = 0; i < this.detail.downvote.length; i++) {
+          downvoteIds.push(this.detail.downvote[i])
+        }
         if (this.type === 'question') {
-          let upvoteIds = []
-          let downvoteIds = []
-          for (let i = 0; i < this.detail.upvote.length; i++) {
-            upvoteIds.push(this.detail.upvote[i])
-          }
-          for (let i = 0; i < this.detail.downvote.length; i++) {
-            downvoteIds.push(this.detail.downvote[i])
-          }
           if (!downvoteIds.includes(this.$store.state.user.id)) {
             if (!upvoteIds.includes(this.$store.state.user.id)) {
               downvoteIds.push(this.$store.state.user.id)
-              let payload = {
-                upvote: upvoteIds,
-                downvote: downvoteIds
-              }
-              this.$store.dispatch('questionUpdateNonDetail', payload)
-                .then(result => {
-                  return this.$store.dispatch('getAllQuestion')
-                })
-                .then(({ data }) => {
-                  this.$store.commit('ALL_QUESTION', data)
-                  this.$store.commit('FILTER_NONE')
-                  this.$store.commit('SELECT_QUESTION', this.$route.params.id)
-                  this.active = 'downvote'
-                })
-                .catch(err => {
-                  console.log(err)
-                  if (!err.response) {
-                    this.$swal({
-                      type: 'error',
-                      title: `Connection to Server Error`,
-                      showConfirmButton: true
-                    })
-                  } else {
-                    this.$swal({
-                      type: 'error',
-                      title: `${err.response.data.message}`,
-                      showConfirmButton: true
-                    })
-                  }
-                })
+              downvoted = true
             } else {
               let index = upvoteIds.indexOf(this.$store.state.user.id)
               upvoteIds.splice(index, 1)
-              let payload = {
-                upvote: upvoteIds,
-                downvote: downvoteIds
-              }
-              this.$store.dispatch('questionUpdateNonDetail', payload)
-                .then(result => {
-                  return this.$store.dispatch('getAllQuestion')
-                })
-                .then(({ data }) => {
-                  this.$store.commit('ALL_QUESTION', data)
-                  this.$store.commit('FILTER_NONE')
-                  this.$store.commit('SELECT_QUESTION', this.$route.params.id)
-                  this.active = ''
-                })
-                .catch(err => {
-                  console.log(err)
-                  if (!err.response) {
-                    this.$swal({
-                      type: 'error',
-                      title: `Connection to Server Error`,
-                      showConfirmButton: true
-                    })
-                  } else {
-                    this.$swal({
-                      type: 'error',
-                      title: `${err.response.data.message}`,
-                      showConfirmButton: true
-                    })
-                  }
-                })
             }
+            let payload = {
+              upvote: upvoteIds,
+              downvote: downvoteIds
+            }
+            this.$store.dispatch('questionUpdateNonDetail', payload)
+              .then(result => {
+                return this.$store.dispatch('getAllQuestion')
+              })
+              .then(({ data }) => {
+                this.$store.commit('ALL_QUESTION', data)
+                this.$store.commit('FILTER_NONE')
+                this.$store.commit('SELECT_QUESTION', this.$route.params.id)
+                if (downvoted) {
+                  this.active = 'downvote'
+                } else {
+                  this.active = ''
+                }
+              })
+              .catch(err => {
+                console.log(err)
+                if (!err.response) {
+                  this.$swal({
+                    type: 'error',
+                    title: `Connection to Server Error`,
+                    showConfirmButton: true
+                  })
+                } else {
+                  this.$swal({
+                    type: 'error',
+                    title: `${err.response.data.message}`,
+                    showConfirmButton: true
+                  })
+                }
+              })
           }
         } else {
-          let upvoteIds = []
-          let downvoteIds = []
           this.$store.commit('SELECT_ANSWER', id)
-          for (let i = 0; i < this.$store.state.selectedAnswer.upvote.length; i++) {
-            upvoteIds.push(this.$store.state.selectedAnswer.upvote[i])
-          }
-          for (let i = 0; i < this.$store.state.selectedAnswer.downvote.length; i++) {
-            downvoteIds.push(this.$store.state.selectedAnswer.downvote[i])
-          }
           if (!downvoteIds.includes(this.$store.state.user.id)) {
             if (!upvoteIds.includes(this.$store.state.user.id)) {
               downvoteIds.push(this.$store.state.user.id)
-              let payload = {
-                upvote: upvoteIds,
-                downvote: downvoteIds
-              }
-              this.$store.dispatch('answerUpdateNonDetail', payload)
-                .then(result => {
-                  return this.$store.dispatch('getAllQuestion')
-                })
-                .then(({ data }) => {
-                  this.active = 'downvote'
-                  this.$store.commit('ALL_QUESTION', data)
-                  this.$store.commit('FILTER_NONE')
-                  this.$store.commit('SELECT_QUESTION', this.$route.params.id)
-                  return this.$store.dispatch('getAllAnswer')
-                })
-                .then(result => {
-                  let answers = []
-                  for (let i = 0; i < result.length; i++) {
-                    answers.push(result[i].data)
-                  }
-                  this.$store.commit('ALL_SELECTED_ANSWER', answers)
-                })
-                .catch(err => {
-                  console.log(err)
-                  if (!err.response) {
-                    this.$swal({
-                      type: 'error',
-                      title: `Connection to Server Error`,
-                      showConfirmButton: true
-                    })
-                  } else {
-                    this.$swal({
-                      type: 'error',
-                      title: `${err.response.data.message}`,
-                      showConfirmButton: true
-                    })
-                  }
-                })
+              downvoted = true
             } else {
               let index = upvoteIds.indexOf(this.$store.state.user.id)
               upvoteIds.splice(index, 1)
-              let payload = {
-                upvote: upvoteIds,
-                downvote: downvoteIds
-              }
-              this.$store.dispatch('answerUpdateNonDetail', payload)
-                .then(result => {
-                  return this.$store.dispatch('getAllQuestion')
-                })
-                .then(({ data }) => {
-                  this.active = ''
-                  this.$store.commit('ALL_QUESTION', data)
-                  this.$store.commit('FILTER_NONE')
-                  this.$store.commit('SELECT_QUESTION', this.$route.params.id)
-                  return this.$store.dispatch('getAllAnswer')
-                })
-                .then(result => {
-                  let answers = []
-                  for (let i = 0; i < result.length; i++) {
-                    answers.push(result[i].data)
-                  }
-                  this.$store.commit('ALL_SELECTED_ANSWER', answers)
-                })
-                .catch(err => {
-                  console.log(err)
-                  if (!err.response) {
-                    this.$swal({
-                      type: 'error',
-                      title: `Connection to Server Error`,
-                      showConfirmButton: true
-                    })
-                  } else {
-                    this.$swal({
-                      type: 'error',
-                      title: `${err.response.data.message}`,
-                      showConfirmButton: true
-                    })
-                  }
-                })
             }
+            let payload = {
+              upvote: upvoteIds,
+              downvote: downvoteIds
+            }
+            this.$store.dispatch('answerUpdateNonDetail', payload)
+              .then(result => {
+                return this.$store.dispatch('getAllQuestion')
+              })
+              .then(({ data }) => {
+                this.$store.commit('ALL_QUESTION', data)
+                this.$store.commit('FILTER_NONE')
+                this.$store.commit('SELECT_QUESTION', this.$route.params.id)
+                return this.$store.dispatch('getAllAnswer')
+              })
+              .then(result => {
+                let answers = []
+                for (let i = 0; i < result.length; i++) {
+                  answers.push(result[i].data)
+                }
+                this.$store.commit('ALL_SELECTED_ANSWER', answers)
+                if (downvoted) {
+                  this.active = 'downvote'
+                } else {
+                  this.active = ''
+                }
+              })
+              .catch(err => {
+                console.log(err)
+                if (!err.response) {
+                  this.$swal({
+                    type: 'error',
+                    title: `Connection to Server Error`,
+                    showConfirmButton: true
+                  })
+                } else {
+                  this.$swal({
+                    type: 'error',
+                    title: `${err.response.data.message}`,
+                    showConfirmButton: true
+                  })
+                }
+              })
           }
         }
       }
