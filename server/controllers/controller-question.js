@@ -24,18 +24,37 @@ class ControllerQuestion {
       .populate('user_id', 'full_name email username _id')
       .populate('answers')
       .then((questions) => {
-        res.json(questions)
+        res.status(200).json(questions)
+      })
+      .catch(next)
+  }
+
+  static readAllOneUser(req, res, next) {
+    Question.find({ user_id: req.params.userid})
+      .populate('user_id')
+      .then((question) => {
+        res.status(200).send(question)
       })
       .catch(next)
   }
 
   static readOne(req, res, next) {
     Question.findById(req.params.id)
-      // .populate('user_id', 'full_name email username _id')
-      .populate('answers')
-      .populate('user_id')
+      .populate({
+        path: 'user_id',
+        select: 'username full_name _id'
+      })
+      .populate({
+        path: 'answers',
+        model: 'Answer',
+        populate: {
+          path: 'user_id',
+          model: 'User',
+        select: 'username full_name _id'
+        }
+      })
       .then((question) => {
-        res.json(question)
+        res.status(200).json(question)
       })
       .catch(next)
   }

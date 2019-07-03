@@ -5,6 +5,7 @@ const ControllerQuestion = require('../controllers/controller-question')
 const { authentication, authorizationQuestion } = require('../middlewares/author-authen')
 
 router.get('/', ControllerQuestion.readAllwFilter)
+router.get('/users/:userid', ControllerQuestion.readAllOneUser)
 router.get('/:id', ControllerQuestion.readOne)
 router.use(authentication)
 router.post('/', ControllerQuestion.create)

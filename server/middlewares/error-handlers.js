@@ -13,18 +13,31 @@ module.exports = {
       res.status(500).json({
         message: `Internal Server Errors`
       })
+    } else if (err.error.name === 'JsonWebTokenError') {
+      res.status(400).json({
+        message: 'Invalid access token'
+      })
     } else {
-      console.log(err);
+      console.log('error if', err)
       res.send(err)
     }
   } else {
-    if (err.name === 'ValidationError') {
-      console.log('masuk sini dong')
+    // console.log('ini error aneh', err)
+    if (err.name === 'MongoError') {
+      let message = err.errmsg.split(':')[2].split(' ')[1].split('_')[0]
       res.status(400).json({
-        message: err.message
+        message: `${message} is already in our database. Please use other ${message}`
+      })
+    } else if (err.name === 'ValidationError') {
+      let allMsg = []
+      Object.keys(err.errors).forEach((errKey) => {
+        allMsg.push(err.errors[errKey].message)
+      })
+      res.status(400).json({
+        message: allMsg.join(', ')
       })
     } else {
-      console.log('error di server', err);
+      console.log('error else', err)
       res.status(err.code).json({
         message: err.message
       })

@@ -8,10 +8,8 @@ var answerSchema = new Schema({
   content: String,
   user_id: { type: Schema.Types.ObjectId, ref: 'User' },
   question_id: { type: Schema.Types.ObjectId, ref: 'Question' },
-  votes: [{
-    userId: { type: Schema.Types.ObjectId, ref: 'User' },
-    voteType: String
-  }],
+  upvotes: { type: Schema.Types.ObjectId, ref: 'User' },
+  downvotes: { type: Schema.Types.ObjectId, ref: 'User' },
 }, {timestamps: true});
 
 // answerSchema.pre('remove', function(next) {

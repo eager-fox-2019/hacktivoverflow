@@ -8,10 +8,8 @@ var questionSchema = new Schema({
   content: String,
   user_id: { type: Schema.Types.ObjectId, ref: 'User' },
   answers: [{ type: Schema.Types.ObjectId, ref: 'Answer' }],
-  votes: [{
-    userId: { type: Schema.Types.ObjectId, ref: 'User' },
-    voteType: String
-  }],
+  upvotes: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+  downvotes: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   image_url: String,
 }, {timestamps: true});
 

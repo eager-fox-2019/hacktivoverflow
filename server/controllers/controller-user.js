@@ -1,12 +1,14 @@
 const User = require('../models/model-user')
 const Token = require('../models/model-blacklist-token')
 const { compareHash } = require('../helpers/hash-helpers')
-const { generateToken, decodeToken } = require('../helpers/jwt-helper')
+const { generateToken } = require('../helpers/jwt-helper')
 
 class ControllerUser {
   static login(req, res, next) {
+    if (!req.body.username || !req.body.password) {
+      throw ({ code: 404, message: 'Please input username / password' })
+    }
     if (req.body.login_type == 'default') {
-      console.log('masuk login');
       // default login
       let { username, password } = req.body
       let userData
@@ -33,12 +35,10 @@ class ControllerUser {
         .catch(next)
     } else if (req.body.login_type == 'google') {
       // google login
-      console.log('masuk login')
       let { full_name, username, email } = req.body
       let userData
       User.findOne({ email: email, username: username })
         .then((user) => {
-          console.log('ini hasili user', user)
           userData = user
           if (!user) {
             let randomPass = customPassword();
@@ -55,8 +55,6 @@ class ControllerUser {
             userId: (userData) ? userData._id : result._id
           }          
           let token = generateToken(payload)
-          console.log('ini payload', payload)
-          console.log('ini token send', token)
           res.json({
             token: token
           })
@@ -75,6 +73,9 @@ class ControllerUser {
   }
 
   static register(req, res, next) {
+    if (!req.body.email || !req.body.password) {
+      throw { code: 400, message: 'Please input email / password'}
+    }
     let newUser = {
       full_name: req.body.full_name,
       email: req.body.email,
@@ -95,8 +96,7 @@ class ControllerUser {
   }
 
   static profileData(req, res, next) {
-    let payload = decodeToken(req.headers.token)
-    User.findOne({ _id: payload.userId })
+    User.findById(req.userId)
       .then((result) => {
         let sendData = {
           full_name: result.full_name,

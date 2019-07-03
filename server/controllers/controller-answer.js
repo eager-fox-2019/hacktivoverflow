@@ -62,8 +62,6 @@ class ControllerAnswer {
       .then((values) => {
         let resultQuestion = values[0]
         let resultAnswer = values[1]
-        console.log('ini requlst delete Answer', resultQuestion)
-        console.log('ini requlst update Question', resultAnswer)
         res.status(201).json(resultQuestion)
       })
       .catch(next)
