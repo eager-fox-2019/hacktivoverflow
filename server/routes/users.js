@@ -7,6 +7,6 @@ const { authentication } = require('../middlewares/author-authen')
 router.post('/login', ControllerUser.login)
 router.post('/logout', ControllerUser.logout)
 router.post('/register', ControllerUser.register)
-router.get('/myprofile', authentication, ControllerUser.profileData)
+router.get('/myprofile', authentication, ControllerUser.myProfileData)
 
 module.exports = router

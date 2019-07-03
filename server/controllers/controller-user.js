@@ -95,7 +95,7 @@ class ControllerUser {
       .catch(next)
   }
 
-  static profileData(req, res, next) {
+  static myProfileData(req, res, next) {
     User.findById(req.userId)
       .then((result) => {
         let sendData = {

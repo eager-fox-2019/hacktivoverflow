@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-layout column wrap>
+    <v-layout row wrap>
       <v-flex xs12 lg8 offset-lg2>
         <v-layout column wrap>
           <v-flex xs12>
@@ -27,6 +27,9 @@
         </v-list>
       </v-flex>
       <v-flex xs12 lg8 offset-lg2>
+        <v-layout px-2>
+          <h1>Your Answer</h1>
+        </v-layout>
         <v-container>
           <v-text-field
             v-model="answer.title"
@@ -66,13 +69,21 @@ export default {
   },
   methods: {
     sendAnswer (val) {
-      let answerData = {
-        title: this.answer.title,
-        content: this.answer.content,
-        user_id: val,
-        question_id: this.$route.params.id
+      if (this.$store.state.loginUser.id) {
+        let answerData = {
+          title: this.answer.title,
+          content: this.answer.content,
+          user_id: val,
+          question_id: this.$route.params.id
+        }
+        this.$store.dispatch('sendNewAnswer', answerData)
+      } else {
+        Swal.fire(
+          'Login First!',
+          'Please login to answer a question',
+          'error'
+        )
       }
-      this.$store.dispatch('sendNewAnswer', answerData)
     }
   },
   created () {
@@ -86,7 +97,7 @@ export default {
       }
     },
     '$store.state.questionDetail' (val) {
-      this.$store.dispatch('getQuestionDetail', this.$route.params.id)      
+      this.$store.dispatch('getQuestionDetail', this.$route.params.id)
     }
   }
 }

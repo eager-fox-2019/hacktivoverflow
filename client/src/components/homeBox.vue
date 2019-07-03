@@ -19,21 +19,24 @@
       </v-layout>
     </v-flex>
     <!-- Content -->
-    <v-flex xs8 sm10 @click="toQuestion(item._id)">
+    <v-flex xs8 sm10>
       <v-container>
         <v-layout row wrap fill-height>
-          <v-flex xs12>
+          <v-flex xs12 @click="toQuestion(item._id)">
             <h2>{{ item.title }}</h2>
           </v-flex>
-          <v-flex xs12>
+          <v-flex xs12 @click="toQuestion(item._id)">
             {{ item.content }}
           </v-flex>
           <v-flex xs12>
             <v-layout pa-2 column
               wrap fill-height align-end justify-start
               class="blue lighten-4">
-              <p>By {{ item.user_id.username }}</p>
-              <p>{{ createdDate }}</p>
+              <v-btn :to="'/profile/' + item.user_id._id">
+                By {{ item.user_id.username }}
+                </v-btn>
+              <span>{{ createdDate }}</span>
+              <span>{{ momentAgo }}</span>
             </v-layout>
           </v-flex>
         </v-layout>
@@ -91,7 +94,7 @@ export default {
       this.$store.dispatch('deleteQuestionAnswer', { type: 'questions', val })
     },
     showAddEdit (val) {
-      this.$store.commit('setAddEditDialog', { show: true, type:'questions', val })
+      this.$store.commit('setAddEditDialog', { show: true, type: 'questions', val })
     }
   },
   created () {
@@ -108,7 +111,10 @@ export default {
   },
   computed: {
     createdDate () {
-      return moment(this.item.createdAt).format("ddd, MMMM Do YYYY");
+      return moment(this.item.createdAt).format('ddd, MMMM Do YYYY')
+    },
+    momentAgo () {
+      return moment(this.item.createdAt).fromNow()
     }
   }
 }

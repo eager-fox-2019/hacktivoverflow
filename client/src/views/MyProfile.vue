@@ -1,7 +1,7 @@
 <template>
-    <v-layout column align-center justify-center fill-height wrap>
-      <v-layout row wrap>
-        <v-card>
+    <v-layout column align-center justify-center fill-height>
+      <v-layout row>
+        <v-card width="300px">
           <v-layout row align-center justify-center>
             <v-avatar size="200">
               <img src="https://cdn-images-1.medium.com/max/1600/1*7rG4-5l7pCggislvU2RTbQ.jpeg">
@@ -17,8 +17,8 @@
           </v-card-title>
         </v-card>
       </v-layout>
-      <v-layout row wrap>
-        <v-flex col xs12 sm6>
+      <v-layout row>
+        <v-flex xs12 sm6>
           <v-layout class="blue lighten-4" pa-3 align-center justify-center>
             <h2>All Questions</h2>
           </v-layout>

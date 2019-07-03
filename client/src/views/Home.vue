@@ -1,21 +1,27 @@
 <template>
-  <v-container>
-    <v-layout row wrap align-center justify-center fill-height>
+  <v-layout column>
+    <v-layout column wrap align-center justify-center fill-height>
+      <v-select
+        v-model="sortBy"
+        :items="sortBySelects"
+        label="Sort Question by"
+      ></v-select>
       <v-btn @click="showAddEdit">Ask a question</v-btn>
     </v-layout>
-    <v-layout row wrap>
-      <v-flex xs12 lg8 offset-lg2>
-        <v-list three-line v-if="$store.state.loginUser.id">
-          <homeBox v-for="item in $store.state.questions"
+    <v-container>
+      <v-flex xs12 md8 offset-md2>
+        <v-list three-line v-if="$store.state.questions.length">
+          <homeBox v-for="item in questions"
             :key="item._id" :item="item"></homeBox>
         </v-list>
       </v-flex>
-    </v-layout>
-  </v-container>
+    </v-container>
+  </v-layout>
 </template>
 
 <script>
 import homeBox from '@/components/homeBox.vue'
+import moment from 'moment'
 
 export default {
   name: 'home',
@@ -24,12 +30,41 @@ export default {
   },
   data () {
     return {
-      //
+      sortBySelects: ['Newest', 'Votes'],
+      questions: [],
+      sortBy: 'Votes'
     }
   },
   methods: {
     showAddEdit () {
-      this.$store.commit('setAddEditDialog', { show: true, type: 'questions' })
+      if (this.$store.state.loginUser.id) {
+        this.$store.commit('setAddEditDialog', { show: true, type: 'questions' })
+      } else {
+        Swal.fire(
+          'Login First!',
+          'Please login to ask a question',
+          'error'
+        )
+      }
+    }
+  },
+  watch: {
+    sortBy (val) {
+      if (val === 'Newest') {
+        this.questions = this.sortedByDate
+      } else if (val === 'Votes') {
+        this.questions = this.sortedByVotes
+      }
+    }
+  },
+  computed: {
+    sortedByDate () {
+      return this.$store.state.questions.sort((q1, q2) => moment(q2.createdAt) - moment(q1.createdAt))      
+    },
+    sortedByVotes () {
+      return this.$store.state.questions.sort((q1, q2) => {
+        return (q2.upvotes.length - q2.downvotes.length) - (q1.upvotes.length - q1.downvotes.length)
+      })
     }
   },
   created () {

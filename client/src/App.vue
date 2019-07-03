@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-toolbar app fixed>
+    <v-toolbar app fixed dark>
       <v-toolbar-title>
         <v-layout row>
           <v-flex xs3>
@@ -33,7 +33,7 @@
       </v-toolbar-items>
     </v-toolbar>
 
-    <v-content>
+    <v-content class="grey">
       <router-view></router-view>
     </v-content>
     <addedit></addedit>
@@ -62,6 +62,7 @@ export default {
     if (localStorage.token) {
       this.$store.dispatch('getMyProfile')
     }
+    this.$store.dispatch('getQuestions')
   }
 }
 </script>

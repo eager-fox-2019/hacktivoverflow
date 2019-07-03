@@ -139,12 +139,18 @@ export default new Vuex.Store({
           })
         }
       })
-        .then((val) => {
-          if (val.message) {
+        .then(({ data }) => {
+          console.log('ini val di sendlogout', data)
+          if (data.message) {
             localStorage.removeItem('token')
             context.commit('setLoginUser', {})
             context.commit('setIsLogin', false)
             router.push('/')
+            Swal.fire(
+              'Success Logout!',
+              `We'll miss you!`,
+              'success'
+            )
           }
         })
         .catch(err => {

@@ -1,10 +1,10 @@
 <template>
-  <v-container>
+  <v-container fill-height>
     <v-layout row>
       <v-flex xs12 sm10 offset-sm1>
         <v-tabs
           v-model="active"
-          color="cyan" dark slider-color="yellow"
+          dark slider-color="yellow"
           centered
         >
           <v-tab key="login" ripple>

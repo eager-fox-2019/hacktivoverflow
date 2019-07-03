@@ -34,8 +34,10 @@
             {{ question.content }}
           </v-flex>
           <v-flex xs12>
-            <v-layout fill-height align-end justify-start row>
-              By {{ question.user_id.username }}
+            <v-layout align-start justify-start column>
+              <span>By {{ question.user_id.username }}</span>
+              <span>{{ createTime }}</span>
+              <span>{{ momentAgo }}</span>
             </v-layout>
           </v-flex>
         </v-layout>
@@ -45,6 +47,8 @@
 </template>
 
 <script>
+import moment from 'moment'
+
 export default {
   name: 'questionBox',
   props: ['question'],
@@ -64,6 +68,12 @@ export default {
     },
     downvoteStatus () {
       return this.question.downvotes.includes(this.$store.state.loginUser.id)
+    },
+    createTime () {
+      return moment(this.question.createdAt).format('ddd, MMMM Do YYYY')
+    },
+    momentAgo () {
+      return moment(this.question.createdAt).fromNow()
     }
   }
 }

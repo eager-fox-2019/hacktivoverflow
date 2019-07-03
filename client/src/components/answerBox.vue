@@ -37,8 +37,10 @@
             {{ item.content }}
           </v-flex>
           <v-flex xs12>
-            <v-layout fill-height align-end justify-start row>
-              By {{ item.user_id.username }}
+            <v-layout align-end justify-center column fill-height>
+              <span>By {{ item.user_id.username }}</span>
+              <span>{{ createTime }}</span>
+              <span>{{ momentAgo }}</span>
             </v-layout>
           </v-flex>
         </v-layout>
@@ -77,6 +79,8 @@
 </template>
 
 <script>
+import moment from 'moment'
+
 export default {
   props: ['item'],
   data () {
@@ -94,10 +98,10 @@ export default {
       }
       this.$store.dispatch('sendVote', sendVote)
     },
-    showAddEdit(val) {
+    showAddEdit (val) {
       this.$store.commit('setAddEditDialog', { show: true, type: 'answers', val })
     },
-    deleteItem(val) {
+    deleteItem (val) {
       this.$store.dispatch('deleteQuestionAnswer', { type: 'answers', val })
     }
   },
@@ -119,6 +123,12 @@ export default {
     },
     downvoteStatus () {
       return this.item.downvotes.includes(this.$store.state.loginUser.id)
+    },
+    createTime () {
+      return moment(this.item.createdAt).format('ddd, MMMM Do YYYY')
+    },
+    momentAgo () {
+      return moment(this.item.createdAt).fromNow()
     }
   }
 }
