@@ -206,10 +206,24 @@ export default new Vuex.Store({
       .patch(`/users/tags/push`, {tags: tags})
       .then(({data}) => {
         context.commit('SET_WATCHED_TAGS', data.watchedTags)
+        context.commit('SET_USER', data)
       })
       .catch(err => {
         console.log(err.response);
       })
-    }
+    },
+    removeWatchedTags(context, tags) {
+      myaxios.defaults.headers.common['token'] = localStorage.token
+
+      myaxios
+      .patch(`/users/tags/pull`, {tags: tags})
+      .then(({data}) => {
+        context.commit('SET_WATCHED_TAGS', data.watchedTags)
+        context.commit('SET_USER', data)
+      })
+      .catch(err => {
+        console.log(err.response);
+      })
+    },
   }
 })

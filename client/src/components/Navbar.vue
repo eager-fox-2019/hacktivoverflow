@@ -1,6 +1,6 @@
 <template>
     <div>
-        <nav class="navbar fixed-top navbar-light bg-white" style="padding: .5rem 13.3em; border-bottom: solid 1px #eee;">
+        <nav class="navbar fixed-top navbar-light bg-white" style="padding: .5rem 5.6em; border-bottom: solid 1px #eee;">
             <router-link to="/" class="nav-container"> 
                 <img 
                     src="../assets/icon/iron-man-icon_b&w.png" 

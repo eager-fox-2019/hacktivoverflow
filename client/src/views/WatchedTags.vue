@@ -10,15 +10,19 @@
                 Watched tags like subscribe to topic of question that you interest
             </small>
         </div>
+
+        <Widget />
     </div>
 </template>
 
 <script>
 import Sidebar from '@/components/Sidebar'
+import Widget from '@/components/Widget';
 
 export default {
     components: {
-        Sidebar
+        Sidebar,
+        Widget
     }
 }
 </script>

@@ -28,7 +28,7 @@ export default {
     border-top: solid 1px #ededed;
     margin-top: 5em;
     justify-content: space-between;
-    padding: 0.7em 13.3em;
+    padding: 0.7em 5.6em;
 }
 .footer__content {
     text-align: center;

@@ -9,8 +9,8 @@
         <QuestionList
           :questions="stateQuestion"
         />
-        <Widget />
       </div>
+      <Widget />
   </div>
 </template>
 

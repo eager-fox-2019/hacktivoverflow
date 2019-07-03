@@ -53,7 +53,7 @@ export default {
 }
 
 .my-container {
-  max-width: 60em;
+  max-width: 75em;
   min-height: 100vh;
 }
 </style>

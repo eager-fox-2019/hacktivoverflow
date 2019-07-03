@@ -2,7 +2,7 @@
     <div class="my-container__small">
         <Sidebar />
 
-         <div style="width: 740px;">
+        <div style="width: 740px;">
             <div class="heads">
                 <h5 slot="header">Tags</h5>
             </div>
@@ -29,17 +29,21 @@
                 />
             </div>
         </div>
+
+        <Widget />
     </div>
 </template>
 
 <script>
 import Sidebar from '@/components/Sidebar.vue'
 import QuestionList from '@/components/QuestionList.vue'
+import Widget from '@/components/Widget';
 
 export default {
     components: {
         Sidebar,
-        QuestionList
+        QuestionList,
+        Widget
     },
     data() {
         return {

@@ -18,18 +18,22 @@
                 />
             </div>
         </div>
+
+        <Widget />
     </div>
 </template>
 
 <script>
 import QuestionList from '@/components/QuestionList.vue'
 import Sidebar from '@/components/Sidebar.vue'
+import Widget from '@/components/Widget';
 
 export default {
     name: 'my-questions',
     components: {
         QuestionList,
-        Sidebar
+        Sidebar,
+        Widget
     },
     computed: {
         myQuestions() {
