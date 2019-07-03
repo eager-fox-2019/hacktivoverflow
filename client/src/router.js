@@ -26,5 +26,13 @@ export default new Router({
       name: 'register',
       component: () => import(/* webpackChunkName: "register" */ './views/Register.vue')
     },
+    {
+      path: '/user',
+      name: 'user',
+      component: () => import(/* webpackChunkName: "user" */ './views/User.vue'),
+      children: [
+        
+      ]
+    }
   ]
 })

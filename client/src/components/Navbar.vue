@@ -15,8 +15,11 @@
             </router-link>
           </div>
           <div v-else-if="$store.state.loggedUser.user !== ''" class="mr-3">
-            <router-link to="/user/cart">
-              <b-button variant="light">My Question</b-button>
+            <router-link to="/user">
+              <b-button class="mr-2" variant="light">Profile</b-button>
+            </router-link>
+            <router-link to="/newQuestion">
+              <b-button variant="light">New Question</b-button>
             </router-link>
           </div>
           <div v-if="$store.state.loggedUser.fullName !== ''">

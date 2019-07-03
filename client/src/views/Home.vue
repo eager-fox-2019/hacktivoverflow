@@ -15,6 +15,9 @@ export default {
   computed: mapState([
   ]),
   data() {
+    return {
+      
+    }
   },
   created() {
   },
