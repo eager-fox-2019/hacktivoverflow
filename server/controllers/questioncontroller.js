@@ -1,9 +1,28 @@
 const Question = require('../models/question')
+const Answer = require('../models/answer')
 
 class QuestionController {
+  static getQuestion(req,res,next) {
+    Question.findOne({
+      _id: req.params.id
+    })
+      .populate({
+        path: 'answers',
+        populate: {
+          path: 'user'
+        }
+      })
+      .populate('user')
+      .then(question => {
+        res.status(200).json(question)
+      })
+      .catch(next)
+  }
+
   static getPublicQuestions(req,res,next) {
     Question.find()
       .populate('answers')
+      .populate('user')
       .then(questions => {
         res.status(200).json(questions)
       })
@@ -11,15 +30,12 @@ class QuestionController {
   }
 
   static addQuestion(req,res,next) {
-    const { title, description } = req.body
+    const { question, description } = req.body
 
     Question.create({
       user: req.decode.id,
-      title: title,
+      question: question,
       description: description,
-      upvotes: 0,
-      downvotes: 0,
-      answers: []
     })
       .then(question => {
         res.status(201).json(question)

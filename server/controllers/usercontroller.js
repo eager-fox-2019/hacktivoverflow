@@ -5,8 +5,8 @@ const { verifyToken } = require('../helpers/jwt')
 
 class UserController {
   static register(req, res, next) {
-    const { firstName, lastName, email, password } = req.body
-    const input = { firstName, lastName, email, password }
+    const { firstName, lastName, username, email, password } = req.body
+    const input = { firstName, lastName, username, email, password }
     User.create(input)
       .then(newUser => {
         res.status(201).json(newUser)
@@ -21,7 +21,6 @@ class UserController {
   }
 
   static login(req, res, next) {
-    console.log(req.body.email, req.body.password)
     User.findOne({
       email: req.body.email
     })
@@ -31,6 +30,7 @@ class UserController {
             const payload = {
               firstName: user.firstName,
               lastName: user.lastName,
+              username: user.username,
               email: user.email,
               id: user.id
             }

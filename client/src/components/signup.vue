@@ -12,21 +12,33 @@
         <div style="border: 1px solid #BEBEBE;">
           <div class="title pa-3" style="text-align:center; background-color: #F7C10A;"> Sign Up</div>
           <form class="pa-3">
+            <v-layout row wrap>
+              <v-text-field
+                v-model="firstName"
+                :error-messages="firstNameErrors"
+                label="First name"
+                required
+                @input="$v.firstName.$touch()"
+                class="mr-3"
+              ></v-text-field>
+
+              <v-text-field
+                v-model="lastName"
+                :error-messages="lastNameErrors"
+                label="Last name"
+                required
+                @input="$v.lastName.$touch()"
+              ></v-text-field>
+            </v-layout>
+            
             <v-text-field
-              v-model="firstName"
-              :error-messages="firstNameErrors"
-              label="First name"
+              v-model="username"
+              :error-messages="usernameErrors"
+              label="Username"
               required
-              @input="$v.firstName.$touch()"
+              @input="$v.username.$touch()"
             ></v-text-field>
 
-            <v-text-field
-              v-model="lastName"
-              :error-messages="lastNameErrors"
-              label="Last name"
-              required
-              @input="$v.lastName.$touch()"
-            ></v-text-field>
 
             <v-text-field
               v-model="email"
@@ -72,6 +84,7 @@ export default {
     validations: {
       firstName: { required },
       lastName: { required },
+      username: { required },
       email: { required, email },
       password: { required },
     },
@@ -84,6 +97,7 @@ export default {
     data: () => ({
       firstName: '',
       lastName: '',
+      username: '',
       email: '',
       password: '',
       errMessage: '',
@@ -118,6 +132,13 @@ export default {
         !this.$v.lastName.required && errors.push('Last name is required.')
         return errors
       },
+
+      usernameErrors() {
+        const errors = []
+        if (!this.$v.username.$dirty) return errors
+        !this.$v.username.required && errors.push('username is required.')
+        return errors
+      }
     },
 
     methods: {
@@ -129,6 +150,7 @@ export default {
           data: {
             firstName: this.firstName,
             lastName: this.lastName,
+            username: this.username,
             email: this.email,
             password: this.password
           }

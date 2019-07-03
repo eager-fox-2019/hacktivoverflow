@@ -1,11 +1,9 @@
 <template>
   <div id="app">
-    <NavBar />
     <v-app id="keep">
+      <NavBar />
       <v-content>
-     
-     
-      <router-view></router-view>
+        <router-view></router-view>
       </v-content>
     </v-app>
   </div>
@@ -16,7 +14,7 @@
 import NavBar from '@/components/navbar'
 
 import SignIn from '@/components/signin'
-
+// import Home from '@/views/home'
 
 export default {
   data() {
@@ -27,13 +25,16 @@ export default {
 
   components: {
     NavBar,
-    SignIn
+    SignIn,
+    // Home
   },
 
   created() {
     if(localStorage.access_token) {
       this.$store.dispatch('decodeToken')
     }
+
+    this.$store.dispatch('getPublicQuestions')
   }
 }
 </script>

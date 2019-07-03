@@ -8,18 +8,23 @@ export default new Vuex.Store({
   state: {
     baseURL: 'http://localhost:3000',
     isLoggedIn: false,
-    loggedUser: {}
+    loggedUser: {},
+    publicQuestions: []
   },
   getters: {
   
   },
   mutations: {
-    SET_LOGIN(state, payload) {
+    SET_LOGIN(state, user) {
       state.isLoggedIn = true
       state.loggedUser = {
-        firstName: payload.firstName,
-        lastName: payload.lastName
+        firstName: user.firstName,
+        lastName: user.lastName
       }
+    },
+
+    SET_PUBLICQUESTIONS(state, questions) {
+      state.publicQuestions = questions
     }
   },
   actions: {
@@ -33,6 +38,19 @@ export default new Vuex.Store({
       })
         .then(({data}) => {
           context.commit('SET_LOGIN', data)
+        })
+        .catch(({response}) => {
+          console.log(response)
+        })
+    },
+
+    getPublicQuestions(context) {
+      axios({ 
+        method: 'GET',
+        url: `${this.state.baseURL}/questions/all`,
+      })
+        .then(({data}) => {
+          context.commit('SET_PUBLICQUESTIONS', data)
         })
         .catch(({response}) => {
           console.log(response)

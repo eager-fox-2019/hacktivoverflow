@@ -3,6 +3,8 @@ import Router from 'vue-router'
 import SignIn from '@/components/signin.vue'
 import Home from '@/views/home.vue'
 import SignUp from '@/components/signup.vue'
+import AskQuestion from '@/views/askquestion.vue'
+import ViewPost from '@/views/viewpost.vue'
 
 Vue.use(Router)
 
@@ -24,6 +26,16 @@ export default new Router({
       path: '/signup',
       name: 'SignUp',
       component: SignUp
+    },
+    {
+      path: '/askquestion',
+      name: 'AskQuestion',
+      component: AskQuestion
+    },
+    {
+      path: '/post/:id',
+      name: 'ViewPost',
+      component: ViewPost
     }
   ]
 })

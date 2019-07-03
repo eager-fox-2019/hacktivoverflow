@@ -3,7 +3,8 @@ const QuestionController = require('../controllers/questioncontroller')
 const { questionAuthorization } = require('../middlewares/authorization')
 const { authentication } = require('../middlewares/authentication')
 
-router.get('/', QuestionController.getPublicQuestions)
+router.get('/all', QuestionController.getPublicQuestions)
+router.get('/:id', QuestionController.getQuestion )
 
 router.use(authentication)
 router.post('/', QuestionController.addQuestion)

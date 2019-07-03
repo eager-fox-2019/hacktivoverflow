@@ -5,10 +5,11 @@ import store from './store'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css' 
 import Vuelidate from 'vuelidate'
+import CKEditor from '@ckeditor/ckeditor5-vue'
 
 Vue.use(Vuelidate)
 Vue.use(Vuetify)
-
+Vue.use(CKEditor);
 Vue.config.productionTip = false
 
 new Vue({

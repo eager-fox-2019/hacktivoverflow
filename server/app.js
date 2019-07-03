@@ -15,7 +15,7 @@ app.use(cors());
 app.use('/', routes)
 
 const mongoose = require('mongoose');
-const url = 'mongodb://localhost:27017/project'
+const url = 'mongodb://localhost:27017/hacktivoverflow2'
 mongoose.connect(url, {useNewUrlParser: true}, (err) => {
   if(err) {
     console.log(err)
@@ -26,6 +26,7 @@ mongoose.connect(url, {useNewUrlParser: true}, (err) => {
 })
 
 app.use(function(err,req,res,next){
+  console.log(err)
   if(err.code === 404) {
     res.status(404).json({ message: 'Resource not found' })
   } else if(err.name === 'ValidationError') {

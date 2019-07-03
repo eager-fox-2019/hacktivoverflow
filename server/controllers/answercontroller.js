@@ -11,22 +11,33 @@ class AnswerController {
   static addAnswer(req,res,next) {
     const { title, description, questionId } = req.body 
 
+    let answerId;
     Answer.create({
       user: req.decode.id,
       title: title,
       description: description,
-      upvotes: 0,
-      downvotes: 0,
       question: questionId
     })
       .then(answer => {
-        res.status(201).json(answer)
+        answerId = answer._id
+        // res.status(201).json(answer)
+        return Question.findOne({ _id: questionId })
+      })
+      .then(question => {
+        question.answers.push(answerId)
+        return question.save()
+      })
+      .then(edited => {
+        return Answer.populate(edited, {path: 'answers', populate: { path: 'user'}})
+      })
+      .then(pop => {
+        res.status(200).json(pop)
       })
       .catch(next)
   }
 
   static editAnswer(req,res,next) {
-    const { title, description, question}
+    // const { title, description, question}
   }
 
   static deleteAnswer(req,res,next) {

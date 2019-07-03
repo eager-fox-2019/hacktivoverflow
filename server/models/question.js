@@ -1,22 +1,25 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
-const QuestionSChema = new Schema({
+const QuestionSchema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
     ref: 'User'
   },
-  title: {
+  question: {
     type: String,
+    required: [true, 'Question is required']
   },
   description: {
     type: String,
+    require: [true, 'Description is required']
   },
   upvotes: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   downvotes: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-  Answers: [ { type: Schema.Types.ObjectId, ref: 'Answer' } ]
-})
+  answers: [{ type: Schema.Types.ObjectId, ref: 'Answer' }]
+  // comments: [{ type: Schema.Types.ObjectId, ref: 'Comment'}]
+}, { timestamps: true })
 
-const Question = mongoose.model('Question', QuestionSChema)
+const Question = mongoose.model('Question', QuestionSchema)
 
 module.exports = Question

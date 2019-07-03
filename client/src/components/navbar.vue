@@ -74,7 +74,7 @@ export default {
         { icon: 'touch_app', text: 'Reminders' },
         { divider: true },
         { heading: 'Have something in mind?' },
-        { icon: 'add', text: 'Ask a question' },
+        { icon: 'add', text: 'Ask a question', path: '/askquestion'},
         { divider: true },
         { icon: 'archive', text: 'Archive' },
         { icon: 'delete', text: 'Trash' },
