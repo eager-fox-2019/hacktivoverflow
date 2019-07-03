@@ -235,7 +235,7 @@ export default {
                 this.showEdit = false
                 this.editAnswer = ''
             })
-            .catch(err=>{
+            .catch(() =>{
                 this.$alertify.error('Failed, please check your internet connection or try again');
             })  
         },

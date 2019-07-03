@@ -22,10 +22,8 @@
 </template>
 
 <script>
-import myaxios from '@/api/axios'
 import QuestionList from '@/components/QuestionList.vue'
 import Sidebar from '@/components/Sidebar.vue'
-import { mapState } from 'vuex';
 
 export default {
     name: 'my-questions',

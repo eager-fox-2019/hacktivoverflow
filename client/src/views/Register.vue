@@ -59,7 +59,7 @@ export default {
         register() {
             myaxios
             .post('/register', this.form)
-            .then(user=> {
+            .then( () => {
                 this.$alertify.success(`Success, login to continue`);
                 this.form={}
                 this.$router.push('/login')

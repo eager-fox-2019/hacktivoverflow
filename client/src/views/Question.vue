@@ -63,8 +63,6 @@
 </template>
 
 <script>
-import myaxios from '@/api/axios'
-
 export default {
     data() {
         return {
@@ -103,7 +101,7 @@ export default {
                     this.$router.push('/')
                 }
             })
-            .catch((err) => {
+            .catch(() => {
                 this.$alertify.error(`Failed, please check your internet connection or try again`);
             })
         }

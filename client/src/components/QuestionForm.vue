@@ -127,7 +127,7 @@ export default {
                     this.$alertify.error('Failed, please check your internet connection or try again');
                 }
             })
-            .catch(err => {
+            .catch(() => {
                 this.$alertify.error('Failed, please check your internet connection or try again');
             })
         }

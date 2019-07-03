@@ -58,16 +58,6 @@ export default {
                 console.log(err.response);
             })
         },
-        fetchAnswer() {
-            myaxios
-            .get('/answers')
-            .then(({data}) => {
-                // this.questions.push(data)
-            })
-            .catch(err => {
-                console.log(err);
-            })
-        }
     },
 }
 </script>

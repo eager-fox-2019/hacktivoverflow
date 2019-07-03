@@ -49,8 +49,6 @@
 </template>
 
 <script>
-import myaxios from '@/api/axios'
-
 export default {
     props: ['questions', 'manipulate'],
     methods: {
