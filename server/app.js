@@ -21,5 +21,5 @@ mongoose.connect('mongodb://localhost/hacktivOverFlow', {useNewUrlParser : true}
 app.use('/', route)
 
 app.listen(port, () => {
-    console.log(`listening on port port`)
+    console.log(`listening on port`, port)
 })
