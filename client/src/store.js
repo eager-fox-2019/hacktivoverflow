@@ -89,6 +89,7 @@ export default new Vuex.Store({
         headers: {access_token: state.access_token}
       })
       .then(({data}) => {
+        data.owner = state.currentQuestion.owner
         //data is the updated question, update our arrays using it.
         commit('UPDATECURRENTQUESTION', null)
         commit('UPDATECURRENTQUESTION', data)
@@ -157,6 +158,13 @@ export default new Vuex.Store({
         url: state.baseURL+'/answer/',
         headers: {access_token: state.access_token},
         data: form
+      })
+    },
+    deleteQuestion({state, commit, dispatch}, questionId){
+      return axios({
+        method: 'delete',
+        url: state.baseURL+'/question/'+ questionId,
+        headers: {access_token: state.access_token}
       })
     }
   }

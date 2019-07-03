@@ -22,6 +22,7 @@ class ControllerQuestion {
     // returns question object
     let questionId = req.params.id
     Question.findOne({_id: questionId})
+    .populate('owner')
     .then (found => {
       if (!found) throw ({message: 'question not found', status: 404})
       res.json(found) 

@@ -42,6 +42,11 @@ export default new Router({
           component: () => import('./views/Register.vue'),
           meta: {title: 'register'} 
         },
+        { path: 'edit', 
+          name: 'edit profile',
+          component: () => import('./views/EditProfile.vue'),
+          meta: {title: 'edit profile'} 
+        },
       ]
     },
     {
