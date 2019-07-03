@@ -12,6 +12,8 @@ export default new Vuex.Store({
   	questionList: [],
   	currentQuestion: null,
   	answerList: [],
+    user: null,
+    token: null
   },
   mutations: {
   	UPDATEQUESTIONLIST(state, payload){
@@ -23,6 +25,21 @@ export default new Vuex.Store({
   	UPDATECURRENTANSWERLIST(state, payload){
   		state.answerList = payload
   	},
+    LOGOUT(state){
+      state.isLoggedin = false
+      localStorage.clear()
+    },
+    SAVEUSER(state, payload){
+      // console.log('di commit SAVEUSER')
+      state.user = {name:payload.name, email:payload.email}
+      // console.log('di commit SAVEUSER')
+      state.token = payload.access_token
+      // console.log('di commit SAVEUSER')
+      state.isLoggedin = true
+      // console.log('di commit SAVEUSER')
+      localStorage.setItem('access_token', state.token)
+      // console.log('di commit SAVEUSER')
+    }
   },
   actions: {
   	getQuestions({state, commit, dispatch}){

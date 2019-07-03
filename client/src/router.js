@@ -30,7 +30,19 @@ export default new Router({
       component: () => import('./views/User.vue'),
       meta: {
         title: 'user'
-      }
+      },
+      children: [
+        { path: 'login', 
+          name: 'login',
+          component: () => import('./views/Login.vue'), 
+          meta: {title: 'login'}
+        },
+        { path: 'register', 
+          name: 'register',
+          component: () => import('./views/Register.vue'),
+          meta: {title: 'register'} 
+        },
+      ]
     },
     {
       path: '/question/:id',
