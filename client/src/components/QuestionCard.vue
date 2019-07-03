@@ -3,9 +3,9 @@
 
   <VoteButtons :totalVotes="totalVotes" @upvote="upvote" @downvote="downvote"/>
 
-  <b-card style="width: 80%;" :title="card.title" :sub-title="card.owner.name">
+  <b-card style="width: 80%;" :title="updatedCard.title" :sub-title="cardOwner">
     <b-card-text>
-      {{card.description}}
+      {{updatedCard.description}}
     </b-card-text>
 
     <b-link href="#" class="card-link" @click.prevent="questionDetail">See Detail</b-link>
@@ -28,6 +28,12 @@ export default {
     },
     questionId() {
       return this.card._id
+    },
+    updatedCard() {
+      return this.card
+    },
+    cardOwner() {
+      return 'by '+this.card.owner.name
     }
   },
   methods: {

@@ -89,8 +89,25 @@ export default new Vuex.Store({
         headers: {access_token: state.access_token}
       })
       .then(({data}) => {
-        dispatch('getQuestions') //update questions
-        dispatch('getQuestion', qId)
+        //data is the updated question, update our arrays using it.
+        commit('UPDATECURRENTQUESTION', null)
+        commit('UPDATECURRENTQUESTION', data)
+
+        let tempArray = state.questionList
+        for (let i =0; i < tempArray.length; i++){
+          if (tempArray[i]._id == data._id){
+            tempArray[i] = data
+            console.log({updated:data})
+            i = tempArray.length
+          }
+        }
+
+        commit('UPDATEQUESTIONLIST', [])
+        commit('UPDATEQUESTIONLIST', tempArray)
+        console.log('updated question list')
+
+        // dispatch('getQuestions') //update questions
+        // dispatch('getQuestion', qId)
         //data is question with updated upvotes and downvotes array
         console.log(data)
       })

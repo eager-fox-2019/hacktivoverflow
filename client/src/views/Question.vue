@@ -28,7 +28,7 @@ export default {
   	VoteButtons,
     AnswerList
   },
-  created(){
+  mounted(){
     this.$store.dispatch('getQuestionDetail', this.$route.params.id)
   },
   computed: {
