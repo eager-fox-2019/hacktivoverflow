@@ -1,4 +1,4 @@
-const { Question } = require('../models')
+const { Question, Answer } = require('../models')
 
 class QuestionController{
     static getAllQuestion(req, res, next){
@@ -32,8 +32,8 @@ class QuestionController{
 
     static addQuestion(req, res, next){
         console.log("Masuk ke add Question")
-        const { title, description } = req.body
-        const input = { title, description }
+        const { title, description, question } = req.body
+        const input = { title, description, question }
         input.owner = req.decode.id
         Question.create(input)
             .then(result => {
@@ -99,10 +99,15 @@ class QuestionController{
     }
 
     static delete(req, res, next){
+        console.log("Masuk ke delete question")
         let searchObj = {
             _id: req.params.questionId
         }
-        Question.deleteOne(searchObj)
+        Answer.deleteMany({question: req.params.questionId})
+            .then(result => {
+                console.log("Answers from this question deleted")
+                return  Question.deleteOne(searchObj)
+            })       
             .then(result => {
                 if(!result || result.n === 0){
                     throw {code: 404, message: 'Question not found'}

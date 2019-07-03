@@ -98,14 +98,18 @@ class AnswerController{
     }
 
     static delete(req, res, next){
+        console.log("Masuk delete answer")
         let searchObj = {
-            _id: req.params.AnswerId
+            _id: req.params.answerId
         }
         Answer.deleteOne(searchObj)
             .then(result => {
+                console.log("result delete", result)
                 if(!result || result.n === 0){
+                    console.log("result gagal")
                     throw {code: 404, message: 'Answer not found'}
                 } else {
+                    console.log("delete berhasil")
                     res.json(result)
                 }
             })

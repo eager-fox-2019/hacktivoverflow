@@ -16,10 +16,10 @@ module.exports = {
         }
     },
     authorizationQuestion(req, res, next){
-        Question.findByPk(req.params.id)
+        Question.findOne({ _id: req.params.questionId})
             .then(question => {
                 if(question){
-                    if(question.owner === req.decode.id){
+                    if(question.owner == req.decode.id){
                         next()
                     } else {
                         throw {status: 401}
@@ -31,10 +31,10 @@ module.exports = {
             .catch(next)
     },
     authorizationAnswer(req, res, next){
-        Answer.findByPk(req.params.id)
+        Answer.findOne({ _id: req.params.answerId})
             .then(answer => {
                 if(answer){
-                    if(answer.owner === req.decode.id){
+                    if(answer.owner == req.decode.id){
                         next()
                     } else {
                         throw {status: 401}

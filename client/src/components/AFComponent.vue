@@ -37,7 +37,8 @@ export default {
     return {
       form: {
         title: '',
-        description: ''
+        description: '',
+        question: ''
       }
     }
   },

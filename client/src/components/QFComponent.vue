@@ -49,6 +49,7 @@ export default {
       const { dispatch } = this.$store
       dispatch('ADD_QUESTION', this.form)
         .then(() => {
+          dispatch('GET_QUESTION')
           this.$swal({
             type: 'success',
             title: 'Question added!'

@@ -17,10 +17,10 @@
               <b-card-text v-if="(type === 'answer')">
                 {{ inside.description }}
               </b-card-text>
-              <div v-if="(inside.owner == userId)">
+              <b-button-group v-if="(inside.owner == userId)">
                 <b-button variant="primary" @click="edit(inside._id)">Edit</b-button>
                 <b-button variant="danger" @click="del(inside._id)">Delete</b-button>
-              </div>
+              </b-button-group>
             </b-card-body>
           </b-card>
         </b-col>
@@ -44,16 +44,62 @@ export default {
       }
       return desc
     },
-    userId: function() {
+    userId: function () {
       return localStorage.getItem('id')
     }
   },
   methods: {
-    edit(id) {
+    edit (id) {
       // this
     },
-    del(id) {
-      // this
+    del (id) {
+      let { dispatch } = this.$store
+      let swalconfirm = false
+      this.$swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      })
+        .then((result) => {
+          swalconfirm = result.value
+          if (swalconfirm) {
+            if (this.type === 'question') {
+              return dispatch('DELETE_QUESTION', id)
+            } else if (this.type === 'answer') {
+              return dispatch('DELETE_ANSWER', id)
+            }
+          }
+        })
+        .then((result) => {
+          if (this.type === 'answer') {
+              return dispatch('DELETE_ANSWER', id)
+          }
+        })
+        .then((result) => {
+          if (swalconfirm) {
+            this.$swal({
+              type: 'success',
+              title: `Delete ${this.type} success`
+            })            
+            if (this.type === 'question') {
+              this.$router.push('/')
+            } else if (this.type === 'answer') {
+              this.$router.push('/')
+              // this.$store.dispatch('GET_A_QUESTION', this.$route.params.questionId)
+            }
+          }
+        })
+        .catch(e => {
+          console.log(e)
+          this.$swal({
+            type: 'error',
+            title: `Delete ${this.type} failed`,
+            text: `${e}`
+          })
+        })
     }
     // getQuestion (id) {
     //   console.log('Masuk getquestion')
