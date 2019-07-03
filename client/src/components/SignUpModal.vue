@@ -16,17 +16,17 @@
               <v-layout wrap>
                 <v-form class="form-input" ref="form" v-model="valid" lazy-validation>
                   <v-flex xs12>
-                    <v-text-field label="First Name" v-model="userObj.firstName" :rules="nameRules" required></v-text-field>
+                    <v-text-field @keydown.enter.prevent="register" label="First Name" v-model="userObj.firstName" :rules="nameRules" required></v-text-field>
                   </v-flex>
                   <v-flex xs12>
-                    <v-text-field label="Last Name" v-model="userObj.lastName" :rules="nameRules" required></v-text-field>
+                    <v-text-field @keydown.enter.prevent="register" label="Last Name" v-model="userObj.lastName" :rules="nameRules" required></v-text-field>
                   </v-flex>
                   <v-flex xs12>
-                    <v-text-field label="Email" v-model="userObj.email" :rules="emailRules" required>
+                    <v-text-field @keydown.enter.prevent="register" label="Email" v-model="userObj.email" :rules="emailRules" required>
                     </v-text-field>
                   </v-flex>
                   <v-flex xs12>
-                    <v-text-field label="Password" v-model="userObj.password" type="password" :rules="passwordRules" required></v-text-field>
+                    <v-text-field @keydown.enter.prevent="register" label="Password" v-model="userObj.password" type="password" :rules="passwordRules" required></v-text-field>
                   </v-flex>
                 </v-form>
               </v-layout>

@@ -15,10 +15,10 @@
             <v-container grid-list-md>
               <v-layout wrap>
                 <v-flex xs12>
-                  <v-text-field v-model="userObj.email" label="Email" required></v-text-field>
+                  <v-text-field @keydown.enter.prevent="login" v-model="userObj.email" label="Email" required></v-text-field>
                 </v-flex>
                 <v-flex xs12>
-                  <v-text-field v-model="userObj.password" label="Password" type="password" required></v-text-field>
+                  <v-text-field @keydown.enter.prevent="login" v-model="userObj.password" label="Password" type="password" required></v-text-field>
                 </v-flex>
               </v-layout>
             </v-container>
