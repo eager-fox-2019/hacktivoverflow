@@ -1,30 +1,33 @@
 <template>
-  <div class="card" style="display:flex;justify-content:center;flex-direction:column;width: auto;">
+  <div class="card text-white bg-dark mb-3" style="display:flex;justify-content:center;flex-direction:column;width: auto;">
     <div class="card-header">{{answer.title}}</div>
-    <ul class="list-group list-group-flush">
+    <ul class="list-group list-group-flush" style="color:black">
       <li class="list-group-item">
         {{answer.comment}}
         <br />
+        <br />
+        <small>
         <cite title="Source Title">
           Created at {{ answer.created_at }}
           <br />
           by {{ answer.UserId.name }}
         </cite>
+        </small>
       </li>
       <li class="list-group-item">
         <UpvoteButton :answer="answer" :addUpvote2="addUpvote2" :addDownvote2="addDownvote2">
           <button
             @click="addUpvote2(answer._id)"
             type="button"
-            class="btn btn-primary"
-            style="margin-right:10px;height:40px;width:40px"
+            class="btn btn-outline-dark"
+            style="margin-right:10px;height:40px;width:40px;border-radius:20px"
           >+</button>
           {{ answer.upvotes.length - answer.downvotes.length}}
           <button
             @click="addDownvote2(answer._id)"
             type="button"
-            class="btn btn-danger"
-            style="margin-left:10px;height:40px;width:40px"
+            class="btn btn-outline-danger"
+            style="margin-left:10px;height:40px;width:40px;border-radius:20px"
           >-</button>
         </UpvoteButton>
 

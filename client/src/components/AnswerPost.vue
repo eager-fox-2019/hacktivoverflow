@@ -1,5 +1,5 @@
 <template>
-  <div style="margin-top:20px">
+  <div style="margin-top:0px">
     <p class="header">Your Answer</p>
     <div id="answerQuestion">
       <form @submit.prevent="postAnswer">

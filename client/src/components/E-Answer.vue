@@ -2,11 +2,11 @@
   <div>
     <form @submit.prevent="editAnswer(answer)">
       <div class="form-group">
-        <label :for="`#${answer._id}title`">Edit Title</label>
+        <label :for="`#${answer._id}title`">New Title</label>
         <input type="text" class="form-control" :id="`${answer._id}title`" v-model="answer.title" />
       </div>
       <div class="form-group">
-        <label :for="`#${answer._id}comment`">Edit Answer</label>
+        <label :for="`#${answer._id}comment`">New Answer</label>
         <input
           type="text"
           class="form-control"
@@ -19,7 +19,7 @@
         <br />
         <br />
       </p>
-      <button type="submit" class="btn btn-secondary">Edit</button>
+      <button style="border-radius:20px" type="submit" class="btn btn-outline-success">Save</button>
     </form>
   </div>
 </template>

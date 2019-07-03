@@ -6,6 +6,8 @@
 </template>
 <script>
 import Navbar from '@/components/Navbar.vue'
+import { mapActions } from 'vuex'
+
 export default {
   name: 'app',
   data () {
@@ -19,17 +21,25 @@ export default {
       return this.$store.state.islogin
     }
   },
-  watch: {
-    islogin () {
-      if (this.islogin === false) {
-        this.$router.push('/')
-      }
-    }
+  watch: {},
+  methods: {
+    ...mapActions(['FETCHQUESTIONS'])
   },
   created () {
     if (localStorage.getItem('token')) {
       this.$store.commit('USERLOGIN', localStorage)
-      this.$router.push('/questions')
+      let loc = JSON.parse(localStorage.currentPage)
+      if (loc.name === 'questions') {
+        this.$router.push({ path: loc.link })
+      } else if (loc.name === 'ask') {
+        this.$router.push('/ask')
+      } else {
+        this.$router.push('/questions')
+      }
+    } else {
+      localStorage.clear()
+      this.$store.commit('USERLOGOUT', localStorage)
+      this.$router.push('/')
     }
   }
 }

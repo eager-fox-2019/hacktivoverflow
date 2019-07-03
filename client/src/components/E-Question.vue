@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div style="color:black">
     <form @submit.prevent="editQuestion(questionEdit)">
       <div class="form-group">
-        <label :for="`#${questionEdit._id}title`">Edit Title</label>
+        <label :for="`#${questionEdit._id}title`">New Title</label>
         <input
           type="text"
           class="form-control"
@@ -11,7 +11,7 @@
         />
       </div>
       <div class="form-group">
-        <label :for="`#${questionEdit._id}category`">Edit Category</label>
+        <label :for="`#${questionEdit._id}category`">New Category</label>
         <input
           type="text"
           class="form-control"
@@ -20,7 +20,7 @@
         />
       </div>
       <div class="form-group">
-        <label :for="`#${questionEdit._id}question`">Edit Question</label>
+        <label :for="`#${questionEdit._id}question`">New Question</label>
         <input
           type="text"
           class="form-control"
@@ -33,7 +33,7 @@
         <br />
         <br />
       </p>
-      <button type="submit" class="btn btn-secondary">Edit</button>
+      <button type="submit" class="btn btn-outline-success" style="border-radius:20px">Save</button>
     </form>
   </div>
 </template>

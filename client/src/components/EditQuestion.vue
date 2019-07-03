@@ -1,15 +1,15 @@
 <template>
   <div>
-    <li class="list-group-item">
+    <li class="list-group-item" style="border-radius:20px">
       <button
         type="button"
         class="btn btn-secondary"
-        style="margin-right:10px"
+        style="margin-right:10px;border-radius:20px"
         data-toggle="collapse"
         :data-target="`#a${questionEdit._id}`"
         aria-expanded="false"
       >Edit</button>
-      <button type="button" class="btn btn-danger" v-on:click="deleteQuestion(questionEdit._id)">Delete</button>
+      <button style="border-radius:20px" type="button" class="btn btn-danger" v-on:click="deleteQuestion(questionEdit._id)">Delete</button>
       <div class="collapse" :id="`a${questionEdit._id}`" style="margin-top:30px">
         <div class="card card-body">
           <EQuestion :question="question"></EQuestion>

@@ -12,11 +12,16 @@
     <div class="col-3">
       <h2 style="text-align:center">Categories</h2>
       <br />
-      <div class="card" style="width: 18rem;">
-        <ul class="list-group list-group-flush">
+      <div class="card text-white bg-dark mb-3" style="width: 18rem;">
+        <ul class="list-group list-group-flush" style="padding:20px">
           <div v-for="category in categories" :key="category">
-            <li class="list-group-item">
-              <Category :category="category"></Category>
+            <li class="list-group-item" style="border-radius:10px;margin-bottom:5px;">
+              <Category :category="category">
+                <div
+                  style="cursor:pointer;color:black"
+                  v-on:click="FETCHQUESTIONS(category)"
+                >{{ category }}</div>
+              </Category>
             </li>
           </div>
         </ul>
@@ -53,6 +58,7 @@ export default {
     ...mapActions(['FETCHQUESTIONS'])
   },
   created () {
+    localStorage.setItem('currentPage', JSON.stringify({ name: 'home' }))
     this.FETCHQUESTIONS()
   }
 }

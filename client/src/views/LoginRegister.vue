@@ -28,9 +28,8 @@ export default {
     Login,
     Register
   },
-  methods: {
-
-  }
+  methods: {},
+  created () {}
 }
 </script>
 

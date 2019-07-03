@@ -4,10 +4,13 @@
       <div class="col-6" v-if="islogin">
         <h2 style="text-align:center">{{ question.title }}</h2>
         <br />
-        <div style="display:flex;flex-direction:column">
-          <QuestionCard
-          ></QuestionCard>
+        <div style="display:flex;justify-content:center;flex-direction:column">
+          <div>
+          <QuestionCard></QuestionCard>
+          </div>
+          <div>
           <AnswerPost v-if="islogin"></AnswerPost>
+          </div>
         </div>
       </div>
       <div class="col-6">
@@ -52,6 +55,13 @@ export default {
   },
   created () {
     this.FETCHQUESTION(this.$route.params.id)
+    localStorage.setItem(
+      'currentPage',
+      JSON.stringify({
+        name: 'questions',
+        link: `questions/${this.$route.params.id}`
+      })
+    )
   }
 }
 </script>

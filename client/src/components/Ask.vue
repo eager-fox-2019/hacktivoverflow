@@ -37,6 +37,7 @@
   </div>
 </template>
 <script>
+import axios from 'axios'
 export default {
   name: 'ask-component',
   data () {

@@ -20,6 +20,9 @@ export default {
     Ask
   },
   methods: {
+  },
+  created () {
+    localStorage.setItem('currentPage', JSON.stringify({ name: 'ask' }))
   }
 }
 </script>

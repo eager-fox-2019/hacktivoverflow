@@ -1,12 +1,14 @@
 <template>
-  <div class="card" style="width: 600px;" v-if="question.UserId != undefined">
-    <div class="card-header" style="height:47px">{{ question.title }}</div>
+  <div class="card text-white bg-dark mb-3" style="width: 600px;" v-if="question.UserId != undefined">
+    <div class="card-header" style="height:47px">Category: {{ question.category }}</div>
     <div class="card-body">
       <blockquote class="blockquote mb-0">
         <p>{{ question.description }}</p>
         <footer class="blockquote-footer">
-          Created by
-          <cite title="Source Title">{{ question.UserId.name }} in {{ question.category }}</cite>
+          <small style="color:white">
+            By
+            {{ question.UserId.name }} at {{ question.created_at.slice(0,10) }}
+          </small>
         </footer>
       </blockquote>
       <br />
@@ -14,15 +16,15 @@
         <button
           @click="addUpvote"
           type="button"
-          class="btn btn-primary"
-          style="margin-right:10px;height:40px;width:40px"
+          class="btn btn-outline-light"
+          style="margin-right:10px;height:40px;width:40px;border-radius:20px"
         >+</button>
         {{ question.upvotes.length - question.downvotes.length}}
         <button
           @click="addDownvote"
           type="button"
-          class="btn btn-danger"
-          style="margin-left:10px;height:40px;width:40px"
+          class="btn btn-outline-danger"
+          style="margin-left:10px;height:40px;width:40px;border-radius:20px"
         >-</button>
       </UpvoteButton2>
 

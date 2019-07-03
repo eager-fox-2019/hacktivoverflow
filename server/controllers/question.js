@@ -3,6 +3,7 @@ const Answer = require("../models/answer.js");
 
 class QuestionController {
   static create(req, res, next) {
+    let email = req.decoded.email;
     let id = req.decoded.id;
     let newQuestion = {
       title: req.body.title,
@@ -57,7 +58,7 @@ class QuestionController {
       _id: id
     })
       .then(result => {
-        return Answer.deleteMany({QuestionId: id})
+        return Answer.deleteMany({ QuestionId: id });
       })
       .then(result => {
         res.status(200).json(result);

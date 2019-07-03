@@ -1,8 +1,6 @@
 <template>
-  <div
-      style="cursor:pointer"
-      v-on:click="FETCHQUESTIONS(category)"
-    >{{ category }}
+<div>
+  <slot></slot>
   </div>
 </template>
 <script>

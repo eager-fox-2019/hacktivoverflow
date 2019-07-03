@@ -4,12 +4,12 @@
       <button
         type="button"
         class="btn btn-secondary"
-        style="margin-right:10px"
+        style="margin-right:10px;border-radius:20px"
         data-toggle="collapse"
         :data-target="`#a${answer._id}`"
         aria-expanded="false"
       >Edit</button>
-      <button type="button" class="btn btn-danger" v-on:click="deleteAnswer(answer._id)">Delete</button>
+      <button style="border-radius:20px" type="button" class="btn btn-danger" v-on:click="deleteAnswer(answer._id)">Delete</button>
       <div class="collapse" :id="`a${answer._id}`" style="margin-top:30px">
         <div class="card card-body">
           <EAnswer :answer="answer"></EAnswer>
