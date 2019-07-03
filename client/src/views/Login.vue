@@ -50,12 +50,13 @@ export default {
             myaxios
             .post('/login', this.form)
             .then(({ data }) => {
+                localStorage.token = data.token
+
                 this.$store.dispatch('setLoggedInUser')
                 .then(() => {
                     if(!this.$store.getters.error){
                         this.$alertify.success(`Welcome ${data.username}`);
                         this.$store.state.isLogin = true
-                        localStorage.token = data.token
                         this.$router.push('/')
                     }
                 })
@@ -70,12 +71,7 @@ export default {
         isLogin() {
             return this.$store.state.isLogin
         }
-    },
-    watch: {
-        isLogin() {
-            return this.$store.state.isLogin
-        }
-    },
+    }
 }
 </script>
 

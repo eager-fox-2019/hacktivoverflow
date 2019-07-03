@@ -13,7 +13,6 @@ module.exports = (req, res, next) => {
             User.findOne({email: decoded.email})
             .then(user => {
                 req.decoded = decoded
-                req.headers.id = decoded.id
                 next()
             })
             .catch(err => {

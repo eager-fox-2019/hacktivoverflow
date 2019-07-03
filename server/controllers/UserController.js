@@ -86,7 +86,7 @@ class UserController {
     }
 
     static findOne(req, res) {
-        const id = req.params.id ? req.params.id : req.headers.id
+        const id = req.params.id ? req.params.id : req.decoded.id
 
         User
         .findById(id)

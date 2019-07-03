@@ -45,8 +45,13 @@ export default new Router({
     },
     {
       path: '/tags',
-      name: 'watch-tags',
+      name: 'tags',
       component: () => import(/* webpackChunkName: "about" */ './views/Tag.vue')
+    },
+    {
+      path: '/tags/watch',
+      name: 'watched-tags',
+      component: () => import(/* webpackChunkName: "about" */ './views/WatchedTags.vue')
     },
     {
       path: '/about',

@@ -140,7 +140,7 @@ export default new Vuex.Store({
         context.commit('SET_USER', data)
       })
       .catch(error => {
-        console.log(error);
+        console.log(error.response);
       })
     },
     addNewQuestion(context,payload) {

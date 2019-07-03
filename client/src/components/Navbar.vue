@@ -41,27 +41,16 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 export default {
     computed: {
-        isLogin() {
-            return this.$store.getters.isLogin
-        },
-        loginUser() {
-            return this.$store.getters.loginUser
-        }
-    },
-    watch: {
-        isLogin() {
-            return this.$store.getters.isLogin
-        },
-        loginUser() {
-            return this.$store.getters.loginUser
-        }
+        ...mapState(['isLogin', 'loginUser'])
     },
     methods: {
         logout() {
             localStorage.clear()
             this.$store.commit('SET_IS_LOGIN_STATUS', false)
+            this.$store.commit('SET_USER', {})
             this.$alertify.message(`Logout, See you around :)`);
         }
     },

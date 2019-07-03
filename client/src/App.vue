@@ -17,19 +17,16 @@ export default {
     Navbar,
     Footer,
   },
-  created() {
+  mounted() {
       this.$store.dispatch('getQuestion')
       if(localStorage.token) {
         this.$store.dispatch('fetchMyQuestions')
+        this.checkLogin()
       }
-
-      this.checkLogin()
   },
   methods: {
     checkLogin() {
-      if(localStorage.token) {
-        this.$store.dispatch('setLoggedInUser')
-      }
+      this.$store.dispatch('setLoggedInUser')
     }
   }
 }
