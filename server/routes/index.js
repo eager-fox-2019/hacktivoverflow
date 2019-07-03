@@ -1,10 +1,10 @@
 const router= require('express').Router()
-const userRoute= require('../routes/user')
-const questionRoute= require('../routes/question')
-const answerRoute= require('../routes/answer')
+const userRoute= require('./user')
+const questionRoute= require('./question')
+const answerRoute= require('./answer')
 
-router('/users', userRoute)
-router('/questions', questionRoute)
-router('/answers', answerRoute)
+router.use('/users', userRoute)
+router.use('/questions', questionRoute)
+router.use('/answers', answerRoute)
 
-export default router
+module.exports= router

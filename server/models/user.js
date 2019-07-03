@@ -40,9 +40,9 @@ let userSchema = new Schema({
     password: String
 })
 
-userSchema.pre('save',function(next){
+userSchema.pre('save',function(done){
     this.password = hash(this.password)
-    next()
+    done()
 })
 
 let User = mongoose.model('User',userSchema)

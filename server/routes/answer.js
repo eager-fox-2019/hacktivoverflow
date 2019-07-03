@@ -1,13 +1,16 @@
 const router= require('express').Router()
 const answerController= require('../controllers/answerController')
+const authentication = require('../middlewares/authentication')
+const {authorizationAnswer} = require('../middlewares/authorization')
 
 router.get('/:questionId', answerController.findAll)
 router.get('/details/:id', answerController.findOne)
+router.use(authentication)
 router.post('/', answerController.create)
-router.patch('/:id', answerController.update)
+router.patch('/:id', authorizationAnswer, answerController.update)
 router.patch('/upvotes/:id', answerController.updateUpvotes)
 router.patch('/downvotes/:id', answerController.updateDownvotes)
-router.delete('/:id', answerController.remove)
+router.delete('/:id', authorizationAnswer, answerController.remove)
 
 
-export default router
+module.exports= router

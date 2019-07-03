@@ -1,4 +1,6 @@
-const User = require ('../models/user')
+const User= require('../models/user')
+const {compare}= require('../helpers/bcrypt')
+const {generateToken}= require('../helpers/jwt')
 
 class userController{
 
@@ -15,15 +17,14 @@ class userController{
             })
             .catch(next)
         }
+    
     static login(req, res, next){
-            console.log('masuk login')
             User.findOne({email: req.body.email})
             .then(user=>{
-                // console.log(user)
                 if(user){
                     if(compare(req.body.password, user.password)){
                         let payload= {
-                            userId: user._id,
+                            id: user._id,
                             email: user.email,
                             name: user.name,
                         }
@@ -44,7 +45,6 @@ class userController{
             })
             .catch(next)
         }
-
 }
 
 module.exports= userController

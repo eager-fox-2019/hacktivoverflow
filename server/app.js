@@ -11,7 +11,7 @@ const route = require('./routes')
 const mongoose = require('mongoose')
 const errorHandler = require('./middlewares/errorHandler')
 
-mongoose.connect(`mongodb://localhost/namadatabase`, {useNewUrlParser: true}, function(err){
+mongoose.connect(`mongodb://localhost/hacktivoverflow`, {useNewUrlParser: true}, function(err){
     if(err) throw err
     else console.log('success connect to database')
 });

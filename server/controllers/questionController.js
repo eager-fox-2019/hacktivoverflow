@@ -20,7 +20,11 @@ class questionController{
     }
 
     static findAll(req, res, next){
-        Question.find({sort: {createdAt: -1}}).populate('userId')
+        Question.find({}).sort({createdAt: -1})
+        .populate({
+            path: 'userId',
+            select: ['name','_id']
+        })
         .then(questions =>{
             res.status(200).json(questions)
         })
@@ -28,7 +32,7 @@ class questionController{
     }
 
     static findOne(req, res, next){
-        Question.findById(req.params.id)
+        Question.findById(req.params.id).populate('userId')
         .then(question =>{
             if(question){
                 res.status(200).json(question)
@@ -57,31 +61,59 @@ class questionController{
 
     static updateUpvotes(req, res, next){
         let questionId= req.params.id
-        let userId= req.decode.userId
+        let userId= req.decode.id
 
-        Promise.all([
-            Question.findByIdAndUpdate(questionId, {$addToSet : { upvotes: userId }}),
-            Question.findByIdAndUpdate(questionId , {$pull : { downvotes: userId }})
-        ])
+        Question.findById(questionId)
         .then(question =>{
-            res.status(200).json(question)
+            if(!question){
+                throw {code: 404, message: 'Question not found'}
+            }else{
+                if(question.upvotes.includes(userId)){
+                    throw {code: 404, message: 'You have been vote'}
+                }else{
+                    Promise.all([
+                        Question.findByIdAndUpdate(questionId, {$addToSet : { upvotes: userId }}),
+                        Question.findByIdAndUpdate(questionId , {$pull : { downvotes: userId }})
+                    ])
+                    .then(question =>{
+                        res.status(200).json(question[0])
+                    })
+                    .catch(next)
+                }
+            }
         })
         .catch(next)
+
+        
 
     }
 
-    static udpateDownvotes(req, res, next){
+    static updateDownvotes(req, res, next){
         let questionId= req.params.id
-        let userId= req.decode.userId
+        let userId= req.decode.id
 
-        Promise.all([
-            Question.findByIdAndUpdate(questionId , {$addToSet : { downvotes: userId }}),
-            Question.findByIdAndUpdate(questionId , {$pull : { upvotes: userId }})
-        ])
+        Question.findById(questionId)
         .then(question =>{
-            res.status(200).json(question)
+            if(!question){
+                throw {code: 404, message: 'Question not found!'}
+            }else{
+                if(question.downvotes.includes(userId)){
+                    throw {code: 400, message: 'You have been vote'}
+                }else{
+                    Promise.all([
+                        Question.findByIdAndUpdate(questionId , {$addToSet : { downvotes: userId }}),
+                        Question.findByIdAndUpdate(questionId , {$pull : { upvotes: userId }})
+                    ])
+                    .then(question =>{
+                        res.status(200).json(question[0])
+                    })
+                    .catch(next)
+                }
+            }
         })
         .catch(next)
+        
+        
 
     }
 
@@ -100,4 +132,4 @@ class questionController{
 
 }
 
-export default questionController
+module.exports= questionController
