@@ -44,7 +44,7 @@ export default {
             .then(() => {
                 if(!this.$store.getters.error) {
                     this.tagName = ''
-                    this.$store.dispatch('')
+                    this.$store.dispatch('getWatchedTagsQuestions')
                 }
             })
         },
@@ -53,6 +53,7 @@ export default {
             .then(() => {
                 if(!this.$store.getters.error) {
                     this.tagName = ''
+                    this.$store.dispatch('getWatchedTagsQuestions')
                 }
             })
         }

@@ -237,7 +237,7 @@ export default new Vuex.Store({
 
       setTimeout(() => {
         myaxios
-        .post('/tags/watchedtags', {tags:getters.watchedTagsQuestions})
+        .post('/tags/watchedtags', {tags:getters.watchedTags})
         .then(({data}) => {
             commit('SET_WATCHED_TAGS_QUESTION', data)
         })
