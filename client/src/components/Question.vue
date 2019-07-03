@@ -8,7 +8,8 @@
       </v-flex>
       <v-flex xs10 class="py-4 px-4">
         <h4 class="display-1 my-2">Title</h4>
-        <p class="question-text">Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin
+        <p class="question-text">Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a
+          piece of classical Latin
           literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney
           College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage,
           and
@@ -17,13 +18,16 @@
           Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the
           Renaissance.
           The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.</p>
-        <v-btn color="info">Add Answer</v-btn>
+        <v-btn @click="addAnswer" color="info">{{addAnswerText}}</v-btn>
       </v-flex>
     </v-layout>
     <v-layout class="answer-text-container">
       <p class="answer-text">
-          2 Answer
+        2 Answer
       </p>
+    </v-layout>
+    <v-layout v-if="isAddAnswer">
+      <AddAnswerForm></AddAnswerForm>
     </v-layout>
     <v-layout>
       <Answer></Answer>
@@ -33,9 +37,30 @@
 
 <script>
   import Answer from './Answer'
+  import AddAnswerForm from './AddAnswerForm'
   export default {
     components: {
-      Answer
+      Answer,
+      AddAnswerForm
+    },
+    data() {
+      return {
+        isAddAnswer: false,
+        addAnswerText: 'Add Answer'
+      }
+    },
+    methods: {
+      addAnswer() {
+        console.log('hehe');
+        
+        if (this.isAddAnswer) {
+          this.isAddAnswer = false;
+          this.addAnswerText = 'Add Answer'
+        } else {
+          this.isAddAnswer = true;
+          this.addAnswerText = 'Close Form'
+        }
+      }
     }
   }
 </script>
@@ -45,24 +70,25 @@
     font-size: 2.5rem;
   }
 
-  .votes-icon-up, .votes-icon-down {
+  .votes-icon-up,
+  .votes-icon-down {
     font-size: 2.5rem;
     color: #444;
   }
 
   .votes-icon-up:hover {
-    color:#1E88E5;
+    color: #1E88E5;
     cursor: pointer;
   }
 
   .votes-icon-down:hover {
-    color:#E53935;
+    color: #E53935;
     cursor: pointer;
   }
 
   .question-container {
     margin-top: 50px;
-    border-top: 1px solid #eee;
+    border-top: 1px solid #aaa;
     border-bottom: 1px solid #ddd;
     min-height: 400px;
   }
@@ -78,6 +104,7 @@
   .answer-text-container {
     width: 100%;
     padding: 20px 0px 0px 20px;
+    border-bottom: 1px solid #aaa;
   }
 
   .answer-text {

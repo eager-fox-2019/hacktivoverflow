@@ -8,7 +8,8 @@ class Answer {
       description: req.body.description,
       upvotes: [],
       downvotes: [],
-      answer: []
+      answer: [],
+      author: req.decode._id
     }
     Model.answer.create(answerObj)
     .then((response) => {

@@ -10,11 +10,15 @@ let answerSchema = new Schema({
     type: String,
     required: true
   },
-  upvotes: {
+  upvotes: [{
     type: Schema.Types.ObjectId,
     ref: 'User'
-  },
-  downvotes: {
+  }],
+  downvotes: [{
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  }],
+  author: {
     type: Schema.Types.ObjectId,
     ref: 'User'
   }

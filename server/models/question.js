@@ -10,18 +10,22 @@ let questionSchema = new Schema({
     type: String,
     required: true
   },
-  upvotes: {
+  author: {
     type: Schema.Types.ObjectId,
     ref: 'User'
   },
-  downvotes: {
+  upvotes: [{
     type: Schema.Types.ObjectId,
     ref: 'User'
-  },
-  answer: {
+  }],
+  downvotes: [{
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  }],
+  answer: [{
     type: Schema.Types.ObjectId,
     ref: 'Answer'
-  }
+  }]
 });
 
 let questionModel = mongoose.model('Question', questionSchema);

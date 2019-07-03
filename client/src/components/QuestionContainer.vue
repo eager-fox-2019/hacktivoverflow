@@ -1,5 +1,7 @@
 <template>
+  <div>
   <Question></Question>
+  </div>
 </template>
 
 <script>

@@ -50,7 +50,9 @@ app.use(function (err, req, res, next) {
       message: 'Invalid access token',
       code: 400
     });
-  } else {
+  } else if(err.name == 'ValidationError') {
+    res.status(422).json(err);
+  }  else {
     res.status(500).json(err);
   }
 });

@@ -1,11 +1,12 @@
 <template>
   <v-layout class="center-section">
-    <QuestionContainer></QuestionContainer>
-    <!-- <AddForm></AddForm> -->
+    <router-view></router-view>
   </v-layout>
 </template>
 
 <script>
+  import LeftMainSection from './LeftMainSection'
+  import RightMainSection from './LeftMainSection'
   import QuestionContainer from './QuestionContainer'
   import AddForm from './AddForm'
 
@@ -19,7 +20,7 @@
 
 <style scoped>
   .center-section {
-    width: 100vh;
-    height: 100vh;
+    width: 65%;
+    min-height: 100vh;
   }
 </style>
