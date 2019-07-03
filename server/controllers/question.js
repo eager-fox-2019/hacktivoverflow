@@ -11,7 +11,7 @@ class QuestionController{
 
     static getQuestion(req, res, next){
         console.log("Masuk get question")
-        Question.findOne({ _id: req.params.questionId })
+        Question.findOne({ _id: req.params.questionId }).populate('answer')
             .then(question => {
                 if(!question){
                     throw {code: 404, message: 'Question not found'}

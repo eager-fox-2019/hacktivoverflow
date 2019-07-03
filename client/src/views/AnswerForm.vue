@@ -14,7 +14,7 @@ export default {
   components: {
     AFComponent,
     NavBar
-  },
+  }
   // data(){
   //   return {
   //     questionObject : null
@@ -23,6 +23,6 @@ export default {
   // created(){
   //   this.questionId = this.$route.params.questionId
   // }
-  
+
 }
 </script>

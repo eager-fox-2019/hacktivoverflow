@@ -53,9 +53,9 @@ export default {
           let ans = this.questionShowed.answer
           ans.push(data._id)
           return dispatch('UPDATE_DETAILED_QUESTION', {
-              id: this.questionShowed._id,
-              answer: ans
-            })
+            id: this.questionShowed._id,
+            answer: ans
+          })
         })
         .then(({ data }) => {
           this.$swal({
@@ -64,7 +64,7 @@ export default {
           })
           this.$router.push(`/question/${this.questionShowed._id}`)
           this.clearForm()
-         })
+        })
         .catch(e => {
           console.log(e.response.data.message)
           let arr = e.response.data.message.split(':')
@@ -75,9 +75,9 @@ export default {
           })
         })
     }
-  },  
+  },
   created () {
-      this.$store.dispatch('GET_A_QUESTION', this.$route.params.questionId)
+    this.$store.dispatch('GET_A_QUESTION', this.$route.params.questionId)
   },
   computed: {
     ...mapState(['questionShowed'])

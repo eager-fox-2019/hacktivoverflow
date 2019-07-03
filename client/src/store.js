@@ -26,7 +26,8 @@ export default new Vuex.Store({
       state.answer = payload
     },
     ADD_ANSWER_LIST (state, payload) {
-      state.answer.push(payload)
+      console.log("Masuk add answer in list")
+      state.answers.push(payload)
     }
   },
   actions: {
@@ -119,12 +120,18 @@ export default new Vuex.Store({
       })
     },
     GET_ANSWER ({ state }, payload) {
+      console.log("Masuk get answer client")
       axios({
         method: 'get',
-        url: `${state.baseUrl}/answer/${payload.id}`
+        url: `${state.baseUrl}/answer/${payload}`
       })
         .then(({ data }) => {
+          console.log("Berhasil get answer")
+          console.log(data, "ini datanya")
           this.commit('ADD_ANSWER_LIST', data)
+        })
+        .catch(e => {
+          console.log(e)
         })
     },
     UPDATE_DETAILED_ANSWER ({ state }, payload) {

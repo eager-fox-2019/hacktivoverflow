@@ -31,7 +31,7 @@ export default new Router({
       path: '/question/:questionId',
       name: 'questionanswer',
       component: QuestionAnswer
-    },    
+    },
     {
       path: '/add-answer/:questionId',
       name: 'answerform',

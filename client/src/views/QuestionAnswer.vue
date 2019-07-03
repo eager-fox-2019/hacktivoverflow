@@ -19,7 +19,8 @@
                 </b-card>
                 <b-row>
                     <b-col cols="12" sm>
-                        {{ "ini area answer"}}
+                        <br>
+                        <CardList v-for="answer in questionShowed.answer" :key="answer._id" :inside="answer" :type="'answer'" />
                     </b-col>
                 </b-row>
             </b-col>
@@ -31,6 +32,7 @@
 <script>
 import NavBar from '@/components/NavBar.vue'
 import VoteButton from '@/components/VoteButton.vue'
+import CardList from '@/components/CardList.vue'
 import { mapState } from 'vuex'
 
 export default {
@@ -41,16 +43,18 @@ export default {
   },
   components: {
     NavBar,
-    VoteButton
+    VoteButton,
+    CardList
   },
   computed: {
-    ...mapState(['questionShowed'])
-    // answers: function () {
-    //   this.$store.dispatch()
-    // }
+    ...mapState(['questionShowed']),
+    answers: function () {
+      return this.$store.dispatch('GET_ANSWER')
+    }
   },
   created () {
-      this.$store.dispatch('GET_A_QUESTION', this.$route.params.questionId)
+    this.$store.dispatch('GET_A_QUESTION', this.$route.params.questionId),
+    this.$store.dispatch('GET_ANSWER', '5d1cbf1ca4238a51148a7def')
   },
   methods: {
     answering (question) {

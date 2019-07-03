@@ -5,7 +5,7 @@
       <b-row class="text-center">
         <b-col></b-col>
         <b-col cols="10">
-          <ListQuestion v-for="question in questions" :key="question._id" :question="question"/>
+          <CardList v-for="question in questions" :key="question._id" :inside="question" :type="'question'" />
         </b-col>
         <b-col></b-col>
       </b-row>
@@ -15,14 +15,14 @@
 
 <script>
 import NavBar from '@/components/NavBar.vue'
-import ListQuestion from '@/components/ListQuestion.vue'
+import CardList from '@/components/CardList.vue'
 import { mapState } from 'vuex'
 
 export default {
   name: 'home',
   components: {
     NavBar,
-    ListQuestion
+    CardList
   },
   computed: {
     ...mapState(['questions'])

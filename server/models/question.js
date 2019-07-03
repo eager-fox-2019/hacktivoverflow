@@ -14,7 +14,10 @@ const QuestionSchema = new Schema({
         type: String,
         required: [true, 'Description required!']
     },
-    answer: [String],
+    answer: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Answer'
+    }],
     upvotes: [{
         type: Schema.Types.ObjectId,
         ref: 'User'

@@ -10,6 +10,7 @@ class AnswerController{
     }
 
     static getAnswer(req, res, next){
+        console.log("Get answer")
         Answer.findOne({ _id: req.params.answerId })
             .then(answer => {
                 if(!answer){
