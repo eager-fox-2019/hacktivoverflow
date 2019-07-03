@@ -1,6 +1,6 @@
 <template>
   <v-app>
-      <MainPage v-if="$store.state.isLogin"></MainPage>
+      <MainPage v-if="$store.state.isLogin || $store.state.clientToken"></MainPage>
       <LandingPage v-else-if="!$store.state.isLogin"></LandingPage>
   </v-app>
 </template>
@@ -19,6 +19,10 @@ export default {
     return {
       //
     }
+  },
+  mounted() {
+    console.log();
+    
   }
 }
 </script>
