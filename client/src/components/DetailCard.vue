@@ -57,6 +57,7 @@ export default {
           this.$store.commit('ALL_QUESTION', data)
           this.$store.commit('FILTER_NONE')
           this.$store.commit('SELECT_QUESTION', this.$route.params.id)
+          this.setInitial()
         })
         .catch(err => {
           console.log(err)
@@ -74,21 +75,8 @@ export default {
             })
           }
         })
-    }
-    let upvoteIds = []
-    let downvoteIds = []
-    for (let i = 0; i < this.detail.upvote.length; i++) {
-      upvoteIds.push(this.detail.upvote[i])
-    }
-    for (let i = 0; i < this.detail.downvote.length; i++) {
-      downvoteIds.push(this.detail.downvote[i])
-    }
-    if (upvoteIds.includes(this.$store.state.user.id)) {
-      this.active = 'upvote'
-    } else if (downvoteIds.includes(this.$store.state.user.id)) {
-      this.active = 'downvote'
     } else {
-      this.active = ''
+      this.setInitial()
     }
   },
   computed: {
@@ -97,6 +85,23 @@ export default {
     }
   },
   methods: {
+    setInitial () {
+      let upvoteIds = []
+      let downvoteIds = []
+      for (let i = 0; i < this.detail.upvote.length; i++) {
+        upvoteIds.push(this.detail.upvote[i])
+      }
+      for (let i = 0; i < this.detail.downvote.length; i++) {
+        downvoteIds.push(this.detail.downvote[i])
+      }
+      if (upvoteIds.includes(this.$store.state.user.id)) {
+        this.active = 'upvote'
+      } else if (downvoteIds.includes(this.$store.state.user.id)) {
+        this.active = 'downvote'
+      } else {
+        this.active = ''
+      }
+    },
     upvote (id) {
       if (!localStorage.getItem('token')) {
         this.$router.push('/login')
@@ -123,36 +128,7 @@ export default {
               upvote: upvoteIds,
               downvote: downvoteIds
             }
-            this.$store.dispatch('questionUpdateNonDetail', payload)
-              .then(result => {
-                return this.$store.dispatch('getAllQuestion')
-              })
-              .then(({ data }) => {
-                this.$store.commit('ALL_QUESTION', data)
-                this.$store.commit('FILTER_NONE')
-                this.$store.commit('SELECT_QUESTION', this.$route.params.id)
-                if (upvoted) {
-                  this.active = 'upvote'
-                } else {
-                  this.active = ''
-                }
-              })
-              .catch(err => {
-                console.log(err)
-                if (!err.response) {
-                  this.$swal({
-                    type: 'error',
-                    title: `Connection to Server Error`,
-                    showConfirmButton: true
-                  })
-                } else {
-                  this.$swal({
-                    type: 'error',
-                    title: `${err.response.data.message}`,
-                    showConfirmButton: true
-                  })
-                }
-              })
+            this.updateVoteQuestion(payload, upvoted, false)
           }
         } else {
           this.$store.commit('SELECT_ANSWER', id)
@@ -168,44 +144,7 @@ export default {
               upvote: upvoteIds,
               downvote: downvoteIds
             }
-            this.$store.dispatch('answerUpdateNonDetail', payload)
-              .then(result => {
-                return this.$store.dispatch('getAllQuestion')
-              })
-              .then(({ data }) => {
-                this.$store.commit('ALL_QUESTION', data)
-                this.$store.commit('FILTER_NONE')
-                this.$store.commit('SELECT_QUESTION', this.$route.params.id)
-                return this.$store.dispatch('getAllAnswer')
-              })
-              .then(result => {
-                let answers = []
-                for (let i = 0; i < result.length; i++) {
-                  answers.push(result[i].data)
-                }
-                this.$store.commit('ALL_SELECTED_ANSWER', answers)
-                if (upvoted) {
-                  this.active = 'upvote'
-                } else {
-                  this.active = ''
-                }
-              })
-              .catch(err => {
-                console.log(err)
-                if (!err.response) {
-                  this.$swal({
-                    type: 'error',
-                    title: `Connection to Server Error`,
-                    showConfirmButton: true
-                  })
-                } else {
-                  this.$swal({
-                    type: 'error',
-                    title: `${err.response.data.message}`,
-                    showConfirmButton: true
-                  })
-                }
-              })
+            this.updateVoteAnswer(payload, upvoted, false)
           }
         }
       }
@@ -236,36 +175,7 @@ export default {
               upvote: upvoteIds,
               downvote: downvoteIds
             }
-            this.$store.dispatch('questionUpdateNonDetail', payload)
-              .then(result => {
-                return this.$store.dispatch('getAllQuestion')
-              })
-              .then(({ data }) => {
-                this.$store.commit('ALL_QUESTION', data)
-                this.$store.commit('FILTER_NONE')
-                this.$store.commit('SELECT_QUESTION', this.$route.params.id)
-                if (downvoted) {
-                  this.active = 'downvote'
-                } else {
-                  this.active = ''
-                }
-              })
-              .catch(err => {
-                console.log(err)
-                if (!err.response) {
-                  this.$swal({
-                    type: 'error',
-                    title: `Connection to Server Error`,
-                    showConfirmButton: true
-                  })
-                } else {
-                  this.$swal({
-                    type: 'error',
-                    title: `${err.response.data.message}`,
-                    showConfirmButton: true
-                  })
-                }
-              })
+            this.updateVoteQuestion(payload, false, downvoted)
           }
         } else {
           this.$store.commit('SELECT_ANSWER', id)
@@ -281,44 +191,7 @@ export default {
               upvote: upvoteIds,
               downvote: downvoteIds
             }
-            this.$store.dispatch('answerUpdateNonDetail', payload)
-              .then(result => {
-                return this.$store.dispatch('getAllQuestion')
-              })
-              .then(({ data }) => {
-                this.$store.commit('ALL_QUESTION', data)
-                this.$store.commit('FILTER_NONE')
-                this.$store.commit('SELECT_QUESTION', this.$route.params.id)
-                return this.$store.dispatch('getAllAnswer')
-              })
-              .then(result => {
-                let answers = []
-                for (let i = 0; i < result.length; i++) {
-                  answers.push(result[i].data)
-                }
-                this.$store.commit('ALL_SELECTED_ANSWER', answers)
-                if (downvoted) {
-                  this.active = 'downvote'
-                } else {
-                  this.active = ''
-                }
-              })
-              .catch(err => {
-                console.log(err)
-                if (!err.response) {
-                  this.$swal({
-                    type: 'error',
-                    title: `Connection to Server Error`,
-                    showConfirmButton: true
-                  })
-                } else {
-                  this.$swal({
-                    type: 'error',
-                    title: `${err.response.data.message}`,
-                    showConfirmButton: true
-                  })
-                }
-              })
+            this.updateVoteAnswer(payload, false, downvoted)
           }
         }
       }
@@ -431,6 +304,82 @@ export default {
             }
           })
       }
+    },
+    updateVoteQuestion (payload, upvoted, downvoted) {
+      this.$store.dispatch('questionUpdateNonDetail', payload)
+        .then(result => {
+          return this.$store.dispatch('getAllQuestion')
+        })
+        .then(({ data }) => {
+          this.$store.commit('ALL_QUESTION', data)
+          this.$store.commit('FILTER_NONE')
+          this.$store.commit('SELECT_QUESTION', this.$route.params.id)
+          if (upvoted) {
+            this.active = 'upvote'
+          } else if (downvoted) {
+            this.active = 'downvote'
+          } else {
+            this.active = ''
+          }
+        })
+        .catch(err => {
+          console.log(err)
+          if (!err.response) {
+            this.$swal({
+              type: 'error',
+              title: `Connection to Server Error`,
+              showConfirmButton: true
+            })
+          } else {
+            this.$swal({
+              type: 'error',
+              title: `${err.response.data.message}`,
+              showConfirmButton: true
+            })
+          }
+        })
+    },
+    updateVoteAnswer (payload, upvoted, downvoted) {
+      this.$store.dispatch('answerUpdateNonDetail', payload)
+        .then(result => {
+          return this.$store.dispatch('getAllQuestion')
+        })
+        .then(({ data }) => {
+          this.$store.commit('ALL_QUESTION', data)
+          this.$store.commit('FILTER_NONE')
+          this.$store.commit('SELECT_QUESTION', this.$route.params.id)
+          return this.$store.dispatch('getAllAnswer')
+        })
+        .then(result => {
+          let answers = []
+          for (let i = 0; i < result.length; i++) {
+            answers.push(result[i].data)
+          }
+          this.$store.commit('ALL_SELECTED_ANSWER', answers)
+          if (upvoted) {
+            this.active = 'upvote'
+          } else if (downvoted) {
+            this.active = 'downvote'
+          } else {
+            this.active = ''
+          }
+        })
+        .catch(err => {
+          console.log(err)
+          if (!err.response) {
+            this.$swal({
+              type: 'error',
+              title: `Connection to Server Error`,
+              showConfirmButton: true
+            })
+          } else {
+            this.$swal({
+              type: 'error',
+              title: `${err.response.data.message}`,
+              showConfirmButton: true
+            })
+          }
+        })
     }
   }
 }
