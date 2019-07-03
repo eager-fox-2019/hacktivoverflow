@@ -2,10 +2,13 @@ const Question = require('../models/question')
 
 class TagController {
     static filter(req, res) {
-        const tags = req.body.tags
-
+        const tags = req.body.tags.toLowerCase()
+        
         Question
-        .find({ tags: { $in: [tags] } })
+        .find({ tags: { $elemMatch: { 
+            $regex: tags, 
+            $options: 'i' 
+        } } })
         .populate('userId', 'username')
         .then(questions => {
             res.status(200).json(questions)

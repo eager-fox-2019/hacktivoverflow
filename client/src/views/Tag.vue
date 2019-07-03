@@ -9,8 +9,7 @@
             <small>
                 A tag is a keyword or label that categorizes your question with other, similar questions.
             </small>
-            <hr>
-            <div>
+            <div class="mt-4">
                 <form @submit.prevent="submitSearchTag">
                     <div class="form-group" style="width: 35%;">
                         <input 
@@ -22,9 +21,13 @@
                     </div>
                 </form>
             </div>
-            <QuestionList
-                :questions="questionsByTag"
-            />
+            <div v-if="questionsByTag">
+                <h5>{{questionsByTag.length}} questions</h5>
+                <hr>
+                <QuestionList
+                    :questions="questionsByTag"
+                />
+            </div>
         </div>
     </div>
 </template>
