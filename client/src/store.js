@@ -40,7 +40,7 @@ export default new Vuex.Store({
       state.questions[index] = payload
     },
     removeQuestion (state, payload) {
-      const index = state.questions.findIndex(i => i._id === payload._id)
+      const index = state.questions.findIndex(i => i._id === payload)
 
       state.questions.splice(index, 1)
     },

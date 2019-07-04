@@ -7,6 +7,8 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const router = require('./routes')
 const errHandler = require('./helpers/errHandler')
+const CronJob = require('cron').CronJob
+const nodemailer = require('nodemailer')
 const port = process.env.PORT || 3000;
 
 //Initial middleware
@@ -24,6 +26,11 @@ db.on('error', console.error.bind(console, 'connection error:'));
 app.use(cors())
 app.use('/', router)
 app.use(errHandler)
+
+//Cron
+// new CronJob('*/5 * * * * *', function () {
+//   console.log('Cron running', new Date())
+// }, null, true, 'Asia/Jakarta')
 
 //Start thr app server
 app.listen(port, console.log('App is starting on port:', port))
