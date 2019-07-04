@@ -35,7 +35,6 @@ export default {
   },
   computed: {
     rating() {
-      debugger
       this.test
       return this.upvotes.length - this.downvotes.length
     },

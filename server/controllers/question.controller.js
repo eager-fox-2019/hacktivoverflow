@@ -24,6 +24,36 @@ class Controller {
     }
   }
 
+  static async vote (req, res, next) {
+    let { id, action } = req.params
+    let user = req.user
+    try {
+      let question = await Question.findOne({ _id: id }).exec()
+      let indexUpvoted = question.upvotes.findIndex(q => q.user === user)
+      let indexDownvoted = question.downvotes.findIndex(q => q.user === user)
+      if (indexDownvoted !== -1) {
+        question.downvotes.splice(indexDownvoted, 1)
+      }
+      if (indexUpvoted !== -1) {
+        question.upvotes.splice(indexUpvoted, 1)
+      }
+      switch (action) {
+        case 'upvote':
+          question.upvotes.push(user)
+          break
+        case 'downvote': 
+          question.downvotes.push(user)
+          break
+        default:
+          break
+      }
+      await question.save()
+      res.json(question)
+    } catch (err) {
+      next(err)
+    }
+  }
+
   static async getQuestionDetail (req, res, next) {
     let { id } = req.params 
     try {
