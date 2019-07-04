@@ -169,6 +169,16 @@ export default new Vuex.Store({
         headers: {access_token: state.access_token}
       })
     },
+    updateQuestion({state, commit, dispatch}, payload){
+      let questionId = payload.id
+      let questionForm = payload.form
+      return axios({
+        method: 'patch',
+        url: state.baseURL+'/question/'+ questionId,
+        headers: {access_token: state.access_token},
+        data: questionForm
+      })
+    },
     deleteAnswer({state, commit, dispatch}, answerId){
       return axios({
         method: 'delete',

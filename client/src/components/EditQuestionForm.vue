@@ -2,13 +2,11 @@
   <div class="d-flex justify-content-center">
     <b-form class="formArea" @submit.prevent="onSubmit" @reset.prevent="onReset">
       <b-form-group id="input-title" label="Title:" label-for="title-1">
-        <b-form-input id="title-1" v-model="form.title" placeholder="Enter Question Title"></b-form-input>
-        <small>Make the title clear and concise</small>
+        <b-form-input id="title-1" v-model="form.title" placeholder=""></b-form-input>
       </b-form-group>
 
       <b-form-group id="input-description" label="Description:" label-for="desc-2">
         <b-form-textarea id="desc-2" v-model="form.description" placeholder="Question description..." rows="3" max-rows="6"></b-form-textarea>
-        <small>Show working example of the error with relevant code snippets and the sample result you are looking for.</small>
       </b-form-group>
 
       <b-button type="submit" variant="primary">Submit</b-button>
@@ -23,6 +21,11 @@ import { mapState } from 'vuex'
 
 export default {
   name: 'QuestionForm',
+  props:  ['originalQuestion'],
+  created(){
+    this.form.title = this.originalQuestion.title
+    this.form.description = this.originalQuestion.description
+  },
   data() {
     return {
       form: {
@@ -33,21 +36,32 @@ export default {
   },
   methods: {
     toggleForm() {
-      this.$emit('hideQuestionFrom')
+      this.$emit('hideQuestionForm')
     },
     onSubmit() {
       let {state, commit, dispatch} = this.$store
 
-      dispatch('postQuestion', this.form)
+      dispatch('updateQuestion', 
+        {
+          id: this.originalQuestion._id,
+          form: this.form
+        })
       .then(({data}) => {
         let tempArray = state.questionList
         data.owner = state.user
         console.log(state.user)
         console.log(data.owner.name)
-        tempArray.unshift(data)
+
+        for (let i =0; i < tempArray.length; i++){
+          if (tempArray[i]._id = data._id){
+            tempArray[i] = data
+            i = tempArray.length
+          }
+        }
 
         commit('UPDATEQUESTIONLIST', [])
         commit('UPDATEQUESTIONLIST', tempArray)
+        commit('UPDATECURRENTQUESTION', data)
 
         console.log(data)
         this.onReset()

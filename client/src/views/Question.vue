@@ -1,28 +1,43 @@
 <template>
   <div>
-  	<div v-if="loaded" class="question d-flex flex-row justify-content-left">
-  		<VoteButtons :totalVotes="totalVotes" @upvote="upvote" @downvote="downvote"/>
-  	  <div class="questionDetailArea text-justify">
-		    <h1>{{title}}</h1>
-        <p>{{name}}</p>
-		    <p>{{description}}</p>
-  		</div>
-    </div>
+    <div v-if="loaded">
+      <div v-if="showEditForm">
+        <EditQuestionForm :originalQuestion="loaded" 
+        @hideQuestionForm="toggleQuestionForm"/>
+      </div>
 
-    <div class="question text-justify" v-if="isOwner">
-      <label>You asked this question. You can: </label>
-      <b-button @click="editForm" variant="secondary">Edit</b-button>
-      <b-button @click="delForm" variant="danger">Delete</b-button>
+      <div v-if="showEditForm==false">
+      	<div class="question d-flex flex-column justify-content-left">
+          <div class="d-flex flex-row">
+        		<VoteButtons :totalVotes="totalVotes" @upvote="upvote" @downvote="downvote"/>
+        	  <div class="questionDetailArea text-justify">
+      		    <h1>{{title}}</h1>
+              <p>{{name}}</p>
+      		    <p>{{description}}</p>
+      		  </div>
+          </div>
+
+          <div v-if="isOwner" class="text-left">
+            <span> 
+              <a href="#" @click.prevent="editForm" class="text-primary">Edit This Question</a> | 
+              <a href="#" @click.prevent="delForm" class="text-danger">Delete</a>
+            </span>
+          </div>
+        </div>
+
+        <!-- Add your own answer -->
+        <AnswerForm v-if="showAnswerForm" :questionId="questionId" @hideForm="toggleAnswerForm" />
+        
+        <div v-if="showAnswerForm==false">
+          <b-button  variant="success" @click="toggleAnswerForm">Add Answer</b-button>
+        
+          <!-- answers to the question listed here -->
+          <AnswerList/>
+        </div>
+      </div>
     </div>
-    <!-- Add your own answer -->
-    <b-button v-if="showAnswerForm==false" variant="success" @click="toggleAnswerForm">Add Answer</b-button>
-    <AnswerForm v-if="showAnswerForm" :questionId="questionId" @hideForm="toggleAnswerForm" />
-    
-    <!-- answers to the question listed here -->
-    <AnswerList v-if="loaded" />
 
     <h3 v-if="loaded==false">loading...</h3>
-
   </div>
 </template>
 
@@ -90,6 +105,9 @@ export default {
     },
     toggleAnswerForm(){
       this.showAnswerForm = !this.showAnswerForm
+    },
+    toggleQuestionForm(){
+      this.showEditForm = !this.showEditForm
     },
     delForm(){
       let {state, commit, dispatch} = this.$store
