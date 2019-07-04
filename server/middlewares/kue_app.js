@@ -1,6 +1,5 @@
 const kue = require('kue')
   , queue = kue.createQueue()
-  , CronJob = require('cron').CronJob
   , Question = require('../models/question')
   , User = require('../models/user')
   , express =require('express')
@@ -9,7 +8,6 @@ const kue = require('kue')
 
 module.exports = () => {
   let fiveRecentQuestion = []
-  let userEmail = []
   Question.find({}).sort({'created_at' : -1}).limit(5).exec(function (err, questions) {
     if (err) {
       console.log({code: 500, message: err.message})
@@ -22,12 +20,10 @@ module.exports = () => {
           console.log({code: 500, message: err.message})
         } else {
           for (let i = 0; i < users.length; i++) {
-            userEmail.push(users[i].email)
-          }
-          var job = queue.create('email', {
-            title: '5 Latest Question Asked',
-            to: userEmail.join(', '),
-            template: `
+            let job = queue.create('email', {
+              title: '5 Latest Question Asked',
+              to: users[i].email,
+              template: `
 Hi these are 5 latest question asked! If you know the answer please submit to help other at hacktiv-overflow.lyxcious.xyz
 Question :
 1. ${fiveRecentQuestion[0]}
@@ -36,11 +32,12 @@ Question :
 4. ${fiveRecentQuestion[3]}
 5. ${fiveRecentQuestion[4]}            
 `
-          }).save( function(err){
-            if( !err ) console.log( job.id );
-          });
+            }).save( function(err){
+              if( !err ) console.log( job.id );
+            });
+          }
 
-          queue.process('email', function (job, done) {
+          queue.process('email', 5, function (job, done) {
             main(job.data).catch(console.error);
           })
           
