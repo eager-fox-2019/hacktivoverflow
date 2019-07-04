@@ -2,7 +2,7 @@
   <v-content class="form-create-container">
   <h4 class="add-form-header display-1" >Ask a Question</h4>
   <v-form class="form-create mt-5" ref="form" v-model="valid" lazy-validation>
-    <v-text-field :rules="titleRules" v-model="questionObj.title" label="Title"></v-text-field>
+    <v-text-field @keydown.enter.prevent="createQuestion" :rules="titleRules" v-model="questionObj.title" label="Title"></v-text-field>
     <wysiwyg v-model="questionObj.description"></wysiwyg>
     <v-btn color="success" @click="createQuestion" class="button-form">
       Submit

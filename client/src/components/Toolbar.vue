@@ -1,6 +1,6 @@
 <template>
   <v-toolbar fixed class="toolbar"> 
-    <v-toolbar-title class="white--text">HacktivOverflow</v-toolbar-title>
+    <v-toolbar-title class="white--text">MadeOverflow</v-toolbar-title>
     <v-spacer></v-spacer>
     <v-toolbar-items class="hidden-sm-and-down">
       <LogoutModal></LogoutModal>

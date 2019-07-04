@@ -1,7 +1,7 @@
 <template>
   <v-layout class="form-add-answer-container">
     <v-form class="form-add-answer mt-5" ref="form" v-model="valid" lazy-validation>
-      <v-text-field :rules="titleRules" v-model="answerObj.title" label="Title"></v-text-field>
+      <v-text-field @keydown.enter.prevent="addAnswer" :rules="titleRules" v-model="answerObj.title" label="Title"></v-text-field>
       <wysiwyg v-model="answerObj.description"></wysiwyg>
       <v-btn @click="addAnswer" color="success">
         Submit
