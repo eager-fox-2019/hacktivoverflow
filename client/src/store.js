@@ -141,6 +141,17 @@ export default new Vuex.Store({
         errorHandler(err)
         return false
       }
+    },
+    async voteQuestion (context, payload) {
+      let { id, action } = payload
+      try {
+        let res = await axios.patch(`${BASE_URL}/question/${id}/${action}`, {}, axiosConfig())
+        toastifyHelper(`Action ${action} success!`)
+        return res
+      } catch (err) {
+        errorHandler(err)
+        return false
+      }
     }
   }
 })

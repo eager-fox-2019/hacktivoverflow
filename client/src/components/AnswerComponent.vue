@@ -3,9 +3,9 @@
     <hr/>
     <div class="d-flex flex-row m-5">
       <div class="m-3">
-        <b-button variant="light">Up</b-button>
+        <b-button @click="vote('upvote')" variant="light">Up</b-button>
         <br />
-        <b-button variant="light">Down</b-button>
+        <b-button @click="vote('downvote')" variant="light">Down</b-button>
         <h4>Rating: {{ rating }}</h4>
       </div>
       <b-container fluid class="m-3 w-100">
@@ -27,7 +27,9 @@ export default {
   created() {
   },
   methods: {
-      
+    async vote (action) {
+      // let res = await this.$store.dispatch('vote', )
+    }
   },
   props: ["title", "description", "upvotes", "downvotes", "_id", "user"],
   data() {
