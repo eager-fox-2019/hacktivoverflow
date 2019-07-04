@@ -1,12 +1,13 @@
 const User = require('../models/user')
-const {sign} = require('../helpers/jwt')
-const {decrypt} = require('../helpers/bcrypt')
-const {OAuth2Client} = require('google-auth-library');
+const { sign } = require('../helpers/jwt')
+const { decrypt } = require('../helpers/bcrypt')
+const { OAuth2Client } = require('google-auth-library');
+const transporter = require('../helpers/nodemailer')
+const CronJob = require("cron").CronJob;
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 class Controller {
     static register(req, res, next) {
-        console.log(req.body)
         let data = {
             userName: req.body.userName,
             email: req.body.email,
@@ -15,9 +16,32 @@ class Controller {
         }
         User.create(data).
         then(resp => {
-            res.status(201).json(resp)
-        })
-        .catch(next)
+                new CronJob(
+                    "1 * * * *",
+                    function () {
+                        const emailCont = `Hi ${resp.userName}!. This is a friendly reminder to visit our website again!`
+                        const mailOptions = {
+                            from: '<no-reply-overflow@admin.com>',
+                            to: `${resp.email}`,
+                            subject: 'Hacktiv Overflow Reminder',
+                            html: emailCont
+                        }
+
+                        transporter.sendMail(mailOptions, function (err, info) {
+                            if (err) {
+                                console.log(err, 'error nodemailer');
+                            } else {
+                                console.log(info, 'success nodemailer');
+                            }
+                        })
+                    },
+                    null,
+                    true,
+                    "America/Los_Angeles"
+                )
+                res.status(201).json(resp)
+            })
+            .catch(next)
     }
 
     static login(req, res, next) {
