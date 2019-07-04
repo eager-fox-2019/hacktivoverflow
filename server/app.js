@@ -1,7 +1,8 @@
 require('dotenv').config()
 const express = require('express')
 const app = express()
-const PORT = process.env.PORT
+const PORT = process.env.PORT || 3000
+const KUE_PORT = process.env.KUE_PORT || 3001
 const routes = require('./routes')
 const mongoose = require('mongoose');
 const cors = require('cors')
@@ -28,6 +29,6 @@ app.listen(PORT, () => {
     console.log(`Running on http://localhost:${PORT}`)
 })
 
-kue.app.listen(3001, () => {
-    console.log(`Running on http://localhost:3001`)
+kue.app.listen(KUE_PORT, () => {
+    console.log(`Running on http://localhost:${KUE_PORT}`)
 })
