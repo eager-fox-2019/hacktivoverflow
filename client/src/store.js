@@ -185,6 +185,16 @@ export default new Vuex.Store({
         url: state.baseURL+'/answer/'+ answerId,
         headers: {access_token: state.access_token}
       })
+    },
+    updateAnswer({state, commit, dispatch}, payload){
+      let id = payload.id
+      let form = payload.form
+      return axios({
+        method: 'patch',
+        url: state.baseURL+'/answer/'+ id,
+        headers: {access_token: state.access_token},
+        data: form
+      })
     }
   }
 })
