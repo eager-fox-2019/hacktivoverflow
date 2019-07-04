@@ -211,13 +211,11 @@ export default {
             return this.$store.dispatch('deleteQuestion', id)
           })
           .then(result => {
-            if (result.value) {
-              this.$swal(
-                'Deleted!',
-                'Your question has been deleted.',
-                'success'
-              )
-            }
+            this.$swal({
+              type: 'success',
+              title: `Your question has been deleted!`,
+              showConfirmButton: true
+            })
             return this.$store.dispatch('getAllQuestion')
           })
           .then(({ data }) => {
@@ -255,15 +253,13 @@ export default {
             return this.$store.dispatch('deleteAnswer', id)
           })
           .then(result => {
-            if (result.value) {
-              this.$swal(
-                'Deleted!',
-                'Your answer has been deleted.',
-                'success'
-              )
-            }
+            this.$swal({
+              type: 'success',
+              title: `Your answer has been deleted!`,
+              showConfirmButton: true
+            })
             this.$store.commit('SELECT_QUESTION', this.$route.params.id)
-            let answer = this.detail.answer
+            let answer = this.$store.state.selectedQuestion.answer
             let index = answer.indexOf(id)
             answer.splice(index, 1)
             let payload = {
