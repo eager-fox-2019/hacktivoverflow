@@ -2,7 +2,7 @@ const Question = require('../models/questions')
 
 class ControllerQuestion {
   static findAll(req, res, next) {
-    Question.find()
+    Question.find().populate('user')
     .then(result => {
       res.status(200).json(result)
     })

@@ -23,6 +23,7 @@
         <router-link to="/register">Register</router-link>
       </div>
       <div v-else class="second-item">
+        <p class="item">{{loggedUser.username}}</p>
         <p class="item" id="logout" @click="logout">Log Out</p>
       </div>
     </div>
@@ -103,6 +104,9 @@ export default {
   #logout:hover{
     cursor: pointer;
     color: rgba(255, 0, 0, 0.473);
+  }
+  #logout {
+    margin-left: 30px;
   }
   .item:hover {
     cursor: pointer;

@@ -16,8 +16,13 @@
       </b-icon>
     </div>
     <div id="question">
-      <p id="poster">Posted by: Johnson</p>
-      <p id="post">What kind of bear is best ?</p>
+      <p id="poster">Posted by: {{user.username}} at {{createdAt}}</p>
+      <p id="post">{{title}}</p>
+      <div id="option-container" v-if="state === 'my'">
+        <p class="option">delete</p>
+        <p class="option" style="margin-left: 15px;">edit</p>
+        <p class="option" style="margin-left: 15px;">reply</p>
+      </div>
     </div>
   </div>
 </template>
@@ -25,14 +30,16 @@
 <script>
 export default {
   name: 'post',
-  props: [],
+  props: ['title', 'user', 'createdAt', 'state'],
   data () {
     return {
 
     }
   },
   methods: {
-
+    toDetail() {
+      
+    }
   },
   components: {
 
@@ -43,11 +50,24 @@ export default {
 
 <style lang="scss" scoped>
   $primary: #311B92;
+  #option-container {
+    display: flex;
+  }
+  .option {
+    margin-left: 5px;
+    margin-top: 10px;
+    font-size: 14px;
+    color: $primary;
+  }
+  .option:hover{
+    cursor: pointer;
+    color: black;		
+  }
   #post-card {
     width: 100%;
     border-bottom: 2px solid $primary;
-    height: 120px;
-    padding: 20px;
+    // height: 120px;
+    padding: 10px 20px;
     display: flex;
     margin: 10px auto;
     // align-items: center;

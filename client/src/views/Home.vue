@@ -10,35 +10,108 @@
             icon="magnify" rounded>
           </b-input>
         </div>
+        <div id="question-options">
+          <p :class="[ questionState === 'all' ? 'option-button-active' : 'option-button']" @click="openAllQuestions">All Questions</p>
+          <p :class="[ questionState === 'my' ? 'option-button-active' : 'option-button']" style="margin-left: 20px;" @click="openMyQuestions">My Questions</p>
+        </div>
       </div>
-      <Post />
-      <Post />
-      <Post />
-      <Post />
-      <Post />
-      <Post />
-      <Post />
-      <Post />
-      <Post />
-      <Post />
+      <div id="post-container">
+        <b-loading :is-full-page="true" :active.sync="isLoading" :can-cancel="true"></b-loading>
+        <Post v-for="question in filteredQuestions" 
+        :key="question._id" 
+        :title="question.title" 
+        :user="question.user"
+        :createdAt="question.createdAt"
+        :state="questionState"
+        />
+      </div>
     </div>
     <div class="column is-1 sidebar"></div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
+import {mapState} from 'vuex'
 import Post from '@/components/Post.vue'
 export default {
   name: 'home',
+  data() {
+    return {
+      isLoading: true,
+      searchInput: '',
+      questionState: 'all'
+    }
+  },
   components: {
     Post
+  },
+  created() {
+    this.$store.dispatch('fetchQuestions')
+    .then(({data}) => {
+      this.$store.commit('STOREQUESTIONS', data)
+      this.isLoading = false
+    })
+  },
+  computed: {
+    filteredQuestions() {
+      return this.questions.filter(question => {
+        return question.title.toLowerCase().includes(this.searchInput.toLowerCase())
+      })
+    },
+    ...mapState(['questions', 'isLogin'])
+  },
+  methods : {
+    openMyQuestions () {
+      if(!this.isLogin) {
+        this.$toast.open({ message: 'You have to login first !', type: 'is-danger'})
+      } else {
+        this.$store.commit('STOREMYQUESTIONS')
+        this.questionState = 'my'
+      }
+    },
+    openAllQuestions () {
+      this.isLoading = true
+      this.$store.dispatch('fetchQuestions')
+      .then(({data}) => {
+        this.$store.commit('STOREQUESTIONS', data)
+        this.isLoading = false
+        this.questionState = 'all'
+      })
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
   $primary: #311B92;
+  #question-options {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  .option-button {
+    transition-duration: 0.3s;
+    border: 1px solid $primary;
+    border-radius: 10px;
+    padding: 6px 15px;
+    font-size: 16px;
+    
+  }
+  .option-button:hover{
+    transition-duration: 0.3s;
+    cursor: pointer;		
+    background-color: #311B92;
+    color: white;
+  }
+  .option-button-active {
+    transition-duration: 0.3s;
+    border: 1px solid $primary;
+    border-radius: 10px;
+    padding: 6px 15px;
+    font-size: 16px;
+    background-color: #311B92;
+    color: white;
+  }
   #search {
     width: 50%;
     margin: 0 auto;

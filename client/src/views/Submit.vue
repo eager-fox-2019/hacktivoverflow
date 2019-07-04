@@ -29,8 +29,15 @@ export default {
     }
   },
   methods: {
-    addPost() {
-
+    addQuestion() {
+      this.$store.dispatch('createQuestion', this.inputQuestion)
+      .then(({data}) => {
+        this.$toast.open({ message: 'Question posted !', type: 'is-success'})
+        this.$router.push('/')
+      })
+      .catch(err => {
+        this.$toast.open({ message: err.response.data.message, type: 'is-danger'})
+      })
     }
   }
 }

@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+import { stat } from 'fs';
 Vue.use(Vuex)
 Vue.use(axios)
 const api = 'http://localhost:3000/api/'
@@ -9,7 +10,8 @@ export default new Vuex.Store({
     questions: [],
     answers: [],
     isLogin: '',
-    loggedUser: {}
+    loggedUser: {},
+    myQuestions: []
   },
   mutations: {
     updateLoginStatus (state, payload) {
@@ -19,7 +21,19 @@ export default new Vuex.Store({
       state.loggedUser = payload
     },
     STOREQUESTIONS (state, payload) {
+      payload.forEach(x => {
+        x.createdAt = new Date(x.createdAt).toLocaleString()
+      });
       state.questions = payload
+    },
+    STOREMYQUESTIONS (state) {
+      let arr = []
+      state.questions.forEach(el => {
+        if(el.user._id === state.loggedUser._id) {
+          arr.push(el)
+        }
+      })
+      state.questions = arr
     }
   },
   actions: {
@@ -39,10 +53,16 @@ export default new Vuex.Store({
       })
     },
     fetchQuestions ({ state, commit }, payload) {
-
+      return axios({
+        method: 'GET',
+        url: `${api}questions`
+      })
     },
     fetchAnswer ({ state, commit }, payload) {
-
+      return axios({
+        method: 'GET',
+        url: `${api}answers`
+      })
     },
     createQuestion ({ state, commit }, payload) {
       return axios({
@@ -55,7 +75,15 @@ export default new Vuex.Store({
       })
     },
     createAnswer ({ state, commit }, payload) {
-      
-    }
+      return axios({
+        method: 'POST',
+        url: `${api}questions`,
+        data: payload,
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
+    },
+    
   }
 })

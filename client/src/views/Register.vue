@@ -45,8 +45,12 @@ export default {
           this.$router.push({ path: 'login', query: { isRegister: true } })
         })
         .catch(err => {
-          console.log(err)
-          this.error = err.response.data.message.split(':').slice(2).join('<br/>')
+          console.log(err.response.data.message)
+          if(err.response.data.message.split(':')) {
+            this.error = err.response.data.message.split(':').slice(2)
+          } else {
+            this.error = err.response.data.message
+          }
         })
     }
   }
