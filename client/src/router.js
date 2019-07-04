@@ -43,6 +43,21 @@ export default new Router({
       path: '/question/:id',
       name: 'questionDetail',
       component: () => import(/* webpackChunkName: "questionDetail" */ './views/QuestionDetail.vue')
+    },
+    {
+      path: '/question/:id/edit',
+      name: 'questionEdit',
+      component: () => import(/* webpackChunkName: "questionEdit" */ './views/QuestionEdit.vue'),
+      beforeEnter: async function (to, from, next) {
+        await store.dispatch('initApp')
+        await store.dispatch('fetchQuestionDetail', { id: to.params.id })
+        if (store.state.questionDetail.user._id === store.state.loggedUser.user) {
+          next()
+        } else {
+          toastifyHelper('Not Authorized')
+          next('/')
+        }
+      }
     }
   ]
 })
