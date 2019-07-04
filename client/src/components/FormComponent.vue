@@ -24,7 +24,7 @@
         max-rows="6"
         ></b-form-textarea>
 
-      <br><b-button type="submit" variant="primary">Submit</b-button><br>
+      <br><b-button type="submit" variant="outline-primary">Submit</b-button><br>
 
     </b-form>
   </div>

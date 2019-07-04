@@ -1,6 +1,5 @@
 <template>
   <div class="home">
-    <NavBar/>
     <b-container class="bv-example-row">
       <b-row class="text-center">
         <b-col></b-col>
@@ -18,7 +17,6 @@
 </template>
 
 <script>
-import NavBar from '@/components/NavBar.vue'
 import CardList from '@/components/CardList.vue'
 import FormComponent from '@/components/FormComponent.vue'
 import { mapState } from 'vuex'
@@ -26,7 +24,6 @@ import { mapState } from 'vuex'
 export default {
   name: 'home',
   components: {
-    NavBar,
     CardList,
     FormComponent
   },

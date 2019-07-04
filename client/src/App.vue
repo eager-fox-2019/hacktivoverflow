@@ -1,6 +1,7 @@
 <template>
   <div id="app">
-    <router-view/>
+    <NavBar/>
+    <router-view style="height:90vh; overflow-y:scroll"/>
   </div>
 </template>
 
@@ -27,7 +28,11 @@
 </style>
 
 <script>
+import NavBar from '@/components/NavBar.vue'
 export default {
+  components: {
+    NavBar
+  },
   created () {
     if (localStorage.getItem('token')) {
       this.$store.commit('SET_LOGIN', true)

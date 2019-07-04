@@ -20,10 +20,12 @@
                 <br><br>Answered by: {{ username }}
               </b-card-text>
               <b-button-group v-if="(ownerid == userId)">
-                <div>
-                  <b-button v-b-modal.modal-scrollable-edit variant="primary" @click="edit(id)">Edit</b-button>
+                <div style="margin-right: 10px">
+                  <b-button v-b-modal.modal-scrollable-edit variant="outline-primary" @click="edit(id)">Edit</b-button>
                 </div>
-                <b-button variant="danger" @click="del(id)">Delete</b-button>
+                <div>
+                <b-button variant="outline-danger" @click="del(id)">Delete</b-button>
+                </div>
               </b-button-group>
             </b-card-body>
           </b-card>

@@ -1,6 +1,6 @@
 <template>
   <div class="questionanswer">
-    <NavBar/>
+          <h1>Question</h1> 
     <b-container fluid class="bv-example-row">
         <b-row>
             <b-col sm="1">
@@ -13,12 +13,13 @@
                         <b-card-text>
                             {{ questionShowed.description }}
                         </b-card-text>
-                        <b-button v-b-modal.modal-scrollable-add variant="primary" @click="add(questionShowed._id)">Give answer</b-button>
+                        <b-button v-b-modal.modal-scrollable-add variant="outline-primary" @click="add(questionShowed._id)">Give answer</b-button>
                         <b-modal id="modal-scrollable-add" size="lg" scrollable centered hide-footer title="Add Answer Form">
                             <FormComponent :typeform="'add'" :type="'answer'"/>
                         </b-modal>
                     </b-card-body>
-                </b-card>
+                </b-card><br><br><br>
+                <h1>Answers</h1>
                 <b-row>
                     <b-col cols="12" sm>
                         <br>
@@ -35,7 +36,6 @@
 </template>
 
 <script>
-import NavBar from '@/components/NavBar.vue'
 import VoteButton from '@/components/VoteButton.vue'
 import CardList from '@/components/CardList.vue'
 import FormComponent from '@/components/FormComponent.vue'
@@ -48,7 +48,6 @@ export default {
     }
   },
   components: {
-    NavBar,
     VoteButton,
     CardList,
     FormComponent
