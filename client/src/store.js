@@ -159,12 +159,12 @@ export default new Vuex.Store({
         }
       })
     },
-    editQuestion({state, commit}, payload) {
+    editQuestion ({ state, commit }, payload) {
       return axios({
         method: 'PATCH',
         url: `${api}questions/${payload.id}`,
         data: {
-          title : payload.titleEdit,
+          title: payload.titleEdit,
           content: payload.contentEdit
         },
         headers: {
@@ -172,7 +172,7 @@ export default new Vuex.Store({
         }
       })
     },
-     editAnswer({state, commit}, payload) {
+    editAnswer ({ state, commit }, payload) {
       return axios({
         method: 'PATCH',
         url: `${api}answers/${payload.id}`,
@@ -183,6 +183,6 @@ export default new Vuex.Store({
           token: localStorage.token
         }
       })
-     }
+    }
   }
 })
