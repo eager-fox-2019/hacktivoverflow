@@ -9,7 +9,7 @@ const mongoose = require('mongoose')
 const nodeMailer = require('./helpers/nodeMailer')
 const errorhandler = require('./middlewares/errorHandler')
 
-mongoose.connect('mongodb://localhost/tanyaAja',{ useNewUrlParser: true } );
+mongoose.connect('mongodb+srv://admin:admin@cluster0-efobx.gcp.mongodb.net/tanya-aja?retryWrites=true&w=majority',{ useNewUrlParser: true } );
 
 // var CronJob = require('cron').CronJob;
 // new CronJob('0 9 1,15 * *', function() {
