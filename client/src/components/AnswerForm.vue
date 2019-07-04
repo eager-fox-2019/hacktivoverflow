@@ -24,44 +24,43 @@ import { mapState } from 'vuex'
 export default {
   name: 'AnswerForm',
   props: ['questionId'],
-  data() {
+  data () {
     return {
       form: {
         title: '',
-        description: '',
+        description: ''
       }
     }
   },
   methods: {
-    toggleForm() {
+    toggleForm () {
       this.$emit('hideForm')
     },
-    onSubmit() {
-      let {state, commit, dispatch} = this.$store
+    onSubmit () {
+      let { state, commit, dispatch } = this.$store
 
       this.form.question = this.questionId
 
       dispatch('postAnswer', this.form)
-      .then(({data}) => {
+        .then(({ data }) => {
+          console.log({ submitAnswer: data })
+          data.owner = state.user
+          data.owner._id = state.user.id
 
-        console.log({submitAnswer:data})
-        data.owner = state.user
-        data.owner._id = state.user.id
+          let tempArray = state.answerList
+          tempArray.unshift(data)
 
-        let tempArray = state.answerList
-        tempArray.unshift(data)
+          commit('UPDATECURRENTANSWERLIST', [])
+          commit('UPDATECURRENTANSWERLIST', tempArray)
 
-        commit('UPDATECURRENTANSWERLIST', [])
-        commit('UPDATECURRENTANSWERLIST', tempArray)
-
-        console.log(data)
-        this.onReset()
-      })
-      .catch(({response}) => {
-        console.log(response.data);
-      });
+          console.log(data)
+          this.onReset()
+        })
+        .catch(({ response }) => {
+          console.log(response.data)
+        })
     },
-    onReset() {
+    onReset () {
       this.form.title = ''
       this.form.description = ''
       this.toggleForm()

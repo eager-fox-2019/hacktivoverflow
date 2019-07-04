@@ -32,21 +32,21 @@ export default new Router({
         title: 'user'
       },
       children: [
-        { path: 'login', 
+        { path: 'login',
           name: 'login',
-          component: () => import('./views/Login.vue'), 
-          meta: {title: 'login'}
+          component: () => import('./views/Login.vue'),
+          meta: { title: 'login' }
         },
-        { path: 'register', 
+        { path: 'register',
           name: 'register',
           component: () => import('./views/Register.vue'),
-          meta: {title: 'register'} 
+          meta: { title: 'register' }
         },
-        { path: 'edit', 
+        { path: 'edit',
           name: 'editProfile',
           component: () => import('./views/EditProfile.vue'),
-          meta: {title: 'edit profile'} 
-        },
+          meta: { title: 'edit profile' }
+        }
       ]
     },
     {

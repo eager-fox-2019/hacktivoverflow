@@ -12,8 +12,8 @@ export default {
   name: 'QuestionList',
   props: ['filteredList'],
   components: {
-  	QuestionCard,
-  },
+  	QuestionCard
+  }
 }
 </script>
 

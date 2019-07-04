@@ -11,20 +11,20 @@ export default {
   name: 'VoteButtons',
   props: ['totalVotes', 'selected'],
   computed: {
-    iconup(){
-      if (this.selected=='up') return require('@/assets/arrow-up-selected.png')
+    iconup () {
+      if (this.selected == 'up') return require('@/assets/arrow-up-selected.png')
       return require('@/assets/arrow-up.png')
     },
-    icondown(){
-      if (this.selected=='down') return require('@/assets/arrow-down-selected.png')
+    icondown () {
+      if (this.selected == 'down') return require('@/assets/arrow-down-selected.png')
       return require('@/assets/arrow-down.png')
     }
   },
-  methods:{
-    upvote(){
+  methods: {
+    upvote () {
       this.$emit('upvote')
     },
-    downvote(){
+    downvote () {
       this.$emit('downvote')
     }
   }

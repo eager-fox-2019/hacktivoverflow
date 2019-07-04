@@ -29,7 +29,7 @@ import axios from 'axios'
 import { mapState } from 'vuex'
 export default {
   name: 'register',
-  data() {
+  data () {
     return {
       form: {
         email: '',
@@ -44,10 +44,10 @@ export default {
   },
   computed: mapState(['baseURL']),
   methods: {
-    goToLoginPage() {
+    goToLoginPage () {
       this.$router.push('/user/login')
     },
-    onSubmit() {
+    onSubmit () {
       // register new user and create new cart for the user
       // this.$store.dispatch('addUser', this.form)
       this.loading = true
@@ -56,36 +56,36 @@ export default {
       let name = email.split('@')[0]
 
       axios({
-          method: "POST",
-          url: baseURL + "/user",
-          data: {
-            "email": email,
-            "password": this.form.password
-          }
-        })
+        method: 'POST',
+        url: baseURL + '/user',
+        data: {
+          'email': email,
+          'password': this.form.password
+        }
+      })
         .then(({ data }) => {
-          this.$swal({text:'successfully registered user', type:'success'})
+          this.$swal({ text: 'successfully registered user', type: 'success' })
           this.loading = false
           this.onReset()
           this.$router.push('/user/login')
         })
         .catch(({ response }) => {
-          console.log("created error:", response)
+          console.log('created error:', response)
           let msg = response.data || response
           this.showAlert(msg, 'danger')
           this.loading = false
         })
     },
-    onReset() {
+    onReset () {
       this.form = {
         email: '',
         password: ''
       }
     },
-    countDownChanged(dismissCountDown) {
+    countDownChanged (dismissCountDown) {
       this.dismissCountDown = dismissCountDown
     },
-    showAlert(message, type) {
+    showAlert (message, type) {
       this.dismissCountDown = this.dismissSecs
       this.msg = message
       this.msgType = type

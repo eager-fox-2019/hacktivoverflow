@@ -21,56 +21,56 @@ import { mapState } from 'vuex'
 
 export default {
   name: 'QuestionForm',
-  props:  ['originalQuestion'],
-  created(){
+  props: ['originalQuestion'],
+  created () {
     this.form.title = this.originalQuestion.title
     this.form.description = this.originalQuestion.description
   },
-  data() {
+  data () {
     return {
       form: {
         title: '',
-        description: '',
+        description: ''
       }
     }
   },
   methods: {
-    toggleForm() {
+    toggleForm () {
       this.$emit('hideQuestionForm')
     },
-    onSubmit() {
-      let {state, commit, dispatch} = this.$store
+    onSubmit () {
+      let { state, commit, dispatch } = this.$store
 
-      dispatch('updateQuestion', 
+      dispatch('updateQuestion',
         {
           id: this.originalQuestion._id,
           form: this.form
         })
-      .then(({data}) => {
-        let tempArray = state.questionList
-        data.owner = state.user
-        console.log(state.user)
-        console.log(data.owner.name)
+        .then(({ data }) => {
+          let tempArray = state.questionList
+          data.owner = state.user
+          console.log(state.user)
+          console.log(data.owner.name)
 
-        for (let i =0; i < tempArray.length; i++){
-          if (tempArray[i]._id = data._id){
-            tempArray[i] = data
-            i = tempArray.length
+          for (let i = 0; i < tempArray.length; i++) {
+            if (tempArray[i]._id = data._id) {
+              tempArray[i] = data
+              i = tempArray.length
+            }
           }
-        }
 
-        commit('UPDATEQUESTIONLIST', [])
-        commit('UPDATEQUESTIONLIST', tempArray)
-        commit('UPDATECURRENTQUESTION', data)
+          commit('UPDATEQUESTIONLIST', [])
+          commit('UPDATEQUESTIONLIST', tempArray)
+          commit('UPDATECURRENTQUESTION', data)
 
-        console.log(data)
-        this.onReset()
-      })
-      .catch(({response}) => {
-        console.log(response.data);
-      });
+          console.log(data)
+          this.onReset()
+        })
+        .catch(({ response }) => {
+          console.log(response.data)
+        })
     },
-    onReset() {
+    onReset () {
       this.form.title = ''
       this.form.description = ''
       this.toggleForm()

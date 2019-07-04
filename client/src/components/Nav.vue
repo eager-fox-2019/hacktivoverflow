@@ -18,14 +18,14 @@ import { mapState } from 'vuex'
 export default {
   name: 'Nav',
   computed: {
-  	routeName() {
-  		console.log({routename:this.$route.name})
+  	routeName () {
+  		console.log({ routename: this.$route.name })
   		return this.$route.name
   	},
   	...mapState(['isLoggedin', 'user'])
   },
   methods: {
-  	logout(){
+  	logout () {
   		this.$store.commit('LOGOUT')
       this.$router.push('/')
   	}

@@ -44,7 +44,7 @@
 import axios from 'axios'
 export default {
   name: 'login',
-  data() {
+  data () {
     return {
       form: {
         email: '',
@@ -56,54 +56,54 @@ export default {
       msgType: ''
     }
   },
-  created() {
-    if (this.$store.state.loggedIn){
+  created () {
+    if (this.$store.state.loggedIn) {
       this.goToHome()
     }
   },
   methods: {
-    countDownChanged(dismissCountDown) {
+    countDownChanged (dismissCountDown) {
       this.dismissCountDown = dismissCountDown
     },
-    showAlert(message, type) {
+    showAlert (message, type) {
       this.dismissCountDown = this.dismissSecs
       this.msg = message
       this.msgType = type
     },
-    onSubmit() {
-      let {state, commit, dispatch} = this.$store
+    onSubmit () {
+      let { state, commit, dispatch } = this.$store
       let baseURL = state.baseURL
-      //login
-      axios.post(baseURL+'/user/login', this.form)
-        .then( ({data}) => {
+      // login
+      axios.post(baseURL + '/user/login', this.form)
+        .then(({ data }) => {
           console.log('login result:', data)
-          this.$swal({text:'login success', type:'success'})
-          //save user detail
-          this.$store.commit('SAVEUSER', 
+          this.$swal({ text: 'login success', type: 'success' })
+          // save user detail
+          this.$store.commit('SAVEUSER',
             { id: data.id,
-              name: data.name, 
+              name: data.name,
               email: this.form.email,
               access_token: data.access_token
             })
           this.goToHome()
           this.onReset()
         })
-        .catch( ({response}) => {
+        .catch(({ response }) => {
           console.log('error at user login:', response)
           let msg = response.data || response
           this.showAlert(msg, 'danger')
         })
     },
-    goToHome(){
+    goToHome () {
       this.$router.push('/')
     },
-    onReset() {
+    onReset () {
       this.form = {
         email: '',
         password: ''
       }
     },
-    register() {
+    register () {
       this.$router.push('/user/register')
     }
   }

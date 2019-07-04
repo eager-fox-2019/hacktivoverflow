@@ -23,43 +23,43 @@ export default {
     VoteButtons
   },
   computed: {
-    userVoted(){
+    userVoted () {
       let userId = this.user.id
-      if (this.updatedCard.upvotes.includes(userId)){
+      if (this.updatedCard.upvotes.includes(userId)) {
         return 'up'
-      } else if (this.updatedCard.downvotes.includes(userId)){
+      } else if (this.updatedCard.downvotes.includes(userId)) {
         return 'down'
       } else {
         return 'none'
       }
     },
-    totalVotes() {
+    totalVotes () {
       return this.card.upvotes.length - this.card.downvotes.length
     },
-    questionId() {
+    questionId () {
       return this.card._id
     },
-    updatedCard() {
+    updatedCard () {
       return this.card
     },
-    cardOwner() {
-      return 'by '+this.card.owner.name
+    cardOwner () {
+      return 'by ' + this.card.owner.name
     },
     ...mapState(['isLoggedin', 'user'])
   },
   methods: {
-    questionDetail(){
-      if (!this.isLoggedin){
+    questionDetail () {
+      if (!this.isLoggedin) {
         this.$router.push('/user/login')
       } else {
         this.$router.push('/question/' + this.questionId)
       }
     },
-    upvote(){
-      this.$store.dispatch('voteQuestion', {question:this.card, type:'up'})
+    upvote () {
+      this.$store.dispatch('voteQuestion', { question: this.card, type: 'up' })
     },
-    downvote(){
-      this.$store.dispatch('voteQuestion', {question:this.card, type:'down'})
+    downvote () {
+      this.$store.dispatch('voteQuestion', { question: this.card, type: 'down' })
     }
   }
 }

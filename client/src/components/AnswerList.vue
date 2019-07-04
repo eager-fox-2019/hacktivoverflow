@@ -2,9 +2,9 @@
   <div>
     <AnswerCard v-for="(item, i) in answerList" :card="item" :key="i">
     	<div v-if="item.owner._id==$store.state.user.id">
-    		<EditAnswerForm 
-    		v-if="showEditForm==item._id" 
-    		:original="item" 
+    		<EditAnswerForm
+    		v-if="showEditForm==item._id"
+    		:original="item"
     		@hideForm="hideEditForm"/>
 
     		<div v-if="!showEditForm">
@@ -27,30 +27,29 @@ export default {
   	AnswerCard,
   	EditAnswerForm
   },
-  created(){
+  created () {
   	console.log(this)
   },
   computed: mapState(['answerList']),
-  data(){
+  data () {
   	return {
   		showEditForm: null
   	}
   },
   methods: {
-  	editAnswerForm(itemId){
+  	editAnswerForm (itemId) {
   		this.showEditForm = itemId
   	},
-  	hideEditForm(){
+  	hideEditForm () {
   		this.showEditForm = null
   	},
-  	deleteAnswer(itemId){
-  	  let {state, commit, dispatch} = this.$store
+  	deleteAnswer (itemId) {
+  	  let { state, commit, dispatch } = this.$store
   	  dispatch('deleteAnswer', itemId)
-  	  .then(({data}) => {
-
+  	  .then(({ data }) => {
   	  	let newList = []
   	  	this.answerList.forEach(answer => {
-  	  		if(answer._id != data._id){
+  	  		if (answer._id != data._id) {
   	  			newList.push(answer)
   	  		}
   	  	})
@@ -58,8 +57,8 @@ export default {
   	  	commit('UPDATECURRENTANSWERLIST', [])
   	  	commit('UPDATECURRENTANSWERLIST', newList)
   	  })
-  	  .catch(({response}) => {
-  	  	console.log({errAtDelAns:response})
+  	  .catch(({ response }) => {
+  	  	console.log({ errAtDelAns: response })
   	  })
   	}
   }

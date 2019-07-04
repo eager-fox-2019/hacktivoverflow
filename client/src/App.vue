@@ -28,50 +28,50 @@
 <script>
 // @ is an alias to /src
 import router from '@/router'
+import Nav from '@/components/Nav.vue'
+import { mapState } from 'vuex'
 router.beforeEach((to, from, next) => {
   document.title = `mini-overflow ${to.meta.title}`
   next()
 })
-import Nav from '@/components/Nav.vue'
-import {mapState} from 'vuex'
 
 export default {
   name: 'app',
-  data(){
+  data () {
     return {
       dismissSecs: 10,
-      dismissCountDown: 0,
+      dismissCountDown: 0
     }
   },
   components: {
     Nav
   },
-  computed: mapState(['alertMsg','alertType']),
+  computed: mapState(['alertMsg', 'alertType']),
   watch: {
-    alertMsg (newVal, oldVal){
+    alertMsg (newVal, oldVal) {
       if (this.alertMsg != '') this.showAlert()
     }
   },
-  created(){
+  created () {
     this.$store.dispatch('getQuestions')
     let access_token = localStorage.getItem('access_token')
-    if (access_token){
+    if (access_token) {
       let id = localStorage.getItem('id')
       let name = localStorage.getItem('name')
       let email = localStorage.getItem('email')
-      this.$store.commit('SAVEUSER', {id, name, email, access_token})
+      this.$store.commit('SAVEUSER', { id, name, email, access_token })
     } else {
       this.$store.commit('LOGOUT')
     }
   },
-  methods :{
-    countDownChanged(dismissCountDown) {
+  methods: {
+    countDownChanged (dismissCountDown) {
       this.dismissCountDown = dismissCountDown
       if (dismissCountDown == 0) {
         this.$store.commit('CLEARMSG')
       }
     },
-    showAlert() {
+    showAlert () {
       this.dismissCountDown = this.dismissSecs
     }
   }

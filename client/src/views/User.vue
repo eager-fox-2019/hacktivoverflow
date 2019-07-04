@@ -10,17 +10,17 @@
 </template>
 
 <script>
-import {mapState} from 'vuex'
+import { mapState } from 'vuex'
 export default {
   name: 'user',
   computed: {
-    showEditButton(){
+    showEditButton () {
       return this.$route.name == 'user'
     },
     ...mapState(['isLoggedin'])
   },
   methods: {
-  	editProfileForm(){
+  	editProfileForm () {
       console.log(this.$router.history.current.fullPath)
   		this.$router.push('/user/edit')
   	}

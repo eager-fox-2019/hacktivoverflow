@@ -28,7 +28,7 @@ import axios from 'axios'
 import { mapState } from 'vuex'
 export default {
   name: 'editProfile',
-  data() {
+  data () {
     return {
       form: {
         name: '',
@@ -43,34 +43,34 @@ export default {
   },
   computed: mapState(['baseURL']),
   methods: {
-    onSubmit() {
+    onSubmit () {
       // this.showAlert('sorry, edit profile not yet implemented', 'info')
-      let {state, commit} = this.$store
+      let { state, commit } = this.$store
 
       axios({
         method: 'patch',
-        url: state.baseURL+'/user/',
-        headers: {access_token: state.access_token},
+        url: state.baseURL + '/user/',
+        headers: { access_token: state.access_token },
         data: this.form
       })
-      .then(({data}) => {
-        console.log({data})
-        commit('SHOWMSG',{
-          message: 'updated profile',
-          type:'success'
+        .then(({ data }) => {
+          console.log({ data })
+          commit('SHOWMSG', {
+            message: 'updated profile',
+            type: 'success'
+          })
+          commit('SAVEUSER', data)
+          this.onReset()
         })
-        commit('SAVEUSER',data)
-        this.onReset()
-      })
-      .catch(({response}) => {
-        console.log(response.data);
-        commit('SHOWMSG',{
-          message: response.data,
-          type:'warning'
+        .catch(({ response }) => {
+          console.log(response.data)
+          commit('SHOWMSG', {
+            message: response.data,
+            type: 'warning'
+          })
         })
-      })
     },
-    onReset() {
+    onReset () {
       this.form = {
         name: '',
         email: '',
@@ -78,10 +78,10 @@ export default {
       }
       this.$router.push('/user')
     },
-    countDownChanged(dismissCountDown) {
+    countDownChanged (dismissCountDown) {
       this.dismissCountDown = dismissCountDown
     },
-    showAlert(message, type) {
+    showAlert (message, type) {
       this.dismissCountDown = this.dismissSecs
       this.msg = message
       this.msgType = type

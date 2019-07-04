@@ -2,7 +2,7 @@
   <div id="questionPage">
     <div v-if="loaded">
       <div v-if="showEditForm">
-        <EditQuestionForm :originalQuestion="loaded" 
+        <EditQuestionForm :originalQuestion="loaded"
         @hideQuestionForm="toggleQuestionForm"/>
       </div>
 
@@ -18,8 +18,8 @@
           </div>
 
           <div v-if="isOwner" class="text-left">
-            <span> 
-              <a href="#" @click.prevent="editForm" class="text-primary">Edit This Question</a> | 
+            <span>
+              <a href="#" @click.prevent="editForm" class="text-primary">Edit This Question</a> |
               <a href="#" @click.prevent="delForm" class="text-danger">Delete</a>
             </span>
           </div>
@@ -27,10 +27,10 @@
 
         <!-- Add your own answer -->
         <AnswerForm v-if="showAnswerForm" :questionId="questionId" @hideForm="toggleAnswerForm" />
-        
+
         <div v-if="showAnswerForm==false">
           <b-button  variant="success" @click="toggleAnswerForm">Add Answer</b-button>
-        
+
           <!-- answers to the question listed here -->
           <AnswerList/>
         </div>
@@ -62,91 +62,91 @@ export default {
     AnswerForm,
     EditQuestionForm
   },
-  created(){
-    if (!this.isLoggedin){
+  created () {
+    if (!this.isLoggedin) {
       this.$router.push('/user/login')
     }
   },
-  mounted(){
+  mounted () {
     this.$store.dispatch('getQuestionDetail', this.$route.params.id)
   },
   computed: {
-    userVoted(){
+    userVoted () {
       if (!this.currentQuestion) return 'none'
       let userId = this.user.id
-      if (this.currentQuestion.upvotes.includes(userId)){
+      if (this.currentQuestion.upvotes.includes(userId)) {
         return 'up'
-      } else if (this.currentQuestion.downvotes.includes(userId)){
+      } else if (this.currentQuestion.downvotes.includes(userId)) {
         return 'down'
       } else {
         return 'none'
       }
     },
-    isOwner(){
+    isOwner () {
       if (!this.currentQuestion) return false
-        console.log(this.currentQuestion)
+      console.log(this.currentQuestion)
       return this.currentQuestion.owner.email == this.$store.state.user.email
     },
-    loaded() {
+    loaded () {
       return (this.currentQuestion)
     },
-    name(){
+    name () {
       if (!this.currentQuestion) return 'loading'
       return 'by ' + this.currentQuestion.owner.name
     },
-    totalVotes() {
+    totalVotes () {
       if (!this.currentQuestion) return 'loading'
       return this.currentQuestion.upvotes.length - this.currentQuestion.downvotes.length
     },
-    title() {
+    title () {
     	if (!this.currentQuestion) return 'loading'
     	return this.currentQuestion.title
     },
-    description(){
+    description () {
     	if (!this.currentQuestion) return 'loading'
     	return this.currentQuestion.description
     },
-    questionId(){
+    questionId () {
     	if (!this.currentQuestion) return 'loading'
     	return this.currentQuestion._id
     },
   	...mapState(['currentQuestion', 'isLoggedin', 'user'])
   },
   methods: {
-    upvote(){
-      this.$store.dispatch('voteQuestion', {question:this.currentQuestion, type:'up'})
+    upvote () {
+      this.$store.dispatch('voteQuestion', { question: this.currentQuestion, type: 'up' })
     },
-    downvote(){
-      this.$store.dispatch('voteQuestion', {question:this.currentQuestion, type:'down'})
+    downvote () {
+      this.$store.dispatch('voteQuestion', { question: this.currentQuestion, type: 'down' })
     },
-    toggleAnswerForm(){
+    toggleAnswerForm () {
       this.showAnswerForm = !this.showAnswerForm
     },
-    toggleQuestionForm(){
+    toggleQuestionForm () {
       this.showEditForm = !this.showEditForm
     },
-    delForm(){
-      let {state, commit, dispatch} = this.$store
-      
+    delForm () {
+      let { state, commit, dispatch } = this.$store
+
       dispatch('deleteQuestion', this.questionId)
-      .then(deleted => {
-        let tempArray = state.questionList
-        for (let i = 0; i < tempArray.length; i++){
-          if (tempArray[i]._id == this.questionId){
-            tempArray.splice(i,1)
+        .then(deleted => {
+          let tempArray = state.questionList
+          for (let i = 0; i < tempArray.length; i++) {
+            if (tempArray[i]._id == this.questionId) {
+              tempArray.splice(i, 1)
+            }
           }
-        }
 
-        commit('UPDATEQUESTIONLIST', [])
-        commit('UPDATEQUESTIONLIST', tempArray)
+          commit('UPDATEQUESTIONLIST', [])
+          commit('UPDATEQUESTIONLIST', tempArray)
 
-        this.$router.push('/')
-      })
-      .catch(({response}) => {
-        console.log(response.data);
-      });
+          this.$router.push('/')
+        })
+        .catch(({ response }) => {
+          console.log(response.data)
+        })
     },
-    editForm(){
+    editForm () {
       this.showEditForm = !this.showEditForm
     }
   }

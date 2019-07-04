@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import {mapState} from 'vuex'
+import { mapState } from 'vuex'
 import VoteButtons from '@/components/VoteButtons.vue'
 export default {
   name: 'AnswerList',
@@ -23,30 +23,30 @@ export default {
     VoteButtons
   },
   computed: {
-    userVoted(){
+    userVoted () {
       let userId = this.user.id
-      if (this.card.upvotes.includes(userId)){
+      if (this.card.upvotes.includes(userId)) {
         return 'up'
-      } else if (this.card.downvotes.includes(userId)){
+      } else if (this.card.downvotes.includes(userId)) {
         return 'down'
       } else {
         return 'none'
       }
     },
-    totalVotes() {
+    totalVotes () {
       return this.card.upvotes.length - this.card.downvotes.length
     },
-    cardOwner(){
+    cardOwner () {
       return 'by ' + this.card.owner.name
     },
     ...mapState(['user'])
   },
   methods: {
-    upvote(){
-      this.$store.dispatch('voteAnswer', {answer:this.card, type:'up'})
+    upvote () {
+      this.$store.dispatch('voteAnswer', { answer: this.card, type: 'up' })
     },
-    downvote(){
-      this.$store.dispatch('voteAnswer', {answer:this.card, type:'down'})
+    downvote () {
+      this.$store.dispatch('voteAnswer', { answer: this.card, type: 'down' })
     }
   }
 }

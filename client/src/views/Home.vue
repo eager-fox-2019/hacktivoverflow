@@ -21,17 +21,17 @@ export default {
     QuestionList,
     QuestionForm
   },
-  data() {
+  data () {
   	return {
   		text: '',
-  		showQuestions: true,
+  		showQuestions: true
   	}
   },
   computed: {
-  	filteredList(){
+  	filteredList () {
   		let filteredList = []
   		this.questionList.forEach(entry => {
-  			if (entry.title.includes(this.text) || entry.owner.name.includes(this.text)){
+  			if (entry.title.includes(this.text) || entry.owner.name.includes(this.text)) {
   				filteredList.push(entry)
   			}
   		})
@@ -40,8 +40,8 @@ export default {
   	...mapState(['questionList', 'isLoggedin'])
   },
   methods: {
-  	toggleQuestionForm(){
-      if (!this.isLoggedin){
+  	toggleQuestionForm () {
+      if (!this.isLoggedin) {
         this.$router.push('/user/login')
       } else {
   		  this.showQuestions = !this.showQuestions

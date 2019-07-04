@@ -23,40 +23,40 @@ import { mapState } from 'vuex'
 
 export default {
   name: 'QuestionForm',
-  data() {
+  data () {
     return {
       form: {
         title: '',
-        description: '',
+        description: ''
       }
     }
   },
   methods: {
-    toggleForm() {
+    toggleForm () {
       this.$emit('hideQuestionFrom')
     },
-    onSubmit() {
-      let {state, commit, dispatch} = this.$store
+    onSubmit () {
+      let { state, commit, dispatch } = this.$store
 
       dispatch('postQuestion', this.form)
-      .then(({data}) => {
-        let tempArray = state.questionList
-        data.owner = state.user
-        console.log(state.user)
-        console.log(data.owner.name)
-        tempArray.unshift(data)
+        .then(({ data }) => {
+          let tempArray = state.questionList
+          data.owner = state.user
+          console.log(state.user)
+          console.log(data.owner.name)
+          tempArray.unshift(data)
 
-        commit('UPDATEQUESTIONLIST', [])
-        commit('UPDATEQUESTIONLIST', tempArray)
+          commit('UPDATEQUESTIONLIST', [])
+          commit('UPDATEQUESTIONLIST', tempArray)
 
-        console.log(data)
-        this.onReset()
-      })
-      .catch(({response}) => {
-        console.log(response.data);
-      });
+          console.log(data)
+          this.onReset()
+        })
+        .catch(({ response }) => {
+          console.log(response.data)
+        })
     },
-    onReset() {
+    onReset () {
       this.form.title = ''
       this.form.description = ''
       this.toggleForm()
