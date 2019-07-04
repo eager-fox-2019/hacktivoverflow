@@ -13,7 +13,10 @@ const Port = process.env.PORT
 const mongoDbUrl = process.env.DATABASE_CONNECTION
 
 // connect mongodb
-mongoose.connect(mongoDbUrl, { useNewUrlParser: true })
+mongoose.connect(mongoDbUrl, { 
+  useCreateIndex: true,
+  useNewUrlParser: true
+})
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {

@@ -93,7 +93,6 @@ export default new Vuex.Store({
         })
     },
     sendLogin (context, payload) {
-      console.log('ini yang diirim', payload)
       axios({
         method: 'POST',
         data: payload,
@@ -141,7 +140,6 @@ export default new Vuex.Store({
         }
       })
         .then(({ data }) => {
-          console.log('ini val di sendlogout', data)
           if (data.message) {
             localStorage.removeItem('token')
             context.commit('setLoginUser', {})
@@ -204,12 +202,7 @@ export default new Vuex.Store({
         content: payload.content
       }
       let val = (payload.method === 'PUT') ? `/${context.state.editedAnswerQuestion._id}` : ''
-      console.log('ini sendData di send questionanswer', sendData)
-      console.log('ini val di send questionanswer', val)
-      console.log('ini payload di send questionanswer', payload)
       let url = `${context.state.url_server}/${payload.type}${val}`
-      console.log('ini url di send questionanswer', url)
-      
       axios({
         method: payload.method,
         data: sendData,
@@ -241,7 +234,6 @@ export default new Vuex.Store({
         })
     },
     sendNewAnswer (context, payload) {
-      console.log('ini payload di sendNewAnswer', payload)
       axios({
         method: 'POST',
         data: payload,

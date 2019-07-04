@@ -1,7 +1,11 @@
 <template>
-  <v-dialog v-model="$store.state.addEditDialog.show" fullscreen hide-overlay transition="dialog-bottom-transition">
+  <v-dialog v-model="$store.state.addEditDialog.show"
+    fullscreen hide-overlay
+    dark
+    transition="dialog-bottom-transition"
+    color="grey">
     <v-card>
-      <v-toolbar dark color="primary">
+      <v-toolbar dark>
         <v-btn icon dark @click="closeAddEdit">
           <v-icon>close</v-icon>
         </v-btn>
@@ -10,7 +14,7 @@
       </v-toolbar>
       <v-list three-line subheader>
         <v-container>
-          <v-layout row>
+          <v-layout>
             <v-flex xs12 sm10 offset-sm1>
               <v-container>
                 <v-text-field
@@ -47,7 +51,6 @@ export default {
   },
   methods: {
     submit () {
-      console.log('masuk submit')
       let newQuestion = {
         dialogTitle: this.dialogTitle,
         title: this.title,
@@ -55,7 +58,6 @@ export default {
         method: (this.dialogTitle === 'Add') ? 'POST' : 'PUT',
         type: this.$store.state.addEditDialog.type
       }
-      console.log('ini new question', newQuestion)
       this.$store.dispatch('sendQuestionAnswer', newQuestion)
     },
     closeAddEdit () {
@@ -67,7 +69,6 @@ export default {
   },
   watch: {
     '$store.state.addEditDialog.show' () {
-      console.log('masuk watch addedit component', this.$store.state.editedAnswerQuestion)
       if (this.$store.state.editedAnswerQuestion.title) {
         this.dialogTitle = 'Edit'
         this.title = this.$store.state.editedAnswerQuestion.title

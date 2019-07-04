@@ -2,6 +2,7 @@
   <v-layout column>
     <v-layout column wrap align-center justify-center fill-height>
       <v-select
+        color="black"
         v-model="sortBy"
         :items="sortBySelects"
         label="Sort Question by"
@@ -22,6 +23,7 @@
 <script>
 import homeBox from '@/components/homeBox.vue'
 import moment from 'moment'
+import Swal from 'sweetalert2'
 
 export default {
   name: 'home',
@@ -65,7 +67,7 @@ export default {
   },
   computed: {
     sortedByDate () {
-      return this.$store.state.questions.sort((q1, q2) => moment(q2.createdAt) - moment(q1.createdAt))      
+      return this.$store.state.questions.sort((q1, q2) => moment(q2.createdAt) - moment(q1.createdAt))
     },
     sortedByVotes () {
       return this.$store.state.questions.sort((q1, q2) => {

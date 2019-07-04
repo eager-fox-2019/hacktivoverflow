@@ -27,6 +27,8 @@
                 required
               ></v-text-field>
               <v-btn @click="sendLogin">submit</v-btn>
+              <p>Or Login with Google</p>
+              <GoogleLogin :params="params" :renderParams="renderParams" :onSuccess="onSuccess" :onFailure="onFailure"></GoogleLogin>
             </v-container>
           </v-tab-item>
           <v-tab-item key="register">
@@ -63,10 +65,23 @@
 </template>
 
 <script>
+import GoogleLogin from 'vue-google-login'
+
 export default {
   name: 'register',
+  components: {
+    GoogleLogin
+  },
   data () {
     return {
+      params: {
+        client_id: '59429130458-3eh3d5ncinlrmj2bp780sumobc7ots6s.apps.googleusercontent.com'
+      },
+      renderParams: {
+        width: 250,
+        height: 50,
+        longtitle: true
+      },
       active: null,
       loginUser: {
         username: '',
@@ -91,6 +106,19 @@ export default {
     },
     sendRegister () {
       this.$store.dispatch('sendRegister', this.registerUser)
+    },
+    onSuccess (googleUser) {
+      let userData = googleUser.getBasicProfile()
+      let userLoginData = {
+        email: userData.U3,
+        full_name: userData.ig,
+        username: userData.U3.split('@')[0],
+        login_type: 'google'
+      }
+      this.$store.dispatch('sendLogin', userLoginData)
+    },
+    onFailure (error) {
+      console.log(error)
     }
   },
   watch: {

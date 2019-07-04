@@ -2,10 +2,11 @@ const User = require('../models/model-user')
 const Token = require('../models/model-blacklist-token')
 const { compareHash } = require('../helpers/hash-helpers')
 const { generateToken } = require('../helpers/jwt-helper')
+const { customPassword } = require('../helpers/password-generator')
 
 class ControllerUser {
   static login(req, res, next) {
-    if (!req.body.username || !req.body.password) {
+    if ((!req.body.username || !req.body.password) && req.body.login_type !== 'google') {
       throw ({ code: 404, message: 'Please input username / password' })
     }
     if (req.body.login_type == 'default') {
@@ -37,7 +38,7 @@ class ControllerUser {
       // google login
       let { full_name, username, email } = req.body
       let userData
-      User.findOne({ email: email, username: username })
+      User.findOne({ email: email })
         .then((user) => {
           userData = user
           if (!user) {
@@ -56,11 +57,12 @@ class ControllerUser {
           }          
           let token = generateToken(payload)
           res.json({
-            token: token
+            token: token,
+            token_type: 'google'
           })
         })
-        .catch(next)
-    }
+        .catch(console.error)
+      }
   }
   
   static logout(req, res, next) {

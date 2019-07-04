@@ -51,6 +51,7 @@
 <script>
 import answerBox from '@/components/answerBox.vue'
 import questionBox from '@/components/questionBox.vue'
+import Swal from 'sweetalert2'
 
 export default {
   name: 'questionDetail',

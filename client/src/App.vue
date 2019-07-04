@@ -27,7 +27,10 @@
         <v-btn v-if="!$store.state.isLogin"
           to="/register" flat>Sign In</v-btn>
         <v-btn v-if="$store.state.isLogin"
-          @click="logout" flat>Sign Out</v-btn>
+          @click="logout" flat>
+          <GoogleLogin :params="params"
+            :logoutButton=true>Sign Out</GoogleLogin>
+          </v-btn>
         <v-btn v-if="$store.state.isLogin"
           :to="'/profile/' + $store.state.loginUser.id" flat>My Profile</v-btn>
       </v-toolbar-items>
@@ -46,8 +49,8 @@
             <v-icon>close</v-icon>
           </v-btn>
         </template>
-        <v-btn @click="logout" 
-          fab dark small color="red"
+        <v-btn to="/register"
+          fab dark small color="grey darken-4"
           v-if="!$store.state.isLogin">
           <v-tooltip left>
             <template v-slot:activator="{ on }">
@@ -56,26 +59,26 @@
             <span>Sign In</span>
           </v-tooltip>
         </v-btn>
-        <v-btn @click="logout" 
-          fab dark small color="red"
+        <v-btn @click="logout"
+          fab dark small color="grey darken-3"
           v-if="$store.state.isLogin">
           <v-tooltip left>
             <template v-slot:activator="{ on }">
-              <v-icon v-on="on">fas fa-sign-out-alt</v-icon>
+                <v-icon v-on="on">fas fa-sign-out-alt</v-icon>
             </template>
             <span>Sign Out</span>
           </v-tooltip>
         </v-btn>
-        <v-btn to="/" fab dark small color="green">
+        <v-btn to="/" fab dark small color="grey darken-2">
           <v-tooltip left>
             <template v-slot:activator="{ on }">
-              <v-icon v-on="on">home</v-icon>
+              <v-icon v-on="on">fas fa-home</v-icon>
             </template>
             <span>Home</span>
           </v-tooltip>
         </v-btn>
-        <v-btn @click="showAddEdit" 
-          fab dark small color="indigo"
+        <v-btn @click="showAddEdit"
+          fab dark small color="grey darken-1"
           v-if="$store.state.isLogin">
           <v-tooltip left>
             <template v-slot:activator="{ on }">
@@ -85,7 +88,7 @@
           </v-tooltip>
         </v-btn>
         <v-btn :to="'/profile/' + $store.state.loginUser.id"
-          fab dark small color="blue darken-2"
+          fab small color="grey lighten-1"
           v-if="$store.state.isLogin">
           <v-tooltip left>
             <template v-slot:activator="{ on }">
@@ -102,15 +105,20 @@
 
 <script>
 import addedit from '@/components/addEdit.vue'
+import Swal from 'sweetalert2'
+import GoogleLogin from 'vue-google-login'
 
 export default {
   name: 'App',
   components: {
-    addedit
+    addedit,
+    GoogleLogin
   },
   data () {
     return {
-      //
+      params: {
+        client_id: '59429130458-3eh3d5ncinlrmj2bp780sumobc7ots6s.apps.googleusercontent.com'
+      }
     }
   },
   methods: {
@@ -127,7 +135,7 @@ export default {
           'error'
         )
       }
-    },
+    }
   },
   created () {
     if (localStorage.token) {
