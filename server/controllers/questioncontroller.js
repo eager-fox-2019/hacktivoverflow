@@ -8,6 +8,7 @@ class QuestionController {
     })
       .populate({
         path: 'answers',
+        options: { sort: {"createdAt" : -1}},
         populate: {
           path: 'user'
         }
@@ -23,6 +24,7 @@ class QuestionController {
     Question.find()
       .populate('answers')
       .populate('user')
+      .sort({'createdAt': -1})
       .then(questions => {
         res.status(200).json(questions)
       })
@@ -35,6 +37,7 @@ class QuestionController {
     })
       .populate('answers')
       .populate('user')
+      .sort({'createdAt': -1})
       .then(questions => {
         res.status(200).json(questions)
       })

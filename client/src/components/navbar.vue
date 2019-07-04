@@ -17,7 +17,7 @@
           >
             <v-flex>
               <v-subheader>
-                Have something in mind?
+                <div class="subheading"> Have something in mind?</div>
               </v-subheader>
             </v-flex>
           </v-layout>
@@ -26,7 +26,7 @@
               <v-icon>add</v-icon>
             </v-list-tile-action>
             <v-list-tile-content>
-              <v-list-tile-title class="grey--text">
+              <v-list-tile-title class="black--text subheading">
                 Ask a question
               </v-list-tile-title>
             </v-list-tile-content>
@@ -53,7 +53,7 @@
                 <v-icon>{{ item.icon }}</v-icon>
               </v-list-tile-action>
               <v-list-tile-content>
-                <v-list-tile-title class="grey--text">
+                <v-list-tile-title class="black--text subheading">
                   {{ item.text }}
                 </v-list-tile-title>
               </v-list-tile-content>
@@ -65,25 +65,21 @@
               <v-icon>keyboard_return</v-icon>
             </v-list-tile-action>
             <v-list-tile-content>
-              <v-list-tile-title class="grey--text">
+              <v-list-tile-title class="black--text subheading">
                 Sign out
               </v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar color="amber" app absolute clipped-left flat>
+    <v-toolbar color="amber" app fixed clipped-left>
       <v-toolbar-side-icon @click="drawer = !drawer"></v-toolbar-side-icon>
       <div style="cursor: pointer;" @click="toHome"><span class="title ml-3 mr-5">Hacktiv&nbsp;<span class="font-weight-light">Overflow</span></span></div>
-      <v-text-field
-        solo-inverted
-        flat
-        hide-details
-        label="Search"
-        prepend-inner-icon="search"
-        style="margin-left: 2%;"
-      ></v-text-field>
-      <v-spacer></v-spacer>
+      <v-layout row justify-center>
+
+        <div class="title" v-if="$store.state.loggedUser.id">Welcome <span style="color:#929292;">{{ $store.state.loggedUser.firstName[0].toUpperCase() + $store.state.loggedUser.firstName.slice(1)}} {{ $store.state.loggedUser.lastName[0].toUpperCase() + $store.state.loggedUser.lastName.slice(1)}}</span></div>
+      </v-layout>
+      <!-- <v-spacer></v-spacer> -->
     </v-toolbar>
   </div>
 </template>

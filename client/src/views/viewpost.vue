@@ -133,9 +133,10 @@ export default {
         }
       })
         .then(({data}) => {
+          // data
           this.question = data
           this.title = ''
-          this.editorData = ''
+          this.editorData = ' '
         })
         .catch(({response}) => {
           this.alert = true

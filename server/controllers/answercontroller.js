@@ -29,12 +29,13 @@ class AnswerController {
         return question.save()
       })
       .then(edited => {
-        return Answer.populate(edited, {path: 'answers', populate: { path: 'user'}})
+        return Answer.populate(edited, { path: 'answers', options: { sort: { createdAt: -1 } }, populate: { path: 'user'}})
       })
       .then(edited2 => {
         return User.populate(edited2, { path: 'user'})
       })
       .then(pop => {
+        // pop.answers.sort({ "createdAt": -1 })
         res.status(200).json(pop)
       })
       .catch(next)
