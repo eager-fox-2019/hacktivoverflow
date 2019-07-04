@@ -12,12 +12,15 @@
           <b-col sm="12" class="w-100">
             <h3>{{ questionDetail.title }}</h3>
             <p>
-              Question by: {{ fullName }} 
+              Question by: {{ fullName }}
               <br v-if="isAuthor" />
-              <router-link v-if="isAuthor" :to="{ name: 'questionEdit', params: {id: this.questionDetail._id }}"> 
+              <router-link
+                v-if="isAuthor"
+                :to="{ name: 'questionEdit', params: {id: this.questionDetail._id }}"
+              >
                 <b-button variant="primary">Edit</b-button>
               </router-link>
-              <b-button v-if="isAuthor" variant="danger" > Delete </b-button>
+              <b-button @click="triggerDelete" v-if="isAuthor" variant="danger">Delete</b-button>
             </p>
             <p>{{ questionDetail.description }}</p>
           </b-col>
@@ -63,11 +66,13 @@ export default {
     this.$store.dispatch("fetchQuestionDetail", { id: this.$route.params.id });
   },
   methods: {
-    async vote (action) {
-      let id = this.$route.params.id
-      let res = await this.$store.dispatch('voteQuestion', { action, id})
-      if (res) {    
-        this.$store.dispatch("fetchQuestionDetail", { id: this.$route.params.id })
+    async vote(action) {
+      let id = this.$route.params.id;
+      let res = await this.$store.dispatch("voteQuestion", { action, id });
+      if (res) {
+        this.$store.dispatch("fetchQuestionDetail", {
+          id: this.$route.params.id
+        });
       }
     },
     async postAnswer() {
@@ -84,6 +89,31 @@ export default {
         this.$store.dispatch("fetchQuestionDetail", {
           id: this.$route.params.id
         });
+      }
+    },
+    triggerDelete() {
+      this.$modal.show("dialog", {
+        title: "Delete confirmation",
+        text: "Sure to delete this one?" + this.questionDetail.title,
+        buttons: [
+          {
+            title: "Yes",
+            handler: () => {
+              this.deleteQuestion()
+              this.$modal.hide('dialog')
+            }
+          },
+          {
+            title: "No"
+          }
+        ]
+      })
+    },
+    async deleteQuestion() {
+      let id = this.$route.params.id;
+      let res = await this.$store.dispatch("deleteQuestion", { id });
+      if (res) {
+        this.$router.push({ path: "/" });
       }
     }
   },
@@ -107,10 +137,10 @@ export default {
   },
   watch: {
     questionDetail(val) {
-      this.rating = val.upvotes.length - val.downvotes.length
-      this.upvoted = val.upvotes.includes(this.loggedUser.user)
-      this.downvoted = val.downvotes.includes(this.loggedUser.user)
-      this.isAuthor = val.user._id === this.loggedUser.user
+      this.rating = val.upvotes.length - val.downvotes.length;
+      this.upvoted = val.upvotes.includes(this.loggedUser.user);
+      this.downvoted = val.downvotes.includes(this.loggedUser.user);
+      this.isAuthor = val.user._id === this.loggedUser.user;
     }
   }
 };

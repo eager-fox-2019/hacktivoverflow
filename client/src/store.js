@@ -164,6 +164,17 @@ export default new Vuex.Store({
         errorHandler(err)
         return false
       }
+    },
+    async deleteQuestion (context, payload) {
+      let { id } = payload
+      try {
+        let res = await axios.delete(`${BASE_URL}/question/${id}`, axiosConfig())
+        toastifyHelper('A question just got deleted')
+        return res
+      } catch (err) {
+        errorHandler(err)
+        return false
+      }
     }
   }
 })
