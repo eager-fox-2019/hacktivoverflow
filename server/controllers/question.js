@@ -40,7 +40,7 @@ class Question {
 
   static update(req, res, next) {
     let questionObj = {};
-    
+
     if (req.body.title) {
       questionObj['title'] = req.body.title;
     }
@@ -62,7 +62,7 @@ class Question {
     }
 
     Model.Question.updateOne({
-        _id: req.body._id
+        _id: req.params.questionId
       }, questionObj)
       .then((response) => {
         res.status(200).json(response)
@@ -70,6 +70,20 @@ class Question {
       .catch((err) => {
         next(err);
       })
+  }
+
+  static delete(req, res, next) {
+    console.log(req.params);
+    
+    Model.Question.deleteOne({
+      _id: req.params.questionId
+    })
+    .then((response) => {
+      res.status(200).json(response)
+    })
+    .catch((err) => {
+      next(err);
+    })
   }
 }
 

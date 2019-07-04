@@ -1,10 +1,10 @@
 <template>
   <v-content class="form-create-container">
-  <h4 class="add-form-header display-1" >Ask a Question</h4>
+  <h4 class="add-form-header display-1" >Edit Answer</h4>
   <v-form class="form-create mt-5" ref="form" v-model="valid" lazy-validation>
-    <v-text-field :rules="titleRules" v-model="questionObj.title" label="Title"></v-text-field>
-    <wysiwyg v-model="questionObj.description"></wysiwyg>
-    <v-btn color="success" @click="createQuestion" class="button-form">
+    <v-text-field :rules="titleRules" v-model="answerObj.title" label="Title"></v-text-field>
+    <wysiwyg v-model="answerObj.description"></wysiwyg>
+    <v-btn color="success" @click="editAnswer" class="button-form">
       Submit
     </v-btn>
   </v-form>
@@ -16,9 +16,12 @@
     data() {
       return {
         valid: true,
-        questionObj: {
-          title: '',
-          descrpition: ''
+        answerObj: {
+          _id: this.$store.state.selectedAnswer._id,
+          title: this.$store.state.selectedAnswer.title,
+          description: this.$store.state.selectedAnswer.description,
+          upvotes: this.$store.state.selectedAnswer.upvotes,
+          downvotes: this.$store.state.selectedAnswer.downvotes
         },
         titleRules: [
           v => !!v || 'title cannot be empty',
@@ -26,9 +29,9 @@
       }
     },
     methods: {
-      createQuestion() {
+      editAnswer() {
         if (this.$refs.form.validate()) {
-          this.$store.dispatch('createQuestion', this.questionObj);
+          this.$store.dispatch('updateAnswerNoVotes', this.answerObj);
         }
       }
     }

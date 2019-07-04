@@ -1,9 +1,9 @@
 const Model = require('../models');
 module.exports = (req, res, next) => {
-  Model.Question.find({_id: req.params.questionId})
-    .then((question) => {
-      if (question.length != 0) {
-        if (question[0].userId == req.decode._id) {
+  Model.Answer.find({_id: req.params.answerId})
+    .then((answer) => {
+      if (answer.length != 0) {
+        if (answer[0].author == req.decode._id) {
           next();
         } else {
           next({

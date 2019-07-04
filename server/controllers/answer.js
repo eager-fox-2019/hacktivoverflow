@@ -38,7 +38,7 @@ class Answer {
     }
 
     Model.Answer.updateOne({
-        _id: req.body._id
+        _id: req.params.answerId
       }, answerObj)
       .then((response) => {
         res.status(200).json(response)

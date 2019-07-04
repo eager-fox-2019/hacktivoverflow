@@ -1,5 +1,5 @@
 <template>
-  <v-layout>
+  <v-layout class="form-add-answer-container">
     <v-form class="form-add-answer mt-5" ref="form" v-model="valid" lazy-validation>
       <v-text-field :rules="titleRules" v-model="answerObj.title" label="Title"></v-text-field>
       <wysiwyg v-model="answerObj.description"></wysiwyg>
@@ -37,6 +37,11 @@
 
 <style scoped>
   @import '../../node_modules/vue-wysiwyg/dist/vueWysiwyg.css';
+
+  .form-add-answer-container {
+    border-top: 1px solid #ddd;
+    background-color: white;
+  }
 
   .form-add-answer {
     width: 80%;

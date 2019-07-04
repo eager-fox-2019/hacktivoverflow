@@ -22,7 +22,7 @@
   #left-section {
     padding: 50px 0px;
     border-right: 1px solid #ddd;
-    width: 15%;
+    width: 20%;
     background-color: #5E4F73;
   }
 

@@ -11,29 +11,38 @@
         <h4 class="display-1 my-2">{{question.title}}</h4>
         <p class="question-text" v-html="question.description"></p>
         <v-btn @click="addAnswer" color="info">{{addAnswerText}}</v-btn>
+        <v-btn v-if="userId == question.author._id" color="warning" @click="showEditForm">Edit</v-btn>
+        <DeleteModalQuestion v-if="userId == question.author._id" :question="question"></DeleteModalQuestion>
+        <!-- <v-btn >Delete</v-btn> -->
       </v-flex>
     </v-layout>
     <v-layout class="answer-text-container">
       <p class="answer-text">
-        {{question.answers.length}} Answer
+        {{question.answers.length}} Answer(s)
+        <v-btn @click="hideAnswer" flat>{{showAnswerText}}</v-btn>
       </p>
     </v-layout>
     <v-layout v-if="isAddAnswer">
       <AddAnswerForm :question="question"></AddAnswerForm>
     </v-layout>
-    <v-layout>
-      <Answer v-for="answer in question.answers" :key="answer._id" :answer="answer"></Answer>
-    </v-layout>
+    <div v-if="isShowAnswer">
+      <v-layout v-for="answer in question.answers" :key="answer._id">
+      <Answer :answer="answer"></Answer>
+      </v-layout>
+    </div>
   </div>
 </template>
 
 <script>
   import Answer from './Answer'
+  import DeleteModalQuestion from './DeleteModalQuestion'
   import AddAnswerForm from './AddAnswerForm'
+  import Swal from 'sweetalert2'
   export default {
     components: {
       Answer,
-      AddAnswerForm
+      AddAnswerForm,
+      DeleteModalQuestion
     },
     props: ['question'],
     data() {
@@ -41,10 +50,26 @@
         isAddAnswer: false,
         addAnswerText: 'Add Answer',
         upvoteAmount: 0,
-        downvoteAmount: 0
+        downvoteAmount: 0,
+        isShowAnswer: false,
+        showAnswerText: 'Show Answer',
+        userId: localStorage.getItem('_id')
       }
     },
     methods: {
+      hideAnswer() {
+        if (this.question.answers.length != 0) {
+          if (this.isShowAnswer) {
+            this.isShowAnswer = false;
+            this.showAnswerText = 'Show Answer'
+          } else {
+            this.isShowAnswer = true;
+            this.showAnswerText = 'Hide Answer'
+          }
+        } else {
+          Swal.fire('This post has no answer yet')
+        }
+      },
       addAnswer() {
         if (this.isAddAnswer) {
           this.isAddAnswer = false;
@@ -97,6 +122,10 @@
           this.question.downvotes.push(localStorage.getItem('_id'));
           this.$store.dispatch('updateQuestion', this.question);
         }
+      },
+      showEditForm() {
+        this.$store.commit('SETSELECTEDQUESTION', this.question);
+        this.$router.push('/edit_question');
       }
     },
     computed: {
@@ -130,9 +159,9 @@
 
   .question-container {
     margin-top: 50px;
-    border-top: 1px solid #aaa;
     border-bottom: 1px solid #ddd;
     min-height: 400px;
+    background-color: white;
   }
 
   .votes-container {
@@ -146,7 +175,7 @@
   .answer-text-container {
     width: 100%;
     padding: 20px 0px 0px 20px;
-    border-bottom: 1px solid #aaa;
+    background-color: white;
   }
 
   .answer-text {

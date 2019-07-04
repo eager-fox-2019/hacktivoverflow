@@ -12,10 +12,17 @@ export default new Vuex.Store({
   state: {
     isLogin: false,
     clientToken: localStorage.getItem('access_token'),
-    questions: []
+    questions: [],
+    selectedQuestion: [],
+    selectedAnswer: []
   },
   mutations: {
-
+    SETSELECTEDQUESTION(state, payload) {
+      state.selectedQuestion = payload;
+    },
+    SETSELECTEDANSWER(state, payload) {
+      state.selectedAnswer = payload
+    }
   },
   actions: {
     register(context, payload) {
@@ -114,16 +121,61 @@ export default new Vuex.Store({
     updateQuestion(context, payload) {
       axios({
           method: 'PATCH',
-          url: baseUrl + '/questions',
+          url: baseUrl + '/questions/' + payload._id,
           data: payload,
           headers: {
             access_token: localStorage.getItem('access_token')
           }
         })
-        .then((response) => {
-
+        .then((response) => { 
           context.dispatch('readAllQuestions');
+
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    updateQuestionNoVotes(context, payload) {
+      axios({
+          method: 'PATCH',
+          url: baseUrl + '/questions/' + payload._id,
+          data: payload,
+          headers: {
+            access_token: localStorage.getItem('access_token')
+          }
+        })
+        .then((response) => { 
+          Swal.fire(
+            'Successful!',
+            'Question Updated',
+            'success'
+          )
+          context.dispatch('readAllQuestions');
+          router.push('/home');
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    deleteQuestion(context, payload) {
+      axios({
+          method: 'DELETE',
+          url: baseUrl + '/questions/' + payload._id,
+          data: payload,
+          headers: {
+            access_token: localStorage.getItem('access_token')
+          }
+        })
+        .then((response) => { 
           console.log(response);
+          
+          context.dispatch('readAllQuestions');
+          Swal.fire(
+            'Successful!',
+            'Question deleted',
+            'success'
+          )
+          router.push('/home')
         })
         .catch((err) => {
           console.log(err);
@@ -157,7 +209,7 @@ export default new Vuex.Store({
     updateAnswer(context, payload) {
       axios({
           method: 'PATCH',
-          url: baseUrl + '/answers',
+          url: baseUrl + '/answers/' + payload._id,
           data: payload,
           headers: {
             access_token: localStorage.getItem('access_token')
@@ -166,6 +218,28 @@ export default new Vuex.Store({
         .then((response) => {
           context.dispatch('readAllQuestions');
           console.log(response);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    updateAnswerNoVotes(context, payload) {
+      axios({
+          method: 'PATCH',
+          url: baseUrl + '/answers/' + payload._id,
+          data: payload,
+          headers: {
+            access_token: localStorage.getItem('access_token')
+          }
+        })
+        .then((response) => { 
+          Swal.fire(
+            'Successful!',
+            'Question Updated',
+            'success'
+          )
+          context.dispatch('readAllQuestions');
+          router.push('/home');
         })
         .catch((err) => {
           console.log(err);

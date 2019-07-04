@@ -12,6 +12,5 @@ export default {
   #right-section {
     background-color: #eee;
     width: 20%;
-    border-left: 1px solid #ddd;
   }
 </style>

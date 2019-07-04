@@ -9,17 +9,23 @@
       <small>Author: {{answer.author.firstName+ ' ' + answer.author.lastName}}</small>
       <h6 class="title my-2">{{answer.title}}</h6>
       <p class="body-1" v-html="answer.description"></p>
+      <v-btn @click="showEditForm" v-if="userId == answer.author._id" color="warning">Edit</v-btn>
     </v-flex>
   </v-layout>
 </template>
 
 <script>
+  import DeleteModalAnswer from './DeleteModalAnswer'
   export default {
+    components: {
+      DeleteModalAnswer
+    },
     props: ['answer'],
     data() {
       return {
         upvoteAmount: 0,
-        downvoteAmount: 0
+        downvoteAmount: 0,
+        userId: localStorage.getItem('_id')
       }
     },
     methods: {
@@ -66,6 +72,10 @@
           this.answer.downvotes.push(localStorage.getItem('_id'));
           this.$store.dispatch('updateAnswer', this.answer);
         }
+      },
+      showEditForm() {
+        this.$store.commit('SETSELECTEDANSWER', this.answer);
+        this.$router.push('/edit_answer');
       }
     },
     computed: {
@@ -102,6 +112,8 @@
     border-top: 1px solid #eee;
     border-bottom: 1px solid #ddd;
     max-height: 300px;
+
+    background-color: white;
   }
 
   .votes-container {

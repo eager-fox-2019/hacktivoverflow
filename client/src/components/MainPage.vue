@@ -1,12 +1,11 @@
 <template>
-  <div>
+  <v-content>
     <Toolbar></Toolbar>
     <v-layout class="main-page">
       <LeftMainSection></LeftMainSection>
       <CenterMainSection></CenterMainSection>
-      <RightMainSection></RightMainSection>
     </v-layout>
-  </div>
+  </v-content>
 </template>
 
 <script>

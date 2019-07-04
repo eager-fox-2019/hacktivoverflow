@@ -20,7 +20,8 @@
 
 <style scoped>
   .center-section {
-    width: 65%;
+    width: 80%;
     min-height: 100vh;
+    background-color: #eee;
   }
 </style>
