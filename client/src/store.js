@@ -55,7 +55,9 @@ export default new Vuex.Store({
           console.log(data)
         })
         .catch((err) => {
-          console.log(err)
+          Swal.fire({
+            title: 'test'
+          })
         })
     },
     LOGIN(context, data) {
@@ -69,7 +71,9 @@ export default new Vuex.Store({
           context.dispatch("USERQUESTION")
         })
         .catch((err) => {
-          console.log(err)
+          Swal.fire({
+            title: 'test'
+          })
         })
     },
     USERDATA(context, data) {
@@ -217,6 +221,7 @@ export default new Vuex.Store({
         }) => {
           context.dispatch('ONEQUESTION', context.state.currentQ._id)
           context.dispatch("ALLQUESTION")
+          context.dispatch("USERQUESTION")
         })
         .catch((err) => {
           console.log(err)
@@ -234,6 +239,7 @@ export default new Vuex.Store({
         }) => {
           context.dispatch('ONEQUESTION', context.state.currentQ._id)
           context.dispatch("ALLQUESTION")
+          context.dispatch("USERQUESTION")
         })
         .catch((err) => {
           console.log(err)

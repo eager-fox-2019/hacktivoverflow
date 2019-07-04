@@ -73,53 +73,95 @@ class Controller {
         Answer
             .findById(req.params.id)
             .then(resp => {
-                if (resp.upvotes.indexOf(req.decoded.id) !== -1 || resp.downvotes.indexOf(req.decoded.id) !== -1) {
-                    throw({
-                        status: 400,
-                        message: 'You already vote'
-                    })
-                } else {
+                if (resp.upvotes.indexOf(req.decoded.id) == -1 && resp.downvotes.indexOf(req.decoded.id) == -1) {
                     return Answer
                         .findOneAndUpdate({
                             _id: req.params.id
-                        }, data, {
+                        }, {
+                            $push: {
+                                upvotes: req.decoded.id
+                            }
+                        }, {
+                            new: true
+                        })
+                } else if (resp.upvotes.indexOf(req.decoded.id) !== -1 && resp.downvotes.indexOf(req.decoded.id) == -1) {
+                    return Answer
+                        .findOneAndUpdate({
+                            _id: req.params.id
+                        }, {
+                            $pull: {
+                                upvotes: req.decoded.id
+                            }
+                        }, {
+                            new: true
+                        })
+                } else if (resp.upvotes.indexOf(req.decoded.id) == -1 && resp.downvotes.indexOf(req.decoded.id) !== -1) {
+                    return Answer
+                        .findOneAndUpdate({
+                            _id: req.params.id
+                        }, {
+                            $pull: {
+                                downvotes: req.decoded.id
+                            },
+                            $push: {
+                                upvotes: req.decoded.id
+                            }
+                        }, {
                             new: true
                         })
                 }
             })
             .then(resp => {
-                        res.status(200).json(resp)
-                    })
+                res.status(200).json(resp)
+            })
             .catch(next)
     }
 
     static downvotes(req, res, next) {
-        let data = {
-            $push: {
-                downvotes: req.decoded.id
-            }
-        }
-
         Answer
             .findById(req.params.id)
             .then(resp => {
-                if (resp.downvotes.indexOf(req.decoded.id) !== -1 || resp.upvotes.indexOf(req.decoded.id) !== -1) {
-                    throw({
-                        status: 400,
-                        message: 'You already vote'
-                    })
-                } else {
+                if (resp.upvotes.indexOf(req.decoded.id) == -1 && resp.downvotes.indexOf(req.decoded.id) == -1) {
                     return Answer
                         .findOneAndUpdate({
                             _id: req.params.id
-                        }, data, {
+                        }, {
+                            $push: {
+                                downvotes: req.decoded.id
+                            }
+                        }, {
+                            new: true
+                        })
+                } else if (resp.upvotes.indexOf(req.decoded.id) == -1 && resp.downvotes.indexOf(req.decoded.id) !== -1) {
+                    return Answer
+                        .findOneAndUpdate({
+                            _id: req.params.id
+                        }, {
+                            $pull: {
+                                downvotes: req.decoded.id
+                            }
+                        }, {
+                            new: true
+                        })
+                } else if (resp.upvotes.indexOf(req.decoded.id) !== -1 && resp.downvotes.indexOf(req.decoded.id) == -1) {
+                    return Answer
+                        .findOneAndUpdate({
+                            _id: req.params.id
+                        }, {
+                            $pull: {
+                                upvotes: req.decoded.id
+                            },
+                            $push: {
+                                downvotes: req.decoded.id
+                            }
+                        }, {
                             new: true
                         })
                 }
             })
             .then(resp => {
-                        res.status(200).json(resp)
-                    })
+                res.status(200).json(resp)
+            })
             .catch(next)
     }
 }

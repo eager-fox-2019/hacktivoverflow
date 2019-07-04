@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="column is-10 card" id="p">
+    <div class="column is-10 box" id="p">
         <div class="columns">
           <div class="column is-2">
             <div>
@@ -13,7 +13,7 @@
               <b style="font-size:20px">Down Votes: {{downvotes}}</b>
             </div>
           </div>
-          <div class="column is-9 card-content" @click="$router.push('/one')">
+          <div class="column is-9 box-content" @click="$router.push('/one')">
             <div class="content">
               <b style="font-size: 25px;">{{p.title}}</b>
             </div>
@@ -63,8 +63,5 @@ export default {
 <style scoped>
 #p:hover {
   transform: scale(1.02);
-}
-#card {
-  color: black;
 }
 </style>

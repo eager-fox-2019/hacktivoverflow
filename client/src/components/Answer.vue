@@ -1,6 +1,6 @@
 <template>
   <div style="margin-top: 50px">
-    <div class="column is-6 is-offset-1">
+    <div class="column is-6 is-offset-1 box">
       <b style="font-size:20px">Answer</b>
       <div style="margin-top: 10px">
         <b-field>

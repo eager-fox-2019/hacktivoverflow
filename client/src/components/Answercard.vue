@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="column is-8 card is-offset-1" id="a">
+    <div class="column is-8 box is-offset-1" id="a">
       <div class="columns">
         <div class="column is-1">
           <div class="button" @click="upvote(a._id)">
@@ -13,7 +13,7 @@
             <i style="font-size:20px" class="fas fa-arrow-circle-down"></i>
           </div>
         </div>
-        <div class="column card-content">
+        <div class="column box-content">
           <div class="content">
             <b style="font-size: 20px;">{{a.title}}</b>
             <p>{{a.desc}}</p>

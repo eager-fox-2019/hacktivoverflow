@@ -1,6 +1,6 @@
 <template>
   <div class="container is-fluid">
-    <Navbar></Navbar>
+    <Navbar style="margin-top: 20px"></Navbar>
     <div style="margin-top: 20px; margin-bottom: 20px">
       <div>
         <Questiondesc :q="currentQ"></Questiondesc>

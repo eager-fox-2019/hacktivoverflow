@@ -1,6 +1,6 @@
 <template>
   <div class="container is-fluid">
-    <Navbar></Navbar>
+    <Navbar style="margin-top: 20px"></Navbar>
     <NewQ></NewQ>
   </div>
 </template>

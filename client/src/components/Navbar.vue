@@ -1,6 +1,6 @@
 <template>
   <nav class="navbar" role="navigation" aria-label="main navigation">
-    <div class="navbar-brand">
+    <div class="navbar-brand" style="margin-left: 10px">
       <a class="navbar-item" @click="toHome">
         <img
           src="https://cdn3.iconfinder.com/data/icons/popular-services-brands-vol-2/512/stackoverflow-512.png"
@@ -42,16 +42,16 @@
       <div class="navbar-end">
         <div class="navbar-item">
           <div class="buttons" v-if="!isLogin">
-            <a class="button is-light" @click="login">Log in</a>
+            <a class="button is-light" @click="login" style="margin-right: 15px">Log in</a>
           </div>
           <div class="buttons" v-if="isLogin">
             <div @click="toNew" class="button">
               <i class="fas fa-question-circle" style="font-size: 25px;"></i>
             </div>
-            <div>
-              <b-dropdown aria-role="list">
+            <div style="margin-right: 20px">
+              <b-dropdown aria-role="list" class="button">
                 <i
-                  class="fas fa-users-cog tag"
+                  class="fas fa-users-cog"
                   slot="trigger"
                   style="font-size:27px; margin-right:15px"
                 ></i>
@@ -94,7 +94,7 @@ export default {
   methods: {
     toHome() {
       this.$store.dispatch("ALLQUESTION");
-      $router.push("/all");
+      this.$router.push("/all");
     },
     login() {
       this.$router.push("/");

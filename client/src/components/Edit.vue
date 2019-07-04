@@ -1,6 +1,6 @@
 <template>
   <div style="margin-top: 50px">
-    <div class="column is-6 is-offset-3">
+    <div class="column is-6 is-offset-3 box">
       <b style="font-size:30px">Edit Question</b>
       <div style="margin-top: 10px">
         <b-field label="Title">

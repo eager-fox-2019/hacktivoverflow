@@ -52,16 +52,19 @@ class Controller {
             .catch(next)
     }
 
-    static search(req, res, next){
+    static search(req, res, next) {
         Question
-        .find({
-            title : {'$regex': req.params.input, '$options' : 'i'}
-        })
-        .populate('userId')
-        .then(data => {
-            res.status(200).json(data)
-        })
-        .catch(next)
+            .find({
+                title: {
+                    '$regex': req.params.input,
+                    '$options': 'i'
+                }
+            })
+            .populate('userId')
+            .then(data => {
+                res.status(200).json(data)
+            })
+            .catch(next)
     }
 
     static create(req, res, next) {
@@ -116,25 +119,43 @@ class Controller {
     }
 
     static upvotes(req, res, next) {
-        let data = {
-            $push: {
-                upvotes: req.decoded.id
-            }
-        }
-
         Question
             .findById(req.params.id)
             .then(resp => {
-                if (resp.upvotes.indexOf(req.decoded.id) !== -1 || resp.downvotes.indexOf(req.decoded.id) !== -1) {
-                    throw ({
-                        status: 400,
-                        message: 'You already vote'
-                    })
-                } else {
+                if (resp.upvotes.indexOf(req.decoded.id) == -1 && resp.downvotes.indexOf(req.decoded.id) == -1) {
                     return Question
                         .findOneAndUpdate({
                             _id: req.params.id
-                        }, data, {
+                        }, {
+                            $push: {
+                                upvotes: req.decoded.id
+                            }
+                        }, {
+                            new: true
+                        })
+                } else if (resp.upvotes.indexOf(req.decoded.id) !== -1 && resp.downvotes.indexOf(req.decoded.id) == -1) {
+                    return Question
+                        .findOneAndUpdate({
+                            _id: req.params.id
+                        }, {
+                            $pull: {
+                                upvotes: req.decoded.id
+                            }
+                        }, {
+                            new: true
+                        })
+                } else if (resp.upvotes.indexOf(req.decoded.id) == -1 && resp.downvotes.indexOf(req.decoded.id) !== -1) {
+                    return Question
+                        .findOneAndUpdate({
+                            _id: req.params.id
+                        }, {
+                            $pull: {
+                                downvotes: req.decoded.id
+                            },
+                            $push: {
+                                upvotes: req.decoded.id
+                            }
+                        }, {
                             new: true
                         })
                 }
@@ -146,25 +167,43 @@ class Controller {
     }
 
     static downvotes(req, res, next) {
-        let data = {
-            $push: {
-                downvotes: req.decoded.id
-            }
-        }
-
         Question
             .findById(req.params.id)
             .then(resp => {
-                if (resp.downvotes.indexOf(req.decoded.id) !== -1 || resp.upvotes.indexOf(req.decoded.id) !== -1) {
-                    throw ({
-                        status: 400,
-                        message: 'You already vote'
-                    })
-                } else {
+                if (resp.upvotes.indexOf(req.decoded.id) == -1 && resp.downvotes.indexOf(req.decoded.id) == -1) {
                     return Question
                         .findOneAndUpdate({
                             _id: req.params.id
-                        }, data, {
+                        }, {
+                            $push: {
+                                downvotes: req.decoded.id
+                            }
+                        }, {
+                            new: true
+                        })
+                } else if (resp.upvotes.indexOf(req.decoded.id) == -1 && resp.downvotes.indexOf(req.decoded.id) !== -1) {
+                    return Question
+                        .findOneAndUpdate({
+                            _id: req.params.id
+                        }, {
+                            $pull: {
+                                downvotes: req.decoded.id
+                            }
+                        }, {
+                            new: true
+                        })
+                } else if (resp.upvotes.indexOf(req.decoded.id) !== -1 && resp.downvotes.indexOf(req.decoded.id) == -1) {
+                    return Question
+                        .findOneAndUpdate({
+                            _id: req.params.id
+                        }, {
+                            $pull: {
+                                upvotes: req.decoded.id
+                            },
+                            $push: {
+                                downvotes: req.decoded.id
+                            }
+                        }, {
                             new: true
                         })
                 }

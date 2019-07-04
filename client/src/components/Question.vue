@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="column is-9 card" id="q">
+    <div class="column is-9 box" id="q">
       <div class="columns">
         <div class="column is-1">
           <div class="button" @click="upvote(q._id)">
@@ -13,7 +13,7 @@
             <i style="font-size:25px" class="fas fa-arrow-circle-down"></i>
           </div>
         </div>
-        <div class="column is-9 card-content" id="card" @click="$router.push('/one')">
+        <div class="column is-9 box-content" id="box" @click="$router.push('/one')">
           <div class="content">
             <b style="font-size: 35px;">{{q.title}}</b>
           </div>
@@ -28,8 +28,8 @@
           </div>
         </div>
       </div>
-      <div class="columns" style="display: flex; justify-content: center; background-color: lightcoral">
-        <div v-for="(tag, index) in q.tags" :key="index" class="column is-1">
+      <div class="columns" style="display: flex; justify-content: center; background-color: lightblue">
+        <div v-for="(tag, index) in q.tags" :key="index" style="margin: 5px">
           <a @click="tagsearch(tag)"><b-tag type="is-primary" rounded>{{tag}}</b-tag></a>
         </div>
       </div>
@@ -70,7 +70,7 @@ export default {
 #q:hover {
   transform: scale(1.02);
 }
-#card {
+#box {
   color: black;
 }
 </style>

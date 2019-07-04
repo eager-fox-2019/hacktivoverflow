@@ -1,6 +1,6 @@
 <template>
   <div class="container is-fluid">
-    <Navbar></Navbar>
+    <Navbar style="margin-top: 20px"></Navbar>
     <Edit :q='currentQ'></Edit>
   </div>
 </template>
