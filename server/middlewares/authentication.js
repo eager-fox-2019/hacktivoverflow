@@ -10,7 +10,7 @@ module.exports = (req, res, next) => {
       const decode = decodeToken(req.headers.access_token);
       req.decode = decode;
       next();
-    } catch {
+    } catch(e){
       next({
         code: 401
       })
