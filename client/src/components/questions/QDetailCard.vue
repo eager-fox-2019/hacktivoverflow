@@ -18,6 +18,9 @@
           <b-card-text class="text-right">
             Asked By: <b>{{ question.userId.name }}</b>
             <b-button class="text-right ml-1" variant="danger" size="sm" v-if="owner" @click="remove">DELETE</b-button>
+            <b-button v-b-modal.question-modal-edit class="text-right ml-1" variant="primary" size="sm" v-if="owner">EDIT</b-button>
+
+            <QEditForm :qedit="question"></QEditForm>
           </b-card-text>
         </b-card>
       </b-col>
@@ -32,11 +35,13 @@
 <script>
 import Answers from '../answers/ADetailCard'
 import AnswerForm from '../answers/AForm'
+import QEditForm from './QEditForm'
 
 export default {
   components: {
     Answers,
-    AnswerForm
+    AnswerForm,
+    QEditForm
   },
   data () {
     return {

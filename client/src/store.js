@@ -25,8 +25,19 @@ export default new Vuex.Store({
 
       state.questions[index].answers.push(payload)
     },
+    editAnswer (state, payload) {
+      const index = state.questions.findIndex(i => i._id === router.currentRoute.params.qid)
+      const aindex = state.questions[index].answers.findIndex(i => i._id === payload._id)
+
+      state.questions[index].answers[aindex] = payload
+    },
     question (state, payload) {
       state.questions.push(payload)
+    },
+    editQuestion (state, payload) {
+      const index = state.questions.findIndex(i => i._id === payload._id)
+
+      state.questions[index] = payload
     },
     removeQuestion (state, payload) {
       const index = state.questions.findIndex(i => i._id === payload._id)
@@ -92,6 +103,24 @@ export default new Vuex.Store({
           swal.fire(String(err.response.status), err.response.data.message, 'error')
         })
     },
+    editAnswer ({ commit }, payload) {
+      axios({
+        method: 'PUT',
+        url: `${apiUrl}/answer/${payload._id}`,
+        data: {
+          title: payload.title,
+          description: payload.description
+        },
+        headers: {
+          'token': localStorage.getItem('token')
+        }
+      })
+        .then(({ data }) => commit('editAnswer', data))
+        .catch(err => {
+          console.log(err)
+          swal.fire(String(err.response.status), err.response.data.message, 'error')
+        })
+    },
     question ({ commit }, payload) {
       axios({
         method: 'POST',
@@ -119,6 +148,24 @@ export default new Vuex.Store({
         .then(() => commit('removeQuestion', payload))
         .catch(err => {
           console.log(err)
+        })
+    },
+    editQuestion ({ commit }, payload) {
+      axios({
+        method: 'PUT',
+        url: `${apiUrl}/question/${payload._id}`,
+        data: {
+          title: payload.title,
+          description: payload.description
+        },
+        headers: {
+          'token': localStorage.getItem('token')
+        }
+      })
+        .then(({ data }) => commit('editQuestion', data))
+        .catch(err => {
+          console.log(err)
+          swal.fire(String(err.response.status), err.response.data.message, 'error')
         })
     },
     questionUpVote ({ commit }, payload) {

@@ -35,6 +35,23 @@ class AnswerControllers {
     .catch(next)
   }
 
+  static update(req, res, next) {
+    let a
+    Answers.findById(req.params.aid)
+    .then(answer => {
+      if (!answer) throw { code:404 }
+      if (answer.userId.toString() !== req.decode._id) throw { code: 401 }
+
+      answer.title = req.body.title
+      answer.description = req.body.description
+      a = answer
+      answer.save()
+    })
+    .then(() => a.populate('userId').execPopulate())
+    .then(result => res.json(result))
+    .catch(next) 
+  }
+
   static upvote(req, res, next) {
     let a
     Answers.findById(req.params.aid)

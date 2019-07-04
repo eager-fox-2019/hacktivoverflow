@@ -61,6 +61,23 @@ class QuestionControllers {
     .catch(next)
   }
 
+  static update(req, res, next) {
+    let q
+    Questions.findById(req.params.qid)
+    .then(question => {
+      if (!question) throw { code: 404 }
+      if (question.userId.toString() !== req.decode._id) throw { code: 401 }
+
+      question.title = req.body.title
+      question.description = req.body.description
+      q = question
+      question.save()
+    })
+    .then(() => q.populate('userId').execPopulate())
+    .then(result => res.json(result))
+    .catch(next)
+  }
+
   static delete(req, res, next) {
     Questions.findById(req.params.qid)
     .then(question => {

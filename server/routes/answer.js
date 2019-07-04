@@ -8,5 +8,6 @@ router.use(auth)
 router.post('/:qid', Answers.create)
 router.post('/upvotes/:aid', Answers.upvote)
 router.post('/downvotes/:aid', Answers.downvote)
+router.put('/:aid', Answers.update)
 
 module.exports = router

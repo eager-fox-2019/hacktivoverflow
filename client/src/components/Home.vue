@@ -31,6 +31,9 @@ export default {
     }
   },
   methods: {
+    modalQ (id) {
+      return 'modal' + id
+    },
     checkLogin () {
       if (!localStorage.getItem('token')) this.$router.push({ path: '/login' })
     }

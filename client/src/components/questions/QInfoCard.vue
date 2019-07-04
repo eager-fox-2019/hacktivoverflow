@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-row>
+    <b-row class="mb-2">
       <b-col cols="2">
         <b-row class="text-center">
           <b-col>
@@ -23,6 +23,9 @@
             <b-card-text class="text-right">
               Asked By: <b>{{ question.userId.name }}</b>
               <b-button class="text-right ml-1" variant="danger" size="sm" v-if="owner" @click="remove">DELETE</b-button>
+              <b-button v-b-modal="'modal-question-edit' + question._id" class="text-right ml-1" variant="primary" size="sm" v-if="owner">EDIT</b-button>
+
+              <QEditForm :qedit="question"></QEditForm>
             </b-card-text>
          </b-card-body>
         </b-card>
@@ -33,7 +36,12 @@
 </template>
 
 <script>
+import QEditForm from './QEditForm'
+
 export default {
+  components: {
+    QEditForm
+  },
   props: ['question'],
   data () {
     return {
@@ -41,6 +49,9 @@ export default {
     }
   },
   methods: {
+    modalId () {
+      return 'modal-question-edit'
+    },
     questionDetail () {
       this.$router.push({ path: `/question/${this.question._id}` })
     },
