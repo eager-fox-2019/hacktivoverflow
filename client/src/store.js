@@ -27,7 +27,8 @@ export default new Vuex.Store({
       user: '',
       isAdmin: false
     },
-    questions: []
+    questions: [],
+    questionDetail: {},
   },
   mutations: {
     SET_LOGIN(state, payload) {
@@ -46,6 +47,9 @@ export default new Vuex.Store({
     FETCH_QUESTION(state, payload) {
       state.questions = payload
     },
+    FETCH_QUESTION_DETAIL (state, payload) {
+      state.questionDetail = payload
+    }
   },
   actions: {
     initApp(context) {
@@ -112,6 +116,16 @@ export default new Vuex.Store({
       try {
         let res = await axios.get(`${BASE_URL}/question`)
         context.commit('FETCH_QUESTION', res.data)
+      } catch (err) {
+        errorHandler(err)
+        return false
+      }
+    },
+    async fetchQuestionDetail (context, payload) {
+      let { id } = payload
+      try {
+        let res = await axios.get(`${BASE_URL}/question/${id}`)
+        context.commit('FETCH_QUESTION_DETAIL', res.data)
       } catch (err) {
         errorHandler(err)
         return false
