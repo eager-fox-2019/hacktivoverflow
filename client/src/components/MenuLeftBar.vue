@@ -18,9 +18,9 @@
           <div class="card-action">
             <router-link :to="'/users'">USERS</router-link>
           </div>
-          <div class="card-action">
+          <!-- <div class="card-action">
             <router-link :to="'/detail'">DETAIL</router-link>
-          </div>
+          </div> -->
           <div v-if="isLogin" class="card-action">
             <a @click="logout">LOGOUT</a>
           </div>

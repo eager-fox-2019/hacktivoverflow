@@ -50,7 +50,12 @@ export default {
       this.$store.dispatch('LOGIN_ACTION', { email: this.login_email, password: this.login_password })
       .then(() => {
         if (!this.$store.getters.error){
-          this.$router.push('/')
+          this.$store.dispatch('FETCH_DATA_USERS')
+          .then(() => {
+            if (!this.$store.getters.error){
+              this.$router.push('/')
+            }
+          })
         }
       })
       .catch((err) => {

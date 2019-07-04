@@ -9,17 +9,24 @@ import Swal from 'sweetalert2'
 import myServer from '@/api/myServer'
 
 export default {
+  data() {
+    return {
+      // data_user: ''
+    }
+  },
   methods: {
 
   },
   created() {
     // console.log('ada token')
     if (localStorage.getItem("token")) {
-      console.log('token ada')
+      // console.log('token ada')
       this.$store.dispatch('LOGIN_VERIFY')
       .then(() => {
         if (!this.$store.getters.error){
-          this.$store.dispatch('FETCH_DATA_QUESTION')          
+          this.$store.dispatch('FETCH_DATA_QUESTION')
+          // this.fetch_user()
+          this.$store.dispatch('FETCH_DATA_USERS')
         }
       })
     }

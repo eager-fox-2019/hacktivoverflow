@@ -10,9 +10,6 @@
       <div class="col m6 l6 s12">
         <!-- SEARCH -->
         <SearchForm></SearchForm>
-
-
-
         <QuestionCard
           v-for="(question, index) in allQuestions"
           :key="index"
@@ -49,6 +46,7 @@ export default {
   computed: {
     ...mapState(["allQuestions"])
   },
+  // compu
   created () {
     this.$store.dispatch('FETCH_DATA_QUESTION')
   }

@@ -10,6 +10,7 @@ class QuestionController {
             .then((newQuestion) => {
                 return Question.findById(newQuestion._id)
                 .populate('author')
+                .populate('answers')
                 .then((newQuestionPopulate) => {
                     res.status(201).json(newQuestionPopulate)
                 })
@@ -20,6 +21,7 @@ class QuestionController {
     static read(req, res, next) {
         Question.find({})
             .populate('author')
+            .populate('answers')
             .then((questions) => {
                 res.status(200).json(questions)
             })
@@ -32,6 +34,7 @@ class QuestionController {
             _id : id
         })
         .populate('author')
+        .populate('answers')
             .then((question) => {
                 res.status(200).json(question)
             })
@@ -42,9 +45,12 @@ class QuestionController {
         console.log('masuk upvotes')
         let id = req.params.id
         let upvoter = req.decoded.id
+        console.log(upvoter, 'upvoter')
+        console.log(id, 'id')
+
         Question.findOne({ _id: id })
         .then((found)=>{
-            console.log(found)
+            console.log(found, 'ini found')
             if(found.upvotes.includes(upvoter)){
                 found.upvotes.pull(upvoter)
             }else if(found.downvotes.includes(upvoter)){
@@ -56,6 +62,7 @@ class QuestionController {
             }
             return found.save()
         })
+        // .populate('answers')
         .then((question)=>{
             console.log('saveeeeeeeeeeeeeeeeee')
             res.status(200).json(question)
@@ -67,6 +74,7 @@ class QuestionController {
         console.log('masuk downvotes')
         let id = req.params.id
         let downvoter = req.decoded.id
+        console.log(downvoter)
         Question.findOne({ _id: id })
         .then((found)=>{
             console.log(found, " ini found")
@@ -81,6 +89,29 @@ class QuestionController {
             }
             return found.save()
         })
+        // .populate('answers')
+        .then((question)=>{
+            console.log('masuk ini')
+            res.status(200).json(question)
+        })
+        .catch(next)
+    }
+
+    static updateAnswer(req, res, next) {
+        console.log('masuk update')
+        let id = req.params.questionId
+        let dataUpdate = req.body
+        console.log(dataUpdate, "in data update")
+        Question.findOne({ _id: id })
+        .then((found)=>{
+            console.log(dataUpdate, " ini data update")
+            console.log(found, " found ketemu tambah answer")
+            console.log(found.answers, "in answer")
+            found.answers.push(dataUpdate.answers)
+            return found.save()
+        })
+        // .populate('author')
+        // .populate('answers')
         .then((question)=>{
             res.status(200).json(question)
         })
@@ -92,10 +123,13 @@ class QuestionController {
         let id = req.params.questionId
         let dataUpdate = req.body
         Question.findByIdAndUpdate(id, dataUpdate, { new: true })
+        .populate('author')
+        .populate('answers')
             .then((updated) => {
                 res.status(200).json(updated)
             })
-            .catch(next)
+            
+        .catch(next)
     }
 
     static delete(req, res, next) {

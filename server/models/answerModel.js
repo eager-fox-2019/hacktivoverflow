@@ -11,8 +11,14 @@ const answerSchema = new Schema({
         type: String,
         required: [true, 'Title is required']        
     },
-    upvotes: Number,
-    downvotes: Number,
+    upvotes: [{
+        type: ObjectId,
+        ref: 'User',
+    }],
+    downvotes: [{
+        type: ObjectId,
+        ref: 'User',
+    }],
     questionId: {
         type: ObjectId,
         ref: 'Question',
@@ -23,11 +29,9 @@ const answerSchema = new Schema({
     }
 }, { timestamps: true })
 
-answerSchema.pre('save', function(next){
-    this.upvotes = 0
-    this.downvotes = 0
-    next()
-})
+// answerSchema.pre('save', function(next){
+//     next()
+// })
 
 const Answer = mongoose.model('Answer', answerSchema)
 

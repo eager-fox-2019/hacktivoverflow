@@ -30,10 +30,9 @@ const questionSchema = new Schema({
     tags: []
 }, { timestamps: true })
 
-questionSchema.pre('save', function(next){
-    this.answers = []
-    next()
-})
+// questionSchema.pre('save', function(next){
+//     next()
+// })
 
 const Question = mongoose.model('Question', questionSchema)
 

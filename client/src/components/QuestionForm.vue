@@ -21,7 +21,7 @@
         <label for="tag_input">Tags</label>
         <span class="helper-text">Enter a tag</span>
       </div>
-              <div class="row">
+        <div class="row">
           <div v-for="(tag, index) in tags" :key="index" class="list-tag col">
             <div class="chip2">
               <!-- <div class="chip-head"></div> -->
@@ -72,16 +72,16 @@ export default {
       }
     },
     post_question () {
-      console.log(this.tags)
-      console.log(this.myHTML)
-      console.log(this.title)
+      // console.log(this.tags)
+      // console.log(this.myHTML)
+      // console.log(this.title)
       this.$store.dispatch('POST_QUESTION_ACTION', { title: this.title, description: this.myHTML, tags: this.tags })
       .then(() => {
         if (!this.$store.getters.error){
           this.tags = '',
           this.myHTML = '',
           this.title = ''
-          this.$router.push('/')
+          this.$router.push('/myquestions')
         }
       })
       .catch((err) => {

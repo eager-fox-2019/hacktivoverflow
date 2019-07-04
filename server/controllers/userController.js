@@ -50,6 +50,47 @@ class UserController {
         console.log(req.decoded)
         res.status(200).json(req.decoded)
     }
+
+    static updateWatch(req, res, next) {
+        console.log('masuk updateWatch')
+        let id = req.params.userId
+        let watchtags = req.body
+        User.findOne({ _id: id })
+        .then((found)=>{
+            console.log(watchtags, " ini data update")
+            console.log(found, " found ketemu tambah watchtags")
+            // console.log(found.answers, "in answer")
+            found.watchtags.push(watchtags.watchtags)
+            return found.save({validateBeforeSave: false })
+        })
+        .then((user)=>{
+            console.log('data usdah diupdate', user)
+            res.status(200).json(user)
+        })
+        .catch(next)
+    }
+
+    static removeWatch(req, res, next) {
+        console.log('masuk remove watch')
+        let id = req.params.userId
+        let watchtags = req.body
+        User.findOne({ _id: id })
+        .then((found)=>{
+            console.log(found.watchtags, " ini found.watchtags")
+            let index = found.watchtags.indexOf(watchtags.watchtags);
+            console.log(index, " index", watchtags ," watchtags")
+            if (index !== -1) {
+                console.log(index, "------------------")
+                found.watchtags.splice(index, 1)
+            }
+            return found.save({validateBeforeSave: false })
+        })
+        .then((user)=>{
+            console.log('data usdah diremove')
+            res.status(200).json(user)
+        })
+        .catch(next)
+    }
 }
 
 module.exports = UserController

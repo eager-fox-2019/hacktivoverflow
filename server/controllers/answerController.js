@@ -2,12 +2,17 @@ const Answer = require('../models/answerModel')
 
 class AnswerController{
     static create(req, res, next) {
-        let { title, description, questionId, author } = req.body
+        let author = req.decoded.id
+        let { title, description, questionId } = req.body
         Answer.create({
             title, description, questionId, author
         })
             .then((newAnswer) => {
-                res.status(201).json(newAnswer)
+                return Answer.findById(newAnswer._id)
+                .populate('author')
+                .then((newAnswerPopulate) => {
+                    res.status(201).json(newAnswerPopulate)
+                })
             })
             .catch(next)
     }
@@ -37,6 +42,62 @@ class AnswerController{
                 res.status(200).json(deleted)
             })
             .catch(next)
+    }
+
+    static upvotes(req, res, next) {
+        console.log('masuk upvotes')
+        let id = req.params.id
+        let upvoter = req.decoded.id
+        console.log(upvoter, 'upvoter')
+        console.log(id, 'id')
+
+        Answer.findOne({ _id: id })
+        .then((found)=>{
+            console.log(found, 'ini found')
+            if(found.upvotes.includes(upvoter)){
+                found.upvotes.pull(upvoter)
+            }else if(found.downvotes.includes(upvoter)){
+                console.log('masuk sini')
+                found.downvotes.pull(upvoter)
+                found.upvotes.push(upvoter)
+            }else{
+                found.upvotes.push(upvoter)
+            }
+            return found.save()
+        })
+        // .populate('answers')
+        .then((question)=>{
+            console.log('saveeeeeeeeeeeeeeeeee')
+            res.status(200).json(question)
+        })
+        .catch(next)
+    }
+
+    static downvotes(req, res, next) {
+        console.log('masuk downvotes')
+        let id = req.params.id
+        let downvoter = req.decoded.id
+        console.log(downvoter)
+        Answer.findOne({ _id: id })
+        .then((found)=>{
+            console.log(found, " ini found")
+            if(found.downvotes.includes(downvoter)){
+                found.downvotes.pull(downvoter)
+            }else if(found.upvotes.includes(downvoter)){
+                console.log('masuk sini')
+                found.upvotes.pull(downvoter)
+                found.downvotes.push(downvoter)
+            }else{
+                found.downvotes.push(downvoter)
+            }
+            return found.save()
+        })
+        // .populate('answers')
+        .then((question)=>{
+            console.log('masuk ini')
+            res.status(200).json(question)
+        })
+        .catch(next)
     }
 }
 

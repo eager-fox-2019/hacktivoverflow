@@ -21,7 +21,7 @@ const userSchema = new Schema({
         type: String,
         required: [true, 'Password is required'],
     },
-    watchtags : []
+    watchtags : [String],
 })
 
 userSchema.path('email').validate(function (email) {
@@ -33,7 +33,9 @@ userSchema.path('email').validate(function (email) {
 }, `Email is already registered`)
 
 userSchema.pre('save', function (next) {
-    this.password = hashPassword(this.password)
+    if( this.isNew) {
+        this.password = hashPassword(this.password)
+    }
     next()
 })
 

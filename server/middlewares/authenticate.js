@@ -11,10 +11,8 @@ module.exports = function (req, res, next) {
             .then(user => {
                 if (user) {
                     req.decoded = decoded;
-                    // console.log('masuk next')
                     next()
                 } else {
-                    // console.log('throw')
                     throw { status: 401, messages: 'User is not valid' }
                 }
             })
