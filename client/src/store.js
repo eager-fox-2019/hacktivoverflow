@@ -100,8 +100,11 @@ export default new Vuex.Store({
       router.push('/search')
     },
     getQuestion(state, payload) {
+      console.log(payload);
+      
       for(let key in payload)
         state.question[key] = payload[key]
+      console.log(state.question)
     },
     createQuestion(state, _id) {
       router.push(`/question/${_id}`)
@@ -405,6 +408,8 @@ export default new Vuex.Store({
           url: `/questions/user/${sId}`,
         })
           .then(({ data }) => {
+            console.log(data);
+            
             context.commit('getUserQuestions', data)
             resolve(data)
           })

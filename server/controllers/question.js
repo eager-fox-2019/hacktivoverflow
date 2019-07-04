@@ -47,7 +47,7 @@ class QuestionController {
 
     Question.find(obj)
       .populate('user')
-      .populate('answeredBy')
+      // .populate('answeredBy')
       .then(rows => {
 
         res.json(rows)
@@ -58,8 +58,11 @@ class QuestionController {
   static readOne(req, res, next) {
     Question.findById(req.params._id)
       .populate('user')
-      .populate('answeredBy')
+      // .populate('answeredBy')
       .then(row => {
+        console.log('==============>>>>>');
+        console.log(row);
+        
         res.json(row)
       })
       .catch(next)
@@ -131,7 +134,7 @@ class QuestionController {
   static delete(req, res, next) {
     Question.findByIdAndDelete(req.params._id)
     .populate('user')
-    .populate('answeredBy')
+    // .populate('answeredBy')
     .then(row => {
         res.json(row)
       })
