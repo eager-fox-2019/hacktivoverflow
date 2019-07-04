@@ -2,8 +2,9 @@
     <div>
         <div v-if="isLogin">
             <div class="watched-tags-container watched-tags-card">
-                <div class="watched-head">
+                <div class="watched-head" style="position: relative;">
                     <h6><i class="fas fa-tags"></i>Watched Tags</h6>
+                    <span @click="toggleInput" class="edit-watch" style="position: absolute;">Edit</span>
                 </div>
                 <div>
                     <div class="watched-tags-list">
@@ -20,7 +21,12 @@
                     <form 
                         @submit.prevent="submitWatchTag"
                     >
-                        <input v-model="tagName" type="text">
+                        <input 
+                            v-model="tagName" 
+                            type="text"
+                            class="form-control"
+                            v-if="isTagInputActive"
+                        >
                     </form>
                 </div>
             </div>
@@ -35,7 +41,8 @@
 export default {
     data() {
         return {
-            tagName : ''
+            tagName : '',
+            isTagInputActive: false
         }
     },
     computed: {
@@ -64,6 +71,9 @@ export default {
                     this.$store.dispatch('getWatchedTagsQuestions')
                 }
             })
+        },
+        toggleInput() {
+            this.isTagInputActive = !this.isTagInputActive
         }
     },
 }
@@ -88,5 +98,17 @@ export default {
 }
 .close-tags:hover {
     cursor: pointer;
+}
+.edit-watch {
+    position: absolute;
+    bottom: 2.3em;
+    right: 0em;
+    font-size: 14px;
+    color: #0584ff;
+    font-weight: 500;
+}
+.edit-watch:hover {
+    cursor: pointer;
+    text-decoration: underline;
 }
 </style>
