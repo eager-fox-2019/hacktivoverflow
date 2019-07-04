@@ -53,6 +53,12 @@ export default {
     return {}
   },
   computed: {
+    upvoted() {
+      return this.upvotes.includes(this.loggedUser.user);
+    },
+    downvoted() {
+      return this.downvotes.includes(this.loggedUser.user);
+    },
     isAuthor() {
       return this.user._id ===  this.loggedUser.user
     },
