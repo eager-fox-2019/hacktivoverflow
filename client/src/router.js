@@ -66,8 +66,7 @@ export default new Router({
       beforeEnter: async function (to, from, next) {
         await store.dispatch('initApp')
         await store.dispatch('fetchAnswerDetail', { id: to.params.id })
-        let s = store
-        if (s.state.answerDetail.user._id === s.state.loggedUser.user) {
+        if (store.state.answerDetail.user._id === store.state.loggedUser.user) {
           next()
         } else {
           toastifyHelper('Not Authorized')
