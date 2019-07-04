@@ -1,6 +1,10 @@
 const mongoose = require('mongoose')
 
 let answerSchema = new mongoose.Schema ({
+    title: {
+        type: String,
+        required: [true, `Title needed`]
+    },
     description: {
         type: String,
         required: [true, `Description needed`]

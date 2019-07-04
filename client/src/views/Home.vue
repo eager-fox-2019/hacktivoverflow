@@ -1,26 +1,68 @@
 <template>
   <div class="home">
-    <h1>Ini home</h1>
-    <ul>
-      <li v-for="(question,i) in this.$store.state.questions" :key="i">
-        <h1> {{question.title}} </h1>
-        <h2> {{question.description}}</h2>
-        <h3> {{question.answers.length}} </h3>
-        <h4> {{question.upVote.length}} </h4>
-        <h4> {{question.downVote.length}} </h4>
-      </li>
-    </ul>
+    <NavbarHome></NavbarHome>
+    <el-row :gutter="20">
+      <el-col :span="15" :offset="2">
+        <div class="grid-content homeMain" >
+          <el-button
+            type="primary"
+            @click="onNewQuestion"
+          >add question</el-button>
+          <askQuestion v-if="questionForm == true" @trigeredfromaskquestion="onNewQuestion"></askQuestion>
+          <MainHome v-if="questionForm == false"></MainHome>
+        </div>
+      </el-col>
+      <el-col :span="5">
+        <div class="grid-content -light" >
+          <SideHome></SideHome>
+        </div>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 import HelloWorld from "@/components/HelloWorld.vue";
+import NavbarHome from "../components/navbar.vue";
+import MainHome from "../components/mainHome.vue";
+import SideHome from "../components/sideHome.vue";
+import askQuestion from "../components/askQuestion.vue";
 
 export default {
-  name: "home",
   components: {
-    HelloWorld
+    HelloWorld,
+    NavbarHome,
+    MainHome,
+    SideHome,
+    askQuestion
+  },
+  data() {
+    return {
+      questionForm: false
+    };
+  },
+  methods: {
+    onNewQuestion() {
+      console.log("akan ke new question");
+      //   this.$store.dispatch("makeNewQuestion");
+      console.log(this.questionForm);
+      if (this.questionForm == false) {
+        this.questionForm = true;
+      } else {
+        this.questionForm = false;
+      }
+      
+      console.log(this.questionForm);
+    }
   }
 };
 </script>
+
+<style>
+.homeMain {
+  height: 100%;
+  padding-bottom: 20px;
+}
+</style>
+

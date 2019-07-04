@@ -8,9 +8,16 @@
 export default {
   created() {
     console.log(this.$store.state.isLogin)
+    if(localStorage.getItem('token')){
+      console.log('disini ada token')
+      this.$store.commit('appLogin')
+    }
     if(this.$store.state.isLogin == false) {
       this.$router.push('/')
     }
+    // else {
+    //   this.$router.push('/home')
+    // }
     this.$store.dispatch('fetchQuestion')
   }
 }
@@ -24,6 +31,8 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: left;
   color: #2c3e50;
+  margin:0px;
+  padding: 0px;
 }
 
 </style>

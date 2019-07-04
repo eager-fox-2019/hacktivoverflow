@@ -24,6 +24,7 @@ class AnswerController {
     static create(req, res, next) {
         let comment
         let newComment = {
+            title: req.body.title,
             description: req.body.description,
             questionId: req.params.questionId,
             userId: req.decode._id,
@@ -81,16 +82,15 @@ class AnswerController {
     }
 
     static upVote(req, res, next) {
-
-        let id = req.params.answerId
+        let id = req.body.answerId
         let userId = req.decode._id
         console.log(id, '<== ini answer ID...ini user ID==>', userId)
         answerModel
             .findById(id)
             .then((answerFound) => {
-                // console.log(answerFound,'-==-=-=-=-=-=- ini answerfond')
-                // console.log(answerFound.upVote.includes(userId),'~~~~~~iniiii~~~~~~')
-                // console.log(answerFound.downVote.includes(userId),'~~~~~~iniiii keduaaaa~~~~~~')
+                console.log(answerFound,'-==-=-=-=-=-=- ini answerfond')
+                console.log(answerFound.upVote.includes(userId),'~~~~~~iniiii~~~~~~')
+                console.log(answerFound.downVote.includes(userId),'~~~~~~iniiii keduaaaa~~~~~~')
                 if (answerFound.upVote.includes(userId)) {
                     return answerModel
                         .findByIdAndUpdate(id, {
@@ -113,7 +113,7 @@ class AnswerController {
                             new: true
                         })
                 } else {
-                    // console.log('seharusnya tuh disiniiii~~')
+                    console.log('seharusnya tuh disiniiii~~')
                     return answerModel
                         .findByIdAndUpdate(id, {
                             $push: {
@@ -136,14 +136,15 @@ class AnswerController {
     }
 
     static downVote(req, res, next) {
-        let id = req.params.answerId
+        let id = req.body.answerId
         let userId = req.decode._id
-
+        console.log('dinsini loohhhh',userId,id)
         answerModel
             .findById(id)
             .then((foundAnswer) => {
                 // console.log(foundAnswer)
                 if (foundAnswer.downVote.includes(userId)) {
+                    console.log('pertamaaaaaaaa')
                     return answerModel
                         .findByIdAndUpdate(id, {
                             $pull: {
@@ -153,6 +154,7 @@ class AnswerController {
                             new: true
                         })
                 } else if (foundAnswer.upVote.includes(userId)) {
+                    console.log('keduaaaa-=-=-=-=-=-=')
                     return answerModel
                         .findByIdAndUpdate(id, {
                             $pull: {
@@ -165,6 +167,7 @@ class AnswerController {
                             new: true
                         })
                 } else {
+                    console.log('ketigaafk,adhsbvn; lkahfsb lkv.')
                     return answerModel
                         .findByIdAndUpdate(id, {
                             $push: {

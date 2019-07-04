@@ -7,7 +7,15 @@ class QuestionController {
             .populate('userId')
             .populate('answers')
             .then((allQuestions) => {
-                // console.log(allQuestions)
+                // allQuestions.forEach(el=> {
+                //     console.log(el.upVote.length,el.downVote.length,'ini semua vote')
+                //     let totalVote = el.upVote.length-el.downVote.length
+                //     console.log(totalVote,'<====ini total vote')
+                //     el.totalVote = totalVote
+                //     console.log(el.totalVote)
+                //     console.log(el,'------ lah ini aduuh')
+                // })
+                // console.log(allQuestions[3],'<===== ini total vote ke 4')
                 res.status(200).json(allQuestions)
             })
             .catch((err) => {

@@ -4,6 +4,7 @@ import Home from './views/Home.vue';
 import Landing from './views/landingPage.vue';
 import Question from './views/questionPage.vue';
 import User from './views/userPage.vue';
+import questionPage from './views/questionPage.vue'
 
 Vue.use(Router);
 
@@ -34,6 +35,11 @@ export default new Router({
     path: '/user',
     name: 'user',
     component: User,
+  },
+  {
+    path: '/question/:questionId',
+    name: 'detailQuestion',
+    component: questionPage
   },
   ],
 });

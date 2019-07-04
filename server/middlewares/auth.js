@@ -9,6 +9,8 @@ const answerModel = require('../models/answerModel')
 module.exports = {
     authentication: function (req, res, next) {
         let token = req.headers.token
+        console.log(token)
+        console.log('=-=-=-=--=-=-inii dineaa~~')
         if (!token) {
             throw ({
                 code: 400,
@@ -18,7 +20,7 @@ module.exports = {
             let decode = verify(token)
             userModel
                 .findOne({
-                    emial: decode.email
+                    email: decode.email
                 })
                 .then((found) => {
                     let decode = verify(token)
@@ -35,14 +37,15 @@ module.exports = {
         }
     },
     questionAuthorization: function (req, res, next) {
-        // console.log(req.params.questionId, 'ini question id')
-        // console.log(req.decode._id,'ini id yang login')
+        console.log(req.params.questionId, 'ini question id')
+        console.log(req.decode._id,'ini id yang login')
 
         questionModel
             .findById({
                 _id: req.params.questionId
             })
             .then((question) => {
+                console.log(question)
                 if (question === {}) {
                     throw ({
                         code: 404,

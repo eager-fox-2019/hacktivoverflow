@@ -29,10 +29,10 @@
     <llForm />
     <el-row :gutter="10">
         <el-col :span="14" type="flex">
-            <h4  style="margin: 0px; padding: 0px; border: 1px solid purple">hello world</h4>
+            <h4  style="margin: 0px;">hello world</h4>
         </el-col>
         <el-col :span="10" type="flex">
-            <h4  style="margin: 0px; padding: 0px; border: 1px solid purple">hello world</h4>
+            <h4  style="margin: 0px;">hello world</h4>
         </el-col>
     </el-row>
   </div>
@@ -57,13 +57,13 @@ export default {
   margin-left: 20px;
   padding-left: 20px;
   text-align: left;
-  border: 1px solid blue;
+  /* border: 1px solid blue; */
 }
 .right {
   /* margin-top: 10px; */
   margin-right: 20px;
   padding-right: 20px;
   text-align: right;
-  border: 1px solid blue;
+  /* border: 1px solid blue; */
 }
 </style>

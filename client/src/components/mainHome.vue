@@ -7,17 +7,19 @@
       :key="i"
     >
       <el-col :span="2" :offset="1">
-        <div class="grid-contentmainHomeContent" style="border: 1px">
+        <div class="grid-contentmainHomeContent">
           <h3>{{ question.upVote.length-question.downVote.length}}</h3>
+          <p>Votes</p>
         </div>
       </el-col>
       <el-col :span="2">
-        <div class="grid-contentmainHomeContent" style="border: 1px">
+        <div class="grid-contentmainHomeContent">
           <h3>{{ question.answers.length }}</h3>
+          <p>Answer</p>
         </div>
       </el-col>
       <el-col :span="19">
-        <div class="grid-contentmainHomeContent" style="border: 1px">
+        <div class="grid-contentmainHomeContent">
           <a @click="toDetailQuestion(question._id)">
             <h1>{{ question.title }}</h1>
           </a>
