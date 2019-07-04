@@ -31,7 +31,7 @@ const getJob = cron.schedule("*/15 * * * * *", async () => {
 getJob.start();
 
 mongoose.set('useFindAndModify', false);
-mongoose.connect(`mongodb://localhost/overflow`, { useNewUrlParser: true })
+mongoose.connect(process.env.DB_CONNECT, { useNewUrlParser: true })
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(cors())

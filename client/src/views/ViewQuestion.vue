@@ -1,9 +1,9 @@
 <template>
   <div>
     <div class="card w-75" style="margin-left:12%;">
-        <div class="card-body">
-        <h5 class="card-title" style="text-align:center;">{{new Date(question.createdAt).toDateString()}} by <em>{{question.UserId.first_name + ' ' + question.UserId.last_name}}</em></h5>
-        <h3 class="card-text" style="color:gray;text-align:center;">{{question.title}}?</h3>
+       <div class="card-body">
+       <h5 class="card-title" style="text-align:center;">{{new Date(question.createdAt).toDateString()}} by <em>{{question.UserId.first_name + ' ' + question.UserId.last_name}}</em></h5>
+       <h3 class="card-text" style="color:gray;text-align:center;">{{question.title}}?</h3>
        <p class="card-text" v-html="question.description" style="color:gray;"></p>
        <h5 style="margin-left:48%;">
           <v-badge>
