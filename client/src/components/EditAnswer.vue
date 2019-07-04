@@ -5,13 +5,6 @@
           <p class="modal-card-title">Edit</p>
       </header>
       <section class="modal-card-body">
-          <b-field label="Title">
-              <b-input
-                  placeholder="Title"
-                  v-model="inputEdit.titleEdit">
-              </b-input>
-          </b-field>
-
           <b-field label="Content">
               <b-input
                   type="textarea"
@@ -31,33 +24,32 @@
 <script>
 export default {
   name: 'edit',
-  props: ['question', 'state'],
+  props: ['answer', 'state', 'questionId'],
   data () {
     return {
       inputEdit: {
-        titleEdit: '',
         contentEdit: ''
       }
     }
   },
   created () {
-    this.inputEdit.titleEdit = this.question.title
-    this.inputEdit.contentEdit = this.question.content
+    this.inputEdit.titleEdit = this.answer.title
+    this.inputEdit.contentEdit = this.answer.content
   },
   methods: {
     edit () {
       let input = {
-        id: this.question._id,
+        id: this.answer._id,
         ...this.inputEdit
       }
-      this.$store.dispatch('editQuestion', input)
+      this.$store.dispatch('editAnswer', input)
         .then(({ data }) => {
-          this.$toast.open({ message: 'Question edited !', type: 'is-success' })
+          this.$toast.open({ message: 'Answer edited !', type: 'is-success' })
           this.$parent.close()
-          return this.$store.dispatch('fetchQuestions')
+          return this.$store.dispatch('fetchAnswers', this.questionId)
         })
         .then(({ data }) => {
-          this.$store.commit('STOREMYQUESTIONS', data)
+          this.$store.commit('STOREANSWERS', data)
         })
         .catch(err => this.$toast.open({ message: err.response.data.message, type: 'is-danger' }))
     }

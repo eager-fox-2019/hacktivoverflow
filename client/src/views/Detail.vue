@@ -142,14 +142,14 @@ export default {
   #detail-container::-webkit-scrollbar {
     width: 10px;
   }
-  
+
   #detail-container::-webkit-scrollbar-track {
     background: #f1f1f1;
     border-right: 1px solid $primary;
   }
-  
+
   #detail-container::-webkit-scrollbar-thumb {
-    background: $primary  ; 
+    background: $primary  ;
   }
   .detail-item {
     border: 2px solid $primary;

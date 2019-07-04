@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 import axios from 'axios'
 Vue.use(Vuex)
 Vue.use(axios)
-const api = 'http://localhost:3000/api/'
+const api = 'http://3.0.98.71/api/'
 export default new Vuex.Store({
   state: {
     questions: [],
@@ -171,6 +171,18 @@ export default new Vuex.Store({
           token: localStorage.token
         }
       })
-    }
+    },
+     editAnswer({state, commit}, payload) {
+      return axios({
+        method: 'PATCH',
+        url: `${api}answers/${payload.id}`,
+        data: {
+          content: payload.contentEdit
+        },
+        headers: {
+          token: localStorage.token
+        }
+      })
+     }
   }
 })

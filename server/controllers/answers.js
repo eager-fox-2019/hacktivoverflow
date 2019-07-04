@@ -26,8 +26,9 @@ class ControllerAnswer {
     let {content} = req.body
     let input = {content}
 
-    Answer.update({id: ObjectId(req.params.id)}, input)
+    Answer.updateOne({_id: req.params.id}, input)
     .then(result => {
+      console.log('result', result)
       res.status(200).json(result)
     })
     .catch(next)

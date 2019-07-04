@@ -37,6 +37,7 @@
 </template>
 
 <script>
+import EditAnswer from '@/components/EditAnswer.vue'
 import { mapState } from 'vuex'
 export default {
   name: 'post',
@@ -87,7 +88,16 @@ export default {
       })
     },
     editThis (id) {
-      // this.$store.dispatch('')
+      this.$modal.open({
+        parent: this,
+        component: EditAnswer,
+        hasModalCard: true,
+        props: {
+          answer: this.answer,
+          questionId: this.questionId,
+          state: 'answer'
+        }
+      })
     },
     upvote () {
       if (!this.isLogin) {
