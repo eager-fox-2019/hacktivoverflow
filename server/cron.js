@@ -44,15 +44,15 @@ const job = new CronJob('0 0 0 */1 * *', async function () {
 }, null, true)
 
 queue.process('sendmail', function (job, done) {
-    nodemailer(job.data.email, job.data.teks)
-    .then(_ => {
-        done()
-    })
-    .catch(err => {
-        console.log(err)
-        done()
-    })
     setTimeout(function(){
+        nodemailer(job.data.email, job.data.teks)
+        .then(_ => {
+            done()
+        })
+        .catch(err => {
+            console.log(err)
+            done()
+        })
         console.log(job.data.email)
     }, 2000)
 });
