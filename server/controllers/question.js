@@ -1,8 +1,8 @@
-const { Question, Answer } = require('../models')
+const { Question, Answer, User } = require('../models')
 
 class QuestionController{
     static getAllQuestion(req, res, next){
-        Question.find()
+        Question.find().populate('owner')
             .then(questions => {
                 res.json(questions)
             })
@@ -10,12 +10,18 @@ class QuestionController{
     }
 
     static getQuestion(req, res, next){
-        console.log("Masuk get question")
-        Question.findOne({ _id: req.params.questionId }).populate('answer')
+        Question.findOne({ _id: req.params.questionId }).populate({ 
+            path: 'answer',
+            populate: {
+              path: 'owner',
+              model: 'User'
+            } 
+         })
             .then(question => {
                 if(!question){
                     throw {code: 404, message: 'Question not found'}
                 } else {
+                    // User.populate(question, {path: 'answer.user'})
                     res.json(question)
                 }
             })
@@ -31,7 +37,6 @@ class QuestionController{
     }
 
     static addQuestion(req, res, next){
-        console.log("Masuk ke add Question")
         const { title, description, question } = req.body
         const input = { title, description, question }
         input.owner = req.decode.id
@@ -43,7 +48,6 @@ class QuestionController{
     }
 
     static update(req, res, next){
-        console.log("Masuk ke update Question")
         let searchObj = {
             _id: req.params.questionId
         }
@@ -67,7 +71,6 @@ class QuestionController{
     }
 
     static nodetailUpdate(req, res, next){
-        console.log("Masuk ke nodetailUpdate Question")
         let searchObj = {
             _id: req.params.questionId
         }

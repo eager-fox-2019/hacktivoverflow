@@ -1,9 +1,9 @@
 <template>
     <div v-if="inside">
         <b-button-group vertical>
-                <b-button v-if="$store.state.isLogin" :class="{ active: upvoted }" @click="upvote(inside)">Up</b-button>
+                <b-button v-if="$store.state.isLogin" :class="{ active: upvoted }" @click="upvote(inside)"><img src='@/assets/up-arrow.png' style="width:25px; height:25px"></b-button>
                 <b-button disabled>{{ totalvote }}</b-button>
-                <b-button v-if="$store.state.isLogin" :class="{ active: downvoted }" @click="downvote(inside)">Down</b-button>
+                <b-button v-if="$store.state.isLogin" :class="{ active: downvoted }" @click="downvote(inside)"><img src='@/assets/down-arrow.png' style="width:25px; height:25px"></b-button>
         </b-button-group>
     </div>
 </template>
@@ -40,7 +40,7 @@ export default {
       } else if (this.type === 'answer') {
         this.$store.dispatch('UPDATE_DETAILED_ANSWER', updateObj)
           .then(({ data }) => {
-            this.$store.dispatch('GET_ANSWER')
+            this.$store.dispatch('GET_A_QUESTION', data.question)
           })
           .catch(e => {
             console.log(e.response)
@@ -75,7 +75,7 @@ export default {
       } else if (this.type === 'answer') {
         this.$store.dispatch('UPDATE_DETAILED_ANSWER', updateObj)
           .then(({ data }) => {
-            this.$store.dispatch('GET_ANSWER')
+            this.$store.dispatch('GET_A_QUESTION', data.question)
           })
           .catch(e => {
             console.log(e.response)

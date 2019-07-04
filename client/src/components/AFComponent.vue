@@ -33,57 +33,34 @@
 <script>
 import { mapState } from 'vuex'
 export default {
-  data () {
-    // if ((this.typeform === 'add') && (this.type === 'answer')) {
-    //     console.log("ADD ANSWER")
-    return {
-      form: {
-        title: '',
-        description: '',
-        question: ''
-      }
-    }
-    // } else {
-    //   return {
-    //     form: {
-    //       title: '',
-    //       description: ''
-    //     }
-    //   }
-    // }
-  },
   props: ['typeform', 'type'],
   methods: {
-    clearForm () {
-      this.form.title = ''
-      this.form.description = ''
-      if ((this.typeform === 'add') && (this.type === 'answer')) {
-        this.form.question = ''
-      }
-    },
     onSubmit () {
       if ((this.type === 'answer') && (this.typeform === 'add')) {
         this.form.question = this.questionShowed._id
         const { dispatch } = this.$store
-        dispatch('ADD_ANSWER', this.form)
+        let addform = {
+          question: this.questionShowed._id,
+          ...this.form
+        }
+        dispatch('ADD_ANSWER', addform)
           .then(({ data }) => {
             let ans = this.questionShowed.answer
             ans.push(data._id)
-            console.log('Setelah berhasil add answer')
+            console.log("thap 1")
             return dispatch('UPDATE_DETAILED_QUESTION', {
               id: this.questionShowed._id,
               answer: ans
             })
           })
           .then(({ data }) => {
-            console.log('Setelah berhasil update yang question')
+            console.log("thap 2")
+            dispatch('GET_A_QUESTION', this.questionShowed._id)
+            this.$bvModal.hide('modal-scrollable-add')
             this.$swal({
               type: 'success',
               title: 'Answer added!'
             })
-            dispatch('GET_A_QUESTION', this.questionShowed._id)
-            this.$router.push(`/question/${this.questionShowed._id}`)
-            this.clearForm()
           })
           .catch(e => {
             console.log(e.response.data.message)
@@ -95,16 +72,15 @@ export default {
             })
           })
       } else if ((this.type === 'answer') && (this.typeform === 'edit')) {
-        console.log('masuk edit answer')
         const { dispatch } = this.$store
         dispatch('EDIT_ANSWER', this.form)
           .then(({ data }) => {
+            this.$bvModal.hide('modal-scrollable-edit')
             this.$swal({
               type: 'success',
               title: 'Answer updated!'
             })
             dispatch('GET_A_QUESTION', this.questionShowed._id)
-            this.clearForm()
           })
           .catch(e => {
             console.log(e.response.data.message)
@@ -119,13 +95,12 @@ export default {
         const { dispatch } = this.$store
         dispatch('ADD_QUESTION', this.form)
           .then(() => {
+            this.$bvModal.hide('modal-scrollable-add-question')
             dispatch('GET_QUESTION')
             this.$swal({
               type: 'success',
               title: 'Question added!'
             })
-            this.$router.push('/')
-            this.clearForm()
           })
           .catch(e => {
             console.log(e.response.data.message)
@@ -140,11 +115,12 @@ export default {
         const { dispatch } = this.$store
         dispatch('EDIT_QUESTION', this.form)
           .then(({ data }) => {
+            this.$bvModal.hide('modal-scrollable-edit')
+            dispatch('GET_QUESTION')
             this.$swal({
               type: 'success',
               title: 'Question updated!'
             })
-            this.clearForm()
           })
           .catch(e => {
             console.log(e.response.data.message)
@@ -158,32 +134,11 @@ export default {
       }
     }
   },
-  created () {
-    console.log(this.type)
-    console.log(this.typeform)
-    // if ((this.typeform === 'edit') && (this.type === 'answer')) {
-    //   this.$store.dispatch('GET_AN_ANSWER', this.$route.params.answerId)
-    //   this.form.title = this.$store.state.answerShowed.title
-    //   this.form.description = this.$store.state.answerShowed.description
-    // } else {
-    //   this.$store.dispatch('GET_A_QUESTION', this.$route.params.questionId)
-    //   if (this.typeform === 'edit') {
-    //     this.form.title = this.$store.state.questionShowed.title
-    //     this.form.description = this.$store.state.questionShowed.description
-    //   }
-    // }
-  },
   computed: {
-    ...mapState(['questionShowed', 'answerShowed'])
-    // computedForm: function () {
-    //     if (this.typeform === 'edit'){
-    //         if (this.type === 'answer'){
-    //             return this.$store.dispatch('GET_AN_ANSWER', this.$route.params.answerId)
-    //         } else if (this.type === 'question'){
-    //             return this.$store.dispatch('GET_A_QUESTION', this.$route.params.questionId)
-    //         }
-    //     }
-    // }
+    ...mapState(['questionShowed', 'answerShowed']),
+    form () {
+      return (this.typeform === 'edit') ? ((this.type === 'question') ? this.questionShowed : this.answerShowed) : {}
+    }
   }
 }
 </script>

@@ -12,19 +12,16 @@
               </b-link>
               <b-card-text v-if="(type === 'question')">
                 {{ shortdesc }}
+                <br><br>Asked by: {{ inside.owner.username}}
               </b-card-text>
               <h4 v-if="(type === 'answer')">{{ inside.title }}</h4>
               <b-card-text v-if="(type === 'answer')">
                 {{ inside.description }}
+                <br><br>Answered by: {{ inside.owner.username}}
               </b-card-text>
-              <b-button-group v-if="(inside.owner == userId)">
-                <!-- <b-button variant="primary" @click="edit(inside._id)">Edit</b-button> -->
+              <b-button-group v-if="(inside.owner._id == userId)">
                 <div>
                   <b-button v-b-modal.modal-scrollable-edit variant="primary" @click="edit(inside._id)">Edit</b-button>
-                  <b-modal :id="'modal-scrollable-edit'" size="lg" scrollable title="Edit Form">
-                  <!-- <b-modal :id="'modal-scrollable-edit-' + inside._id" size="lg" scrollable title="Edit Form"> -->
-                    <AFComponent :typeform="'edit'"  :type="type"/>
-                  </b-modal>
                 </div>
                 <b-button variant="danger" @click="del(inside._id)">Delete</b-button>
               </b-button-group>
@@ -38,12 +35,10 @@
 
 <script>
 import VoteButton from '@/components/VoteButton.vue'
-import AFComponent from '@/components/AFComponent.vue'
 export default {
   props: ['inside', 'type'],
   components: {
-    VoteButton,
-    AFComponent
+    VoteButton
   },
   computed: {
     shortdesc: function () {
@@ -67,9 +62,6 @@ export default {
       }
     },
     del (id) {
-      // tanya soal delete yang error tapi tetap terdelete
-      // filter button nya pas buka suatu question --> error tapi jalan juga
-      // modal multiple edit
       let { dispatch } = this.$store
       let swalconfirm = false
       this.$swal.fire({
@@ -98,11 +90,8 @@ export default {
             })
             if (this.type === 'question') {
               dispatch('GET_QUESTION')
-              this.$router.push('/')
             } else if (this.type === 'answer') {
               dispatch('GET_A_QUESTION', this.$route.params.questionId)
-              this.$router.push('/')
-              // this.$store.dispatch('GET_A_QUESTION', this.$route.params.questionId)
             }
           }
         })

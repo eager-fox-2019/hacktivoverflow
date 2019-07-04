@@ -7,8 +7,7 @@ router.get('/:questionId', questionController.getQuestion)
 router.use(authentication)
 router.post('/', questionController.addQuestion)
 router.patch('/update-detail/:questionId', questionController.update)
-// router.use(authorizationQuestion)
-router.get('/:userId', questionController.getUserQuestion)
+// router.get('/:userId', questionController.getUserQuestion) // next improvement
 router.patch('/:questionId', authorizationQuestion, questionController.update)
 router.delete('/:questionId', authorizationQuestion, questionController.delete)
 

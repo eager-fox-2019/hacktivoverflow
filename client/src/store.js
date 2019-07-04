@@ -9,7 +9,10 @@ export default new Vuex.Store({
     isLogin: false,
     baseUrl: `http://localhost:3000`,
     questions: [],
-    questionShowed: {},
+    questionShowed: {
+      upvotes: [],
+      downvotes: []
+    },
     answerShowed: {}
   },
   mutations: {
@@ -88,7 +91,7 @@ export default new Vuex.Store({
     EDIT_QUESTION ({ state }, payload) {
       return axios({
         method: 'patch',
-        url: `${state.baseUrl}/question/${this.questionShowed._id}`,
+        url: `${state.baseUrl}/question/${payload._id}`,
         data: payload,
         headers: {
           token: localStorage.getItem('token')
@@ -115,13 +118,11 @@ export default new Vuex.Store({
       })
     },
     GET_AN_ANSWER ({ state }, payload) {
-      console.log('Masuk get answer client')
       axios({
         method: 'get',
         url: `${state.baseUrl}/answer/${payload}`
       })
         .then(({ data }) => {
-          console.log(data, 'ini datanya')
           this.commit('SET_AN_ANSWER', data)
         })
         .catch(e => {
@@ -129,9 +130,10 @@ export default new Vuex.Store({
         })
     },
     UPDATE_DETAILED_ANSWER ({ state }, payload) {
+      console.log("update detailed answer", payload)
       return axios({
         method: 'patch',
-        url: `${state.baseUrl}/answer/update-detail/${payload._id}`,
+        url: `${state.baseUrl}/answer/update-detail/${payload.id}`,
         data: payload,
         headers: {
           token: localStorage.getItem('token')
@@ -139,8 +141,6 @@ export default new Vuex.Store({
       })
     },
     EDIT_ANSWER ({ state }, payload) {
-      console.log('Masuk store edit answer')
-      console.log('answershowed id', state.answerShowed._id)
       return axios({
         method: 'patch',
         url: `${state.baseUrl}/answer/${state.answerShowed._id}`,

@@ -5,8 +5,12 @@
       <b-row class="text-center">
         <b-col></b-col>
         <b-col cols="10">
+          <h1>List of questions</h1><br><br>
           <CardList v-for="question in questions" :key="question._id" :inside="question" :type="'question'" />
         </b-col>
+        <b-modal id='modal-scrollable-edit' size="lg" scrollable hide-footer title="Edit Question Form">
+          <AFComponent :typeform="'edit'"  :type="'question'"/>
+        </b-modal>
         <b-col></b-col>
       </b-row>
     </b-container>
@@ -16,21 +20,18 @@
 <script>
 import NavBar from '@/components/NavBar.vue'
 import CardList from '@/components/CardList.vue'
+import AFComponent from '@/components/AFComponent.vue'
 import { mapState } from 'vuex'
 
 export default {
   name: 'home',
   components: {
     NavBar,
-    CardList
+    CardList,
+    AFComponent
   },
   computed: {
     ...mapState(['questions'])
-  },
-  methods: {
-    answering (question) {
-      // this.$store.router
-    }
   }
 }
 </script>

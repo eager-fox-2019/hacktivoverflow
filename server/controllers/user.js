@@ -12,20 +12,16 @@ class UserController{
     }
 
     static register(req, res, next){
-        console.log("Masuk Register")
         const { username, email, password } = req.body
         const input = { username, email, password }
-        console.log("Isi input", input)
         User.create(input)
             .then(result => {
-                console.log("Result from user controller", result)
                 res.status(201).json(result)
             })
             .catch(next)
     }
 
     static login(req, res, next){
-        console.log("Masuk LOGIN")
         const { email, password } = req.body
         const input = { email, password }
         User.findOne({ email: input.email })
