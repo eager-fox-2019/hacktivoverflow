@@ -62,6 +62,11 @@ export default {
     AnswerForm,
     EditQuestionForm
   },
+  created(){
+    if (!this.isLoggedin){
+      this.$router.push('/user/login')
+    }
+  },
   mounted(){
     this.$store.dispatch('getQuestionDetail', this.$route.params.id)
   },
@@ -94,7 +99,7 @@ export default {
     	if (!this.currentQuestion) return 'loading'
     	return this.currentQuestion._id
     },
-  	...mapState(['currentQuestion'])
+  	...mapState(['currentQuestion', 'isLoggedin'])
   },
   methods: {
     upvote(){

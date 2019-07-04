@@ -38,8 +38,11 @@ export default {
   },
   methods: {
     questionDetail(){
-      // this.$store.dispatch('getQuestionDetail', questionId)
-      this.$router.push('/question/' + this.questionId)
+      if (!this.isLoggedin){
+        this.$router.push('/user/login')
+      } else {
+        this.$router.push('/question/' + this.questionId)
+      }
     },
     upvote(){
       this.$store.dispatch('voteQuestion', {questionId:this.card._id, type:'up'})

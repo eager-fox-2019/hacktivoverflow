@@ -43,7 +43,11 @@ export default {
   },
   methods: {
   	toggleQuestionForm(){
-  		this.showQuestions = !this.showQuestions
+      if (!this.isLoggedin){
+        this.$router.push('/user/login')
+      } else {
+  		  this.showQuestions = !this.showQuestions
+      }
   	}
   }
 }
