@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/stefkwan/hacktivoverflow#readme",
   "dependencies": {
-    "bcrypt": "^3.0.6",
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "cron": "^1.7.1",
     "dotenv": "^8.0.0",
