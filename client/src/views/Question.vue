@@ -9,7 +9,7 @@
       <div v-if="showEditForm==false">
       	<div class="question d-flex flex-column justify-content-left">
           <div class="d-flex flex-row">
-        		<VoteButtons :totalVotes="totalVotes" @upvote="upvote" @downvote="downvote"/>
+        		<VoteButtons :selected="userVoted" :totalVotes="totalVotes" @upvote="upvote" @downvote="downvote"/>
         	  <div class="questionDetailArea text-justify">
       		    <h1>{{title}}</h1>
               <p>{{name}}</p>
@@ -71,6 +71,17 @@ export default {
     this.$store.dispatch('getQuestionDetail', this.$route.params.id)
   },
   computed: {
+    userVoted(){
+      if (!this.currentQuestion) return 'none'
+      let userId = this.user.id
+      if (this.currentQuestion.upvotes.includes(userId)){
+        return 'up'
+      } else if (this.currentQuestion.downvotes.includes(userId)){
+        return 'down'
+      } else {
+        return 'none'
+      }
+    },
     isOwner(){
       if (!this.currentQuestion) return false
         console.log(this.currentQuestion)
@@ -99,14 +110,14 @@ export default {
     	if (!this.currentQuestion) return 'loading'
     	return this.currentQuestion._id
     },
-  	...mapState(['currentQuestion', 'isLoggedin'])
+  	...mapState(['currentQuestion', 'isLoggedin', 'user'])
   },
   methods: {
     upvote(){
-      this.$store.dispatch('voteQuestion', {questionId:this.questionId, type:'up'})
+      this.$store.dispatch('voteQuestion', {question:this.currentQuestion, type:'up'})
     },
     downvote(){
-      this.$store.dispatch('voteQuestion', {questionId:this.questionId, type:'down'})
+      this.$store.dispatch('voteQuestion', {question:this.currentQuestion, type:'down'})
     },
     toggleAnswerForm(){
       this.showAnswerForm = !this.showAnswerForm

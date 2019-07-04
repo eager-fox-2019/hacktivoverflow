@@ -1,7 +1,7 @@
 <template>
   <div class="question d-flex flex-row justify-content-center">
 
-  <VoteButtons :totalVotes="totalVotes" @upvote="upvote" @downvote="downvote"/>
+  <VoteButtons :selected="userVoted" :totalVotes="totalVotes" @upvote="upvote" @downvote="downvote"/>
 
   <b-card style="width: 80%;" :title="updatedCard.title" :sub-title="cardOwner">
     <b-card-text>
@@ -23,6 +23,16 @@ export default {
     VoteButtons
   },
   computed: {
+    userVoted(){
+      let userId = this.user.id
+      if (this.updatedCard.upvotes.includes(userId)){
+        return 'up'
+      } else if (this.updatedCard.downvotes.includes(userId)){
+        return 'down'
+      } else {
+        return 'none'
+      }
+    },
     totalVotes() {
       return this.card.upvotes.length - this.card.downvotes.length
     },
@@ -35,7 +45,7 @@ export default {
     cardOwner() {
       return 'by '+this.card.owner.name
     },
-    ...mapState(['isLoggedin'])
+    ...mapState(['isLoggedin', 'user'])
   },
   methods: {
     questionDetail(){
@@ -46,10 +56,10 @@ export default {
       }
     },
     upvote(){
-      this.$store.dispatch('voteQuestion', {questionId:this.card._id, type:'up'})
+      this.$store.dispatch('voteQuestion', {question:this.card, type:'up'})
     },
     downvote(){
-      this.$store.dispatch('voteQuestion', {questionId:this.card._id, type:'down'})
+      this.$store.dispatch('voteQuestion', {question:this.card, type:'down'})
     }
   }
 }

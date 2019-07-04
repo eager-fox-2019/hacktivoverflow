@@ -121,7 +121,8 @@ export default new Vuex.Store({
 		  });
   	},
     voteQuestion({state, commit, dispatch}, payload){
-      let qId = payload.questionId
+      commit('UPDATECURRENTQUESTION', payload.question)
+      let qId = payload.question._id
       let vote = payload.type
 
       axios({
@@ -130,12 +131,17 @@ export default new Vuex.Store({
         headers: {access_token: state.access_token}
       })
       .then(({data}) => {
+        console.log({data})
+        console.log(state.currentQuestion)
         data.owner = state.currentQuestion.owner
         //data is the updated question, update our arrays using it.
         commit('UPDATECURRENTQUESTION', null)
         commit('UPDATECURRENTQUESTION', data)
 
+        console.log('commit currentQuestion')
+
         let tempArray = state.questionList
+        console.log('tempArray tempArray tempArray')
         for (let i =0; i < tempArray.length; i++){
           if (tempArray[i]._id == data._id){
             tempArray[i] = data
