@@ -5,18 +5,17 @@
     <b-button @click="downvote"><img alt="down" :src="icondown"></b-button>
   </div>
 </template>
-
 <script>
 export default {
   name: 'VoteButtons',
   props: ['totalVotes', 'selected'],
   computed: {
     iconup () {
-      if (this.selected == 'up') return require('@/assets/arrow-up-selected.png')
+      if (this.selected === 'up') return require('@/assets/arrow-up-selected.png')
       return require('@/assets/arrow-up.png')
     },
     icondown () {
-      if (this.selected == 'down') return require('@/assets/arrow-down-selected.png')
+      if (this.selected === 'down') return require('@/assets/arrow-down-selected.png')
       return require('@/assets/arrow-down.png')
     }
   },
@@ -29,10 +28,10 @@ export default {
     }
   }
 }
-</script>
 
+</script>
 <style scoped>
-.btn{
+.btn {
   width: 3em;
   margin: 0;
   border-radius: 0;

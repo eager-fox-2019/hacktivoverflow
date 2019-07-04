@@ -3,31 +3,32 @@
     <div v-if="isLoggedin" class="user">
       <h2><label>Hello,</label> {{$store.state.user.name}}</h2>
       <h2><label>Your Email: </label> {{$store.state.user.email}}</h2>
-      <h2><b-button v-if="showEditButton" variant="secondary" @click="editProfileForm">Edit Profile?</b-button></h2>
+      <h2>
+        <b-button v-if="showEditButton" variant="secondary" @click="editProfileForm">Edit Profile?</b-button>
+      </h2>
     </div>
     <router-view></router-view>
   </div>
 </template>
-
 <script>
 import { mapState } from 'vuex'
 export default {
   name: 'user',
   computed: {
     showEditButton () {
-      return this.$route.name == 'user'
+      return this.$route.name === 'user'
     },
     ...mapState(['isLoggedin'])
   },
   methods: {
-  	editProfileForm () {
+    editProfileForm () {
       // console.log(this.$router.history.current.fullPath)
-  		this.$router.push('/user/edit')
-  	}
+      this.$router.push('/user/edit')
+    }
   }
 }
-</script>
 
+</script>
 <style scoped>
 .user {
   color: #F7C331;
@@ -50,4 +51,5 @@ button {
   margin-top: 1em;
   border: solid black 2px;
 }
+
 </style>

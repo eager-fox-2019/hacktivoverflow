@@ -4,11 +4,9 @@
       <p>{{msg}}. Dimissing in {{dismissCountDown}} seconds...</p>
       <b-progress :variant="msgType" :max="dismissSecs" :value="dismissCountDown" height="4px"></b-progress>
     </b-alert>
-
     <div v-if="loading" class="spinner-border text-primary" role="status">
       <span class="sr-only">Loading...</span>
     </div>
-
     <b-form v-else @submit.prevent="onSubmit" @reset.prevent="onReset">
       <b-form-group id="group-name" label="New Name:" label-for="name">
         <b-form-input id="name" v-model="form.name" type="text" required placeholder="Enter Name"></b-form-input>
@@ -20,7 +18,6 @@
       <b-button class="m-1" type="submit" variant="primary">Update</b-button>
       <b-button class="m-1" type="reset" variant="danger">Cancel</b-button>
     </b-form>
-  </div>
   </div>
 </template>
 <script>

@@ -1,18 +1,14 @@
 <template>
   <div class="question d-flex flex-row justify-content-center">
-
-  <VoteButtons :selected="userVoted" :totalVotes="totalVotes" @upvote="upvote" @downvote="downvote"/>
-
-  <b-card style="width: 80%;" :title="updatedCard.title" :sub-title="cardOwner">
-    <b-card-text>
-      {{updatedCard.description}}
-    </b-card-text>
-
-    <b-link href="#" class="card-link" @click.prevent="questionDetail">See Detail</b-link>
-  </b-card>
+    <VoteButtons :selected="userVoted" :totalVotes="totalVotes" @upvote="upvote" @downvote="downvote" />
+    <b-card style="width: 80%;" :title="updatedCard.title" :sub-title="cardOwner">
+      <b-card-text>
+        {{updatedCard.description}}
+      </b-card-text>
+      <b-link href="#" class="card-link" @click.prevent="questionDetail">See Detail</b-link>
+    </b-card>
   </div>
 </template>
-
 <script>
 import { mapState } from 'vuex'
 import VoteButtons from '@/components/VoteButtons.vue'
@@ -24,6 +20,7 @@ export default {
   },
   computed: {
     userVoted () {
+      if (!this.user) return 'none'
       let userId = this.user.id
       if (this.updatedCard.upvotes.includes(userId)) {
         return 'up'
@@ -63,11 +60,12 @@ export default {
     }
   }
 }
-</script>
 
+</script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .question {
   margin-bottom: 1em;
 }
+
 </style>

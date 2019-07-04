@@ -2,21 +2,18 @@
   <div id="questionPage">
     <div v-if="loaded">
       <div v-if="showEditForm">
-        <EditQuestionForm :originalQuestion="loaded"
-        @hideQuestionForm="toggleQuestionForm"/>
+        <EditQuestionForm :originalQuestion="loaded" @hideQuestionForm="toggleQuestionForm" />
       </div>
-
       <div v-if="showEditForm==false">
-      	<div class="question d-flex flex-column justify-content-left">
+        <div class="question d-flex flex-column justify-content-left">
           <div class="d-flex flex-row">
-        		<VoteButtons :selected="userVoted" :totalVotes="totalVotes" @upvote="upvote" @downvote="downvote"/>
-        	  <div class="questionDetailArea text-justify">
-      		    <h1>{{title}}</h1>
+            <VoteButtons :selected="userVoted" :totalVotes="totalVotes" @upvote="upvote" @downvote="downvote" />
+            <div class="questionDetailArea text-justify">
+              <h1>{{title}}</h1>
               <p>{{name}}</p>
-      		    <p>{{description}}</p>
-      		  </div>
+              <p>{{description}}</p>
+            </div>
           </div>
-
           <div v-if="isOwner" class="text-left">
             <span>
               <a href="#" @click.prevent="editForm" class="text-primary">Edit This Question</a> |
@@ -24,23 +21,18 @@
             </span>
           </div>
         </div>
-
         <!-- Add your own answer -->
         <AnswerForm v-if="showAnswerForm" :questionId="questionId" @hideForm="toggleAnswerForm" />
-
         <div v-if="showAnswerForm==false">
-          <b-button  variant="success" @click="toggleAnswerForm">Add Answer</b-button>
-
+          <b-button variant="success" @click="toggleAnswerForm">Add Answer</b-button>
           <!-- answers to the question listed here -->
-          <AnswerList/>
+          <AnswerList />
         </div>
       </div>
     </div>
-
-    <h3 v-if="loaded==false">loading...</h3>
+    <h3 v-if="loaded===false">loading...</h3>
   </div>
 </template>
-
 <script>
 import { mapState } from 'vuex'
 import VoteButtons from '@/components/VoteButtons.vue'
@@ -57,7 +49,7 @@ export default {
     }
   },
   components: {
-  	VoteButtons,
+    VoteButtons,
     AnswerList,
     AnswerForm,
     EditQuestionForm
@@ -72,7 +64,7 @@ export default {
   },
   computed: {
     userVoted () {
-      if (!this.currentQuestion) return 'none'
+      if (!this.currentQuestion || !this.user) return 'none'
       let userId = this.user.id
       if (this.currentQuestion.upvotes.includes(userId)) {
         return 'up'
@@ -85,7 +77,7 @@ export default {
     isOwner () {
       if (!this.currentQuestion) return false
       // console.log(this.currentQuestion)
-      return this.currentQuestion.owner.email == this.$store.state.user.email
+      return this.currentQuestion.owner.email === this.$store.state.user.email
     },
     loaded () {
       return (this.currentQuestion)
@@ -99,18 +91,18 @@ export default {
       return this.currentQuestion.upvotes.length - this.currentQuestion.downvotes.length
     },
     title () {
-    	if (!this.currentQuestion) return 'loading'
-    	return this.currentQuestion.title
+      if (!this.currentQuestion) return 'loading'
+      return this.currentQuestion.title
     },
     description () {
-    	if (!this.currentQuestion) return 'loading'
-    	return this.currentQuestion.description
+      if (!this.currentQuestion) return 'loading'
+      return this.currentQuestion.description
     },
     questionId () {
-    	if (!this.currentQuestion) return 'loading'
-    	return this.currentQuestion._id
+      if (!this.currentQuestion) return 'loading'
+      return this.currentQuestion._id
     },
-  	...mapState(['currentQuestion', 'isLoggedin', 'user'])
+    ...mapState(['currentQuestion', 'isLoggedin', 'user'])
   },
   methods: {
     upvote () {
@@ -132,7 +124,7 @@ export default {
         .then(deleted => {
           let tempArray = state.questionList
           for (let i = 0; i < tempArray.length; i++) {
-            if (tempArray[i]._id == this.questionId) {
+            if (tempArray[i]._id.toString() === this.questionId.toString()) {
               tempArray.splice(i, 1)
             }
           }
@@ -155,22 +147,26 @@ export default {
     }
   }
 }
-</script>
 
+</script>
 <style scoped>
 .question {
   padding: 1em;
   margin-bottom: 1em;
   border-bottom: dotted 1px;
 }
+
 .questionDetailArea {
   margin-left: 1em;
 }
+
 .question button {
   margin: 0.2em;
 }
+
 #questionPage {
   background-color: #DCC7AA;
   padding-bottom: 1em;
 }
+
 </style>

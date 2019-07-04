@@ -4,11 +4,9 @@
       <p>{{msg}}. Dimissing in {{dismissCountDown}} seconds...</p>
       <b-progress :variant="msgType" :max="dismissSecs" :value="dismissCountDown" height="4px"></b-progress>
     </b-alert>
-
     <div v-if="loading" class="spinner-border text-primary" role="status">
       <span class="sr-only">Loading...</span>
     </div>
-
     <b-form v-else @submit.prevent="onSubmit" @reset.prevent="onReset">
       <b-form-group id="group-email" label="Email address:" label-for="email" description="We'll never share your email with anyone else.">
         <b-form-input id="email" v-model="form.email" type="email" required placeholder="Enter email"></b-form-input>
@@ -21,7 +19,6 @@
       <br />
       <label>Already have an account? <a href="#" @click.prevent="goToLoginPage">Login</a></label>
     </b-form>
-  </div>
   </div>
 </template>
 <script>
@@ -53,7 +50,6 @@ export default {
       this.loading = true
       let baseURL = this.baseURL
       let email = this.form.email
-      let name = email.split('@')[0]
 
       axios({
         method: 'POST',

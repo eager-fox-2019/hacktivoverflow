@@ -6,13 +6,13 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-  	baseURL: 'http://localhost:3000',
-  	isLoggedin: false,
+    baseURL: 'http://localhost:3000',
+    isLoggedin: false,
     access_token: null,
-  	questionList: [],
-  	currentQuestion: null,
+    questionList: [],
+    currentQuestion: null,
     selectedAnswer: null,
-  	answerList: [],
+    answerList: [],
     user: null,
     alertMsg: '',
     alertType: ''
@@ -26,15 +26,15 @@ export default new Vuex.Store({
       state.alertMsg = ''
       state.alertType = ''
     },
-  	UPDATEQUESTIONLIST (state, payload) {
-  		state.questionList = payload
-  	},
-  	UPDATECURRENTQUESTION (state, payload) {
-  		state.currentQuestion = payload
-  	},
-  	UPDATECURRENTANSWERLIST (state, payload) {
-  		state.answerList = payload
-  	},
+    UPDATEQUESTIONLIST (state, payload) {
+      state.questionList = payload
+    },
+    UPDATECURRENTQUESTION (state, payload) {
+      state.currentQuestion = payload
+    },
+    UPDATECURRENTANSWERLIST (state, payload) {
+      state.answerList = payload
+    },
     LOGOUT (state) {
       state.baseURL = 'http://localhost:3000'
       state.isLoggedin = false
@@ -64,35 +64,35 @@ export default new Vuex.Store({
     }
   },
   actions: {
-  	getQuestions ({ state, commit, dispatch }) {
-  		axios.get(state.baseURL + '/question')
-		  .then(({ data }) => {
-		    // console.log(data)
-		    commit('UPDATEQUESTIONLIST', data)
-		  })
-		  .catch(({ response }) => {
-		    // console.log(response.data)
-        commit('SHOWMSG', {
-          message: response.data,
-          type: 'warning'
+    getQuestions ({ state, commit, dispatch }) {
+      axios.get(state.baseURL + '/question')
+        .then(({ data }) => {
+          // console.log(data)
+          commit('UPDATEQUESTIONLIST', data)
         })
-		  })
-  	},
-  	getQuestionDetail ({ state, commit, dispatch }, payload) {
-  		axios.get(state.baseURL + '/question/' + payload)
-  			.then(({ data }) => {
-  				// console.log(data)
-  				commit('UPDATECURRENTQUESTION', data)
+        .catch(({ response }) => {
+          // console.log(response.data)
+          commit('SHOWMSG', {
+            message: response.data,
+            type: 'warning'
+          })
+        })
+    },
+    getQuestionDetail ({ state, commit, dispatch }, payload) {
+      axios.get(state.baseURL + '/question/' + payload)
+        .then(({ data }) => {
+          // console.log(data)
+          commit('UPDATECURRENTQUESTION', data)
           dispatch('getAnswers', data._id)
-  			})
-		  .catch(({ response }) => {
-		    // console.log(response.data)
-        commit('SHOWMSG', {
-          message: response.data,
-          type: 'warning'
         })
-		  })
-  	},
+        .catch(({ response }) => {
+          // console.log(response.data)
+          commit('SHOWMSG', {
+            message: response.data,
+            type: 'warning'
+          })
+        })
+    },
     getQuestion ({ state, commit, dispatch }, payload) {
       axios.get(state.baseURL + '/question/' + payload)
         .then(({ data }) => {
@@ -107,20 +107,20 @@ export default new Vuex.Store({
           })
         })
     },
-  	getAnswers ({ state, commit, dispatch }, payload) {
-  		axios.get(state.baseURL + '/answer/question/' + payload)
-  			.then(({ data }) => {
-  				console.log(data)
-  				commit('UPDATECURRENTANSWERLIST', data)
-  			})
-		  .catch(({ response }) => {
-		    // console.log(response.data)
-        commit('SHOWMSG', {
-          message: response.data,
-          type: 'warning'
+    getAnswers ({ state, commit, dispatch }, payload) {
+      axios.get(state.baseURL + '/answer/question/' + payload)
+        .then(({ data }) => {
+          // console.log(data)
+          commit('UPDATECURRENTANSWERLIST', data)
         })
-		  })
-  	},
+        .catch(({ response }) => {
+          // console.log(response.data)
+          commit('SHOWMSG', {
+            message: response.data,
+            type: 'warning'
+          })
+        })
+    },
     voteQuestion ({ state, commit, dispatch }, payload) {
       commit('UPDATECURRENTQUESTION', payload.question)
       let qId = payload.question._id
@@ -143,9 +143,9 @@ export default new Vuex.Store({
 
           let tempArray = state.questionList
           for (let i = 0; i < tempArray.length; i++) {
-            if (tempArray[i]._id == data._id) {
+            if (tempArray[i]._id.toString() === data._id.toString()) {
               tempArray[i] = data
-              console.log({ updated: data })
+              // console.log({ updated: data })
               i = tempArray.length
             }
           }
@@ -154,7 +154,7 @@ export default new Vuex.Store({
           commit('UPDATEQUESTIONLIST', tempArray)
           // console.log('updated question list')
 
-          console.log(data)
+          // console.log(data)
         })
         .catch(({ response }) => {
           // console.log(response.data)
@@ -179,7 +179,7 @@ export default new Vuex.Store({
 
           let tempArray = state.answerList
           for (let i = 0; i < tempArray.length; i++) {
-            if (tempArray[i]._id == data._id) {
+            if (tempArray[i]._id.toString() === data._id.toString()) {
               tempArray[i] = data
               // console.log({ updated: data })
               i = tempArray.length

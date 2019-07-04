@@ -4,27 +4,15 @@
       <Nav />
     </div>
     <div id="messageArea" v-if="alertMsg != ''">
-      <b-alert
-      :show="dismissCountDown"
-      dismissible
-      :variant="alertType"
-      @dismissed="dismissCountDown=0"
-      @dismiss-count-down="countDownChanged"
-      >
-      <p>{{alertMsg}}</p>
-      <p>dismissing in {{ dismissCountDown }} seconds...</p>
-      <b-progress
-        :variant="alertType"
-        :max="dismissSecs"
-        :value="dismissCountDown"
-        height="4px"
-      ></b-progress>
+      <b-alert :show="dismissCountDown" dismissible :variant="alertType" @dismissed="dismissCountDown=0" @dismiss-count-down="countDownChanged">
+        <p>{{alertMsg}}</p>
+        <p>dismissing in {{ dismissCountDown }} seconds...</p>
+        <b-progress :variant="alertType" :max="dismissSecs" :value="dismissCountDown" height="4px"></b-progress>
       </b-alert>
     </div>
-    <router-view/>
+    <router-view />
   </div>
 </template>
-
 <script>
 // @ is an alias to /src
 import router from '@/router'
@@ -49,17 +37,17 @@ export default {
   computed: mapState(['alertMsg', 'alertType']),
   watch: {
     alertMsg (newVal, oldVal) {
-      if (this.alertMsg != '') this.showAlert()
+      if (this.alertMsg !== '') this.showAlert()
     }
   },
   created () {
     this.$store.dispatch('getQuestions')
-    let access_token = localStorage.getItem('access_token')
-    if (access_token) {
+    let accessToken = localStorage.getItem('access_token')
+    if (accessToken) {
       let id = localStorage.getItem('id')
       let name = localStorage.getItem('name')
       let email = localStorage.getItem('email')
-      this.$store.commit('SAVEUSER', { id, name, email, access_token })
+      this.$store.commit('SAVEUSER', { id, name, email, access_token: accessToken })
     } else {
       this.$store.commit('LOGOUT')
     }
@@ -67,7 +55,7 @@ export default {
   methods: {
     countDownChanged (dismissCountDown) {
       this.dismissCountDown = dismissCountDown
-      if (dismissCountDown == 0) {
+      if (dismissCountDown === 0) {
         this.$store.commit('CLEARMSG')
       }
     },
@@ -76,10 +64,12 @@ export default {
     }
   }
 }
-</script>
 
+</script>
 <style>
-html, body, #app {
+html,
+body,
+#app {
   height: 100%;
 }
 
@@ -120,4 +110,5 @@ html, body, #app {
 Apricot: #F7882F
 Citrus: #F7C331
 Apple Core: #DCC7AA*/
+
 </style>

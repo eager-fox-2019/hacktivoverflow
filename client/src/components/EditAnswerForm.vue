@@ -4,20 +4,15 @@
       <b-form-group id="input-title" label="Title:" label-for="title-1">
         <b-form-input id="title-1" v-model="form.title" placeholder=""></b-form-input>
       </b-form-group>
-
       <b-form-group id="input-description" label="Description:" label-for="desc-2">
         <b-form-textarea id="desc-2" v-model="form.description" placeholder="Question description..." rows="3" max-rows="6"></b-form-textarea>
       </b-form-group>
-
       <b-button type="submit" variant="primary">Submit</b-button>
       <b-button type="reset" variant="danger">Cancel</b-button>
-
     </b-form>
   </div>
 </template>
-
 <script>
-import { mapState } from 'vuex'
 
 export default {
   name: 'EditForm',
@@ -41,11 +36,10 @@ export default {
     onSubmit () {
       let { state, commit, dispatch } = this.$store
 
-      dispatch('updateAnswer',
-        {
-          id: this.original._id,
-          form: this.form
-        })
+      dispatch('updateAnswer', {
+        id: this.original._id,
+        form: this.form
+      })
         .then(({ data }) => {
           let tempArray = state.answerList
           // console.log({ data })
@@ -59,7 +53,7 @@ export default {
           // console.log(data.owner.name)
 
           for (let i = 0; i < tempArray.length; i++) {
-            if (tempArray[i]._id = data._id) {
+            if (tempArray[i]._id.toString() === data._id.toString()) {
               tempArray[i] = data
               i = tempArray.length
             }
@@ -105,4 +99,5 @@ export default {
 small {
   color: black;
 }
+
 </style>

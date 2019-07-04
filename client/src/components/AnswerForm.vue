@@ -5,21 +5,16 @@
         <b-form-input id="title-1" v-model="form.title" required placeholder="Summary of the Answer"></b-form-input>
         <small>Make the title clear and concise</small>
       </b-form-group>
-
       <b-form-group id="input-description" label="Description:" label-for="desc-2">
         <b-form-textarea id="desc-2" v-model="form.description" required placeholder="Answer here" rows="3" max-rows="6"></b-form-textarea>
         <small>Be clear without being condescending</small>
       </b-form-group>
-
       <b-button type="submit" variant="primary">Submit</b-button>
       <b-button type="reset" variant="danger">Cancel</b-button>
-
     </b-form>
   </div>
 </template>
-
 <script>
-import { mapState } from 'vuex'
 
 export default {
   name: 'AnswerForm',
@@ -89,4 +84,5 @@ export default {
 small {
   color: black;
 }
+
 </style>

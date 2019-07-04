@@ -1,18 +1,14 @@
 <template>
   <div class="answer d-flex flex-row justify-content-center">
-
-  <VoteButtons :selected="userVoted" :totalVotes="totalVotes" @upvote="upvote" @downvote="downvote"/>
-
-  <b-card style="width: 80%;" :title="card.title" :sub-title="cardOwner">
-    <b-card-text>
-      {{card.description}}
-    </b-card-text>
-    <slot></slot>
-  </b-card>
-
+    <VoteButtons :selected="userVoted" :totalVotes="totalVotes" @upvote="upvote" @downvote="downvote" />
+    <b-card style="width: 80%;" :title="card.title" :sub-title="cardOwner">
+      <b-card-text>
+        {{card.description}}
+      </b-card-text>
+      <slot></slot>
+    </b-card>
   </div>
 </template>
-
 <script>
 import { mapState } from 'vuex'
 import VoteButtons from '@/components/VoteButtons.vue'
@@ -24,6 +20,7 @@ export default {
   },
   computed: {
     userVoted () {
+      if (!this.user) return 'none'
       let userId = this.user.id
       if (this.card.upvotes.includes(userId)) {
         return 'up'
@@ -50,10 +47,11 @@ export default {
     }
   }
 }
-</script>
 
+</script>
 <style scoped>
 .answer {
   margin-bottom: 1em;
 }
+
 </style>
