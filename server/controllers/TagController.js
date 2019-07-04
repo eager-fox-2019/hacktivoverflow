@@ -21,8 +21,14 @@ class TagController {
     static userTags(req, res) {
         const tags = req.body.tags
 
+        let optRegexp = [];
+        
+        tags.forEach((opt)=>{
+                optRegexp.push(  new RegExp(opt, "i") );
+        });
+
         Question
-        .find({ tags: { $in: tags } })
+        .find({ tags: { $in: optRegexp } })
         .populate('userId', 'username')
         .then(questions => {
             res.status(200).json(questions)
