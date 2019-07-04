@@ -28,7 +28,7 @@ class Controller {
     let { id } = req.params 
     try {
       let questionPromise = Question.findOne({ _id: id }).populate('user').exec()
-      let answerPromise = Answer.find({ question: id }).populate('question').exec()
+      let answerPromise = Answer.find({ question: id }).populate('user').exec()
       let [question, answers] = await Promise.all([questionPromise, answerPromise])
       // kalau langsung di spread nanti variabel mongo kebawa juga
       res.json({
