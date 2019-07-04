@@ -7,7 +7,8 @@ export default new Vuex.Store({
   state: {
     isLogin : false,
     userTag : [],
-    allQuestion : []
+    allQuestion : [],
+    questionEditData : ''
   },
   mutations: {
     setIsLogin(state,data){
@@ -20,6 +21,9 @@ export default new Vuex.Store({
       console.log(data);
       
       state.allQuestion = data
+    },
+    setQuestionEdit(state,data){
+      state.questionEditData = data
     }
   },
   actions: {
@@ -121,6 +125,48 @@ export default new Vuex.Store({
           this.dispatch('fetchUserQuestion')
         }else if(localStorage.page === 'home'){
           this.dispatch('fetchAllQuestion')
+        }
+      })
+      .catch(err =>{
+        console.log(err);
+        
+      })
+    },
+
+    getQuestionDetail(context,data){
+      ax.get(`/questions/${data}`)
+      .then(({data})=>{
+        console.log(data);
+        context.commit('setQuestionEdit', data)
+      })
+      .catch(err =>{
+        console.log(err);
+      })
+    },
+
+    editQuestion(context,id,data){
+      ax.patch(`/questions/${id}`,data)
+      .then(({data})=>{
+        if(localStorage.page === 'home'){
+          this.dispatch('fetchAllQuestion')
+        }else if(localStorage.page === 'profile'){
+          this.dispatch('fetchUserQuestion')
+
+        }
+      })
+      .catch(err =>{
+        console.log(err);
+      })
+    },
+
+    deleteQuestion(context,data){
+      ax.delete(`/questions/${data}`)
+      .then(({data})=>{
+        if(localStorage.page === 'home'){
+          this.dispatch('fetchAllQuestion')
+        }else if(localStorage.page === 'profile'){
+          this.dispatch('fetchUserQuestion')
+
         }
       })
       .catch(err =>{

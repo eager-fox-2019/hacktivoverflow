@@ -42,7 +42,7 @@
                                 <v-textarea v-model="newQuestion.description" label="description" type="text" hint="example of helper text only on focus"></v-textarea>
                             </v-flex>
                             <v-flex>
-                                <tags-input element-id="tags" v-model="questionTags" :typeahead="true"></tags-input>
+                                <tags-input element-id="tags" v-model="selectedTags" :typeahead="true"></tags-input>
                             </v-flex>
                         </v-layout>
                     </v-container>
@@ -50,7 +50,7 @@
                     <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="blue darken-1" flat @click="dialog = false, clearFormCreate()">Close</v-btn>
-                    <v-btn color="blue darken-1" flat @click="dialog = false, toCreate()">Create</v-btn>
+                    <v-btn color="blue darken-1" flat @click="dialog = false, toEdit()">Create</v-btn>
                     </v-card-actions>
                 </v-card>
         </v-dialog>
@@ -58,10 +58,17 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
     data(){
         return{
-            dialog : false
+            selectedTags : [],
+            dialog : false,
+            newQuestion : {
+                title : '',
+                description : ''
+            }
         }
     },
     props : ['question'],
@@ -74,9 +81,43 @@ export default {
             console.log('downvote trigger');
             this.$store.dispatch('downvote',this.question._id)
         },
-        doDelete(){
+        doEdit(){
             this.$store.dispatch('getQuestionDetail', this.question._id)
+            setTimeout(()=>{
+                this.newQuestion.title = this.questionEditData.title,
+                this.newQuestion.description = this.questionEditData.description,
+                this.questionEditData.tags.forEach(element => {
+                    this.selectedTags.push({key : element, value : element})
+                });
+                this.dialog = true
+            },1000)
+        },
+        toEdit(){
+            let data = this.newQuestion
+            data.tags = this.tags
+            console.log('==========',data);
+            this.clearFormCreate()
+            this.$store.dispatch('editQuestion',this.question._id,data)
+        },
+        doDelete(){
+            this.$store.dispatch('deleteQuestion', this.question._id)
+        },
+        clearFormCreate(){
+            this.selectedTags = []
+            this.newQuestion = {
+                title : '',
+                description : ''
+            }
         }
+    },
+    computed : {
+        tags(){
+            let array = this.selectedTags.map(tag =>{
+                return tag.value
+            })
+            return array
+        },
+        ...mapState(['questionEditData'])
     }
 }
 </script>
