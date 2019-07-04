@@ -43,9 +43,6 @@
           title: '',
           description: '',
         },
-        showError: false,
-        showRegister: false,
-        loginError: '',
         show: true
       }
     },
