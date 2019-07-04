@@ -32,7 +32,7 @@ function processEmail(user) {
     // send after time
     console.log('Before job instantiation');
     let date = new Date();
-    date.setSeconds(date.getSeconds()+300);
+    date.setHours(date.getHours()+24);
     const sendTommorow = new CronJob(date, function() {
       const d = new Date();
       console.log('Send Email : Specific date:', date, ', onTick at:', d);
