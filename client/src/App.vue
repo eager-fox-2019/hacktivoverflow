@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <NavBar></NavBar>
-    <router-view/>
+    <router-view @nav="isLogin = $event"/>
   </div>
 </template>
 
@@ -12,6 +12,7 @@ export default {
   components: {
     NavBar
   }
+
 }
 </script>
 

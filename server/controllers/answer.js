@@ -14,7 +14,11 @@ class AnswerControllers {
     })
     .then(answer => {
       q.answers.push(answer._id)
-      res.status(201).json(answer)
+
+      return answer.populate('userId').execPopulate()
+    })
+    .then(result => {
+      res.status(201).json(result)
       q.save()
     })
     .catch(next)
@@ -25,8 +29,9 @@ class AnswerControllers {
     .then(answer => {
       if (!answer) throw { code: 404 }
 
-      res.json(answer)
+      return answer.populate('userId').execPopulate()
     })
+    .then(result => res.json(result))
     .catch(next)
   }
 

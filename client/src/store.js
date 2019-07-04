@@ -20,6 +20,14 @@ export default new Vuex.Store({
     getAllQuestions (state, payload) {
       state.questions = payload
     },
+    answer (state, payload) {
+      const index = state.questions.findIndex(i => i._id === router.currentRoute.params.qid)
+
+      state.questions[index].answers.push(payload)
+    },
+    question (state, payload) {
+      state.questions.push(payload)
+    },
     questionUpVote (state, payload) {
       const index = state.questions.findIndex(i => i._id === payload._id)
       const qIndex = state.questions[index].downvotes.indexOf(payload.userId)
@@ -61,6 +69,38 @@ export default new Vuex.Store({
         .catch(err => {
           console.log(err)
           swal.fire('Error Getting All Questions', '', 'error')
+        })
+    },
+    answer ({ commit }, payload) {
+      axios({
+        method: 'POST',
+        url: `${apiUrl}/answer/${router.currentRoute.params.qid}`,
+        data: payload,
+        headers: {
+          'token': localStorage.getItem('token')
+        }
+      })
+        .then(({ data }) => commit('answer', data))
+        .catch(err => {
+          console.log(err)
+          if (err.response.data.message.toLowerCase().includes('token')) router.push({ path: '/login' })
+          swal.fire(String(err.response.status), err.response.data.message, 'error')
+        })
+    },
+    question ({ commit }, payload) {
+      axios({
+        method: 'POST',
+        url: `${apiUrl}/question`,
+        data: payload,
+        headers: {
+          'token': localStorage.getItem('token')
+        }
+      })
+        .then(({ data }) => commit('question', data))
+        .catch(err => {
+          console.log(err)
+          if (err.response.data.message.toLowerCase().includes('token')) router.push({ path: '/login' })
+          swal.fire(String(err.response.status), err.response.data.message, 'error')
         })
     },
     questionUpVote ({ commit }, payload) {

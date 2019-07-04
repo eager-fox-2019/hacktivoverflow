@@ -1,5 +1,5 @@
 <template>
-  <b-row align-h="center">
+  <b-row align-h="center" class="mb-1">
     <b-col cols="2" class="text-center">
       <b-button variant="success" @click="upvote"><i class="fas fa-caret-square-up"></i></b-button>
       <h4>{{ totalVotes }}</h4>

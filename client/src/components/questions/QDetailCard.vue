@@ -1,5 +1,10 @@
 <template>
   <b-container class="mt-3">
+    <div class="clearfix mb-2">
+      <b-button v-b-modal.answer-modal variant="warning" class="float-right" @click="checkLogin">Answer this Question</b-button>
+
+      <AnswerForm></AnswerForm>
+    </div>
     <b-row align-h="center">
       <b-col cols="2" class="text-center">
         <b-button variant="success" @click="upvote"><i class="far fa-hand-point-up"></i></b-button>
@@ -23,10 +28,12 @@
 
 <script>
 import Answers from '../answers/ADetailCard'
+import AnswerForm from '../answers/AForm'
 
 export default {
   components: {
-    Answers
+    Answers,
+    AnswerForm
   },
   data () {
     return {
@@ -47,6 +54,9 @@ export default {
     },
     downvote () {
       this.$store.dispatch('questionDownVote', this.question._id)
+    },
+    checkLogin () {
+      if (!localStorage.getItem('token')) this.$router.push({ path: '/login' })
     }
   }
 }

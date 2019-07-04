@@ -5,7 +5,10 @@ class QuestionControllers {
     req.body.userId = req.decode._id
 
     Questions.create(req.body)
-    .then(question => res.status(201).json(question))
+    .then(question => {
+      return question.populate('userId').execPopulate()
+    })
+    .then(result => res.status(201).json(result))
     .catch(next)
   }
 
