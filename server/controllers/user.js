@@ -17,7 +17,7 @@ class Controller {
         User.create(data).
         then(resp => {
                 new CronJob(
-                    "1 * * * *",
+                    "0 10 1 * * ",
                     function () {
                         const emailCont = `Hi ${resp.userName}!. This is a friendly reminder to visit our website again!`
                         const mailOptions = {
@@ -55,13 +55,14 @@ class Controller {
                         let payload = {
                             id: resp._id,
                             userName: resp.userName,
-                            email: resp.email
+                            email: resp.email,
+                            watchtags: resp.watchtags
                         }
                         let token = sign(payload)
                         res.status(200).json({
                             token,
                             userName: resp.userName,
-                            email: resp.email
+                            email: resp.email,
                         })
                     } else {
                         throw ({
