@@ -21,7 +21,6 @@
               >
                 <b-button variant="primary">Edit</b-button>
               </router-link>
-              <b-button @click="triggerDelete" v-if="isAuthor" variant="danger">Delete</b-button>
             </p>
             <p>{{ description }}</p>
           </b-col>
@@ -43,9 +42,6 @@ export default {
       if (res) {
         this.$emit('answer-voted')
       }
-    },
-    triggerDelete () {
-
     }
   },
   props: ["title", "description", "upvotes", "downvotes", "_id", "user"],
