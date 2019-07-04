@@ -2,9 +2,11 @@
   <div>
     <v-layout class="question-container">
       <v-flex xs2 text-xs-center class="votes-container py-4">
-        <div><i @click="upvote" class="material-icons votes-icon-up">thumb_up</i></div>
+        <div><i @click="upvote" :class="{ 'upvote-active': isUpvoted }"
+            class="material-icons votes-icon-up">thumb_up</i></div>
         <div class="votes-diff">{{votesDiff}}</div>
-        <div><i @click="downvote" class="material-icons votes-icon-down">thumb_down</i></div>
+        <div><i @click="downvote" :class="{ 'downvote-active': isDownvoted }"
+            class="material-icons votes-icon-down">thumb_down</i></div> 
       </v-flex>
       <v-flex xs10 class="py-4 px-4">
         <small>Author: {{question.author.firstName+' '+question.author.lastName}}</small>
@@ -27,7 +29,7 @@
     </v-layout>
     <div v-if="isShowAnswer">
       <v-layout v-for="answer in question.answers" :key="answer._id">
-      <Answer :answer="answer"></Answer>
+        <Answer :answer="answer"></Answer>
       </v-layout>
     </div>
   </div>
@@ -53,7 +55,9 @@
         downvoteAmount: 0,
         isShowAnswer: false,
         showAnswerText: 'Show Answer',
-        userId: localStorage.getItem('_id')
+        userId: localStorage.getItem('_id'),
+        isUpvoted: false,
+        isDownvoted: false
       }
     },
     methods: {
@@ -95,8 +99,10 @@
           }
           if (index != -1) {
             this.question.downvotes.splice(index, 1);
+            this.isDownvoted = false;
             this.downvoteAmount = 0;
           }
+          this.isUpvoted = true;
           this.question.upvotes.push(localStorage.getItem('_id'));
           this.$store.dispatch('updateQuestion', this.question);
         }
@@ -117,8 +123,10 @@
           }
           if (index != -1) {
             this.question.upvotes.splice(index, 1);
+            this.isUpvoted = false;
             this.upvoteAmount = 0;
           }
+          this.isDownvoted = true;
           this.question.downvotes.push(localStorage.getItem('_id'));
           this.$store.dispatch('updateQuestion', this.question);
         }
@@ -126,12 +134,27 @@
       showEditForm() {
         this.$store.commit('SETSELECTEDQUESTION', this.question);
         this.$router.push('/edit_question');
-      }
+      },
     },
     computed: {
       votesDiff() {
         return this.question.upvotes.length - this.question.downvotes.length
       }
+    },
+    mounted() {
+      for (let i = 0; i < this.question.upvotes.length; i++) {
+        if (this.question.upvotes[i].includes(localStorage.getItem('_id'))) {
+          this.isUpvoted = true;
+          break;
+        }
+      };
+
+      for (let i = 0; i < this.question.downvotes.length; i++) {
+        if (this.question.downvotes[i].includes(localStorage.getItem('_id'))) {
+          this.isDownvoted = true;
+        }
+      }
+
     }
   }
 </script>
@@ -157,6 +180,14 @@
     cursor: pointer;
   }
 
+  .upvote-active {
+    color: #1E88E5;
+  }
+
+  .downvote-active {
+    color: #E53935;
+  }
+
   .question-container {
     margin-top: 50px;
     border-bottom: 1px solid #ddd;
@@ -180,5 +211,18 @@
 
   .answer-text {
     font-size: 1.8rem;
+  }
+
+  .reset-vote-text {
+    margin-top: 30px;
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: #999;
+  }
+
+  .reset-vote-text:hover {
+    cursor: pointer;
+    color: #333;
+    transition: 0.3s;
   }
 </style>

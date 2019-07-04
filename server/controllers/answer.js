@@ -9,18 +9,18 @@ class Answer {
       downvotes: [],
       author: req.decode._id
     }
-    Model.Answer  .create(answerObj)
-    .then((response) => {
-      res.status(201).json(response);
-    })
-    .catch((err) => {
-      next(err);
-    })
+    Model.Answer.create(answerObj)
+      .then((response) => {
+        res.status(201).json(response);
+      })
+      .catch((err) => {
+        next(err);
+      })
   }
 
   static update(req, res, next) {
     let answerObj = {};
-    
+
     if (req.body.title) {
       answerObj['title'] = req.body.title;
     }
@@ -40,6 +40,18 @@ class Answer {
     Model.Answer.updateOne({
         _id: req.params.answerId
       }, answerObj)
+      .then((response) => {
+        res.status(200).json(response)
+      })
+      .catch((err) => {
+        next(err);
+      })
+  }
+
+  static delete(req, res, next) {
+    Model.Answer.deleteOne({
+        _id: req.params.answerId
+      })
       .then((response) => {
         res.status(200).json(response)
       })

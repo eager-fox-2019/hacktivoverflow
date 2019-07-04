@@ -73,7 +73,6 @@ class Question {
   }
 
   static delete(req, res, next) {
-    console.log(req.params);
     
     Model.Question.deleteOne({
       _id: req.params.questionId

@@ -11,7 +11,7 @@ const baseUrl = `http://localhost:3000`;
 export default new Vuex.Store({
   state: {
     isLogin: false,
-    clientToken: localStorage.getItem('access_token'),
+    clientToken: null,
     questions: [],
     selectedQuestion: [],
     selectedAnswer: []
@@ -22,6 +22,9 @@ export default new Vuex.Store({
     },
     SETSELECTEDANSWER(state, payload) {
       state.selectedAnswer = payload
+    },
+    SETCLIENTTOKEN(state, payload) {
+      state.clientToken = payload;
     }
   },
   actions: {
@@ -75,7 +78,8 @@ export default new Vuex.Store({
     logout(context) {
       context.state.isLogin = false;
       localStorage.clear();
-      router.push('/landing_page');
+      context.state.clientToken = null;
+      router.push('/');
     },
     readAllQuestions(context) {
       axios({
@@ -121,7 +125,7 @@ export default new Vuex.Store({
     updateQuestion(context, payload) {
       axios({
           method: 'PATCH',
-          url: baseUrl + '/questions/' + payload._id,
+          url: baseUrl + '/questions/votes/' + payload._id,
           data: payload,
           headers: {
             access_token: localStorage.getItem('access_token')
@@ -129,7 +133,6 @@ export default new Vuex.Store({
         })
         .then((response) => { 
           context.dispatch('readAllQuestions');
-
         })
         .catch((err) => {
           console.log(err);
@@ -195,6 +198,7 @@ export default new Vuex.Store({
         .then((response) => {
           payload[1].answers.push(response.data._id);
           context.dispatch('updateQuestion', payload[1]);
+          // console.log(payload[1]);
           Swal.fire(
             'Successful!',
             'Answer Posted',
@@ -209,7 +213,7 @@ export default new Vuex.Store({
     updateAnswer(context, payload) {
       axios({
           method: 'PATCH',
-          url: baseUrl + '/answers/' + payload._id,
+          url: baseUrl + '/answers/votes/' + payload._id,
           data: payload,
           headers: {
             access_token: localStorage.getItem('access_token')
@@ -245,5 +249,27 @@ export default new Vuex.Store({
           console.log(err);
         });
     },
+    deleteAnswer(context, payload) {
+      axios({
+          method: 'DELETE',
+          url: baseUrl + '/answers/' + payload._id,
+          data: payload,
+          headers: {
+            access_token: localStorage.getItem('access_token')
+          }
+        })
+        .then((response) => {
+          context.dispatch('readAllQuestions');
+          Swal.fire(
+            'Successful!',
+            'Answer deleted',
+            'success'
+          )
+          router.push('/home')
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   }
 })

@@ -5,6 +5,7 @@ const decodeToken = require('../helpers/decodeToken')
 
 module.exports = (req, res, next) => {
   if (req.headers.hasOwnProperty('access_token')) {
+    
     try {
       const decode = decodeToken(req.headers.access_token);
       req.decode = decode;

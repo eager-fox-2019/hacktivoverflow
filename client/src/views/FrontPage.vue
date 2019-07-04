@@ -1,7 +1,7 @@
 <template>
   <v-content>
     <MainPage v-if="$store.state.isLogin || $store.state.clientToken"></MainPage>
-    <LandingPage v-else-if="!$store.state.isLogin"></LandingPage>
+    <LandingPage v-else-if="!$store.state.isLogin || !$store.state.clientToken"></LandingPage>
   </v-content>
 </template>
 

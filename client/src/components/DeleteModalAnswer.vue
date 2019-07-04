@@ -20,6 +20,7 @@
 
 <script>
   export default {
+    props: ['answer'],
     data() {
       return {
         dialog: false
@@ -28,7 +29,7 @@
     methods: {
       deleteAnswer() {
         this.dialog = false;
-        // this.$store.dispatch('logout');
+        this.$store.dispatch('deleteAnswer', this.answer);
       }
     }
   }

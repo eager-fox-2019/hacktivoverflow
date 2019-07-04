@@ -19,6 +19,8 @@ export default {
   },
   mounted() {
     this.$store.dispatch('readAllQuestions');
+    this.$store.commit('SETCLIENTTOKEN', 
+      localStorage.getItem('access_token'))
   }
 }
 </script>
