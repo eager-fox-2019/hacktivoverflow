@@ -1,25 +1,22 @@
 <template>
     <div class="card">
-        <v-card class="ma-2" color="#8C7672" dark width="800" min-height="150px" height="auto" hover>
-              <v-card-title>
-               <a href="#" @click="toDetailPage" style="text-decoration : none; color : white"><h2><b>{{question.title}}</b></h2></a>
+        <v-card class="ma-2" color="#8C7672" dark width="700" min-height="70px" height="auto" hover>
+            <h2>Answer</h2>
+              <v-card-title row justify-center>
+                <h2><b>
+                {{answer.title}}
+                </b></h2>
               </v-card-title>
               <v-card-text style ="padding : 10px; font-size : 20px" class="text-truncate">
                 <span style="text-align : justify">
-                  {{question.description}}
+                  {{answer.description}}
                 </span>
-                <v-layout>
-                    <v-btn color="#D9D9D9" style="color : black" round v-for="(tag,index) in question.tags" :key="index">
-                        {{tag}}
-                    </v-btn>
-                </v-layout>
               </v-card-text>
               <v-card-actions>
                 <v-layout row align-center>
-                  <v-btn>Answer : {{question.answerList.length}}</v-btn>
                   <v-spacer></v-spacer>
-                  <v-btn @click.prevent="upvote" ><i class="fas fa-thumbs-up fa-lg mr-3"></i> : {{question.upVotes.length}}</v-btn>
-                  <v-btn @click.prevent="downvote" ><i class="fas fa-thumbs-down fa-lg mr-3"></i> : {{question.downVotes.length}}</v-btn>
+                  <v-btn @click.prevent="upvote" ><i class="fas fa-thumbs-up fa-lg mr-3"></i> : {{answer.upVotes.length}}</v-btn>
+                  <v-btn @click.prevent="downvote" ><i class="fas fa-thumbs-down fa-lg mr-3"></i> : {{answer.downVotes.length}}</v-btn>
                 </v-layout>
               </v-card-actions>
               <v-layout v-show="page === 'profile'">
@@ -30,19 +27,16 @@
         <v-dialog v-model="dialog" persistent max-width="600px">
                 <v-card>
                     <v-card-title>
-                    <span class="headline">createPost</span>
+                    <span class="headline">edit Answer</span>
                     </v-card-title>
                     <v-card-text>
                     <v-container grid-list-md>
                         <v-layout row wrap>
                             <v-flex xs12 sm12 md12>
-                                <v-text-field v-model="newQuestion.title" label="title" required></v-text-field>
+                                <v-text-field v-model="newAnswer.title" label="title" required></v-text-field>
                             </v-flex><br>
                             <v-flex xs12 sm12 md12>
-                                <v-textarea v-model="newQuestion.description" label="description" type="text" hint="example of helper text only on focus"></v-textarea>
-                            </v-flex>
-                            <v-flex>
-                                <tags-input element-id="tags" v-model="selectedTags" :typeahead="true"></tags-input>
+                                <v-textarea v-model="newAnswer.description" label="description" type="text" hint="example of helper text only on focus"></v-textarea>
                             </v-flex>
                         </v-layout>
                     </v-container>
@@ -63,9 +57,8 @@ import { mapState } from 'vuex'
 export default {
     data(){
         return{
-            selectedTags : [],
             dialog : false,
-            newQuestion : {
+            newAnswer : {
                 title : '',
                 description : ''
             },
@@ -73,63 +66,44 @@ export default {
             page : localStorage.page
         }
     },
-    props : ['question'],
+    props : ['answer'],
     methods : {
         upvote(){
             console.log('upvote trigger');
-            this.$store.dispatch('upvote',this.question._id)
+            this.$store.dispatch('upvoteAnswer',this.answer)
         },
         downvote(){
             console.log('downvote trigger');
-            this.$store.dispatch('downvote',this.question._id)
+            this.$store.dispatch('downvoteAnswer',this.answer)
         },
         doEdit(){
-            this.$store.dispatch('getQuestionDetail', this.question._id)
+            this.$store.dispatch('getAnswerDetail', this.answer._id)
             setTimeout(()=>{
-                this.newQuestion.title = this.questionEditData.title,
-                this.newQuestion.description = this.questionEditData.description,
-                this.questionEditData.tags.forEach(element => {
-                    this.selectedTags.push({key : element, value : element})
-                });
+                this.newAnswer.title = this.answerEditData.title,
+                this.newAnswer.description = this.answerEditData.description,
                 this.dialog = true
             },1000)
         },
         toEdit(){
-            let data = this.newQuestion
-            data.tags = this.tags
-            data.id = this.question._id
+            let data = this.newAnswer
+            data.id = this.answer._id
             console.log('==========',data);
             this.clearFormCreate()
-            this.$store.dispatch('editQuestion',data)
+            this.$store.dispatch('editAnswer',data)
         },
         doDelete(){
-            this.$store.dispatch('deleteQuestion', this.question._id)
+            this.$store.dispatch('deleteAnswer', this.Answer._id)
         },
         clearFormCreate(){
-            this.selectedTags = []
-            this.newQuestion = {
+            this.newAnswer = {
                 title : '',
                 description : ''
             }
         },
-
-        toDetailPage(){
-            this.$store.dispatch('getQuestionDetail', this.question._id)
-            localStorage.page = 'detail'
-            setTimeout(()=>{
-                this.$router.push(`/detail/${this.question._id}`)
-            },1000)
-
-        }
     },
     computed : {
-        tags(){
-            let array = this.selectedTags.map(tag =>{
-                return tag.value
-            })
-            return array
-        },
-        ...mapState(['questionEditData'])
+      
+        ...mapState(['answerEditData'])
     },
     watch : {
         '$route'(){
@@ -138,6 +112,8 @@ export default {
                 this.page = 'profile'
             }else if(this.$route.name === 'home'){
                 this.page = 'home'
+            }else if(this.$route.name === 'detailPage'){
+                this.page = 'detail'
             }
             
         }

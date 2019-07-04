@@ -2,7 +2,10 @@ const { verify } = require('../helpers/jwt')
 const User = require('../models/user')
 module.exports = function(req,res,next){
     if(req.headers.hasOwnProperty('token')){
+        
+        
         let decoded = verify(req.headers.token,`${process.env.SECRET_KEY}`)
+        
         User.findOne(
             {email : decoded.email}
         )
@@ -17,6 +20,7 @@ module.exports = function(req,res,next){
         .catch(next)
     }
     else{
+        
         next({msg : `you need to login first`, code: 401})
     }
 }

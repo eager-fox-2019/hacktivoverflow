@@ -229,7 +229,7 @@ export default {
             this.$router.push('/')
             this.links = [
                 {icon : 'dashboard', text: 'Home', route: '/'},
-                {icon : 'people', text: 'user profile', route: `/userPage/${localStorage.userId}`},
+                {icon : 'people', text: 'user profile', route: `/myProfile`},
             ]
         },
         addQuestion(){

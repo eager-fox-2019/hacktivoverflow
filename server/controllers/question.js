@@ -47,20 +47,17 @@ class QuestionController{
         .then(questions => {
             res.status(201).json(questions)
         })
-        .catch(err=>{
-            console.log(err);
-            res.status(500).json({
-                msg : `internal server error`
-            })
-        })
+        .catch(next)
     }
 
     static update(req,res,next){
+        console.log('ini updateeeeeeeeee',req.body);
+        
         let setVal = {}
 
         req.body.title && (setVal.title = req.body.title)
         req.body.description && (setVal.description = req.body.description)
-
+        req.body.tags && (setVal.tags = req.body.tags)
         Question
         .findByIdAndUpdate(req.params.questionId, setVal,{new : true})
         .then(question =>{

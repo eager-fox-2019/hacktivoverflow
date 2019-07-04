@@ -45,7 +45,7 @@ class AnswerController{
     }
     
     static create(req,res,next){
-        console.log('req.body create answer',req.body);
+        console.log('req.body create answer',req.body,req.params);
             let answerCreated;
             let newAnswer = new Answer({
                 title : req.body.title,
@@ -56,7 +56,6 @@ class AnswerController{
             newAnswer.save()
             .then(answer =>{
                 answerCreated = answer
-                console.log(`updated user ==>`,answer);
                 return Question.findOneAndUpdate({_id : req.params.questionId}, { $push: {answerList : answer._id}},{new : true})
             })
             .then(question =>{
@@ -103,6 +102,8 @@ class AnswerController{
     }
 
     static upvote(req,res,next){
+        console.log('masuk upvote');
+        
         let neutralize = false
         Answer.findOne({_id : req.params.answerId})
         .then(answer =>{

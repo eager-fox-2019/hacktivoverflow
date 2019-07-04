@@ -41,6 +41,9 @@ export default {
         this.$router.push('/')
       }else if(localStorage.page === 'profile'){
         this.$router.push('/myProfile')
+      }else if(localStorage.page === 'detail'){
+        console.log('check route',this.$route);
+        this.$store.dispatch('getQuestionDetail', this.$route.params.questionId)
       }
       // this.$store.dispatch('fetchAllQuestion')
     }else{
