@@ -54,6 +54,20 @@ class Controller {
     }
   }
 
+  static async updateQuestion (req, res, next) {
+    let { id } = req.params
+    let { title, description } = req.body
+    try {
+      let question = await Question.findOne({ _id: id }).exec()
+      if (title) question.title = title
+      if (description) question.description = description
+      await question.save()
+      res.json(question)
+    } catch (err) {
+      next(err)
+    }
+  }
+
   static async getQuestionDetail (req, res, next) {
     let { id } = req.params 
     try {
