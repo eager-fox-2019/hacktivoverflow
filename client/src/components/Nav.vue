@@ -19,7 +19,7 @@ export default {
   name: 'Nav',
   computed: {
   	routeName () {
-  		console.log({ routename: this.$route.name })
+  		// console.log({ routename: this.$route.name })
   		return this.$route.name
   	},
   	...mapState(['isLoggedin', 'user'])

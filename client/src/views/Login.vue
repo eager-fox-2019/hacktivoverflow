@@ -76,7 +76,7 @@ export default {
       // login
       axios.post(baseURL + '/user/login', this.form)
         .then(({ data }) => {
-          console.log('login result:', data)
+          // console.log('login result:', data)
           this.$swal({ text: 'login success', type: 'success' })
           // save user detail
           this.$store.commit('SAVEUSER',
@@ -89,7 +89,7 @@ export default {
           this.onReset()
         })
         .catch(({ response }) => {
-          console.log('error at user login:', response)
+          // console.log('error at user login:', response)
           let msg = response.data || response
           this.showAlert(msg, 'danger')
         })

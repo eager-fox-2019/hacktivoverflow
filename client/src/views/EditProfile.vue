@@ -54,7 +54,7 @@ export default {
         data: this.form
       })
         .then(({ data }) => {
-          console.log({ data })
+          // console.log({ data })
           commit('SHOWMSG', {
             message: 'updated profile',
             type: 'success'
@@ -63,7 +63,7 @@ export default {
           this.onReset()
         })
         .catch(({ response }) => {
-          console.log(response.data)
+          // console.log(response.data)
           commit('SHOWMSG', {
             message: response.data,
             type: 'danger'

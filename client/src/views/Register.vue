@@ -70,7 +70,7 @@ export default {
           this.$router.push('/user/login')
         })
         .catch(({ response }) => {
-          console.log('created error:', response)
+          // console.log('created error:', response)
           let msg = response.data || response
           this.showAlert(msg, 'danger')
           this.loading = false

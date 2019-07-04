@@ -48,15 +48,15 @@ export default {
         })
         .then(({ data }) => {
           let tempArray = state.answerList
-          console.log({ data })
+          // console.log({ data })
           data.owner = {
             _id: state.user.id,
             name: state.user.name,
             email: state.user.email
           }
-          console.log({ data })
-          console.log(state.user)
-          console.log(data.owner.name)
+          // console.log({ data })
+          // console.log(state.user)
+          // console.log(data.owner.name)
 
           for (let i = 0; i < tempArray.length; i++) {
             if (tempArray[i]._id = data._id) {
@@ -68,11 +68,11 @@ export default {
           commit('UPDATECURRENTANSWERLIST', [])
           commit('UPDATECURRENTANSWERLIST', tempArray)
 
-          console.log(data)
+          // console.log(data)
           this.onReset()
         })
         .catch(({ response }) => {
-          console.log(response.data)
+          // console.log(response.data)
           commit('SHOWMSG', {
             message: response.data,
             type: 'danger'
@@ -80,7 +80,7 @@ export default {
         })
     },
     onReset () {
-      console.log('edit answer form toggled')
+      // console.log('edit answer form toggled')
       this.form.title = ''
       this.form.description = ''
       this.toggleForm()

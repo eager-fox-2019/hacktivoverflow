@@ -49,8 +49,8 @@ export default {
         .then(({ data }) => {
           let tempArray = state.questionList
           data.owner = state.user
-          console.log(state.user)
-          console.log(data.owner.name)
+          // console.log(state.user)
+          // console.log(data.owner.name)
 
           for (let i = 0; i < tempArray.length; i++) {
             if (tempArray[i]._id = data._id) {
@@ -63,11 +63,11 @@ export default {
           commit('UPDATEQUESTIONLIST', tempArray)
           commit('UPDATECURRENTQUESTION', data)
 
-          console.log(data)
+          // console.log(data)
           this.onReset()
         })
         .catch(({ response }) => {
-          console.log(response.data)
+          // console.log(response.data)
           commit('SHOWMSG', {
             message: response.data,
             type: 'danger'

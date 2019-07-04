@@ -84,7 +84,7 @@ export default {
     },
     isOwner () {
       if (!this.currentQuestion) return false
-      console.log(this.currentQuestion)
+      // console.log(this.currentQuestion)
       return this.currentQuestion.owner.email == this.$store.state.user.email
     },
     loaded () {
@@ -143,7 +143,7 @@ export default {
           this.$router.push('/')
         })
         .catch(({ response }) => {
-          console.log(response.data)
+          // console.log(response.data)
           commit('SHOWMSG', {
             message: response.data,
             type: 'danger'

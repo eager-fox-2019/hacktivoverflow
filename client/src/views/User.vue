@@ -21,7 +21,7 @@ export default {
   },
   methods: {
   	editProfileForm () {
-      console.log(this.$router.history.current.fullPath)
+      // console.log(this.$router.history.current.fullPath)
   		this.$router.push('/user/edit')
   	}
   }

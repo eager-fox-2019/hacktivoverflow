@@ -43,7 +43,7 @@ export default {
 
       dispatch('postAnswer', this.form)
         .then(({ data }) => {
-          console.log({ submitAnswer: data })
+          // console.log({ submitAnswer: data })
           data.owner = state.user
           data.owner._id = state.user.id
 
@@ -53,11 +53,11 @@ export default {
           commit('UPDATECURRENTANSWERLIST', [])
           commit('UPDATECURRENTANSWERLIST', tempArray)
 
-          console.log(data)
+          // console.log(data)
           this.onReset()
         })
         .catch(({ response }) => {
-          console.log(response.data)
+          // console.log(response.data)
           commit('SHOWMSG', {
             message: response.data,
             type: 'warning'

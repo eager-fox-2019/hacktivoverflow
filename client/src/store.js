@@ -49,7 +49,7 @@ export default new Vuex.Store({
       localStorage.clear()
     },
     SAVEUSER (state, payload) {
-      console.log({ saveuser: payload })
+      // console.log({ saveuser: payload })
       let userId = payload.id || payload._id
       state.user = { id: userId, name: payload.name, email: payload.email }
       state.access_token = payload.access_token
@@ -67,40 +67,40 @@ export default new Vuex.Store({
   	getQuestions ({ state, commit, dispatch }) {
   		axios.get(state.baseURL + '/question')
 		  .then(({ data }) => {
-		    console.log(data)
+		    // console.log(data)
 		    commit('UPDATEQUESTIONLIST', data)
 		  })
 		  .catch(({ response }) => {
-		    console.log(response.data)
-          commit('SHOWMSG', {
-            message: response.data,
-            type: 'warning'
-          })
+		    // console.log(response.data)
+        commit('SHOWMSG', {
+          message: response.data,
+          type: 'warning'
+        })
 		  })
   	},
   	getQuestionDetail ({ state, commit, dispatch }, payload) {
   		axios.get(state.baseURL + '/question/' + payload)
   			.then(({ data }) => {
-  				console.log(data)
+  				// console.log(data)
   				commit('UPDATECURRENTQUESTION', data)
           dispatch('getAnswers', data._id)
   			})
 		  .catch(({ response }) => {
-		    console.log(response.data)
-          commit('SHOWMSG', {
-            message: response.data,
-            type: 'warning'
-          })
+		    // console.log(response.data)
+        commit('SHOWMSG', {
+          message: response.data,
+          type: 'warning'
+        })
 		  })
   	},
     getQuestion ({ state, commit, dispatch }, payload) {
       axios.get(state.baseURL + '/question/' + payload)
         .then(({ data }) => {
-          console.log(data)
+          // console.log(data)
           commit('UPDATECURRENTQUESTION', data)
         })
         .catch(({ response }) => {
-          console.log(response.data)
+          // console.log(response.data)
           commit('SHOWMSG', {
             message: response.data,
             type: 'warning'
@@ -114,11 +114,11 @@ export default new Vuex.Store({
   				commit('UPDATECURRENTANSWERLIST', data)
   			})
 		  .catch(({ response }) => {
-		    console.log(response.data)
-          commit('SHOWMSG', {
-            message: response.data,
-            type: 'warning'
-          })
+		    // console.log(response.data)
+        commit('SHOWMSG', {
+          message: response.data,
+          type: 'warning'
+        })
 		  })
   	},
     voteQuestion ({ state, commit, dispatch }, payload) {
@@ -132,17 +132,16 @@ export default new Vuex.Store({
         headers: { access_token: state.access_token }
       })
         .then(({ data }) => {
-          console.log({ data })
-          console.log(state.currentQuestion)
+          // console.log({ data })
+          // console.log(state.currentQuestion)
           data.owner = state.currentQuestion.owner
           // data is the updated question, update our arrays using it.
           commit('UPDATECURRENTQUESTION', null)
           commit('UPDATECURRENTQUESTION', data)
 
-          console.log('commit currentQuestion')
+          // console.log('commit currentQuestion')
 
           let tempArray = state.questionList
-          console.log('tempArray tempArray tempArray')
           for (let i = 0; i < tempArray.length; i++) {
             if (tempArray[i]._id == data._id) {
               tempArray[i] = data
@@ -153,12 +152,12 @@ export default new Vuex.Store({
 
           commit('UPDATEQUESTIONLIST', [])
           commit('UPDATEQUESTIONLIST', tempArray)
-          console.log('updated question list')
+          // console.log('updated question list')
 
           console.log(data)
         })
         .catch(({ response }) => {
-          console.log(response.data)
+          // console.log(response.data)
           commit('SHOWMSG', {
             message: response.data,
             type: 'warning'
@@ -182,7 +181,7 @@ export default new Vuex.Store({
           for (let i = 0; i < tempArray.length; i++) {
             if (tempArray[i]._id == data._id) {
               tempArray[i] = data
-              console.log({ updated: data })
+              // console.log({ updated: data })
               i = tempArray.length
             }
           }
@@ -190,10 +189,10 @@ export default new Vuex.Store({
           commit('UPDATECURRENTANSWERLIST', [])
           commit('UPDATECURRENTANSWERLIST', tempArray)
           // data is answer with updated upvotes and downvotes array
-          console.log(data)
+          // console.log(data)
         })
         .catch(({ response }) => {
-          console.log(response.data)
+          // console.log(response.data)
           commit('SHOWMSG', {
             message: response.data,
             type: 'warning'

@@ -27,9 +27,6 @@ export default {
   	AnswerCard,
   	EditAnswerForm
   },
-  created () {
-  	console.log(this)
-  },
   computed: mapState(['answerList']),
   data () {
   	return {
