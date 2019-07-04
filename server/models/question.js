@@ -32,7 +32,9 @@ const ModelSchema = Schema({
   updatedAt: {
     type: Date,
     default: new Date()
-  }
+  },
+  botAnswerTitle: String,
+  botAnswerLink: String
 })
 
 ModelSchema.pre('save', function (next) {

@@ -40,7 +40,6 @@ const ModelSchema = Schema({
   }
 })
 
-
 ModelSchema.pre('save', function (next) {
   this.updatedAt = new Date()
   next()

@@ -82,6 +82,8 @@ class Controller {
         description: question.description,
         upvotes: question.upvotes,
         downvotes: question.downvotes, 
+        botAnswerTitle: question.botAnswerTitle,
+        botAnswerLink: question.botAnswerLink,
         answers
       })
     } catch (err) {

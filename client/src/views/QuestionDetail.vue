@@ -24,6 +24,10 @@
             </p>
             <p>{{ questionDetail.description }}</p>
           </b-col>
+          <b-col style="background-color: #dddddd" v-if="questionDetail.botAnswerTitle && questionDetail.botAnswerLink">
+            <h4>Bot udah coba nyari jawabanya nih, kali aja membantu</h4>
+            <a :href="questionDetail.botAnswerLink">{{questionDetail.botAnswerTitle}}</a>
+          </b-col>
           <b-col v-if="loggedUser.user !== ''" sm="12" class="w-100">
             <hr />
             <h5>Answer This Question</h5>

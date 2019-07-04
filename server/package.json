@@ -7,7 +7,8 @@
     "createAdmin": "cross-env node commands/create.admin.user.js",
     "test": "cross-env NODE_ENV=test npx mocha --exit",
     "start": "node app.js",
-    "dev": "cross-env NODE_ENV=development nodemon app.js"
+    "dev": "cross-env NODE_ENV=development nodemon app.js",
+    "cron": "node app.kue.js"
   },
   "repository": {
     "type": "git",
@@ -33,6 +34,8 @@
     "mongoose-unique-validator": "^2.0.3",
     "multer": "^1.4.1",
     "node-cron": "^2.0.3",
+    "puppeteer": "^1.18.1",
+    "redis": "^2.8.0",
     "sinon": "^7.3.2",
     "supertest": "^4.0.2"
   },
