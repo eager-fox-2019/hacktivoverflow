@@ -12,7 +12,7 @@ app.use(cors())
 app.use(express.urlencoded({ extended:false }))
 app.use(express.json())
 
-mongoose.connect('mongodb://localhost/hacktivOverflow', {useNewUrlParser : true, useCreateIndex : true}, (err) => {
+mongoose.connect('mongodb+srv://admin:admin@fadlul-cluster-gktgz.gcp.mongodb.net/hoverflow?retryWrites=true&w=majority', {useNewUrlParser : true, useCreateIndex : true}, (err) => {
     if(err) console.log('mongoose connection failed');
     else console.log('mongoose connection success');
 });
