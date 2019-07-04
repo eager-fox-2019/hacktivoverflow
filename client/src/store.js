@@ -6,7 +6,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    url: `http://3.16.40.150`,
+    url: `http://localhost:3000`,
     islogin: false,
     id: '',
     token: '',

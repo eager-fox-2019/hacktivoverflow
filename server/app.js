@@ -9,7 +9,7 @@ const errorHandler = require('./helpers/error-handler.js');
 
 let local = 'mongodb://localhost/hacktiv-overflow'
 let uri = 'mongodb+srv://admin:admin@cluster0-ezblw.gcp.mongodb.net/hacktiv-overflow?retryWrites=true&w=majority'
-mongoose.connect(uri, {useNewUrlParser: true});
+mongoose.connect(local, {useNewUrlParser: true});
 
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json());

@@ -1,32 +1,11 @@
-
 const nodemailer = require("nodemailer");
 
-function main(data ,done){
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+         user: `${process.env.GOOGLE_EMAIL}`,
+         pass: `${process.env.GOOGLE_PASS}`
+     }
+})
 
-  let mail = nodemailer.createTransport({
-    service: 'yahoo',
-    auth: {
-      user: process.env.email, 
-      pass: process.env.password 
-    }
-  });
-
-  // setup email data with unicode symbols
-  let mailOptions = {
-    from: '"Hacktiv-verflow " <hacktivoverflow-no-reply@yahoo.com>',
-    to: data.email, 
-    subject: data.title, 
-    html: data.message 
-  };
-
-  mail.sendMail(mailOptions, (err, info) => {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log(info);
-      done()
-    }
-  })
-}
-
-module.exports = main
+module.exports = transporter

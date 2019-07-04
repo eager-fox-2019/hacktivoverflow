@@ -2,8 +2,7 @@ const User = require("../models/user.js");
 const register = require("../helpers/bcrypt.js");
 const jwt = require("../helpers/jwt.js");
 const { login } = require("../helpers/error.js");
-// const kue = require("kue");
-// const queue = kue.createQueue();
+const transporter = require("../helpers/mailer.js");
 
 class UserController {
   static register(req, res, next) {
@@ -16,26 +15,28 @@ class UserController {
       .then(result => {
         var CronJob = require("cron").CronJob;
         new CronJob(
-          "0 0 0 1 * *",
+          "0 0 0 1 * *", //once a month
           function() {
-            console.log("You will see this message every month");
-            const emailJob = queue
-              .create("sendEmail", {
-                title: "Welcome to HacktivOverflow",
-                email: newUser.email,
-                message: `<h1> Welcome ${
-                  newUser.email
-                }, Thanks for registering to our website!</h1>`
+            const emailCont = `Hi ${result.name}!. This is a friendly reminder to visit our website again!`
+            const mailOptions = {
+                from: '<no-reply-overflow@admin.com>',
+                to: `${result.email}`,
+                subject: 'HackTodo Reminder',
+                html: emailCont
+            }
+            
+            transporter.sendMail(mailOptions, function (err, info) {
+                if(err){
+                    console.log(err);
+                } else {
+                    console.log(info);
+                }
               })
-              .save();
-            emailJob.on("failed", error => {
-              console.log(JSON.parse(error));
-            });
           },
           null,
           true,
           "America/Los_Angeles"
-        );
+        )
         res.status(201).json(result);
       })
       .catch(next);
