@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="question-nest">
   <Question v-for="question in $store.state.questions" :key="question._id" :question="question"></Question>
   </div>
 </template>
@@ -13,6 +13,8 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+  .question-nest {
+    padding: 0px 80px;
+  }
 </style>

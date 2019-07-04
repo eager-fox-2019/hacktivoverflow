@@ -4,7 +4,7 @@
     <v-spacer></v-spacer>
     <v-toolbar-items class="hidden-sm-and-down">
       <LogoutModal></LogoutModal>
-      <!-- <v-btn @click="logout" class="white--text" flat><v-icon>arrow_forward</v-icon>Log Out</v-btn> -->
+      <h6></h6>
     </v-toolbar-items>
   </v-toolbar>
 </template>
