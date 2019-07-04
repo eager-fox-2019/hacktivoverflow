@@ -58,6 +58,23 @@ export default new Router({
           next('/')
         }
       }
+    },
+    {
+      path: '/answer/:id/edit',
+      name: 'answerEdit',
+      component: () => import(/* webpackChunkName: "answerEdit" */ './views/AnswerEdit.vue'),
+      beforeEnter: async function (to, from, next) {
+        await store.dispatch('initApp')
+        await store.dispatch('fetchAnswerDetail', { id: to.params.id })
+        let s = store
+        debugger
+        if (s.state.answerDetail.user._id === s.state.loggedUser.user) {
+          next()
+        } else {
+          toastifyHelper('Not Authorized')
+          next('/')
+        }
+      }
     }
   ]
 })

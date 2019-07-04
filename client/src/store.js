@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { EROFS } from 'constants';
 
 const errorHandler = require('./helpers/errorHandler')
 const toastifyHelper = require('./helpers/toastify')
@@ -30,6 +29,7 @@ export default new Vuex.Store({
     },
     questions: [],
     questionDetail: {},
+    answerDetail: {},
   },
   mutations: {
     SET_LOGIN(state, payload) {
@@ -50,6 +50,9 @@ export default new Vuex.Store({
     },
     FETCH_QUESTION_DETAIL (state, payload) {
       state.questionDetail = payload
+    },
+    FETCH_ANSWER_DETAIL (state, payload) {
+      state.answerDetail = payload
     }
   },
   actions: {
@@ -138,6 +141,16 @@ export default new Vuex.Store({
       try {
         let res = await axios.get(`${BASE_URL}/question/${id}`)
         context.commit('FETCH_QUESTION_DETAIL', res.data)
+      } catch (err) {
+        errorHandler(err)
+        return false
+      }
+    },
+    async fetchAnswerDetail (context, payload) {
+      let { id } = payload
+      try {
+        let res = await axios.get(`${BASE_URL}/answer/${id}`)
+        context.commit('FETCH_ANSWER_DETAIL', res.data)
       } catch (err) {
         errorHandler(err)
         return false

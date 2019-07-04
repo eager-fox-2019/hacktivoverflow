@@ -12,7 +12,17 @@
         <b-row align-v="start" class="w-100">
           <b-col sm="12" class="w-100">
             <h3>{{ title }}</h3>
-            <p>Answer by: {{ user.fullName }}</p>
+            <p>
+              Answer by: {{ user.fullName }}
+              <br v-if="isAuthor" />
+              <router-link
+                v-if="isAuthor"
+                :to="{ name: 'answerEdit', params: {id: this.questionDetail._id }}"
+              >
+                <b-button variant="primary">Edit</b-button>
+              </router-link>
+              <b-button @click="triggerDelete" v-if="isAuthor" variant="danger">Delete</b-button>
+            </p>
             <p>{{ description }}</p>
           </b-col>
         </b-row>
@@ -29,6 +39,9 @@ export default {
   methods: {
     async vote (action) {
       // let res = await this.$store.dispatch('vote', )
+    },
+    triggerDelete () {
+      
     }
   },
   props: ["title", "description", "upvotes", "downvotes", "_id", "user"],
@@ -36,6 +49,9 @@ export default {
     return {}
   },
   computed: {
+    isAuthor() {
+      return this.user._id ===  this.loggedUser.user
+    },
     rating() {
       this.test
       return this.upvotes.length - this.downvotes.length
