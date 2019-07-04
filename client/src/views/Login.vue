@@ -61,9 +61,11 @@ export default {
                                 this.$store.dispatch('getWatchedTagsQuestions', this.watchedTags)
                                 .then(()=> {
                                     if(!this.$store.getters.error) {
-                                        this.$alertify.success(`Welcome ${data.username}`);
                                         this.$store.state.isLogin = true
-                                        this.$router.push('/')
+                                        setTimeout(() => {
+                                            this.$alertify.success(`Welcome ${data.username}`);
+                                            this.$router.push('/')
+                                        }, 1000);
                                     }
                                 })
                             }

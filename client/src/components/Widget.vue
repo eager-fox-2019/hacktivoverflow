@@ -3,7 +3,7 @@
         <div v-if="isLogin">
             <div class="watched-tags-container watched-tags-card">
                 <div class="watched-head" style="position: relative;">
-                    <h6><i class="fas fa-tags"></i>Watched Tags</h6>
+                    <h6><i class="fas fa-tags" style="margin-right: 7px;"></i>Watched Tags</h6>
                     <span @click="toggleInput" class="edit-watch" style="position: absolute;">Edit</span>
                 </div>
                 <div>
@@ -15,7 +15,7 @@
                                 v-for="(tag, index) in watchedTags"
                                 :key="index"
                                 style="padding: 3px 10px;"
-                            >{{tag}} <span @click="removeTag(tag)" class="close-tags"><i class="fas fa-times-circle"></i></span></li>
+                            >{{tag}} <span @click="removeTag(tag)" class="close-tags" v-if="isTagInputActive"><i class="fas fa-times-circle"></i></span></li>
                         </ul>
                     </div>
                     <form 
@@ -26,6 +26,7 @@
                             type="text"
                             class="form-control"
                             v-if="isTagInputActive"
+                            placeholder="input tag"
                         >
                     </form>
                 </div>

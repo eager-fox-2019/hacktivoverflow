@@ -138,8 +138,8 @@ export default new Vuex.Store({
       .then(({ data }) => {
         context.commit('SET_QUESTIONS', data)
       })
-      .catch(error => {
-        console.log(error);
+      .catch(err => {
+        this.$alertify.error(err.response.data.msg);
       })
     },
     // buat state baca userlogged tiap refresh
@@ -152,8 +152,8 @@ export default new Vuex.Store({
         context.commit('SET_IS_LOGIN_STATUS', true)
         context.commit('SET_USER', data)
       })
-      .catch(error => {
-        console.log(error.response);
+      .catch(err => {
+        this.$alertify.error(err.response.data.msg);
       })
     },
     addNewQuestion(context,payload) {
@@ -165,8 +165,8 @@ export default new Vuex.Store({
         context.commit('ADD_QUESTIONS', data)
         context.commit('ADD_MY_QUESTIONS', data)
       })
-      .catch(error => {
-        console.log(error.response);
+      .catch(err => {
+        this.$alertify.error(err.response.data.msg);
       })
     },
     deleteQuestion(context, id) {
@@ -178,8 +178,8 @@ export default new Vuex.Store({
         context.commit('DELETE_QUESTIONS', data)
         context.commit('DELETE_MY_QUESTIONS', data)
       })
-      .catch(error => {
-        console.log(error);
+      .catch(err => {
+        this.$alertify.error(err.response.data.msg);
       })
     },
     fetchMyQuestions(context) {
@@ -191,7 +191,7 @@ export default new Vuex.Store({
           context.commit('SET_MY_QUESTIONS', data)
       })
       .catch(err => {
-          console.log(err);
+        this.$alertify.error(err.response.data.msg);
       })
     },
     getQuestionByTags(context, tags) {
@@ -203,7 +203,7 @@ export default new Vuex.Store({
         context.commit('SET_QUESTIONS_BY_TAG', data)
       })
       .catch(err => {
-          console.log(err);
+        this.$alertify.error(err.response.data.msg);
       })
     },
     addWatchedTags(context, tags) {
@@ -216,7 +216,7 @@ export default new Vuex.Store({
         context.commit('SET_USER', data)
       })
       .catch(err => {
-        console.log(err.response);
+        this.$alertify.error(err.response.data.msg);
       })
     },
     removeWatchedTags(context, tags) {
@@ -229,7 +229,7 @@ export default new Vuex.Store({
         context.commit('SET_USER', data)
       })
       .catch(err => {
-        console.log(err.response);
+        this.$alertify.error(err.response.data.msg);
       })
     },
     getWatchedTagsQuestions({commit, getters},) {
@@ -242,9 +242,9 @@ export default new Vuex.Store({
             commit('SET_WATCHED_TAGS_QUESTION', data)
         })
         .catch(err => {
-            console.log(err.response);
+          this.$alertify.error(err.response.data.msg);
         })
-      }, 400);
+      }, 1000);
     }
   }
 })
