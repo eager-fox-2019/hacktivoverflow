@@ -88,6 +88,16 @@ class Controller {
       next(err)
     }
   }
+
+  static async deleteQuestion (req, res, next) {
+    let { id } = req.params
+    try {
+      let qRes = await Question.deleteOne({ _id: id }).exec()
+      res.json(qRes)
+    } catch (err) {
+      next(err)
+    }
+  }
 }
 
 module.exports = Controller

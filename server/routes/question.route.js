@@ -8,5 +8,6 @@ router.get('/:id', qController.getQuestionDetail)
 router.post('/', authMiddlware, qController.postQuestion)
 router.patch('/:id/:action', authMiddlware, qController.vote)
 router.patch('/:id', authMiddlware, questionAuthorization, qController.updateQuestion)
+router.delete('/:id', authMiddlware, questionAuthorization, qController.deleteQuestion)
 
 module.exports = router
