@@ -3,7 +3,7 @@ const clientUrl = `${process.env.CLIENT_URL}`
 
 
 module.exports = {
-    nodeMailer : function(email, type, data) {
+    nodeMailer : function(email, type) {
         console.log('ini email kirim',email);
         console.log('ini email admin', process.env.NODE_MAILER_USER);
         console.log('ini pass admin', process.env.NODE_MAILER_PASS);

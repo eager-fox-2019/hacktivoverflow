@@ -12,9 +12,10 @@
                   <h1>Question : {{detailQuestion.title}}</h1>
               </v-card-title>
               <v-card-text style ="padding : 10px; font-size : 20px" class="text-truncate">
-                <span style="text-align : justify">
-                  {{detailQuestion.description}}
-                </span>
+                
+                  <v-card class="mb-2" style="display : flex; align-items : center;min-height : 50px;text-align : left; padding : 10px; background-color: #D9D9D9; color : black">
+                    <span v-html="detailQuestion.description" ></span>
+                  </v-card>
                 <v-layout>
                     <v-btn color="#D9D9D9" style="color : black" round v-for="(tag,index) in detailQuestion.tags" :key="index">
                         {{tag}}
@@ -23,7 +24,7 @@
               </v-card-text>
               <v-card-actions>
                 <v-layout row align-center>
-                  <v-btn @click="dialog = true">click here to input Answer</v-btn>
+                  <v-btn v-show="isLogin" @click="dialog = true">click here to input Answer</v-btn>
                   <v-spacer></v-spacer>
                   <v-btn color="success" @click.prevent="upvote" ><i class="fas fa-thumbs-up fa-lg mr-3"></i> : {{detailQuestion.upVotes.length}}</v-btn>
                   <v-btn color="warning" @click.prevent="downvote" ><i class="fas fa-thumbs-down fa-lg mr-3"></i> : {{detailQuestion.downVotes.length}}</v-btn>
@@ -36,7 +37,7 @@
           </v-layout>
         </v-flex>
         <v-flex lg3 md12 xs6 ml2 style="background-color : #D9D9D9">
-          <!-- <h1>gimana</h1> -->
+          <jobCard v-for="(job,index) in jobList" :key="index" :job="job" />          
         </v-flex>
       </v-layout>
     </v-container>
@@ -71,6 +72,8 @@
 import cardAnswer from '../components/cardAnswer'
 import navbar from '../components/navbar'
 import { mapState } from 'vuex'
+import jobCard from '../components/jobCard'
+import VueEditor from 'vue2-editor'
 
 export default {
     data(){
@@ -113,10 +116,12 @@ export default {
     },
     components : {
         cardAnswer,
-        navbar
+        navbar,
+        jobCard,
+        VueEditor
     },
     computed : {
-        ...mapState(['detailQuestion'])
+        ...mapState(['detailQuestion','isLogin','jobList'])
     },
     created(){
 

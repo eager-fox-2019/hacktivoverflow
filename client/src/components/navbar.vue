@@ -159,7 +159,8 @@
                                 <v-text-field v-model="newQuestion.title" label="title" required></v-text-field>
                             </v-flex><br>
                             <v-flex xs12 sm12 md12>
-                                <v-textarea v-model="newQuestion.description" label="description" type="text" hint="example of helper text only on focus"></v-textarea>
+                                <VueEditor v-model="newQuestion.description" />
+                                <!-- <v-textarea v-model="newQuestion.description" label="description" type="text" hint="example of helper text only on focus"></v-textarea> -->
                             </v-flex>
                             <v-flex>
                                 <tags-input element-id="tags" v-model="questionTags" :typeahead="true"></tags-input>
@@ -201,10 +202,12 @@
 <script>
 import {mapState} from 'vuex'
 import VoerroTagsInput from '@voerro/vue-tagsinput'
+import { VueEditor } from 'vue2-editor'
 
 export default {
     components: {
-        "tags-input" : VoerroTagsInput
+        "tags-input" : VoerroTagsInput,
+        VueEditor
     },
     data(){
         return{

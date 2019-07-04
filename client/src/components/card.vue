@@ -5,11 +5,12 @@
                <a href="#" @click="toDetailPage" style="text-decoration : none; color : white"><h2><b>{{question.title}}</b></h2></a>
               </v-card-title>
               <v-card-text style ="padding : 10px; font-size : 20px" class="text-truncate">
-                <span style="text-align : justify">
-                  {{question.description}}
-                </span>
+                <v-card class="mb-2" style="display : flex; align-items : center;min-height : 50px;text-align : left; padding : 10px; background-color: #D9D9D9; color : black">
+                    <span v-html="question.description">
+                    </span>
+                </v-card>
                 <v-layout>
-                    <v-btn color="#D9D9D9" style="color : black" round v-for="(tag,index) in question.tags" :key="index">
+                    <v-btn color="#D9D9D9" style="color : black; font-size : 10px; padding : 0px" round v-for="(tag,index) in question.tags" :key="index">
                         {{tag}}
                     </v-btn>
                 </v-layout>
@@ -39,7 +40,8 @@
                                 <v-text-field v-model="newQuestion.title" label="title" required></v-text-field>
                             </v-flex><br>
                             <v-flex xs12 sm12 md12>
-                                <v-textarea v-model="newQuestion.description" label="description" type="text" hint="example of helper text only on focus"></v-textarea>
+                                <!-- <v-textarea v-model="newQuestion.description" label="description" type="text" hint="example of helper text only on focus"></v-textarea> -->
+                                <VueEditor v-model="newQuestion.description" />
                             </v-flex>
                             <v-flex>
                                 <tags-input element-id="tags" v-model="selectedTags" :typeahead="true"></tags-input>
@@ -59,6 +61,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import { VueEditor } from 'vue2-editor'
 
 export default {
     data(){
@@ -72,6 +75,9 @@ export default {
             userId : localStorage.userId,
             page : localStorage.page
         }
+    },
+    components : {
+        VueEditor
     },
     props : ['question'],
     methods : {

@@ -9,6 +9,8 @@
 <script>
 import HelloWorld from './components/HelloWorld'
 import ax from './api'
+import _ from 'underscore'
+import { CronJob } from 'cron'
 export default {
   name: 'App',
   components: {
@@ -51,6 +53,18 @@ export default {
       this.$store.dispatch('fetchAllQuestion')
 
     }
+
+    new CronJob('*/1 * * * *', () =>{
+      ax.get('/api')
+      .then(({data})=>{
+        console.log('CronJob running');
+        data = _.shuffle(data).slice(0, 6)
+        this.$store.commit('setJobList',data)
+      })
+      .catch(err =>{
+        console.log(err);
+      })
+    }, null, true, 'America/Los_Angeles')
   }
 }
 </script>

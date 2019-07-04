@@ -10,9 +10,18 @@ export default new Vuex.Store({
     allQuestion : [],
     questionEditData : '',
     detailQuestion : '',
-    answerEditData : ''
+    answerEditData : '',
+    jobList : []
   },
   mutations: {
+    setJobList(state,data){
+      console.log('data mau ke job list',data);
+      
+      state.jobList = data
+      console.log(this.jobList);
+      
+    },
+
     setIsLogin(state,data){
       state.isLogin = data
     },

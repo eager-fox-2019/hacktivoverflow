@@ -7,10 +7,10 @@
                 {{answer.title}}
                 </b></h2>
               </v-card-title>
-              <v-card-text style ="padding : 10px; font-size : 20px" class="text-truncate">
-                <span style="text-align : justify">
-                  {{answer.description}}
-                </span>
+              <v-card-text style ="padding : 10px; font-size : 20px" class="text-truncate">                
+                    <v-card class="mb-2" style="display : flex; align-items : center;min-height : 50px;text-align : left; padding : 10px; background-color: #D9D9D9; color : black">
+                        {{answer.description}}
+                    </v-card>
               </v-card-text>
               <v-card-actions>
                 <v-layout row align-center>
