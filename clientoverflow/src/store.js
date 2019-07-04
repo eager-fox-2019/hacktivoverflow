@@ -10,7 +10,7 @@ export default new Vuex.Store({
     user: {},
     questions: [],
     answers: [],
-    serverURL: "http://localhost:3000"
+    serverURL: "http://34.68.129.5"
   },
   mutations: {
     SET_ISLOGIN: (state, data) => {
