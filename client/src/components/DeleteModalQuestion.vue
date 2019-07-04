@@ -30,6 +30,7 @@
       deleteQuestion() {
         this.dialog = false;
         this.$store.dispatch('deleteQuestion', this.question);
+        this.$store.dispatch('deleteManyAnswer', this.question.answers)
       }
     }
   }

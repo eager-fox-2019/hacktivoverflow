@@ -7,10 +7,10 @@
       </v-layout>
     </v-parallax>
     <v-layout class="landing-page-toolbar" row justify-center>
-      <v-flex xs1 align-self-center>
+      <v-flex xs2 align-self-center>
         <LoginModal></LoginModal>
       </v-flex>
-      <v-flex xs1 align-self-center>
+      <v-flex xs2 align-self-center>
         <SignUpModal></SignUpModal>
       </v-flex>
     </v-layout>
@@ -28,7 +28,7 @@
     </v-layout>
     <v-layout class="section-3-container" row align-center text-xs-center>
       <v-flex class="section-3-text-container">
-      <h3 class="display-1 white--text"> He who asks a question is a fool for five minutes; <br/> who does not ask a question remains a fool forever.</h3>
+      <h3 class="display-1 white--text"> "He who asks a question is a fool for five minutes; <br/> who does not ask a question remains a fool forever."</h3>
       </v-flex>
     </v-layout>
     <v-layout class="footer-section" row align-center text-xs-center>

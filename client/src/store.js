@@ -170,8 +170,6 @@ export default new Vuex.Store({
           }
         })
         .then((response) => { 
-          console.log(response);
-          
           context.dispatch('readAllQuestions');
           Swal.fire(
             'Successful!',
@@ -259,6 +257,31 @@ export default new Vuex.Store({
           }
         })
         .then((response) => {
+          context.dispatch('readAllQuestions');
+          Swal.fire(
+            'Successful!',
+            'Answer deleted',
+            'success'
+          )
+          router.push('/home')
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    deleteManyAnswer(context, payload) {
+      axios({
+          method: 'DELETE',
+          url: baseUrl + '/answers/many',
+          data: {
+            answers: payload
+          },
+          headers: {
+            access_token: localStorage.getItem('access_token')
+          }
+        })
+        .then((response) => {
+          console.log(response);
           context.dispatch('readAllQuestions');
           Swal.fire(
             'Successful!',

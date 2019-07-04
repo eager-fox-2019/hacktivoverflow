@@ -3,8 +3,8 @@
     <v-layout row justify-center>
       <v-dialog v-model="dialog" persistent max-width="600px">
         <template v-slot:activator="{ on }">
-          <v-btn flat dark v-on="on">
-            <v-icon>person</v-icon> Login
+          <v-btn style="font-size:2rem" flat dark v-on="on">
+            <v-icon style="font-size:3rem">person</v-icon> Login
           </v-btn>
         </template>
         <v-card>
@@ -54,6 +54,5 @@
   }
 </script>
 
-<style>
-
+<style scoped>
 </style>

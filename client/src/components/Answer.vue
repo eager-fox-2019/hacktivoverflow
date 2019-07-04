@@ -139,8 +139,7 @@
     padding-left: 50px;
     border-top: 1px solid #eee;
     border-bottom: 1px solid #ddd;
-    max-height: 300px;
-
+    min-height: 300px;
     background-color: white;
   }
 

@@ -59,6 +59,18 @@ class Answer {
         next(err);
       })
   }
+
+  static deleteMany(req, res, next) {
+    Model.Answer.deleteMany({
+      _id: {$in: req.body.answers}
+    })
+    .then((response) => {
+      res.status(200).json(response);
+    })
+    .catch((err) => {
+      next(err);
+    })
+  }
 }
 
 module.exports = Answer
