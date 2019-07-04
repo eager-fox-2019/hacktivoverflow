@@ -3,6 +3,8 @@ const Token = require('../models/model-blacklist-token')
 const { compareHash } = require('../helpers/hash-helpers')
 const { generateToken } = require('../helpers/jwt-helper')
 const { customPassword } = require('../helpers/password-generator')
+let { queue, processEmail } = require('../helpers/kue-helper')
+const CronJob = require('cron').CronJob;
 
 class ControllerUser {
   static login(req, res, next) {
@@ -92,7 +94,9 @@ class ControllerUser {
           email: user.email,
           username: user.username
         }
+        console.log('ini sendUser', sendUser)
         res.status(201).json(sendUser)
+        return processEmail(sendUser)
       })
       .catch(next)
   }

@@ -5,13 +5,16 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development' || process.e
 const cors = require('cors')
 const mongoose = require('mongoose')
 const express = require('express')
+const kue = require('kue')
 const app = express()
 
 const { errorHandler } = require('./middlewares/error-handlers')
 const routeIndex = require('./routes')
 const Port = process.env.PORT
+const PortKue = process.env.PORT_KUE
 const mongoDbUrl = process.env.DATABASE_CONNECTION
 
+console.log('env used', process.env)
 // connect mongodb
 mongoose.connect(mongoDbUrl, { 
   useCreateIndex: true,
@@ -31,7 +34,11 @@ app.use('/', routeIndex)
 app.use(errorHandler)
 
 app.listen(Port, () => {
-  console.log(`Listening to port Port ${Port}`);
+  console.log(`Listening to Port ${Port}`);
+})
+
+kue.app.listen(PortKue, () => {
+  console.log(`Kue running on Port ${PortKue}`)
 })
 
 module.exports = app

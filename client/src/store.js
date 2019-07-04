@@ -8,7 +8,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    url_server: 'http://18.139.162.218:80', // GCS 34.87.111.175 Local http://localhost:3000 AWS 18.139.162.218
+    url_server: 'http://localhost:3000', // GCS 34.87.111.175 Local http://localhost:3000 AWS 18.139.162.218
     isLogin: false,
     loginUser: {},
     questions: [],
