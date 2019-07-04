@@ -11,7 +11,14 @@
         <b-row align-v="start" class="w-100">
           <b-col sm="12" class="w-100">
             <h3>{{ questionDetail.title }}</h3>
-            <p>Question by: {{ fullName }}</p>
+            <p>
+              Question by: {{ fullName }} 
+              <br v-if="isAuthor" />
+              <router-link v-if="isAuthor" :to="{ name: 'questionEdit', params: {id: this.questionDetail._id }}"> 
+                <b-button variant="primary">Edit</b-button>
+              </router-link>
+              <b-button v-if="isAuthor" variant="danger" > Delete </b-button>
+            </p>
             <p>{{ questionDetail.description }}</p>
           </b-col>
           <b-col sm="12" class="w-100">
@@ -85,6 +92,7 @@ export default {
       rating: 0,
       upvoted: false,
       downvoted: false,
+      isAuthor: false,
       form: {
         title: "",
         description: ""
@@ -102,6 +110,7 @@ export default {
       this.rating = val.upvotes.length - val.downvotes.length
       this.upvoted = val.upvotes.includes(this.loggedUser.user)
       this.downvoted = val.downvotes.includes(this.loggedUser.user)
+      this.isAuthor = val.user._id === this.loggedUser.user
     }
   }
 };
