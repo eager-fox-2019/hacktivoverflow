@@ -16,5 +16,7 @@ export default {
 <style scoped>
   .question-nest {
     padding: 0px 80px;
+
+    width: 100%;
   }
 </style>
