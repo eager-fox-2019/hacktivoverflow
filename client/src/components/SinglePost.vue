@@ -22,7 +22,7 @@
                   </v-flex>
                   <v-flex>
                     <h1 style="color:#FB7E51;">
-                      <i class="fas fa-chevron-down"></i>
+                      <i @click="downVote" class="fas fa-chevron-down"></i>
                     </h1>
                   </v-flex>
                 </v-layout>
@@ -171,7 +171,15 @@ export default {
             this.$store.dispatch('upVoteQuestion',{
                 questionId : this.$route.params.questionId
             })
-            this.$store.dispatch('findAllQuestion')
+            this.$store.dispatch('findOneQuestion',this.$route.params.questionId)
+            
+        },
+
+        downVote(){
+            this.$store.dispatch('downVoteQuestion',{
+                questionId : this.$route.params.questionId
+            })
+            this.$store.dispatch('findOneQuestion',this.$route.params.questionId)
             
         }
 

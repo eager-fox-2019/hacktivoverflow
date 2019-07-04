@@ -50,7 +50,7 @@ export default new Vuex.Store({
         console.log(payload);
         axios({
             method: 'post',
-            url: 'http://localhost:3000/user/register',
+            url: 'http://3.19.14.51:80/user/register',
             responseType: 'json',
             data: {
               first_name: payload.first_name,
@@ -84,7 +84,7 @@ export default new Vuex.Store({
         console.log(payload);
         axios({
             method: 'post',
-            url: 'http://localhost:3000/user/login',
+            url: 'http://3.19.14.51:80/user/login',
             responseType: 'json',
             data: {
               username: payload.username,
@@ -112,7 +112,7 @@ export default new Vuex.Store({
     fetchAllQuestion(context){
       axios({
         method: 'get',
-        url: 'http://localhost:3000/question',
+        url: 'http://3.19.14.51:80/question',
         responseType: 'json',
         headers : {
           token : localStorage.getItem('token')
@@ -134,7 +134,7 @@ export default new Vuex.Store({
       console.log("Masuk action my question");
       axios({
         method: 'get',
-        url: 'http://localhost:3000/question/mypost',
+        url: 'http://3.19.14.51:80/question/mypost',
         responseType: 'json',
         headers : {
           token : localStorage.getItem('token')
@@ -154,7 +154,7 @@ export default new Vuex.Store({
       return new Promise((resolve,reject)=>{
         axios({
           method: 'post',
-          url: 'http://localhost:3000/question/create',
+          url: 'http://3.19.14.51:80/question/create',
           responseType: 'json',
           data : {
             title: payload.title,
@@ -182,7 +182,7 @@ export default new Vuex.Store({
 
       axios({
         method: 'get',
-        url: `http://localhost:3000/question/${payload}`,
+        url: `http://3.19.14.51:80/question/${payload}`,
         responseType: 'json',
         headers : {
           token : localStorage.getItem('token')
@@ -204,7 +204,7 @@ export default new Vuex.Store({
       
       axios({
         method: 'post',
-        url: `http://localhost:3000/answer/create`,
+        url: `http://3.19.14.51:80/answer/create`,
         responseType: 'json',
         data : {
           content : payload.content,
@@ -226,11 +226,9 @@ export default new Vuex.Store({
     },
 
     upVoteQuestion(context, payload){
-      console.log("Masuk Dari ke up quote vote <<<<<<<<<<<<<<<<");
-      
       axios({
         method: 'patch',
-        url: `http://localhost:3000/question/like/${payload.questionId}`,
+        url: `http://3.19.14.51:80/question/like/${payload.questionId}`,
         responseType: 'json',
         data : {
           QuestionId : payload.questionId,
@@ -244,7 +242,29 @@ export default new Vuex.Store({
         context.commit('fetchSingleQuestion', data)
       })
       .catch(err => {
-        // console.log(err.message, "ini error nya");
+        console.log(err.message, "ini error nya");
+        // context.commit('errMsg', err)
+      })
+    },
+
+    downVoteQuestion(context, payload){
+      axios({
+        method: 'patch',
+        url: `http://3.19.14.51:80/question/dislike/${payload.questionId}`,
+        responseType: 'json',
+        data : {
+          QuestionId : payload.questionId,
+        },
+        headers : {
+          token : localStorage.getItem('token')
+
+        }
+      })
+      .then(({data}) => {
+        context.commit('fetchSingleQuestion', data)
+      })
+      .catch(err => {
+        console.log(err.message, "ini error nya");
         // context.commit('errMsg', err)
       })
     }
