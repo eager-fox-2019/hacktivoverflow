@@ -25,8 +25,8 @@ const answerSchema = new Schema({
 	owner: { 
 		type: Schema.Types.ObjectId, 
 		ref: 'User'
-	}
-});
+	},
+}, { timestamps: true });
 // delete answer when question is deleted, keep answer when user is deleted
 const Answer = mongoose.model('Answer', answerSchema)
 

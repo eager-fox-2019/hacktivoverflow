@@ -4,31 +4,28 @@ import axios from 'axios'
 
 Vue.use(Vuex)
 
-//helper function to compare objects in array top questions
-function compareVotes(a, b){
-  let score_a = a.upvotes.length - a.downvotes.length
-  let score_b = b.upvotes.length - b.downvotes.length
-  if (score_a > score_b) return -1;
-  if (score_b > score_a) return 1;
+// helper function to compare objects in array top questions
+function compareVotes (a, b) {
+  let scoreA = a.upvotes.length - a.downvotes.length
+  let scoreB = b.upvotes.length - b.downvotes.length
+  if (scoreA > scoreB) return -1
+  if (scoreB > scoreA) return 1
 
-  return 0;
+  return 0
 }
-function compareDate(a, b){
-  let score_a = new Date(a.dateAdded).getTime()
-  let score_b = new Date(b.dateAdded).getTime()
-  if (score_a > score_b) return -1;
-  if (score_b > score_a) return 1;
+function compareDate (a, b) {
+  let scoreA = a.createdAt
+  let scoreB = b.createdAt
+  if (scoreA > scoreB) return -1
+  if (scoreB > scoreA) return 1
 
-  console.log({score_a})
-  console.log({score_b})
-  console.log({result: (score_a > score_b)})
-  return 0;
+  return 0
 }
 
 export default new Vuex.Store({
   state: {
-    // baseURL: 'http://minioverflow.stefkwan.com',
-    baseURL: 'http://localhost:3000',
+    baseURL: 'http://minioverflow.stefkwan.com',
+    // baseURL: 'http://localhost:3000',
     isLoggedin: false,
     access_token: null,
     questionList: [],
@@ -41,13 +38,13 @@ export default new Vuex.Store({
   },
   mutations: {
     SORTLIST (state, payload) {
-      let {which, how} = payload
-      if (which === 'question'){
+      let { which, how } = payload
+      if (which === 'question') {
         if (how === 'date') state.questionList.sort(compareDate)
         if (how === 'votes') state.questionList.sort(compareVotes)
       }
 
-      if (which === 'answer'){
+      if (which === 'answer') {
         if (how === 'date') state.answerList.sort(compareDate)
         if (how === 'votes') state.answerList.sort(compareVotes)
       }
@@ -104,10 +101,13 @@ export default new Vuex.Store({
           // console.log(data)
           commit('UPDATEQUESTIONLIST', data)
         })
-        .catch(({ response }) => {
-          // console.log(response.data)
+        .catch(err => {
+          // console.log({response})
+          let msg = err
+          if (err && err.response) msg = err.response
+          if (err && err.response && err.response.data) msg = err.response.data
           commit('SHOWMSG', {
-            message: response.data,
+            message: 'error at getquestions: ' + msg,
             type: 'warning'
           })
         })
@@ -119,10 +119,13 @@ export default new Vuex.Store({
           commit('UPDATECURRENTQUESTION', data)
           dispatch('getAnswers', data._id)
         })
-        .catch(({ response }) => {
+        .catch(err => {
           // console.log(response.data)
+          let msg = err
+          if (err && err.response) msg = err.response
+          if (err && err.response && err.response.data) msg = err.response.data
           commit('SHOWMSG', {
-            message: response.data,
+            message: msg,
             type: 'warning'
           })
         })
@@ -133,10 +136,13 @@ export default new Vuex.Store({
           // console.log(data)
           commit('UPDATECURRENTQUESTION', data)
         })
-        .catch(({ response }) => {
+        .catch(err => {
           // console.log(response.data)
+          let msg = err
+          if (err && err.response) msg = err.response
+          if (err && err.response && err.response.data) msg = err.response.data
           commit('SHOWMSG', {
-            message: response.data,
+            message: msg,
             type: 'warning'
           })
         })
@@ -147,10 +153,13 @@ export default new Vuex.Store({
           // console.log(data)
           commit('UPDATECURRENTANSWERLIST', data)
         })
-        .catch(({ response }) => {
+        .catch(err => {
           // console.log(response.data)
+          let msg = err
+          if (err && err.response) msg = err.response
+          if (err && err.response && err.response.data) msg = err.response.data
           commit('SHOWMSG', {
-            message: response.data,
+            message: msg,
             type: 'warning'
           })
         })
@@ -190,10 +199,13 @@ export default new Vuex.Store({
 
           // console.log(data)
         })
-        .catch(({ response }) => {
+        .catch(err => {
           // console.log(response.data)
+          let msg = err
+          if (err && err.response) msg = err.response
+          if (err && err.response && err.response.data) msg = err.response.data
           commit('SHOWMSG', {
-            message: response.data,
+            message: msg,
             type: 'warning'
           })
         })
@@ -225,10 +237,13 @@ export default new Vuex.Store({
           // data is answer with updated upvotes and downvotes array
           // console.log(data)
         })
-        .catch(({ response }) => {
+        .catch(err => {
           // console.log(response.data)
+          let msg = err
+          if (err && err.response) msg = err.response
+          if (err && err.response && err.response.data) msg = err.response.data
           commit('SHOWMSG', {
-            message: response.data,
+            message: msg,
             type: 'warning'
           })
         })

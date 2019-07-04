@@ -7,7 +7,7 @@
       <div class="d-flex justify-content-around flex-wrap align-items-center">
         <b-form-input class="searchbar" v-model="text" placeholder="Search Title or User..."></b-form-input>
         <label>sort by:
-          <a href="#" @click="sort('date')">date</a> | 
+          <a href="#" @click="sort('date')">date</a> |
           <a href="#" @click="sort('votes')">votes</a>
         </label>
         <b-button variant="primary" class="ask" @click="toggleQuestionForm">Ask a Question</b-button>
@@ -54,8 +54,8 @@ export default {
         this.showQuestions = !this.showQuestions
       }
     },
-    sort(param){
-      this.$store.commit('SORTLIST', {which:'question', how:param})
+    sort (param) {
+      this.$store.commit('SORTLIST', { which: 'question', how: param })
     }
   }
 }

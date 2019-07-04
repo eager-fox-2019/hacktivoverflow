@@ -23,9 +23,13 @@
         </div>
         <!-- Add your own answer -->
         <AnswerForm v-if="showAnswerForm" :questionId="questionId" @hideForm="toggleAnswerForm" />
-        <div v-if="showAnswerForm==false">
+        <div v-if="showAnswerForm==false" class="d-flex flex-column">
           <b-button variant="success" @click="toggleAnswerForm">Add Answer</b-button>
           <!-- answers to the question listed here -->
+          <label v-if="answerList.length > 1" class="sortby">sort by:
+            <a href="#" @click="sort('date')">date</a> |
+            <a href="#" @click="sort('votes')">votes</a>
+          </label>
           <AnswerList />
         </div>
       </div>
@@ -102,9 +106,12 @@ export default {
       if (!this.currentQuestion) return 'loading'
       return this.currentQuestion._id
     },
-    ...mapState(['currentQuestion', 'isLoggedin', 'user'])
+    ...mapState(['currentQuestion', 'isLoggedin', 'user', 'answerList'])
   },
   methods: {
+    sort (how) {
+      this.$store.commit('SORTLIST', { which: 'answer', how: how })
+    },
     upvote () {
       this.$store.dispatch('voteQuestion', { question: this.currentQuestion, type: 'up' })
     },
@@ -169,4 +176,11 @@ export default {
   padding-bottom: 1em;
 }
 
+.sortby a {
+  color: white;
+}
+
+.sortby a:hover {
+  color: #6B7A8F;
+}
 </style>

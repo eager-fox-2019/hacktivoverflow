@@ -26,7 +26,7 @@ const questionSchema = new Schema({
 		type: Date,
 		default: Date.now()
 	}
-});
+}, { timestamps: true });
 
 const Question = mongoose.model('Question', questionSchema)
 

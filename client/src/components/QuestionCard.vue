@@ -1,16 +1,18 @@
 <template>
   <div class="question d-flex flex-row justify-content-center">
     <VoteButtons :selected="userVoted" :totalVotes="totalVotes" @upvote="upvote" @downvote="downvote" />
-    <b-card style="width: 80%;" :title="updatedCard.title" :sub-title="cardOwner">
+    <b-card style="width: 80%;" :title="updatedCard.title">
       <b-card-text>
         {{updatedCard.description}}
       </b-card-text>
+      <small>{{cardOwner}} {{dateAdded}}</small><br>
       <b-link href="#" class="card-link" @click.prevent="questionDetail">See Detail</b-link>
-      <pre>{{updatedCard}}</pre>
+      <!-- <pre>{{updatedCard}}</pre> -->
     </b-card>
   </div>
 </template>
 <script>
+import moment from 'moment'
 import { mapState } from 'vuex'
 import VoteButtons from '@/components/VoteButtons.vue'
 export default {
@@ -20,6 +22,10 @@ export default {
     VoteButtons
   },
   computed: {
+    dateAdded () {
+      if (!this.card) return ''
+      return 'posted on ' + moment(this.card.createdAt).format('ddd MMM Do YYYY hh:mm:ss a')
+    },
     userVoted () {
       if (!this.user) return 'none'
       let userId = this.user.id
@@ -41,7 +47,7 @@ export default {
       return this.card
     },
     cardOwner () {
-      return 'by ' + this.card.owner.name
+      return this.card.owner.name
     },
     ...mapState(['isLoggedin', 'user'])
   },
