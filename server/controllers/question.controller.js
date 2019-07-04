@@ -93,6 +93,7 @@ class Controller {
     let { id } = req.params
     try {
       let qRes = await Question.deleteOne({ _id: id }).exec()
+      await Answer.deleteMany({ question: id }).exec()
       res.json(qRes)
     } catch (err) {
       next(err)
