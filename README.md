@@ -4,6 +4,7 @@
 1. clone this repository.
 2. open the `/server` folder of this repo on the terminal and then run `npm install` on the terminal to install all of the dependencies.
 3. `npm run dev` or `npm run start` on the terminal.
+4. open the `/client` folder of this repo onthe terminal and then run `npm run serve` to start this app  on the web browser which can be accessed in localhost
 ---
 
 ## __B. Features__
