@@ -7,7 +7,7 @@
 
       <b-nav-item v-if="isLoggedin==false" to="/user/login">Login</b-nav-item>
       <b-nav-item v-if="isLoggedin==false" to="/user/register">Register</b-nav-item>
-      <b-nav-item v-if="isLoggedin" @click="logout">Logout</b-nav-item>
+      <b-nav-item v-if="isLoggedin" @click="logout" class="text-danger">Logout</b-nav-item>
   </b-nav>
 </div>
 </template>

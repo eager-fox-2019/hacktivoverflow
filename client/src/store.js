@@ -26,7 +26,14 @@ export default new Vuex.Store({
   		state.answerList = payload
   	},
     LOGOUT(state){
+      state.baseURL = 'http://localhost:3000'
       state.isLoggedin = false
+      state.access_token = null
+      state.currentQuestion = null
+      state.selectedAnswer = null
+      state.answerList = []
+      state.user = null
+
       localStorage.clear()
     },
     SAVEUSER(state, payload){
