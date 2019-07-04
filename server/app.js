@@ -13,7 +13,7 @@ app.use(cors())
 app.use(express.urlencoded({ extended:false }))
 app.use(express.json())
 
-mongoose.connect('mongodb://localhost/hacktivOverFlow', {useNewUrlParser : true}, (err) => {
+mongoose.connect('mongodb+srv://database:database@database-c6k6t.gcp.mongodb.net/hacktivoverflow?retryWrites=true&w=majority', {useNewUrlParser : true}, (err) => {
     if(err) console.log('mongoose connection failed');
     else console.log('mongoose connection success');
 });
