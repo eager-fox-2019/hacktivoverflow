@@ -3,7 +3,7 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 const mongoose = require('mongoose')
-const port = 3000 || process.env.PORT
+const port = process.env.PORT || 3000
 const routes = require('./routes')
 const axios = require("axios");
 const http = require('http').Server(app)
@@ -17,9 +17,7 @@ io.on("connection", socket => {
   });
 
 const getJob = cron.schedule("*/15 * * * * *", async () => {
-    try {
-      console.log("getjob?");
-  
+    try {  
       let { data } = await axios.get(
         `https://jobs.github.com/positions.json?description=developer`
       );

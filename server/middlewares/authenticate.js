@@ -4,6 +4,7 @@ module.exports = (req, res, next) => {
     try {
         const decoded = verify(req.headers.token)
         req.authenticatedUser = decoded
+        console.log(req.authenticatedUser)
         if (req.body.token) {
             res.status(200).json({ 
                 message: 'This user is verified!' 

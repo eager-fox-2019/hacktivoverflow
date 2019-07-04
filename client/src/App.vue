@@ -18,11 +18,14 @@
         <input type="search" placeholder="Search Based On Topic" aria-label="Search" class="form-control mr-sm-2" v-model="search">
         <button type="submit" class="btn btn-outline-primary my-2 my-sm-0">Search</button>
       </form>
+      
       <div class="container">
+      <div class="row">
+        <div class="col-12" style="margin-left:335px;">
       <div id="navbarTogglerDemo01" class="navbar-collapse collapse" style="text-align:center;">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
           <button v-if="isLoggedIn" type="submit" class="btn btn-primary my-2" @click="goDashboard">Home
-             <router-link to="/" style="textDecoration: none;color:white;"></router-link>
+             <router-link to="/" style="textDecoration: none;color:white;width:10px;"></router-link>
           </button>
            <button v-if="isLoggedIn" type="submit" class="btn btn-primary my-2 my-sm-0" @click="goQuestion">Add Question
              <router-link to="/" style="textDecoration: none;color:white;"></router-link>
@@ -42,6 +45,8 @@
           <button v-if="isLoggedIn" type="submit" class="btn btn-primary my-2 my-sm-0" @click="logout">Logout
           </button>
         </ul>
+      </div>
+        </div>
       </div>
       </div>
     </nav>
@@ -70,7 +75,7 @@ export default {
   },
   methods: {
     goBack(){
-      this.$router.push('/')
+      this.$router.push('/dashboard')
       this.$store.dispatch("getQuestions");
     },
 

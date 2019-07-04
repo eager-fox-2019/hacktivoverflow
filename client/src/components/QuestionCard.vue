@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div v-for="(question, index) in filterQuestions" :key="index" style="padding: 15px">
+    <div v-for="(question, index) in filterQuestions" :key="index" style="padding: 15px;">
       <div class="card w-75" style="margin-left:12%;">
         <div class="card-body">
-        <p class="card-title">{{new Date(question.createdAt).toDateString()}} by <em>{{question.UserId.first_name + ' ' + question.UserId.last_name}}</em></p>
-        <h3 class="card-text" style="color:gray;">{{question.title}}?</h3>
+        <p class="card-title" style="text-align:center;">{{new Date(question.createdAt).toDateString()}} by <em>{{question.UserId.first_name + ' ' + question.UserId.last_name}}</em></p>
+        <h3 class="card-text" style="text-align:center;color:gray;">{{question.title}}?</h3>
         <p class="card-text" v-html="question.description" style="color:gray;"></p>
         <h5 style="margin-left:48%;">
           <v-badge>
@@ -19,7 +19,7 @@
         </v-icon>
         </v-badge>
         </h5>
-        <div style="margin-left:46.5%;">
+        <div style="margin-left:46%;">
            <span class="badge badge-secondary mx-1" v-for="tag in question.tags" :key="tag"> 
             {{tag}} 
           </span>

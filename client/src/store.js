@@ -74,7 +74,7 @@ export default new Vuex.Store({
           swal("Error!", message, "error");
         });
     },
-    getQuestions({ commit , dispatch},payload) {
+    getQuestions({ commit , dispatch },payload) {
       let token = localStorage.getItem('token')
       if(payload){
         axios
@@ -159,6 +159,18 @@ export default new Vuex.Store({
         })
         .catch((err) => {
           console.log(err)
+        })
+    },
+    deleteTag({ commit, dispatch}, payload){
+      let token = localStorage.getItem('token')
+      console.log(payload)
+      axios
+        .put('/users/deleteTag', { tag:payload } , { headers : { token } })
+        .then(({data}) => {
+          dispatch('getUserTag')
+        })
+        .catch((err) => {
+          console.log('ini errornya',err)
         })
     }
   }

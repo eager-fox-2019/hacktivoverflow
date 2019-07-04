@@ -33,8 +33,8 @@ class userController {
                             )
                     }
                     else {
-                        const { id, first_name, last_name, email } = findOneUser
-                        const payload = { id, first_name, last_name, email }
+                        const { id, first_name, last_name, email , tags} = findOneUser
+                        const payload = { id, first_name, last_name, email, tags}
                         const token = sign(payload)
                         req.headers.token = token
                         res.status(200).json(
@@ -81,6 +81,21 @@ class userController {
             .then((findOneUser) => {
                 res.status(200).json({
                     tags:findOneUser.tags
+                })
+            })
+            .catch((err) => {
+                res.status(500).json(err)
+            })
+    }
+
+    static deleteTag(req,res){
+        console.log('masukkkkk server')
+        const { tag } = req.body
+        User
+            .findByIdAndUpdate( req.authenticatedUser.id, { $pull: { tags: tag } }, {new:true})
+            .then(({data}) => {
+                res.status(200).json({
+                    message:'Success Deleted'
                 })
             })
             .catch((err) => {

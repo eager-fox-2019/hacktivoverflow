@@ -3,8 +3,8 @@
     <div v-for="(question, index) in myQuestions" :key="index" style="padding: 15px">
       <div class="card w-75" style="margin-left:12%;">
         <div class="card-body">
-        <h5 class="card-title">{{new Date(question.createdAt).toDateString()}} | <em>{{question.UserId.first_name + ' ' + question.UserId.last_name}}</em></h5>
-        <p class="card-text">Topic : {{question.title}}</p>
+        <h5 class="card-title" style="text-align:center;">{{new Date(question.createdAt).toDateString()}} | <em>{{question.UserId.first_name + ' ' + question.UserId.last_name}}</em></h5>
+        <p class="card-text" style="text-align:center;color:gray;">{{question.title}}</p>
         <p class="card-text" v-html="question.description"></p>
          <h5 style="margin-left:48%;">
           <v-badge>

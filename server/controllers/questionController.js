@@ -1,4 +1,5 @@
 const Question = require('../models/question')
+const User = require('../models/user')
 
 class questionController {
     static create(req, res) {
@@ -25,7 +26,26 @@ class questionController {
     }
 
     static findAll(req, res) {
-        if(req.query.tags){
+        if(req.query.tags == 'AllWatchedTags'){
+            let tags = []
+            console.log(req.authenticatedUser.tags)
+            User
+                .findById(req.authenticatedUser.id)
+                .then((user) => {
+                    tags = user.tags
+                    return Question
+                        .find({ tags:{ $in:tags} })
+                        .populate('UserId')
+                        .sort([['createdAt','descending']])
+                })
+                .then((allQuestions) => { 
+                    res.status(200).json(allQuestions)}
+                )
+                .catch((err) => { 
+                    res.status(500).json(err) 
+                })
+        }
+        else if(req.query.tags){
             Question
                 .find({ tags:{ $in:req.query.tags} })
                 .populate('UserId')
@@ -40,6 +60,7 @@ class questionController {
             Question
                 .find({})
                 .populate('UserId')
+                .sort([['createdAt','descending']])
                 .then((allQuestions) => { 
                     res.status(200).json(allQuestions) 
                 })

@@ -2,9 +2,8 @@
   <v-container id="dashboardContainer" style="margin:0 !important;">
     <v-layout justify-space-between>
       <v-flex xs10>
-        <p style="text-align:center;">Please input spesific tags to subscribe on your favorite subject, Press Enter to input your watched tag.</p>
         <div data-src="" width="" height="" alt="" uk-img="target: .my-class"></div>
-        <WatchedTag/>
+        <WatchedTag v-if="this.$route.name == 'dashboard'" style="background-color: #f2f2f2;border-radius: 60px; margin-left:5%;width: 90%;height:auto;"/>
         <div v-if="this.$route.path == '/dashboard' && allQuestions.length">
           <QuestionCard
           v-bind:search="search"
@@ -14,7 +13,7 @@
       </v-flex>
       <v-flex xs2>
         <v-container grid-list-xs class="mt-5" style="padding: 0px">
-          <div style="border-bottom: 1px solid #eeeeee" class="text-xs-center">
+          <div style="border-bottom: 1px solid #eeeee" class="text-xs-center">
               <i class="fas fa-briefcase px-2 pb-4"></i>Looking for a jobs?
           </div>
            <v-layout

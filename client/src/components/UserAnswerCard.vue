@@ -4,8 +4,8 @@
       <!-- ANSWERS -->
       <div class="card w-75" style="margin-left:12%;">
         <div class="card-body">
-        <h6 class="headline mb-0" v-html="answer.answer"></h6>
-        <h5 class="card-title">{{new Date(answer.createdAt).toDateString()}}</h5>
+        <h5 class="card-title" style="text-align:center;">{{new Date(answer.createdAt).toDateString()}}</h5>
+        <h6 class="headline mb-0" style="font-family:'Fredoka One',cursive !important; color:gray;" v-html="answer.answer"></h6>
         <h5 style="margin-left:48%;">
           <v-badge>
           <template v-slot:badge>
