@@ -56,7 +56,7 @@ export default new Vuex.Store({
       const vindex = state.questions[index].answers[aindex].upvotes.indexOf(payload.userId)
 
       if (vindex !== -1) state.questions[index].answers[aindex].upvotes.splice(vindex, 1)
-      else state.questions[index].downvotes[aindex].downvotes.push(payload.userId)
+      else state.questions[index].answers[aindex].downvotes.push(payload.userId)
     }
   },
   actions: {

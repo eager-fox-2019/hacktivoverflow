@@ -8,15 +8,19 @@
         <h5 class="text-center text-secondary mt-2">OR</h5>
         <form @submit.prevent="login()">
           <div class="form-group">
-            <label for="email-login">Email address:</label>
-            <input v-model="emailLogin" type="email" class="form-control" id="email-login">
+            <label for="user">Your Name:</label>
+            <input v-model="name" type="text" class="form-control" id="user">
           </div>
           <div class="form-group">
-            <label for="password-login">Password:</label>
-            <input v-model="pwdLogin" type="password" class="form-control" id="password-login">
+            <label for="email">Email address:</label>
+            <input v-model="email" type="email" class="form-control" id="email">
+          </div>
+          <div class="form-group">
+            <label for="password-">Password:</label>
+            <input v-model="passwd" type="password" class="form-control" id="password">
           </div>
           <div class="clearfix">
-            <button type="submit" class="btn btn-primary float-right">Submit</button>
+            <button type="submit" class="btn btn-primary float-right">Register</button>
           </div>
         </form>
       </div>
@@ -34,8 +38,9 @@ import { apiUrl } from '../config/api'
 export default {
   data () {
     return {
-      emailLogin: '',
-      pwdLogin: ''
+      name: '',
+      email: '',
+      passwd: ''
     }
   },
   mounted () {
@@ -48,17 +53,16 @@ export default {
     login () {
       axios({
         method: 'POST',
-        url: `${apiUrl}/user/login`,
+        url: `${apiUrl}/user/register`,
         data: {
-          email: this.emailLogin,
-          password: this.pwdLogin
+          name: this.name,
+          email: this.email,
+          password: this.passwd
         }
       })
         .then(({ data }) => {
-          localStorage.setItem('token', data.token)
-          localStorage.setItem('name', data.name)
-          this.$emit('navlinks', true)
-          this.$router.push({ path: '/' })
+          swal.fire('201', `${data.name} Sucessfully Registered`, 'success')
+          this.$router.push({ path: '/login' })
         })
         .catch(err => {
         // console.log(err)

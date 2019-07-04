@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <NavBar></NavBar>
-    <router-view @nav="isLogin = $event"/>
+    <NavBar :isLogin="isLogin" @navlinks="isLogin = $event"></NavBar>
+    <router-view @navlinks="isLogin = $event"/>
   </div>
 </template>
 
@@ -11,6 +11,11 @@ import NavBar from './components/NavBar'
 export default {
   components: {
     NavBar
+  },
+  data () {
+    return {
+      isLogin: false
+    }
   }
 
 }

@@ -5,7 +5,7 @@
         <div class="clearfix mb-2">
           <b-button class="float-right" v-b-modal.question-modal variant="success" @click="checkLogin">Ask a new Question</b-button>
 
-          <QuestionForm></QuestionForm>          
+          <QuestionForm></QuestionForm>
         </div>
         <QInfoCard v-for="question in questions" :key="question._id" :question="question"></QInfoCard>
       </b-col>
