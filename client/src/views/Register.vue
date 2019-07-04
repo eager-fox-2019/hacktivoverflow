@@ -9,7 +9,7 @@
             </div>
             <div class="col-sm-4" id="formregister">
                 <h3>Register New Account</h3><hr>
-                <h6>{{message}}</h6>
+                <h6 style="color:white">{{message}}</h6>
             <form @submit.prevent="register">
                 <div class="input-group">
                 <div class="input-group-prepend">
