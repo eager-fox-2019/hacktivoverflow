@@ -24,7 +24,20 @@ const ModelSchema = Schema({
   downvotes: [{
     type: Schema.Types.ObjectId,
     ref: "Users",
-  }] 
+  }],
+  createdAt: {
+    type: Date,
+    default: new Date()
+  },
+  updatedAt: {
+    type: Date,
+    default: new Date()
+  }
+})
+
+ModelSchema.pre('save', function (next) {
+  this.updatedAt = new Date()
+  next()
 })
 
 const Model = mongoose.model('Questions', ModelSchema)
