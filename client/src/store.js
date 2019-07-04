@@ -189,6 +189,17 @@ export default new Vuex.Store({
         return false
       }
     },
+    async updateAnswer (context, payload) {
+      let { id, title, description } = payload
+      try {
+        let res = await axios.patch(`${BASE_URL}/answer/${id}`, { title, description }, axiosConfig())
+        toastifyHelper('Edit success')
+        return res
+      } catch (err) {
+        errorHandler(err)
+        return false
+      }
+    },
     async deleteQuestion (context, payload) {
       let { id } = payload
       try {
