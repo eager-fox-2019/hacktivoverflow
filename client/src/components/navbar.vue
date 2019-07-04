@@ -87,30 +87,30 @@
 <script>
 export default {
   name: 'NavBar',
-  data() {
+  data () {
     return {
       drawer: null,
       items: [
         { icon: 'input', text: 'Sign in', path: '/signin' },
-        { icon: 'person_add', text: 'Sign up', path: '/signup' },
+        { icon: 'person_add', text: 'Sign up', path: '/signup' }
       ],
       alert: false
     }
   },
   methods: {
-    toHome() {
+    toHome () {
       this.$router.push('/')
     },
-    
-    signout() {
+
+    signout () {
       this.drawer = null
-      localStorage.removeItem('access_token')   
+      localStorage.removeItem('access_token')
       this.$store.dispatch('getPublicQuestions')
       this.$store.commit('SET_LOGOUT')
     },
 
-    askQuestion() {
-      if(localStorage.access_token) {
+    askQuestion () {
+      if (localStorage.access_token) {
         this.$router.push('/askquestion')
       } else {
         this.alert = true

@@ -73,11 +73,10 @@ import axios from 'axios'
 import moment from 'moment'
 import EditQuestion from '@/components/editquestion.vue'
 
-
 export default {
   props: ['question'],
   name: 'PostDetail',
-  data() {
+  data () {
     return {
       upvoted: false,
       downvoted: false,
@@ -85,26 +84,25 @@ export default {
       dialog2: false
     }
   },
-  created() {
-      for(let user of this.question.upvotes) {
-        if(user === this.$store.state.loggedUser.id) {
-          this.upvoted = true
-          
-        }
+  created () {
+    for (let user of this.question.upvotes) {
+      if (user === this.$store.state.loggedUser.id) {
+        this.upvoted = true
       }
-  
-      for(let user of this.question.downvotes) {
-        if(user === this.$store.state.loggedUser.id) {
-          this.downvoted = true
-        }
+    }
+
+    for (let user of this.question.downvotes) {
+      if (user === this.$store.state.loggedUser.id) {
+        this.downvoted = true
       }
+    }
   },
   computed: {
-    getTime(){ 
+    getTime () {
       return moment(this.question.createdAt).fromNow()
     },
 
-    validateUser() {
+    validateUser () {
       return this.question.user._id === this.$store.state.loggedUser.id
     }
 
@@ -113,64 +111,70 @@ export default {
     EditQuestion
   },
   methods: {
-    deleteQuestion() {
-      axios({ 
+    deleteQuestion () {
+      axios({
         method: 'DELETE',
         url: `${this.$store.state.baseURL}/questions/${this.question._id}`,
         headers: {
           access_token: localStorage.access_token
         }
       })
-        .then(({data}) => {
+        .then(({ data }) => {
           this.dialog = false
           this.$store.dispatch('getPublicQuestions')
           // this.$store.dispatch('getMyQuestions')
         })
-        .catch(({response}) => {
+        .catch(({ response }) => {
           console.log(response)
         })
     },
 
-    ViewPost(id) {
+    ViewPost (id) {
       this.$router.push(`/post/${id}`)
     },
 
-    upvote() {
-      let user = this.$store.state.loggedUser.id
-      if(this.upvoted === false) {
-        this.upvoted = true
-        this.question.upvotes.push(user)
-        if(this.downvoted === true) {
-          this.downvoted = false
-          let index = this.question.downvotes.indexOf(user)
-          this.question.downvotes.splice(index,1)
-        }
-      }
-      else if(this.upvoted === true) {
-        this.upvoted = false
-        let index = this.question.upvotes.indexOf(user)
-        this.question.upvotes.splice(index,1)
-      }
-      this.$store.dispatch('voteQuestion', this.question)
-    },
-
-    downvote() {
-      let user = this.$store.state.loggedUser.id
-      if(this.downvoted === false) {
-        this.downvoted = true
-        this.question.downvotes.push(user)
-        if(this.upvoted === true) {
+    upvote () {
+      if (localStorage.access_token) {
+        let user = this.$store.state.loggedUser.id
+        if (this.upvoted === false) {
+          this.upvoted = true
+          this.question.upvotes.push(user)
+          if (this.downvoted === true) {
+            this.downvoted = false
+            let index = this.question.downvotes.indexOf(user)
+            this.question.downvotes.splice(index, 1)
+          }
+        } else if (this.upvoted === true) {
           this.upvoted = false
           let index = this.question.upvotes.indexOf(user)
-          this.question.upvotes.splice(index,1)
+          this.question.upvotes.splice(index, 1)
         }
+        this.$store.dispatch('voteQuestion', this.question)
+      } else {
+        this.$emit('errorvote')
       }
-      else if(this.downvoted === true) {
-        this.downvoted = false
-        let index = this.question.downvotes.indexOf(user)
-        this.question.downvotes.splice(index, 1)
+    },
+
+    downvote () {
+      let user = this.$store.state.loggedUser.id
+      if (user) {
+        if (this.downvoted === false) {
+          this.downvoted = true
+          this.question.downvotes.push(user)
+          if (this.upvoted === true) {
+            this.upvoted = false
+            let index = this.question.upvotes.indexOf(user)
+            this.question.upvotes.splice(index, 1)
+          }
+        } else if (this.downvoted === true) {
+          this.downvoted = false
+          let index = this.question.downvotes.indexOf(user)
+          this.question.downvotes.splice(index, 1)
+        }
+        this.$store.dispatch('voteQuestion', this.question)
+      } else {
+        this.$emit('errorvote')
       }
-      this.$store.dispatch('voteQuestion', this.question)
     }
   }
 }

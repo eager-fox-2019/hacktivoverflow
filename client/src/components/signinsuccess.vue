@@ -37,14 +37,14 @@
 export default {
   name: 'SignInSuccess',
   props: ['dialog'],
-  data() {
-    return{
-    
+  data () {
+    return {
+
     }
   },
 
   methods: {
-    toSignIn() {
+    toSignIn () {
       this.$router.push('/signin')
     }
   }

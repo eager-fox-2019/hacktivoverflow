@@ -45,24 +45,24 @@ import axios from 'axios'
 export default {
   props: ['dialog2', 'question'],
   name: 'EditQuestion',
-  data() {
+  data () {
     return {
       editor: ClassicEditor,
       editorData: '',
       editorConfig: {
-     // The configuration of the rich-text editor.
+        // The configuration of the rich-text editor.
       },
       editQuestionTitle: '',
       editQuestionDesc: ''
     }
   },
-  created() {
+  created () {
     this.editQuestionTitle = this.question.question
     this.editQuestionDesc = this.question.description
   },
   methods: {
-    edit() {
-      axios({ 
+    edit () {
+      axios({
         method: 'PATCH',
         url: `${this.$store.state.baseURL}/questions/${this.question._id}`,
         data: {
@@ -73,18 +73,18 @@ export default {
           access_token: localStorage.access_token
         }
       })
-        .then(({data}) => {
+        .then(({ data }) => {
           // this.dialog2 = false
           this.$emit('closeDialog')
           this.$store.dispatch('getPublicQuestions')
           this.$store.dispatch('getMyQuestions')
         })
-        .catch(({response}) => {
+        .catch(({ response }) => {
           console.log(response)
         })
     },
 
-    closeDialog() {
+    closeDialog () {
       this.editQuestionTitle = this.question.question
       this.editQuestionDesc = this.question.description
       this.$emit('closeDialog')

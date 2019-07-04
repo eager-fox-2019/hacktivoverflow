@@ -19,6 +19,13 @@
             <v-layout row wrap align-center class="mt-3 mr-3">
               <div class="subheading text-md-center" style="color: #929292">Answered {{ getTime }} by <span>{{ answer.user.username }}</span></div>
               <v-spacer></v-spacer>
+              <v-alert
+                :value="alert"
+                type="error"
+                transition="scale-transition"
+              >
+                You must login before voting.
+              </v-alert>
               <v-icon v-if="validateUser" class="icons black--text mr-3" v-on:click="dialog2 = true">edit</v-icon>
               <v-icon v-if="validateUser" class="icons black--text mr-3" v-on:click="dialog=true">delete</v-icon>
             </v-layout>
@@ -69,103 +76,115 @@ import moment from 'moment'
 import axios from 'axios'
 import EditAnswer from '@/components/editanswer.vue'
 
-
 export default {
   name: 'Answers',
   props: ['answer'],
-  data() {
+  data () {
     return {
       upvoted: false,
       downvoted: false,
       dialog: false,
       dialog2: false,
+      alert: false
     }
   },
   components: {
     EditAnswer
   },
   computed: {
-    getTime() {
+    getTime () {
       return moment(this.answer.createdAt).fromNow()
     },
 
-    validateUser() {
+    validateUser () {
       return this.answer.user._id === this.$store.state.loggedUser.id
     }
   },
-  created() {
-    for(let user of this.answer.upvotes) {
-        if(user === this.$store.state.loggedUser.id) {
-          this.upvoted = true
-          
-        }
+  created () {
+    for (let user of this.answer.upvotes) {
+      if (user === this.$store.state.loggedUser.id) {
+        this.upvoted = true
       }
-  
-    for(let user of this.answer.downvotes) {
-      if(user === this.$store.state.loggedUser.id) {
+    }
+
+    for (let user of this.answer.downvotes) {
+      if (user === this.$store.state.loggedUser.id) {
         this.downvoted = true
       }
     }
   },
   methods: {
-    deleteAnswer() {
-      axios({ 
+    displayError () {
+      this.alert = true
+
+      setTimeout(() => {
+        this.alert = false
+      }, 2500)
+    },
+    deleteAnswer () {
+      axios({
         method: 'DELETE',
         url: `${this.$store.state.baseURL}/answers/${this.answer._id}`,
         headers: {
           access_token: localStorage.access_token
         }
       })
-        .then(({data}) => {
+        .then(({ data }) => {
           this.dialog = false
           this.$emit('delete')
         })
-        .catch(({response}) => {
+        .catch(({ response }) => {
           console.log(response)
         })
     },
 
-    edit() {
+    edit () {
       console.log('masuk emit')
       this.$emit('edit')
     },
 
-    upvote() {
+    upvote () {
       let user = this.$store.state.loggedUser.id
-      if(this.upvoted === false) {
-        this.upvoted = true
-        this.answer.upvotes.push(user)
-        if(this.downvoted === true) {
-          this.downvoted = false
-          let index = this.answer.downvotes.indexOf(user)
-          this.answer.downvotes.splice(index,1)
-        }
-      }
-      else if(this.upvoted === true) {
-        this.upvoted = false
-        let index = this.answer.upvotes.indexOf(user)
-        this.answer.upvotes.splice(index,1)
-      }
-      this.$store.dispatch('voteAnswer', this.answer)
-    },
-
-    downvote() {
-      let user = this.$store.state.loggedUser.id
-      if(this.downvoted === false) {
-        this.downvoted = true
-        this.answer.downvotes.push(user)
-        if(this.upvoted === true) {
+      if (user) {
+        if (this.upvoted === false) {
+          this.upvoted = true
+          this.answer.upvotes.push(user)
+          if (this.downvoted === true) {
+            this.downvoted = false
+            let index = this.answer.downvotes.indexOf(user)
+            this.answer.downvotes.splice(index, 1)
+          }
+        } else if (this.upvoted === true) {
           this.upvoted = false
           let index = this.answer.upvotes.indexOf(user)
-          this.answer.upvotes.splice(index,1)
+          this.answer.upvotes.splice(index, 1)
         }
+        this.$store.dispatch('voteAnswer', this.answer)
+      } else {
+        this.displayError()
       }
-      else if(this.downvoted === true) {
-        this.downvoted = false
-        let index = this.answer.downvotes.indexOf(user)
-        this.answer.downvotes.splice(index, 1)
+    },
+
+    downvote () {
+      let user = this.$store.state.loggedUser.id
+      if (user) {
+        if (this.downvoted === false) {
+          this.downvoted = true
+          this.answer.downvotes.push(user)
+          if (this.upvoted === true) {
+            this.upvoted = false
+            let index = this.answer.upvotes.indexOf(user)
+            this.answer.upvotes.splice(index, 1)
+          }
+        } else if (this.downvoted === true) {
+          this.downvoted = false
+          let index = this.answer.downvotes.indexOf(user)
+          this.answer.downvotes.splice(index, 1)
+        }
+        this.$store.dispatch('voteAnswer', this.answer)
+      } else {
+        this.displayError()
       }
-      this.$store.dispatch('voteAnswer', this.answer)
     }
   }
 }

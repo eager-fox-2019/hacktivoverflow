@@ -3,7 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import Vuetify from 'vuetify'
-import 'vuetify/dist/vuetify.min.css' 
+import 'vuetify/dist/vuetify.min.css'
 import Vuelidate from 'vuelidate'
 import CKEditor from '@ckeditor/ckeditor5-vue'
 
@@ -13,7 +13,7 @@ Vue.use(Vuetify, {
     customProperties: true
   }
 })
-Vue.use(CKEditor);
+Vue.use(CKEditor)
 Vue.config.productionTip = false
 
 new Vue({

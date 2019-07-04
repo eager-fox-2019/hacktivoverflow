@@ -13,10 +13,10 @@ export default new Vuex.Store({
     myQuestions: []
   },
   getters: {
-  
+
   },
   mutations: {
-    SET_LOGIN(state, user) {
+    SET_LOGIN (state, user) {
       state.isLoggedIn = true
       state.loggedUser = {
         id: user.id,
@@ -24,67 +24,67 @@ export default new Vuex.Store({
         lastName: user.lastName
       }
     },
-    
-    SET_LOGOUT(state, user) {
+
+    SET_LOGOUT (state, user) {
       state.isLoggedIn = false
       state.loggedUser = {}
     },
 
-    SET_PUBLICQUESTIONS(state, questions) {
+    SET_PUBLICQUESTIONS (state, questions) {
       state.publicQuestions = questions
     },
 
-    SET_MYQUESTIONS(state, questions) {
+    SET_MYQUESTIONS (state, questions) {
       state.myQuestions = questions
     }
   },
   actions: {
-    decodeToken(context) {
-      axios({ 
+    decodeToken (context) {
+      axios({
         method: 'POST',
         url: `${this.state.baseURL}/users/decode`,
         data: {
           access_token: localStorage.access_token
         }
       })
-        .then(({data}) => {
+        .then(({ data }) => {
           context.commit('SET_LOGIN', data)
         })
-        .catch(({response}) => {
+        .catch(({ response }) => {
           console.log(response)
         })
     },
 
-    getPublicQuestions(context) {
-      axios({ 
+    getPublicQuestions (context) {
+      axios({
         method: 'GET',
-        url: `${this.state.baseURL}/questions/all`,
+        url: `${this.state.baseURL}/questions/all`
       })
-        .then(({data}) => {
+        .then(({ data }) => {
           context.commit('SET_PUBLICQUESTIONS', data)
         })
-        .catch(({response}) => {
+        .catch(({ response }) => {
           console.log(response)
         })
     },
 
-    getMyQuestions(context){
-      axios({ 
+    getMyQuestions (context) {
+      axios({
         method: 'GET',
         url: `${this.state.baseURL}/questions`,
         headers: {
           access_token: localStorage.access_token
         }
       })
-        .then(({data}) => {
+        .then(({ data }) => {
           context.commit('SET_MYQUESTIONS', data)
         })
-        .catch(({response}) => {
+        .catch(({ response }) => {
           console.log(response)
         })
     },
 
-    voteQuestion(context, question) {
+    voteQuestion (context, question) {
       axios({
         method: 'PATCH',
         url: `${this.state.baseURL}/questions/vote/${question._id}`,
@@ -104,7 +104,7 @@ export default new Vuex.Store({
         })
     },
 
-    voteAnswer(context, answer) {
+    voteAnswer (context, answer) {
       console.log('MASUK JURAGAN')
       axios({
         method: 'PATCH',
@@ -124,8 +124,7 @@ export default new Vuex.Store({
         .catch(({ response }) => {
           console.log(response)
         })
-    },
-
+    }
 
   }
 })

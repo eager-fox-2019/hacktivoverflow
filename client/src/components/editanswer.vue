@@ -45,33 +45,33 @@ import axios from 'axios'
 
 export default {
   props: ['dialog2', 'answer'],
-  data() {
+  data () {
     return {
       question: '',
       editor: ClassicEditor,
       editorData: '',
       editorConfig: {
-     // The configuration of the rich-text editor.
+        // The configuration of the rich-text editor.
       },
-      editAnswerTitle : '',
+      editAnswerTitle: '',
       editAnswerDesc: ''
     }
   },
-  created() {
+  created () {
     this.editAnswerTitle = this.answer.title
     this.editAnswerDesc = this.answer.description
   },
   methods: {
-    closeDialog() {
-      this.editAnswerTitle =  this.answer.title += ' '
+    closeDialog () {
+      this.editAnswerTitle = this.answer.title += ' '
       this.editAnswerDesc = this.answer.description += ' '
 
       this.$emit('closeDialog')
     },
 
-    edit() {
+    edit () {
       // console.log(this.editAnswerTitle, this.editAnswerDesc, 'hahahaa')
-      axios({ 
+      axios({
         method: 'PATCH',
         url: `${this.$store.state.baseURL}/answers/${this.answer._id}`,
         data: {
@@ -82,13 +82,13 @@ export default {
           access_token: localStorage.access_token
         }
       })
-        .then(({data}) => {
+        .then(({ data }) => {
           this.$emit('closeDialog')
-          
+
           this.$emit('editQuestion')
           // console.log(data)
         })
-        .catch(({response}) => {
+        .catch(({ response }) => {
           console.log(response)
         })
     }

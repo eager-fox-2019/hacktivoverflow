@@ -33,16 +33,16 @@ import axios from 'axios'
 
 export default {
   name: 'AskQuestion',
-  data() {
+  data () {
     return {
-        editor: ClassicEditor,
-        editorData: '',
-        editorConfig: {
-            // The configuration of the rich-text editor.
-        },
-        question: '',
-        dialog: false,
-    };
+      editor: ClassicEditor,
+      editorData: '',
+      editorConfig: {
+        // The configuration of the rich-text editor.
+      },
+      question: '',
+      dialog: false
+    }
   },
 
   components: {
@@ -50,8 +50,8 @@ export default {
   },
 
   methods: {
-    submit() {
-      axios({ 
+    submit () {
+      axios({
         method: 'POST',
         url: `${this.$store.state.baseURL}/questions`,
         data: {
@@ -62,10 +62,10 @@ export default {
           access_token: localStorage.access_token
         }
       })
-        .then(({data}) => {
+        .then(({ data }) => {
           this.dialog = true
         })
-        .catch(({response}) => {
+        .catch(({ response }) => {
           console.log(response)
         })
     }
@@ -74,7 +74,7 @@ export default {
 </script>
 
 <style>
-.ck-content { 
-  height: 200px; 
+.ck-content {
+  height: 200px;
   }
 </style>

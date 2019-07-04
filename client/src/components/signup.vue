@@ -30,7 +30,7 @@
                 @input="$v.lastName.$touch()"
               ></v-text-field>
             </v-layout>
-            
+
             <v-text-field
               v-model="username"
               :error-messages="usernameErrors"
@@ -38,7 +38,6 @@
               required
               @input="$v.username.$touch()"
             ></v-text-field>
-
 
             <v-text-field
               v-model="email"
@@ -56,14 +55,14 @@
               required
               @input="$v.password.$touch()"
             ></v-text-field>
-            
+
             <v-layout align-center>
               <div class="subheading">Already have an account? <router-link tag="span" class="signupbtn ml-2" style="cursor:pointer; color: #4787FF;" to="/signin">Sign in </router-link></div>
               <v-spacer></v-spacer>
               <v-btn @click="clear">clear</v-btn>
               <v-btn @click="submit">Sign Up</v-btn>
             </v-layout>
-          </form> 
+          </form>
             <SignInSuccess :dialog="dialog" />
         </div>
       </v-flex>
@@ -81,101 +80,100 @@ export default {
   name: 'SignUp',
   mixins: [validationMixin],
 
-    validations: {
-      firstName: { required },
-      lastName: { required },
-      username: { required },
-      email: { required, email },
-      password: { required },
+  validations: {
+    firstName: { required },
+    lastName: { required },
+    username: { required },
+    email: { required, email },
+    password: { required }
+  },
+
+  components: {
+    SignInSuccess
+  },
+
+  data: () => ({
+    firstName: '',
+    lastName: '',
+    username: '',
+    email: '',
+    password: '',
+    errMessage: '',
+    error: false,
+    success: false,
+    dialog: false
+  }),
+
+  computed: {
+    passwordErrors () {
+      const errors = []
+      if (!this.$v.password.$dirty) return errors
+      !this.$v.password.required && errors.push('Password is required.')
+      return errors
+    },
+    emailErrors () {
+      const errors = []
+      if (!this.$v.email.$dirty) return errors
+      !this.$v.email.email && errors.push('Must be valid e-mail')
+      !this.$v.email.required && errors.push('E-mail is required')
+      return errors
+    },
+    firstNameErrors () {
+      const errors = []
+      if (!this.$v.firstName.$dirty) return errors
+      !this.$v.firstName.required && errors.push('First name is required.')
+      return errors
+    },
+    lastNameErrors () {
+      const errors = []
+      if (!this.$v.lastName.$dirty) return errors
+      !this.$v.lastName.required && errors.push('Last name is required.')
+      return errors
     },
 
+    usernameErrors () {
+      const errors = []
+      if (!this.$v.username.$dirty) return errors
+      !this.$v.username.required && errors.push('username is required.')
+      return errors
+    }
+  },
 
-    components: {
-      SignInSuccess
-    },
+  methods: {
+    submit () {
+      this.$v.$touch()
+      axios({
+        method: 'POST',
+        url: `${this.$store.state.baseURL}/users/signup`,
+        data: {
+          firstName: this.firstName,
+          lastName: this.lastName,
+          username: this.username,
+          email: this.email,
+          password: this.password
+        }
+      })
+        .then(({ data }) => {
+          this.dialog = true
+        })
+        .catch(({ response }) => {
+          let msg = response.data.message
 
-    data: () => ({
-      firstName: '',
-      lastName: '',
-      username: '',
-      email: '',
-      password: '',
-      errMessage: '',
-      error: false,
-      success: false,
-      dialog: false,
-    }),
-
-    computed: {
-      passwordErrors () {
-        const errors = []
-        if (!this.$v.password.$dirty) return errors
-        !this.$v.password.required && errors.push('Password is required.')
-        return errors
-      },
-      emailErrors () {
-        const errors = []
-        if (!this.$v.email.$dirty) return errors
-        !this.$v.email.email && errors.push('Must be valid e-mail')
-        !this.$v.email.required && errors.push('E-mail is required')
-        return errors
-      },
-      firstNameErrors () {
-        const errors = []
-        if (!this.$v.firstName.$dirty) return errors
-        !this.$v.firstName.required && errors.push('First name is required.')
-        return errors
-      },
-      lastNameErrors () {
-        const errors = []
-        if (!this.$v.lastName.$dirty) return errors
-        !this.$v.lastName.required && errors.push('Last name is required.')
-        return errors
-      },
-
-      usernameErrors() {
-        const errors = []
-        if (!this.$v.username.$dirty) return errors
-        !this.$v.username.required && errors.push('username is required.')
-        return errors
-      }
-    },
-
-    methods: {
-      submit () {
-        this.$v.$touch()
-        axios({ 
-          method: 'POST',
-          url: `${this.$store.state.baseURL}/users/signup`,
-          data: {
-            firstName: this.firstName,
-            lastName: this.lastName,
-            username: this.username,
-            email: this.email,
-            password: this.password
+          if (msg.includes('required') === false) {
+            let err = msg.split(':').slice(2).join(' ')
+            this.errMessage = err
+            this.error = true
           }
         })
-          .then(({data}) => {
-            this.dialog = true
-          })
-          .catch(({response}) => {
-            let msg = response.data.message
-            
-            if(msg.includes('required') === false) {
-              let err = msg.split(':').slice(2).join(' ')
-              this.errMessage = err
-              this.error = true
-            }
-          })
-      },
-      clear () {
-        this.$v.$reset()
-        this.email = ''
-        this.password = ''
-        this.firstName = ''
-        this.lastName = ''
-      },
+    },
+    clear () {
+      this.$v.$reset()
+      this.email = ''
+      this.password = ''
+      this.firstName = ''
+      this.lastName = ''
     }
+  }
 }
 </script>
 

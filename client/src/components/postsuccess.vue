@@ -7,7 +7,7 @@
         <v-card-text class="headline text-xs-center">Question posted!</v-card-text>
 
         <v-card-text class="subheading text-xs-center">
-          Your question is now out for everyone to see. 
+          Your question is now out for everyone to see.
         </v-card-text>
 
         <v-card-actions>
@@ -47,12 +47,12 @@ export default {
   name: 'PostSucccess',
 
   methods: {
-    toHome() {
+    toHome () {
       this.$store.dispatch('getPublicQuestions')
       this.$router.push('/')
     },
 
-    toPost() {
+    toPost () {
 
     }
   }

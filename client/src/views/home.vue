@@ -1,12 +1,12 @@
 <template>
   <v-layout>
     <v-flex xs8 offset-xs2>
-      <Posts /> 
+      <Posts />
     </v-flex>
     <!-- <v-flex xs4> -->
       <!-- <Profile /> -->
     <!-- </v-flex> -->
-  </v-layout> 
+  </v-layout>
 </template>
 
 <script>

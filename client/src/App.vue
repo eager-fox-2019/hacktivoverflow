@@ -17,29 +17,28 @@ import SignIn from '@/components/signin'
 // import Home from '@/views/home'
 
 export default {
-  data() {
+  data () {
     return {
-      
+
     }
   },
 
   components: {
     NavBar,
-    SignIn,
+    SignIn
     // Home
   },
 
-  created() {
-    if(localStorage.access_token) {
+  created () {
+    if (localStorage.access_token) {
       this.$store.dispatch('decodeToken')
       this.$store.dispatch('getMyQuestions')
     }
-    
+
     this.$store.dispatch('getPublicQuestions')
   }
 }
 </script>
-
 
 <style>
 #keep

@@ -11,11 +11,11 @@
 <script>
 export default {
   name: 'Profile',
-  data() {
+  data () {
     return {
       fullName: ''
     }
-  },
+  }
 }
 </script>
 
