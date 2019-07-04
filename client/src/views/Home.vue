@@ -9,7 +9,7 @@
           <CardList v-for="question in questions" :key="question._id" :inside="question" :type="'question'" />
         </b-col>
         <b-modal id='modal-scrollable-edit' size="lg" scrollable hide-footer title="Edit Question Form">
-          <AFComponent :typeform="'edit'"  :type="'question'"/>
+          <FormComponent :typeform="'edit'"  :type="'question'"/>
         </b-modal>
         <b-col></b-col>
       </b-row>
@@ -20,7 +20,7 @@
 <script>
 import NavBar from '@/components/NavBar.vue'
 import CardList from '@/components/CardList.vue'
-import AFComponent from '@/components/AFComponent.vue'
+import FormComponent from '@/components/FormComponent.vue'
 import { mapState } from 'vuex'
 
 export default {
@@ -28,7 +28,7 @@ export default {
   components: {
     NavBar,
     CardList,
-    AFComponent
+    FormComponent
   },
   computed: {
     ...mapState(['questions'])

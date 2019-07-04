@@ -110,7 +110,6 @@ class AnswerController{
                 if(!result || result.n === 0){
                     throw {code: 404, message: 'Answer not found'}
                 } else {
-                    console.log("delete berhasil")
                     res.json(result)
                 }
             })

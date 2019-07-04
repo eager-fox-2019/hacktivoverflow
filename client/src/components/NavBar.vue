@@ -7,7 +7,7 @@
         <b-nav-item v-if="$store.state.isLogin" v-b-modal.modal-scrollable-add-question>
           Have a question?
           <b-modal id="modal-scrollable-add-question" hide-footer size="lg" scrollable title="Add question">
-              <AFComponent :typeform="'add'" :type="'question'"/>
+              <FormComponent :typeform="'add'" :type="'question'"/>
           </b-modal>
         </b-nav-item>
         <b-nav-item v-if="$store.state.isLogin" @click="signout()">Sign Out</b-nav-item>
@@ -17,10 +17,10 @@
 </template>
 
 <script>
-import AFComponent from '@/components/AFComponent.vue'
+import FormComponent from '@/components/FormComponent.vue'
 export default {
   components: {
-    AFComponent
+    FormComponent
   },
   methods: {
     signout () {

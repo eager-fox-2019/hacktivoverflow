@@ -47,14 +47,12 @@ export default {
           .then(({ data }) => {
             let ans = this.questionShowed.answer
             ans.push(data._id)
-            console.log("thap 1")
             return dispatch('UPDATE_DETAILED_QUESTION', {
               id: this.questionShowed._id,
               answer: ans
             })
           })
           .then(({ data }) => {
-            console.log("thap 2")
             dispatch('GET_A_QUESTION', this.questionShowed._id)
             this.$bvModal.hide('modal-scrollable-add')
             this.$swal({

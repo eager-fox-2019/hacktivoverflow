@@ -15,7 +15,7 @@
                         </b-card-text>
                         <b-button v-b-modal.modal-scrollable-add variant="primary" @click="add(questionShowed._id)">Give answer</b-button>
                         <b-modal id="modal-scrollable-add" size="lg" scrollable centered hide-footer title="Add Answer Form">
-                            <AFComponent :typeform="'add'" :type="'answer'"/>
+                            <FormComponent :typeform="'add'" :type="'answer'"/>
                         </b-modal>
                     </b-card-body>
                 </b-card>
@@ -24,7 +24,7 @@
                         <br>
                         <CardList v-for="answer in questionShowed.answer" :key="answer._id" :inside="answer" :type="'answer'" />
                         <b-modal :id="'modal-scrollable-edit'" size="lg" scrollable hide-footer title="Edit Form">
-                          <AFComponent :typeform="'edit'"  :type="'answer'"/>
+                          <FormComponent :typeform="'edit'"  :type="'answer'"/>
                         </b-modal>
                     </b-col>
                 </b-row>
@@ -38,7 +38,7 @@
 import NavBar from '@/components/NavBar.vue'
 import VoteButton from '@/components/VoteButton.vue'
 import CardList from '@/components/CardList.vue'
-import AFComponent from '@/components/AFComponent.vue'
+import FormComponent from '@/components/FormComponent.vue'
 import { mapState } from 'vuex'
 
 export default {
@@ -51,7 +51,7 @@ export default {
     NavBar,
     VoteButton,
     CardList,
-    AFComponent
+    FormComponent
   },
   computed: {
     ...mapState(['questionShowed'])

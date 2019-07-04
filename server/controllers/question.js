@@ -21,7 +21,6 @@ class QuestionController{
                 if(!question){
                     throw {code: 404, message: 'Question not found'}
                 } else {
-                    // User.populate(question, {path: 'answer.user'})
                     res.json(question)
                 }
             })
@@ -102,13 +101,11 @@ class QuestionController{
     }
 
     static delete(req, res, next){
-        console.log("Masuk ke delete question")
         let searchObj = {
             _id: req.params.questionId
         }
         Answer.deleteMany({question: req.params.questionId})
             .then(result => {
-                console.log("Answers from this question deleted")
                 return  Question.deleteOne(searchObj)
             })       
             .then(result => {

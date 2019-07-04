@@ -7,7 +7,6 @@ router.get('/:answerId', answerController.getAllAnswer) //for test purpose only
 router.use(authentication)
 router.post('/', answerController.addAnswer)
 router.patch('/update-detail/:answerId', answerController.likesUpdate)
-// router.use(authorizationAnswer)
 router.get('/:userId', answerController.getAnswer)
 router.patch('/:answerId', authorizationAnswer, answerController.update)
 router.delete('/:answerId', authorizationAnswer, answerController.delete)

@@ -130,7 +130,6 @@ export default new Vuex.Store({
         })
     },
     UPDATE_DETAILED_ANSWER ({ state }, payload) {
-      console.log("update detailed answer", payload)
       return axios({
         method: 'patch',
         url: `${state.baseUrl}/answer/update-detail/${payload.id}`,

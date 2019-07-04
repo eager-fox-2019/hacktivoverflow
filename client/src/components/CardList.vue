@@ -5,25 +5,25 @@
           <VoteButton :inside="inside" :type="type"/>
         </b-col>
         <b-col sm="11">
-          <b-card no-body align="left">
+          <b-card no-body align="left" style="min-height: 210px">
             <b-card-body>
-              <b-link :to="`/${type}/${inside._id}`" v-if="(type === 'question')">
+              <b-link :to="`/${type}/${id}`" v-if="(type === 'question')">
                 <h4>{{ inside.title }}</h4>
               </b-link>
               <b-card-text v-if="(type === 'question')">
                 {{ shortdesc }}
-                <br><br>Asked by: {{ inside.owner.username}}
+                <br><br>Asked by: {{ username }}
               </b-card-text>
               <h4 v-if="(type === 'answer')">{{ inside.title }}</h4>
               <b-card-text v-if="(type === 'answer')">
                 {{ inside.description }}
-                <br><br>Answered by: {{ inside.owner.username}}
+                <br><br>Answered by: {{ username }}
               </b-card-text>
-              <b-button-group v-if="(inside.owner._id == userId)">
+              <b-button-group v-if="(ownerid == userId)">
                 <div>
-                  <b-button v-b-modal.modal-scrollable-edit variant="primary" @click="edit(inside._id)">Edit</b-button>
+                  <b-button v-b-modal.modal-scrollable-edit variant="primary" @click="edit(id)">Edit</b-button>
                 </div>
-                <b-button variant="danger" @click="del(inside._id)">Delete</b-button>
+                <b-button variant="danger" @click="del(id)">Delete</b-button>
               </b-button-group>
             </b-card-body>
           </b-card>
@@ -41,6 +41,18 @@ export default {
     VoteButton
   },
   computed: {
+    username () {
+      if (this.inside && this.inside.owner) return this.inside.owner.username
+      return 'loading username'
+    },
+    id () {
+      if (this.inside) return this.inside._id
+      return ''
+    },
+    ownerid () {
+      if (this.inside.owner) return this.inside.owner._id
+      return ''
+    },
     shortdesc: function () {
       let desc = this.inside.description.substring(0, 100)
       if (this.inside.description.length > 100) {

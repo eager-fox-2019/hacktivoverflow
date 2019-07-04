@@ -2,7 +2,13 @@
     <div v-if="inside">
         <b-button-group vertical>
                 <b-button v-if="$store.state.isLogin" :class="{ active: upvoted }" @click="upvote(inside)"><img src='@/assets/up-arrow.png' style="width:25px; height:25px"></b-button>
-                <b-button disabled>{{ totalvote }}</b-button>
+                <b-button disabled>{{ totalvote }}
+                  <p style="font-size:12px">vote(s)</p>
+                  <div v-if="(type === 'question')">
+                    {{ inside.answer.length }}
+                    <p style="font-size:12px">answer(s)</p>
+                  </div>
+                  </b-button>
                 <b-button v-if="$store.state.isLogin" :class="{ active: downvoted }" @click="downvote(inside)"><img src='@/assets/down-arrow.png' style="width:25px; height:25px"></b-button>
         </b-button-group>
     </div>
@@ -85,12 +91,15 @@ export default {
   },
   computed: {
     totalvote: function () {
+      if (!this.inside || !this.inside.upvotes || !this.inside.downvotes) return 0
       return this.inside.upvotes.length - this.inside.downvotes.length
     },
     upvoted: function () {
+      if (!this.inside || !this.inside.upvotes) return false
       return this.inside.upvotes.filter(id => id === localStorage.getItem('id')).length !== 0
     },
     downvoted: function () {
+      if (!this.inside || !this.inside.downvotes) return false
       return this.inside.downvotes.filter(id => id === localStorage.getItem('id')).length !== 0
     }
   }
