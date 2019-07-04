@@ -15,7 +15,7 @@ export default new Vuex.Store({
   	answerList: [],
     user: null,
     alertMsg: '',
-    alertType: ''
+    alertType: '',
   },
   mutations: {
     SHOWMSG(state, payload){
@@ -50,13 +50,14 @@ export default new Vuex.Store({
     },
     SAVEUSER(state, payload){
       console.log({saveuser:payload})
-      state.user = {id:payload.id, name:payload.name, email:payload.email}
+      let userId = payload.id || payload._id
+      state.user = {id:userId, name:payload.name, email:payload.email}
       state.access_token = payload.access_token
       state.isLoggedin = true
       localStorage.setItem('access_token', state.access_token)
       localStorage.setItem('name', payload.name)
       localStorage.setItem('email', payload.email)
-      localStorage.setItem('id', payload.id)
+      localStorage.setItem('id', userId)
     },
     SELECTANSWER(state, payload){
       state.selectedAnswer = payload

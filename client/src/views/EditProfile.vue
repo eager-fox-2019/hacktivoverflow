@@ -14,10 +14,6 @@
         <b-form-input id="name" v-model="form.name" type="text" required placeholder="Enter Name"></b-form-input>
         <small>Let us know what to call you</small>
       </b-form-group>
-      <b-form-group id="group-email" label="Email address:" label-for="email">
-        <b-form-input id="email" v-model="form.email" type="email" required placeholder="Enter email"></b-form-input>
-        <small>Update your email address</small>
-      </b-form-group>
       <b-form-group id="group-password" label="New Password:" label-for="password">
         <b-form-input id="password" v-model="form.password" type="password" required></b-form-input>
       </b-form-group>
@@ -36,7 +32,6 @@ export default {
     return {
       form: {
         name: '',
-        email: '',
         password: ''
       },
       dismissSecs: 10,
@@ -49,7 +44,31 @@ export default {
   computed: mapState(['baseURL']),
   methods: {
     onSubmit() {
-      this.showAlert('sorry, edit profile not yet implemented', 'info')
+      // this.showAlert('sorry, edit profile not yet implemented', 'info')
+      let {state, commit} = this.$store
+
+      axios({
+        method: 'patch',
+        url: state.baseURL+'/user/',
+        headers: {access_token: state.access_token},
+        data: this.form
+      })
+      .then(({data}) => {
+        console.log({data})
+        commit('SHOWMSG',{
+          message: 'updated profile',
+          type:'success'
+        })
+        commit('SAVEUSER',data)
+        this.onReset()
+      })
+      .catch(({response}) => {
+        console.log(response.data);
+        commit('SHOWMSG',{
+          message: response.data,
+          type:'warning'
+        })
+      })
     },
     onReset() {
       this.form = {

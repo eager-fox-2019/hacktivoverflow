@@ -21,5 +21,7 @@ export default {
 .questionsContainer {
   height: 75vh;
   overflow-y: scroll;
+  background-color: #DCC7AA;
+  padding-bottom: 1em;
 }
 </style>

@@ -22,11 +22,12 @@ export default {
   		console.log({routename:this.$route.name})
   		return this.$route.name
   	},
-  	...mapState(['isLoggedin'])
+  	...mapState(['isLoggedin', 'user'])
   },
   methods: {
   	logout(){
   		this.$store.commit('LOGOUT')
+      this.$router.push('/')
   	}
   }
 }

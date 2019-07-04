@@ -37,10 +37,21 @@ import {mapState} from 'vuex'
 
 export default {
   name: 'app',
+  data(){
+    return {
+      dismissSecs: 10,
+      dismissCountDown: 0,
+    }
+  },
   components: {
     Nav
   },
   computed: mapState(['alertMsg','alertType']),
+  watch: {
+    alertMsg (newVal, oldVal){
+      if (this.alertMsg != '') this.showAlert()
+    }
+  },
   created(){
     this.$store.dispatch('getQuestions')
     let access_token = localStorage.getItem('access_token')
