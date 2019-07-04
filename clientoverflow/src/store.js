@@ -141,6 +141,7 @@ export default new Vuex.Store({
           data: answer
         })
           .then(({ data }) => {
+            data.questionId = answer.questionId;
             commit("UNSHIFT_ANSWER", data);
             resolve(data);
           })
