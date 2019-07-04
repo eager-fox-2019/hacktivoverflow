@@ -100,6 +100,30 @@ export default new Vuex.Store({
           console.log(err)
         })
     },
+    TAGQUESTION(context, data) {
+      ax
+        .get("/questions/search/tags/" + data)
+        .then(({
+          data
+        }) => {
+          context.commit('allQ', data)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    SEARCHQUESTION(context, data) {
+      ax
+        .get("/questions/search/" + data)
+        .then(({
+          data
+        }) => {
+          context.commit('allQ', data)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
     USERQUESTION(context, data) {
       ax
         .get("/questions/user/posts", {

@@ -13,11 +13,11 @@
             <i style="font-size:25px" class="fas fa-arrow-circle-down"></i>
           </div>
         </div>
-        <div class="column is-9 card-content" id='card' @click="$router.push('/one')">
-            <div class="content">
-              <b style="font-size: 25px;">{{q.title}}</b>
-            </div>
-            <small>Asked by {{q.userId.userName}}</small>
+        <div class="column is-9 card-content" id="card" @click="$router.push('/one')">
+          <div class="content">
+            <b style="font-size: 35px;">{{q.title}}</b>
+          </div>
+          <small>Asked by <i>{{q.userId.userName}}</i></small>
         </div>
         <div class="column is-2">
           <div style="margin-top: 20px">
@@ -26,6 +26,11 @@
           <div>
             <b style="font-size:30px">{{totalanswers}}</b>
           </div>
+        </div>
+      </div>
+      <div class="columns" style="display: flex; justify-content: center; background-color: lightcoral">
+        <div v-for="(tag, index) in q.tags" :key="index" class="column is-1">
+          <a @click="tagsearch(tag)"><b-tag type="is-primary" rounded>{{tag}}</b-tag></a>
         </div>
       </div>
     </div>
@@ -41,6 +46,10 @@ export default {
     },
     downvote(data) {
       this.$store.dispatch("DOWNVOTEQUESTION", data);
+    },
+    tagsearch(tag){
+      this.$store.dispatch("TAGQUESTION", tag);
+      this.$router.push('/all')
     }
   },
   computed: {
@@ -48,7 +57,7 @@ export default {
       return this.q.upvotes.length - this.q.downvotes.length;
     },
     totalanswers() {
-      return this.q.answers.length
+      return this.q.answers.length;
     },
     currentUser() {
       return this.$store.state.user.id;

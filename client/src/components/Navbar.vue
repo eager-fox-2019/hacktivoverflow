@@ -1,8 +1,12 @@
 <template>
   <nav class="navbar" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
-      <a class="navbar-item" @click="$router.push('/all')">
-        <img src="https://cdn3.iconfinder.com/data/icons/popular-services-brands-vol-2/512/stackoverflow-512.png" width="30" height="100" />
+      <a class="navbar-item" @click="toHome">
+        <img
+          src="https://cdn3.iconfinder.com/data/icons/popular-services-brands-vol-2/512/stackoverflow-512.png"
+          width="30"
+          height="100"
+        />
       </a>
 
       <a
@@ -20,11 +24,20 @@
 
     <div id="navbarBasicExample" class="navbar-menu">
       <div class="navbar-start">
-        <a class="navbar-item" @click="$router.push('/all')">Home</a>
+        <a class="navbar-item" @click="toHome">Home</a>
         <a class="navbar-item" @click="$router.push('/about')">Help</a>
       </div>
       <b-field style="margin-top:13px">
-        <b-input placeholder="Search" type="search" icon-pack="fas" icon="search" rounded></b-input>
+        <form @submit.prevent="searchh">
+          <b-input
+            placeholder="Search"
+            type="search"
+            icon-pack="fas"
+            icon="search"
+            rounded
+            v-model="search"
+          ></b-input>
+        </form>
       </b-field>
       <div class="navbar-end">
         <div class="navbar-item">
@@ -32,9 +45,9 @@
             <a class="button is-light" @click="login">Log in</a>
           </div>
           <div class="buttons" v-if="isLogin">
-          <div @click="toNew" class="button">
-            <i class="fas fa-question-circle" style="font-size: 25px;"></i>
-          </div>
+            <div @click="toNew" class="button">
+              <i class="fas fa-question-circle" style="font-size: 25px;"></i>
+            </div>
             <div>
               <b-dropdown aria-role="list">
                 <i
@@ -69,7 +82,9 @@
 export default {
   name: "navbar",
   data() {
-    return {};
+    return {
+      search: ""
+    };
   },
   computed: {
     isLogin() {
@@ -77,18 +92,27 @@ export default {
     }
   },
   methods: {
+    toHome() {
+      this.$store.dispatch("ALLQUESTION");
+      $router.push("/all");
+    },
     login() {
-        this.$router.push('/')
+      this.$router.push("/");
     },
-    logout(){
-      this.$store.commit('logout')
-      this.$router.push('/all')
+    logout() {
+      this.$store.commit("logout");
+      this.$router.push("/all");
     },
-    toNew(){
-      this.$router.push('/new')
+    toNew() {
+      this.$router.push("/new");
     },
-    mypost(){
-      this.$router.push('/mypost')
+    mypost() {
+      this.$router.push("/mypost");
+    },
+    searchh() {
+      this.$store.dispatch("SEARCHQUESTION", this.search);
+      this.$router.push("/all");
+      this.search = "";
     }
   }
 };

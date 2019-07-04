@@ -38,6 +38,32 @@ class Controller {
             })
     }
 
+    static tags(req, res, next) {
+        Question
+            .find({
+                tags: {
+                    $in: req.params.tag
+                }
+            })
+            .populate('userId')
+            .then(data => {
+                res.status(200).json(data)
+            })
+            .catch(next)
+    }
+
+    static search(req, res, next){
+        Question
+        .find({
+            title : {'$regex': req.params.input, '$options' : 'i'}
+        })
+        .populate('userId')
+        .then(data => {
+            res.status(200).json(data)
+        })
+        .catch(next)
+    }
+
     static create(req, res, next) {
         let data = {
             userId: req.decoded.id,

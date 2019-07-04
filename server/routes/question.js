@@ -6,6 +6,8 @@ const authorization = require('../middlewares/authorizationQ')
 
 router.get('/', question.findAll)
 router.get('/:id', question.findById)
+router.get('/search/tags/:tag', question.tags)
+router.get('/search/:input', question.search)
 
 router.use(authentication)
 

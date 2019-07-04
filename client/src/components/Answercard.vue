@@ -18,7 +18,7 @@
             <b style="font-size: 20px;">{{a.title}}</b>
             <p>{{a.desc}}</p>
           </div>
-          <small>Answer by {{a.userId.userName}}</small>
+          <small>Answer by <i>{{a.userId.userName}}</i></small>
         </div>
       </div>
     </div>

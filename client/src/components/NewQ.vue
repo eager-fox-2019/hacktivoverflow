@@ -11,7 +11,7 @@
         </b-field>
         <b-field label="Enter some tags">
           <b-taginput
-            maxtags="9"
+            maxtags="5"
             v-model="q.tags"
             :data="filteredTags"
             autocomplete

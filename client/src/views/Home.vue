@@ -5,12 +5,14 @@
         <div class="column" style="background-color: red; margin-right: 20px; height: 90vh">
           <div style="margin-top: 150px">
             <strong style="font-size: 40px;">Looking for something?</strong>
-            <b-field style="margin-top:13px" class="column is-6 is-offset-3">
-              <b-input placeholder="Search" type="search" icon-pack="fas" icon="search" rounded></b-input>
-            </b-field>
-            <div>
-              <b-button rounded type="is-primary" size="is-medium" @click="search">Search</b-button>
-            </div>
+            <form @submit.prevent="searchh">
+              <b-field style="margin-top:13px" class="column is-6 is-offset-3">
+                <b-input placeholder="Search" type="search" icon-pack="fas" icon="search" rounded v-model="search"></b-input>
+              </b-field>
+              <div>
+                <b-button rounded type="is-primary" size="is-medium" @click="search">Search</b-button>
+              </div>
+            </form>
           </div>
         </div>
         <div class="column" style="background-color: yellow">
@@ -30,6 +32,11 @@ import Login from "@/components/Login";
 import Regis from "@/components/Regis";
 export default {
   name: "landing",
+  data(){
+    return{
+      search: ''
+    }
+  },
   components: {
     Login,
     Regis
@@ -40,8 +47,10 @@ export default {
     }
   },
   methods: {
-    search(){
-      
+    searchh(){
+      this.$store.dispatch('SEARCHQUESTION', this.search)
+      this.$router.push('/all')
+      this.search = ''
     }
   },
 };
