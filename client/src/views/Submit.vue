@@ -19,26 +19,36 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
-  data() {
+  data () {
     return {
-      inputQuestion : {
+      inputQuestion: {
         title: '',
         content: ''
       }
     }
   },
   methods: {
-    addQuestion() {
+    addQuestion () {
       this.$store.dispatch('createQuestion', this.inputQuestion)
-      .then(({data}) => {
-        this.$toast.open({ message: 'Question posted !', type: 'is-success'})
-        this.$router.push('/')
-      })
-      .catch(err => {
-        this.$toast.open({ message: err.response.data.message, type: 'is-danger'})
-      })
+        .then(({ data }) => {
+          this.$toast.open({ message: 'Question posted !', type: 'is-success' })
+          this.$router.push('/')
+        })
+        .catch(err => {
+          this.$toast.open({ message: err.response.data.message, type: 'is-danger' })
+        })
     }
+  },
+  created () {
+    if (!this.isLogin) {
+      this.$router.push('/')
+      this.$toast.open({ message: 'You have to login first !', type: 'is-danger' })
+    }
+  },
+  computed: {
+    ...mapState(['isLogin'])
   }
 }
 </script>
@@ -52,7 +62,7 @@ export default {
     margin-top: 80px;
     font-size: 18px;
   }
-  #add-container { 
+  #add-container {
     width: 40%;
     margin: 50px auto;
     border: 5px solid $primary;
@@ -66,4 +76,3 @@ export default {
     font-size: 24px;
   }
 </style>
-

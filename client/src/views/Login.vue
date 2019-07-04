@@ -17,7 +17,7 @@
         <b-field label="Password">
             <template slot="label">
               <span class="has-text-primary label">Password</span>
-            </template> 
+            </template>
             <b-input placeholder="Password" type="password" rounded password-reveal class="text-input" v-model="inputLogin.password"></b-input>
         </b-field>
       </div>
@@ -43,18 +43,18 @@ export default {
   methods: {
     userLogin () {
       this.$store.dispatch('login', this.inputLogin)
-      .then(({data}) => {
-        console.log(data)
-        localStorage.setItem('token', data.token)
-        localStorage.setItem('user', JSON.stringify(data.payload))
-        this.$store.commit('updateLoginStatus', true)
-        this.$store.commit('INPUTLOGGEDUSER', data.payload)
-        this.$toast.open({ message: 'You logged in!', type: 'is-success'})
-        this.$router.push('/')
-      })
-      .catch(err => {
-        this.error = err.response.data.message
-      })
+        .then(({ data }) => {
+          console.log(data)
+          localStorage.setItem('token', data.token)
+          localStorage.setItem('user', JSON.stringify(data.payload))
+          this.$store.commit('updateLoginStatus', true)
+          this.$store.commit('INPUTLOGGEDUSER', data.payload)
+          this.$toast.open({ message: 'You logged in!', type: 'is-success' })
+          this.$router.push('/')
+        })
+        .catch(err => {
+          this.error = err.response.data.message
+        })
     }
   }
 }

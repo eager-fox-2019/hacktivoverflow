@@ -2,7 +2,8 @@ const Answer = require('../models/answers')
 
 class ControllerAnswer {
   static findAll(req, res, next) {
-    Answer.find()
+    Answer.find({question: req.params.id})
+    .populate('user')
     .then(result => {
       res.status(200).json(result)
     })
@@ -12,8 +13,8 @@ class ControllerAnswer {
   static create(req, res, next) {
     let {content} = req.body
     let input = {content}
+    input.user = req.user.id
     input.question = req.params.id
-
     Answer.create(input)
     .then(result => {
       res.status(200).json(result)
@@ -41,35 +42,28 @@ class ControllerAnswer {
   }
   
   static delete(req, res, next) {
-    Answer.deleteOne(req.params.id)
+    Answer.deleteOne({_id: req.params.id})
     .then(result => {
       res.status(200).json(result)
     })
     .catch(next)
   }
 
-  static detail(req, res, next) {
-    Answer.findById(req.params.id)
-    .populate({
-      path: 'user'
-    })
-    .exec(function (err, answer) {
-      if (err) {
-        next({
-          code: 500,
-          message: err.message
-        })
+  static updateVote(req, res, next) {
+    Answer.findOne({_id: req.params.id})
+    .then(data => {
+      if(data) {
+        data.upvote = req.body.upvote
+        data.downvote = req.body.downvote
+        return data.save()
       } else {
-        if (answer) {
-          res.status(200).json(answer)
-        } else {
-          next({
-            code: 404,
-            message: `Answer with id ${req.params.id} not found!`
-          })
-        }
+        throw {status: 400, message: 'Answer not found'}
       }
     })
+    .then(result => {
+      res.status(200).json(result)
+    })
+    .catch(next)
   }
 }
 

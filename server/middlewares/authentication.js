@@ -8,7 +8,6 @@ module.exports = (req,res, next) => {
       User.find({ email: decoded.email })
         .then(users => {
           if(users.length > 0) {
-            console.log(decoded)
             req.user = decoded;
             next()
           } else {

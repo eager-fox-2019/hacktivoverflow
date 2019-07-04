@@ -17,12 +17,11 @@
       </div>
       <div id="post-container">
         <b-loading :is-full-page="true" :active.sync="isLoading" :can-cancel="true"></b-loading>
-        <Post v-for="question in filteredQuestions" 
-        :key="question._id" 
-        :title="question.title" 
-        :user="question.user"
-        :createdAt="question.createdAt"
+        <Post v-for="question in filteredQuestions"
+        :key="question._id"
+        :question="question"
         :state="questionState"
+        @refresh="openMyQuestions"
         />
       </div>
     </div>
@@ -31,11 +30,11 @@
 </template>
 
 <script>
-import {mapState} from 'vuex'
+import { mapState } from 'vuex'
 import Post from '@/components/Post.vue'
 export default {
   name: 'home',
-  data() {
+  data () {
     return {
       isLoading: true,
       searchInput: '',
@@ -45,25 +44,25 @@ export default {
   components: {
     Post
   },
-  created() {
+  created () {
     this.$store.dispatch('fetchQuestions')
-    .then(({data}) => {
-      this.$store.commit('STOREQUESTIONS', data)
-      this.isLoading = false
-    })
+      .then(({ data }) => {
+        this.$store.commit('STOREQUESTIONS', data)
+        this.isLoading = false
+      })
   },
   computed: {
-    filteredQuestions() {
+    filteredQuestions () {
       return this.questions.filter(question => {
         return question.title.toLowerCase().includes(this.searchInput.toLowerCase())
       })
     },
     ...mapState(['questions', 'isLogin'])
   },
-  methods : {
+  methods: {
     openMyQuestions () {
-      if(!this.isLogin) {
-        this.$toast.open({ message: 'You have to login first !', type: 'is-danger'})
+      if (!this.isLogin) {
+        this.$toast.open({ message: 'You have to login first !', type: 'is-danger' })
       } else {
         this.$store.commit('STOREMYQUESTIONS')
         this.questionState = 'my'
@@ -72,11 +71,11 @@ export default {
     openAllQuestions () {
       this.isLoading = true
       this.$store.dispatch('fetchQuestions')
-      .then(({data}) => {
-        this.$store.commit('STOREQUESTIONS', data)
-        this.isLoading = false
-        this.questionState = 'all'
-      })
+        .then(({ data }) => {
+          this.$store.commit('STOREQUESTIONS', data)
+          this.isLoading = false
+          this.questionState = 'all'
+        })
     }
   }
 }
@@ -95,11 +94,11 @@ export default {
     border-radius: 10px;
     padding: 6px 15px;
     font-size: 16px;
-    
+
   }
   .option-button:hover{
     transition-duration: 0.3s;
-    cursor: pointer;		
+    cursor: pointer;
     background-color: #311B92;
     color: white;
   }

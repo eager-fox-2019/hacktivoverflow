@@ -3,24 +3,12 @@
     <div id="nav">
       <div id="first-item">
         <p id="judul">Hacktiv Overflow</p>
-        <router-link to="/">Home</router-link>
-        <router-link to="/submit">Ask a question</router-link>
-        <div id="user-control">
-          <b-dropdown aria-role="list">
-            <button class="button is-primary" slot="trigger">
-                <span>Click me!</span>
-                <b-icon icon="menu-down"></b-icon>
-            </button>
-
-            <b-dropdown-item aria-role="listitem">Action</b-dropdown-item>
-            <b-dropdown-item aria-role="listitem">Another action</b-dropdown-item>
-            <b-dropdown-item aria-role="listitem">Something else</b-dropdown-item>
-        </b-dropdown>
-        </div>
+        <router-link class="link" to="/">Home</router-link>
+        <router-link class="link" to="/submit">Ask a question</router-link>
       </div>
       <div id="nav-login-register" class="second-item" v-if="!isLogin">
-        <router-link to="/login">Login</router-link>
-        <router-link to="/register">Register</router-link>
+        <router-link class="link" to="/login">Login</router-link>
+        <router-link class="link" to="/register">Register</router-link>
       </div>
       <div v-else class="second-item">
         <p class="item">{{loggedUser.username}}</p>
@@ -39,11 +27,11 @@ export default {
 
     }
   },
-  created() {
-    if(localStorage.getItem('token')) {
+  created () {
+    if (localStorage.getItem('token')) {
       this.$store.commit('updateLoginStatus', true)
       this.$store.commit('INPUTLOGGEDUSER', JSON.parse(localStorage.getItem('user')))
-      this.$toast.open({ message: 'You logged in !', type: 'is-success'})
+      this.$toast.open({ message: 'You logged in !', type: 'is-success' })
     }
   },
   computed: {
@@ -54,14 +42,14 @@ export default {
       this.$store.commit('updateLoginStatus', false)
       localStorage.clear()
       this.$router.push('/')
-      this.$toast.open({ message: 'Successfully logged out', type: 'is-success'})
+      this.$toast.open({ message: 'Successfully logged out', type: 'is-success' })
     }
   }
 }
 </script>
 
 <style lang="scss">
-   #app, body, html { margin: 0; width: 100%; height: 100%; padding: 0; overflow-y: hidden; overflow-x: hidden;}
+  #app, body, html { margin: 0; width: 100%; height: 100%; padding: 0; overflow-y: hidden; overflow-x: hidden;}
   $primary: #311B92;
   p {
     margin: 0;
@@ -115,7 +103,7 @@ export default {
     font-weight: bold;
   }
 
-  #nav a {
+  .link {
     font-weight: bold;
     color: black;
     text-decoration: none;

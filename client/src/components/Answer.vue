@@ -10,7 +10,7 @@
             >
         </b-icon>
       </div>
-      <div id="score">{{question.upvote.length - question.downvote.length}}</div>
+      <div id="score">{{answer.upvote.length - answer.downvote.length}}</div>
       <div @click="downvote">
         <b-icon
             pack="fas"
@@ -22,12 +22,12 @@
         </b-icon>
       </div>
     </div>
-    <div id="question">
-      <p id="poster">Posted by: {{question.user.username}} at {{question.createdAt}}</p>
-      <p id="post"  @click="toDetail">{{question.title}}</p>
-      <div id="option-container" v-if="state === 'my'">
-        <p class="option" @click="deleteThis(question._id)">delete</p>
-        <p class="option" style="margin-left: 15px;" @click="openForm">edit</p>
+    <div id="answer">
+      <p id="poster">Answered by: {{answer.user.username}} at {{answer.createdAt}}</p>
+      <p id="post"  @click="toDetail">{{answer.content}}</p>
+      <div id="option-container" v-if="answer.user._id === loggedUser._id">
+        <p class="option" @click="deleteThis(answer._id)">delete</p>
+        <p class="option" style="margin-left: 15px;" @click="editThis(answer._id)">edit</p>
       </div>
     </div>
     <b-modal :active.sync="isComponentModalActive"
@@ -38,10 +38,9 @@
 
 <script>
 import { mapState } from 'vuex'
-import Edit from '@/components/Edit.vue'
 export default {
   name: 'post',
-  props: ['question', 'state'],
+  props: ['answer', 'questionId'],
   data () {
     return {
       isComponentModalActive: false,
@@ -50,20 +49,20 @@ export default {
     }
   },
   created () {
-    if (this.question.upvote.includes(this.loggedUser._id)) {
+    if (this.answer.upvote.includes(this.loggedUser._id)) {
       this.upvoted = true
     }
-    if (this.question.downvote.includes(this.loggedUser._id)) {
+    if (this.answer.downvote.includes(this.loggedUser._id)) {
       this.downvoted = true
     }
   },
   computed: {
-    ...mapState(['loggedUser', 'questions', 'isLogin'])
+    ...mapState(['loggedUser', 'answers', 'isLogin'])
   },
   methods: {
     toDetail () {
-      let id = this.question._id
-      this.$router.push(`/question/${id}`)
+      let id = this.answer._id
+      this.$router.push(`/answer/${id}`)
       this.$store.commit('STOREDETAIL', id)
     },
     deleteThis (id) {
@@ -73,13 +72,13 @@ export default {
         type: 'is-danger',
         hasIcon: true,
         onConfirm: () => {
-          this.$store.dispatch('deleteQuestion', id)
+          this.$store.dispatch('deleteAnswer', id)
             .then(({ data }) => {
               this.$toast.open({ message: 'Post deleted !', type: 'is-success' })
-              return this.$store.dispatch('fetchQuestions')
+              return this.$store.dispatch('fetchAnswers', this.questionId)
             })
             .then(({ data }) => {
-              this.$store.commit('STOREMYQUESTIONS', data)
+              this.$store.commit('STOREANSWERS', data)
             })
             .catch(err => {
               this.$toast.open({ message: err.response.data.message, type: 'is-danger' })
@@ -87,16 +86,8 @@ export default {
         }
       })
     },
-    openForm (id) {
-      this.$modal.open({
-        parent: this,
-        component: Edit,
-        hasModalCard: true,
-        props: {
-          question: this.question,
-          state: 'question'
-        }
-      })
+    editThis (id) {
+      // this.$store.dispatch('')
     },
     upvote () {
       if (!this.isLogin) {
@@ -105,21 +96,20 @@ export default {
         let userId = this.loggedUser._id
         if (!this.upvoted) {
           this.upvoted = true
-          this.question.upvote.push(userId)
+          this.answer.upvote.push(userId)
           if (this.downvoted) {
             this.downvoted = false
-            let index = this.question.downvote.indexOf(userId)
-            this.question.downvote.splice(index, 1)
+            let index = this.answer.downvote.indexOf(userId)
+            this.answer.downvote.splice(index, 1)
           }
         } else {
           this.upvoted = false
-          let index = this.question.upvote.indexOf(userId)
-          this.question.upvote.splice(index, 1)
+          let index = this.answer.upvote.indexOf(userId)
+          this.answer.upvote.splice(index, 1)
         }
-        this.$store.dispatch('voteUpdateQuestion', this.question)
+        this.$store.dispatch('voteUpdateAnswer', this.answer)
           .then(result => {
             this.downvoted = false
-            console.log(result)
             console.log('berhasil upvote')
           })
           .catch(err => {
@@ -134,21 +124,20 @@ export default {
         let userId = this.loggedUser._id
         if (!this.downvoted) {
           this.downvoted = true
-          this.question.downvote.push(userId)
+          this.answer.downvote.push(userId)
           if (this.upvoted) {
             this.upvoted = false
-            let index = this.question.upvote.indexOf(userId)
-            this.question.upvote.splice(index, 1)
+            let index = this.answer.upvote.indexOf(userId)
+            this.answer.upvote.splice(index, 1)
           }
         } else {
           this.downvoted = false
-          let index = this.question.downvote.indexOf(userId)
-          this.question.downvote.splice(index, 1)
+          let index = this.answer.downvote.indexOf(userId)
+          this.answer.downvote.splice(index, 1)
         }
-        this.$store.dispatch('voteUpdateQuestion', this.question)
+        this.$store.dispatch('voteUpdateAnswer', this.answer)
           .then(result => {
             this.upvoted = false
-            console.log(result)
             console.log('berhasil downvote')
           })
           .catch(err => {
@@ -196,7 +185,7 @@ export default {
     align-items: center;
   }
 
-  #question {
+  #answer {
     margin: auto 30px;
     display: flex;
     flex-direction: column;

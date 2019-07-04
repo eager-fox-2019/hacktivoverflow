@@ -41,12 +41,12 @@ export default {
     userRegister () {
       this.$store.dispatch('register', this.inputRegister)
         .then(({ data }) => {
-          this.$toast.open({ message: 'Successfully created an account !', type: 'is-success'})
+          this.$toast.open({ message: 'Successfully created an account !', type: 'is-success' })
           this.$router.push({ path: 'login', query: { isRegister: true } })
         })
         .catch(err => {
           console.log(err.response.data.message)
-          if(err.response.data.message.split(':')) {
+          if (err.response.data.message.split(':')) {
             this.error = err.response.data.message.split(':').slice(2)
           } else {
             this.error = err.response.data.message

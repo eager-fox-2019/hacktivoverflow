@@ -4,6 +4,7 @@ import Home from './views/Home.vue'
 import Login from '@/views/Login.vue'
 import Register from '@/views/Register.vue'
 import Submit from '@/views/Submit.vue'
+import Detail from '@/views/Detail.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -29,6 +30,11 @@ export default new Router({
       path: '/submit',
       name: 'submit',
       component: Submit
+    },
+    {
+      path: '/question/:id',
+      name: 'question',
+      component: Detail
     }
   ]
 })
