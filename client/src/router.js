@@ -67,7 +67,6 @@ export default new Router({
         await store.dispatch('initApp')
         await store.dispatch('fetchAnswerDetail', { id: to.params.id })
         let s = store
-        debugger
         if (s.state.answerDetail.user._id === s.state.loggedUser.user) {
           next()
         } else {

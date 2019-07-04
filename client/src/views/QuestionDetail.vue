@@ -24,7 +24,7 @@
             </p>
             <p>{{ questionDetail.description }}</p>
           </b-col>
-          <b-col sm="12" class="w-100">
+          <b-col v-if="loggedUser.user !== ''" sm="12" class="w-100">
             <hr />
             <h5>Answer This Question</h5>
             <input class="m-2 w-100" placeholder="Title" type="text" v-model="form.title" />
