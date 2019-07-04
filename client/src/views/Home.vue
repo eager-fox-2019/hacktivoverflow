@@ -4,8 +4,12 @@
       <div>
         <h3>Welcome to mini-overflow. Ask questions & give answers!</h3>
       </div>
-      <div class="d-flex justify-content-around flex-wrap">
+      <div class="d-flex justify-content-around flex-wrap align-items-center">
         <b-form-input class="searchbar" v-model="text" placeholder="Search Title or User..."></b-form-input>
+        <label>sort by:
+          <a href="#" @click="sort('date')">date</a> | 
+          <a href="#" @click="sort('votes')">votes</a>
+        </label>
         <b-button variant="primary" class="ask" @click="toggleQuestionForm">Ask a Question</b-button>
       </div>
     </div>
@@ -49,6 +53,9 @@ export default {
       } else {
         this.showQuestions = !this.showQuestions
       }
+    },
+    sort(param){
+      this.$store.commit('SORTLIST', {which:'question', how:param})
     }
   }
 }
@@ -71,6 +78,14 @@ export default {
 .searchbar {
   width: 30%;
   min-width: 14em;
+}
+
+a {
+  color: white;
+}
+
+a:hover {
+  color: #F7C331;
 }
 
 </style>

@@ -21,6 +21,10 @@ const questionSchema = new Schema({
 	owner: { 
 		type: Schema.Types.ObjectId, 
 		ref: 'User'
+	},
+	dateAdded: {
+		type: Date,
+		default: Date.now()
 	}
 });
 

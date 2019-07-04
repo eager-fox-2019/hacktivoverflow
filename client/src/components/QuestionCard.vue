@@ -6,6 +6,7 @@
         {{updatedCard.description}}
       </b-card-text>
       <b-link href="#" class="card-link" @click.prevent="questionDetail">See Detail</b-link>
+      <pre>{{updatedCard}}</pre>
     </b-card>
   </div>
 </template>

@@ -4,8 +4,30 @@ import axios from 'axios'
 
 Vue.use(Vuex)
 
+//helper function to compare objects in array top questions
+function compareVotes(a, b){
+  let score_a = a.upvotes.length - a.downvotes.length
+  let score_b = b.upvotes.length - b.downvotes.length
+  if (score_a > score_b) return -1;
+  if (score_b > score_a) return 1;
+
+  return 0;
+}
+function compareDate(a, b){
+  let score_a = new Date(a.dateAdded).getTime()
+  let score_b = new Date(b.dateAdded).getTime()
+  if (score_a > score_b) return -1;
+  if (score_b > score_a) return 1;
+
+  console.log({score_a})
+  console.log({score_b})
+  console.log({result: (score_a > score_b)})
+  return 0;
+}
+
 export default new Vuex.Store({
   state: {
+    // baseURL: 'http://minioverflow.stefkwan.com',
     baseURL: 'http://localhost:3000',
     isLoggedin: false,
     access_token: null,
@@ -18,6 +40,18 @@ export default new Vuex.Store({
     alertType: ''
   },
   mutations: {
+    SORTLIST (state, payload) {
+      let {which, how} = payload
+      if (which === 'question'){
+        if (how === 'date') state.questionList.sort(compareDate)
+        if (how === 'votes') state.questionList.sort(compareVotes)
+      }
+
+      if (which === 'answer'){
+        if (how === 'date') state.answerList.sort(compareDate)
+        if (how === 'votes') state.answerList.sort(compareVotes)
+      }
+    },
     SHOWMSG (state, payload) {
       state.alertMsg = payload.message
       state.alertType = payload.type
