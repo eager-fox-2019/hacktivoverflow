@@ -24,14 +24,25 @@
         </b-row>
       </b-container>
     </div>
-    <h3>{{ title }}</h3>
-    <p>{{ description }}</p>
+    <AnswerComponent 
+      v-for="answ in questionDetail.answers" 
+      :key="answ._id"
+      :title="answ.title"
+      :description="answ.description"
+      :upvotes="answ.upvotes"
+      :downvotes="answ.downvotes"
+      :_id="answ._id"
+      :user="answ.user" /> 
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
+import AnswerComponent from '@/components/AnswerComponent.vue'
 export default {
+  components: {
+    AnswerComponent,
+  },
   created() {
     this.$store.dispatch("fetchQuestionDetail", { id: this.$route.params.id });
   },
@@ -46,7 +57,6 @@ export default {
         }
       }
   },
-  props: ["title", "description", "upvotes", "downvotes", "_id", "user"],
   data() {
     return {
       rating: 0,
