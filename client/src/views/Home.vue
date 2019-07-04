@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <b-container class="bv-example-row">
-      <h2 class="mt-5">Home</h2>
+      <h2 class="mt-5">Question List</h2>
       <QuestionComponent 
         v-for="question in questions"
         :key="question._id"

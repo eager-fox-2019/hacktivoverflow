@@ -15,7 +15,7 @@ class Controller {
 
   static async getQuestion (req, res, next) {
     try {
-      let questions = await Question.find({}).exec()
+      let questions = await Question.find({}).populate('user').exec()
       res.json(questions)
     } catch (err) {
       console.log('get question error', { err })
