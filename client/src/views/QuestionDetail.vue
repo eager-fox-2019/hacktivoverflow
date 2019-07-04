@@ -54,6 +54,7 @@ export default {
         if (res) {
           this.form.title = ''
           this.form.description = ''
+          this.$store.dispatch("fetchQuestionDetail", { id: this.$route.params.id })
         }
       }
   },
