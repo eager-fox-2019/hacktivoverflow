@@ -1,4 +1,5 @@
 const Question = require('../models/question')
+const Answer = require('../models/answer')
 
 class Controller {
   static async postQuestion (req, res, next) {
@@ -19,6 +20,27 @@ class Controller {
       res.json(questions)
     } catch (err) {
       console.log('get question error', { err })
+      next(err)
+    }
+  }
+
+  static async getQuestionDetail (req, res, next) {
+    let { id } = req.params 
+    try {
+      let questionPromise = Question.findOne({ _id: id }).populate('user').exec()
+      let answerPromise = Answer.find({ question: id }).populate('question').exec()
+      let [question, answers] = await Promise.all([questionPromise, answerPromise])
+      // kalau langsung di spread nanti variabel mongo kebawa juga
+      res.json({
+        _id: question._id,
+        user: question.user,
+        title: question.title,
+        description: question.description,
+        upvotes: question.upvotes,
+        downvotes: question.downvotes, 
+        answers
+      })
+    } catch (err) {
       next(err)
     }
   }
