@@ -17,9 +17,7 @@
                 <p class="is-size-6 has-text-info">
                     <a @click="details"><b>{{data.title}}</b></a>
                     <small style="float:right; color:grey;"><span>{{ new Date(data.createdAt) | moment("from", "now") }}</span></small><br>
-                    <button v-if="data.userId._id == user._id" style="float:right;" class="button" @click="isActive2 = !isActive2"><i  class="fas fa-edit has-text-success" style=" cursor:pointer"></i></button>
-                
-                    
+                    <button v-if="data.userId._id == user._id" style="float:right;" class="button" @click="isActive2 = !isActive2"><i  class="fas fa-edit has-text-success" style=" cursor:pointer"></i></button> 
                 </p>
                 
             </div>

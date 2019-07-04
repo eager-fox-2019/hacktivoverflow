@@ -29,6 +29,9 @@ export default {
   },
   created(){
     if(!localStorage.getItem('access_token')) this.$router.push('/')
+    this.$store.dispatch('getAllQuestions')
+      .then(() => {}).catch((err) => {})
+
   }
 }
 </script>
@@ -61,3 +64,4 @@ export default {
   color: #42b983;
 }
 </style>
+
