@@ -9,7 +9,8 @@ export default new Vuex.Store({
     userTag : [],
     allQuestion : [],
     questionEditData : '',
-    detailQuestion : ''
+    detailQuestion : '',
+    answerEditData : ''
   },
   mutations: {
     setIsLogin(state,data){
@@ -28,9 +29,29 @@ export default new Vuex.Store({
     },
     setDetailQuestion(state,data){
       state.detailQuestion = data
+    },
+    setEditAnswerData(state,data){
+      state.answerEditData = data
     }
   },
   actions: {
+    filterByTag(context,data){
+      let query = data
+      console.log('masuk ke store',data);
+      ax.get('/questions')
+      .then(({data})=>{
+        let arr = []
+        data.forEach(el =>{
+          console.log('lllllll',el.tags);
+          if(el.tags.indexOf(query) !== -1){
+            arr.push(el)
+          }
+        })
+        context.commit('setAllQuestion',arr)
+
+      })
+    },
+
     register(context,data){
       console.log('masuk store',data);
       ax.post('/register',data)
@@ -55,6 +76,22 @@ export default new Vuex.Store({
         ax.defaults.headers.common['token'] = data.token;   
 
         context.commit('setIsLogin',true)
+      })
+      .catch(err =>{
+        console.log(err);
+        
+      })
+    },
+
+    updateWatchedTag(context,data){
+      
+      // console.log('--------------',passing);
+      
+      ax.patch(`/users/${localStorage.userId}/watchTag`,{tags : data})
+      .then(({data})=>{
+        console.log(data);
+       localStorage.tags = data.watchedTags
+       context.commit('setUserTag',data.watchedTags)
       })
       .catch(err =>{
         console.log(err);
@@ -127,11 +164,11 @@ export default new Vuex.Store({
     },
 
     upvoteAnswer(context,data){
-      console.log('data upvote answer',data);
+      // console.log('data upvote answer',data);
 
       ax.patch(`/answers/${data._id}/upvote`)
       .then(({data})=>{
-        console.log('hasil upvoteeee',data);
+        // console.log('hasil upvoteeee',data);
           this.dispatch('getQuestionDetail',data.questionId)
       })
       .catch(err =>{
@@ -224,6 +261,54 @@ export default new Vuex.Store({
         console.log(err);
         
       })
-    }
+    },
+
+    getAnswerDetail(context,data){
+      ax.get(`/answers/${data}`)
+      .then(({data})=>{
+        console.log('ini data nyaaa answer',data);
+        context.commit('setEditAnswerData',data)
+      })
+      .catch(err =>{
+        console.log(err);
+        
+      })
+    },
+
+    editAnswer(context,data){
+      console.log('data di storeee',data);
+      let passing = {
+        title : data.title,
+        description : data.description
+      }
+      ax.patch(`/answers/${data.id}`, passing)
+      .then(({data})=>{
+        console.log('data',data)
+        this.dispatch('getQuestionDetail',data.questionId)
+      })
+      .catch(err =>[
+        console.log(err)
+        
+      ])
+    },
+
+    deleteAnswer(context,data){
+      ax.delete(`/answers/${data.questionId}/${data._id}`)
+      .then(({data})=>{
+        console.log('hasil data abis delete',data);
+        
+        if(localStorage.page === 'home'){
+          this.dispatch('fetchAllQuestion')
+        }else if(localStorage.page === 'profile'){
+          this.dispatch('fetchUserQuestion')
+        }else if(localStorage.page === 'detail'){
+          this.dispatch('getQuestionDetail',data.questionId)
+        }
+      })
+      .catch(err =>{
+        console.log(err);
+        
+      })
+    },
   }
 })

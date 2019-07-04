@@ -44,7 +44,7 @@
             </v-list>
             <v-container>
                 <v-layout column align-center>
-                    <v-flex>
+                    <v-flex align-center>
                         <v-text-field
                             append-icon="mic"
                             class="mx-3"
@@ -56,9 +56,10 @@
                         <h3>Watched Tags</h3>
                         <!-- {{loggedUser.watchedTags}} -->
                         <v-card style=" min-height : 150px; background-color : rgba(255, 255, 255, 0.12)">
-                            <v-btn v-for="(tag,index) in loggedUser.watchedTags" :key="index" color="#260101" dark>{{tag}}</v-btn>
-                            
+                            <v-btn @click="resetQuery">All</v-btn>
+                            <v-btn @click="queryTag(tag)" v-for="(tag,index) in loggedUser.watchedTags" :key="index" color="#260101" dark>{{tag}}</v-btn>
                         </v-card>
+                        <v-btn @click="editTagUser">edit user watched tag</v-btn>
                     </v-flex>
                 </v-layout>
             </v-container>
@@ -173,6 +174,27 @@
                     </v-card-actions>
                 </v-card>
         </v-dialog>
+        <v-dialog v-model="dialog5" persistent max-width="600px">
+                <v-card>
+                    <v-card-title>
+                    <span class="headline">edit Watched Tags</span>
+                    </v-card-title>
+                    <v-card-text>
+                    <v-container grid-list-md>
+                        <v-layout row wrap>
+                            <v-flex>
+                                <tags-input element-id="tags" v-model="editingTag" :typeahead="true"></tags-input>
+                            </v-flex>
+                        </v-layout>
+                    </v-container>
+                    </v-card-text>
+                    <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="blue darken-1" flat @click="dialog5 = false, clearFormCreate()">Close</v-btn>
+                    <v-btn color="blue darken-1" flat @click="dialog5 = false, updateTag()">Save</v-btn>
+                    </v-card-actions>
+                </v-card>
+        </v-dialog>
     </nav>
 </template>
 
@@ -188,11 +210,13 @@ export default {
         return{
             questionTags : [],
             userTags : [],
+            editingTag: [],
             drawer : false,
             dialog1 : false,
             dialog2 : false,
             dialog3 : false,
             dialog4: false,
+            dialog5 : false,
             links : [
                     {icon : 'dashboard', text: 'Home', route: '/'},
                     {icon : 'people', text: 'user profile', route: `/myProfile`},
@@ -301,6 +325,34 @@ export default {
                 password : '',
                 selectedTags : []
             }
+        },
+        editTagUser(){
+            console.log(localStorage.tags)
+            let arr = []
+            
+            let arrTag = localStorage.tags.split(',')
+            arrTag.forEach(el =>{
+                arr.push({key: el , value: el})
+            })
+            console.log(arr);
+            this.editingTag = arr
+            this.dialog5 = true
+
+        },
+
+        updateTag(){
+            console.log(this.tagsE)
+            this.$store.dispatch('updateWatchedTag', this.tagsE)
+        },
+
+        queryTag(tag){
+            // console.log('ini query', el);
+            this.$store.dispatch('filterByTag',tag)
+            
+        },
+
+        resetQuery(){
+            this.$store.dispatch('fetchAllQuestion')
         }
 
     },
@@ -316,6 +368,9 @@ export default {
                 this.loggedUser.email = localStorage.email
                 this.loggedUser.watchedTags = localStorage.tags.split(',')
             }
+        },
+        userTag(){
+            this.loggedUser.watchedTags = localStorage.tags.split(',')
         }
     },
     created(){
@@ -341,7 +396,13 @@ export default {
             })
             return array
         },
-        ...mapState(['isLogin', 'userTag','access'])
+        tagsE(){
+            let array = this.editingTag.map(tag =>{
+                return tag.value
+            })
+            return array
+        },
+        ...mapState(['isLogin', 'userTag'])
 
     }
 }

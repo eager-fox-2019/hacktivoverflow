@@ -18,8 +18,8 @@
                 <v-layout row align-center>
                   <v-btn>Answer : {{question.answerList.length}}</v-btn>
                   <v-spacer></v-spacer>
-                  <v-btn @click.prevent="upvote" ><i class="fas fa-thumbs-up fa-lg mr-3"></i> : {{question.upVotes.length}}</v-btn>
-                  <v-btn @click.prevent="downvote" ><i class="fas fa-thumbs-down fa-lg mr-3"></i> : {{question.downVotes.length}}</v-btn>
+                  <v-btn class="success" @click.prevent="upvote" ><i class="fas fa-thumbs-up fa-lg mr-3"></i> : {{question.upVotes.length}}</v-btn>
+                  <v-btn class="warning" @click.prevent="downvote" ><i class="fas fa-thumbs-down fa-lg mr-3"></i> : {{question.downVotes.length}}</v-btn>
                 </v-layout>
               </v-card-actions>
               <v-layout v-show="page === 'profile'">

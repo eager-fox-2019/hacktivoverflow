@@ -48,6 +48,19 @@ class UserController{
         })
         .catch(next)
     }
+
+    static updateWatchTag(req,res,next){
+        console.log('masuk update tag',req.body.tags);
+        let setVal = {}
+        req.body.tags && (setVal.watchedTags = req.body.tags)
+
+        User.findByIdAndUpdate(req.params.userId, setVal, {new : true})
+        .then(user =>{
+            console.log('updated ------------',user);
+            res.status(200).json(user)
+        })
+        .catch(next)
+    }
 }
 
 module.exports = UserController

@@ -25,8 +25,8 @@
                 <v-layout row align-center>
                   <v-btn @click="dialog = true">click here to input Answer</v-btn>
                   <v-spacer></v-spacer>
-                  <v-btn @click.prevent="upvote" ><i class="fas fa-thumbs-up fa-lg mr-3"></i> : {{detailQuestion.upVotes.length}}</v-btn>
-                  <v-btn @click.prevent="downvote" ><i class="fas fa-thumbs-down fa-lg mr-3"></i> : {{detailQuestion.downVotes.length}}</v-btn>
+                  <v-btn color="success" @click.prevent="upvote" ><i class="fas fa-thumbs-up fa-lg mr-3"></i> : {{detailQuestion.upVotes.length}}</v-btn>
+                  <v-btn color="warning" @click.prevent="downvote" ><i class="fas fa-thumbs-down fa-lg mr-3"></i> : {{detailQuestion.downVotes.length}}</v-btn>
                 </v-layout>
               </v-card-actions>
         </v-card>

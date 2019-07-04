@@ -1,5 +1,5 @@
 const Question = require('../models/question')
-const User = require('../models/user')
+const Answer = require('../models/answer')
 class QuestionController{
     
     static getAll(req,res,next){
@@ -155,15 +155,15 @@ class QuestionController{
 
     static delete(req,res,next){
         console.log('masuk ke delete controller question');
-        
-        let questionId = req.params.questionId
-        User
-        .findByIdAndUpdate({_id : req.loggedUser.id},{$pull : {questionList : questionId}},{new : true})
-        .then(({data})=>{
-            return Question.findOneAndDelete({_id : questionId})    
-        })
+        let Quest;
+        Question
+        .findByIdAndDelete(req.params.questionId)
         .then(question =>{
-            res.status(201).json(question)
+            Quest = question
+           return Answer.deleteMany({questionId : question._id})
+        })
+        .then(data =>{
+            res.status(201).json(Quest)
         })
         .catch(next)
     }

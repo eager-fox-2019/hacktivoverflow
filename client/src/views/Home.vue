@@ -3,8 +3,8 @@
     <v-container fluid style=" margin : 0;background-color : #260101 ;height : 100%">
     <navbar/>
     <v-container></v-container>
-      <v-layout row justify-center>
-        <v-flex lg9 md12 xs12 mr-2 style="justify-content:center; text-align : center;background-color : #735451; height : 100%">
+      <v-layout row justify-center style="min-height : 100vh">
+        <v-flex lg9 md12 xs12 mr-2 style="justify-content:center; text-align : center;background-color : #735451; min-height : 100vh">
           <h1>List of Question</h1>
           <v-flex lg6 offset-lg3>
             <v-text-field

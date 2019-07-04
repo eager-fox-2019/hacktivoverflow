@@ -15,11 +15,11 @@
               <v-card-actions>
                 <v-layout row align-center>
                   <v-spacer></v-spacer>
-                  <v-btn @click.prevent="upvote" ><i class="fas fa-thumbs-up fa-lg mr-3"></i> : {{answer.upVotes.length}}</v-btn>
-                  <v-btn @click.prevent="downvote" ><i class="fas fa-thumbs-down fa-lg mr-3"></i> : {{answer.downVotes.length}}</v-btn>
+                  <v-btn color="success" @click.prevent="upvote" ><i class="fas fa-thumbs-up fa-lg mr-3"></i> : {{answer.upVotes.length}}</v-btn>
+                  <v-btn color="warning" @click.prevent="downvote" ><i class="fas fa-thumbs-down fa-lg mr-3"></i> : {{answer.downVotes.length}}</v-btn>
                 </v-layout>
               </v-card-actions>
-              <v-layout v-show="page === 'profile'">
+              <v-layout v-show="answer.userId === userId">
                   <v-btn @click.prevent="doDelete" >Delete</v-btn>
                   <v-btn @click.prevent="doEdit" >Edit</v-btn>
               </v-layout>
@@ -92,7 +92,7 @@ export default {
             this.$store.dispatch('editAnswer',data)
         },
         doDelete(){
-            this.$store.dispatch('deleteAnswer', this.Answer._id)
+            this.$store.dispatch('deleteAnswer', this.answer)
         },
         clearFormCreate(){
             this.newAnswer = {
