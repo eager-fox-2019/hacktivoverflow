@@ -55,6 +55,7 @@ export default new Vuex.Store({
           console.log(data)
         })
         .catch((err) => {
+          console.log(err, 'error regs')
           Swal.fire({
             title: 'test'
           })

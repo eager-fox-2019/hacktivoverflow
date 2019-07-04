@@ -9,7 +9,7 @@ const errHandler = require('./middlewares/errorHandler')
 const app = express()
 const port = process.env.PORT || 3000
 
-mongoose.connect(process.env.MONGODB_URL + "-" + process.env.NODE_ENV, {useNewUrlParser: true})
+mongoose.connect(process.env.MONGODB_URL, {useNewUrlParser: true})
 .then(resp => {
     console.log('===== MONGODB CONNECTED =====')
 })
