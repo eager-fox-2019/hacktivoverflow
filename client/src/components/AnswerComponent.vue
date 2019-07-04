@@ -38,10 +38,14 @@ export default {
   },
   methods: {
     async vote (action) {
-      // let res = await this.$store.dispatch('vote', )
+      let id = this._id;
+      let res = await this.$store.dispatch("voteAnswer", { action, id });
+      if (res) {
+        this.$emit('answer-voted')
+      }
     },
     triggerDelete () {
-      
+
     }
   },
   props: ["title", "description", "upvotes", "downvotes", "_id", "user"],

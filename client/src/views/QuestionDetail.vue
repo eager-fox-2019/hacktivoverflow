@@ -51,6 +51,7 @@
       :downvotes="answ.downvotes"
       :_id="answ._id"
       :user="answ.user"
+      @answer-voted="refetch"
     />
   </div>
 </template>
@@ -66,6 +67,9 @@ export default {
     this.$store.dispatch("fetchQuestionDetail", { id: this.$route.params.id });
   },
   methods: {
+    refetch() {
+      this.$store.dispatch("fetchQuestionDetail", { id: this.$route.params.id })
+    },
     async vote(action) {
       let id = this.$route.params.id;
       let res = await this.$store.dispatch("voteQuestion", { action, id });
