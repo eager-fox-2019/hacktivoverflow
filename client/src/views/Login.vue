@@ -61,8 +61,8 @@ export default {
                                 this.$store.dispatch('getWatchedTagsQuestions', this.watchedTags)
                                 .then(()=> {
                                     if(!this.$store.getters.error) {
-                                        this.$store.state.isLogin = true
                                         setTimeout(() => {
+                                            this.$store.state.isLogin = true
                                             this.$alertify.success(`Welcome ${data.username}`);
                                             this.$router.push('/')
                                         }, 1000);

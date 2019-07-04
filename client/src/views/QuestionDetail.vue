@@ -216,6 +216,8 @@ export default {
             .patch(`answers/${answerId}`,{description:this.editAnswer} )
             .then(({data})=>{
                 this.$store.commit('EDIT_ANSWERS', data)
+                console.log(data);
+                this.$store.commit('EDIT_WATCHED_TAGS_QUESTION', data)
                 this.$alertify.success('Answer edited');
                 this.showEdit = false
                 this.editAnswer = ''

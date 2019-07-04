@@ -128,7 +128,16 @@ export default new Vuex.Store({
     },
     SET_WATCHED_TAGS_QUESTION(state, payload) {
       state.watchedTagsQuestions = payload
-    }
+    },
+    EDIT_WATCHED_TAGS_QUESTION(state, payload) {
+      state.watchedTagsQuestions = state.watchedTagsQuestions.map(wtq => {
+        if(wtq._id === payload._id) {
+          wtq = payload
+        }
+
+        return wtq
+      })
+    },
   },
   // this.$store.dispatch
   actions: {
@@ -244,7 +253,7 @@ export default new Vuex.Store({
         .catch(err => {
             console.log(err.response);
         })
-      }, 1000);
+      }, 1500);
     }
   }
 })
