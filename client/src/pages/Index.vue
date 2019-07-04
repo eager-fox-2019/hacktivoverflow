@@ -30,14 +30,16 @@ import PotdCard from "../components/potd-card"
 export default {
   name: 'home',
   created () {
-    var temp = [...this.$store.state.main.posts]
-    var potd = temp.sort(function(a, b) {
-      var a2 = a.upvotes.length - a.downvotes.length
-      var b2 = b.upvotes.length - b.downvotes.length
-      return b2 - a2
-    })
-    potd.splice(5, potd.length-5)
-    this.potds = potd
+    setTimeout(() =>{
+      var temp = [...this.$store.state.main.posts]
+      var potd = temp.sort(function(a, b) {
+        var a2 = a.upvotes.length - a.downvotes.length
+        var b2 = b.upvotes.length - b.downvotes.length
+        return b2 - a2
+      })
+      potd.splice(5, potd.length-5)
+      this.potds = potd
+    }, 200)
   },
   data () {
     return {

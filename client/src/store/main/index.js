@@ -11,6 +11,7 @@
 
 import jwt from "jsonwebtoken"
 import axios from "axios"
+import { date } from "quasar";
 
 
 export default {
@@ -20,7 +21,7 @@ export default {
   // actions,
   // state,
   state: {
-    baseUrl: "http://localhost:3000/api",
+    baseUrl: "http://18.136.102.102/api",
     isLogin: false,
     username: "",
     userId: "",
@@ -60,7 +61,13 @@ export default {
           url: `${this.state.main.baseUrl}/posts/all`,
         })
         .then(posts =>{
-          context.commit("SET_POSTS", posts.data)
+          var sorted = posts.data.sort(function(a, b) {
+            var dateA = new Date(a.createdAt)
+            var dateB = new Date(b.createdAt)
+            return dateB - dateA
+          })
+          console.log(sorted)
+          context.commit("SET_POSTS", sorted)
           resolve(posts.data)
         })
         .catch(err =>{

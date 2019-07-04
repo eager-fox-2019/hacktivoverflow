@@ -18,7 +18,7 @@
 
             <q-item-section>
                 <q-item-label>{{potd.title}}</q-item-label>
-                <q-item-label caption><p class="ellipsis" style="width: 300px;">{{potd.description}}</p></q-item-label>
+                <q-item-label caption><p class="ellipsis" style="width: 300px; max-height: 50px;" v-html="potd.description"></p></q-item-label>
             </q-item-section>
 
             </div>
