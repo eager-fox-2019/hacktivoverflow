@@ -58,7 +58,10 @@ export default {
   	  	commit('UPDATECURRENTANSWERLIST', newList)
   	  })
   	  .catch(({ response }) => {
-  	  	console.log({ errAtDelAns: response })
+        commit('SHOWMSG', {
+          message: response.data,
+          type: 'danger'
+        })
   	  })
   	}
   }

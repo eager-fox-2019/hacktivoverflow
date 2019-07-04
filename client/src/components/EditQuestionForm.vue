@@ -68,6 +68,10 @@ export default {
         })
         .catch(({ response }) => {
           console.log(response.data)
+          commit('SHOWMSG', {
+            message: response.data,
+            type: 'danger'
+          })
         })
     },
     onReset () {

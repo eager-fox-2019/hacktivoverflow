@@ -66,7 +66,7 @@ export default {
           console.log(response.data)
           commit('SHOWMSG', {
             message: response.data,
-            type: 'warning'
+            type: 'danger'
           })
         })
     },
