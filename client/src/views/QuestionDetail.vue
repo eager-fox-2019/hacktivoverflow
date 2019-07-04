@@ -19,7 +19,7 @@
             <h5>Answer This Question</h5>
             <input class="m-2 w-100" placeholder="Title" type="text" v-model="form.title" /> <br/>
             <textarea class="m-2 w-100" style="height:150px;" placeholder="Description" type="text" v-model="form.description"> </textarea> <br/>
-            <b-button class="m-2" variant="light">Answer</b-button> 
+            <b-button @click="postAnswer" class="m-2" variant="light">Answer</b-button> 
           </b-col>
         </b-row>
       </b-container>
@@ -34,6 +34,17 @@ import { mapState } from "vuex";
 export default {
   created() {
     this.$store.dispatch("fetchQuestionDetail", { id: this.$route.params.id });
+  },
+  methods: {
+      async postAnswer() {
+        let { title, description } = this.form
+        let question = this.$route.params.id
+        let res = await this.$store.dispatch('postAnswer', {title, description, question})
+        if (res) {
+          this.form.title = ''
+          this.form.description = ''
+        }
+      }
   },
   props: ["title", "description", "upvotes", "downvotes", "_id", "user"],
   data() {

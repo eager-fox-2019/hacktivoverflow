@@ -111,7 +111,18 @@ export default new Vuex.Store({
         errorHandler(err)
         return false
       }
-    }, 
+    },
+    async postAnswer (context, payload) {
+      let { title, description, question } = payload
+      try {
+        let res = await axios.post(`${BASE_URL}/answer`, { title, description, question }, axiosConfig())
+        toastifyHelper('Answer posted!')
+        return res
+      } catch (err) {
+        errorHandler(err)
+        return false
+      }
+    },
     async fetchQuestion (context, payload) {
       try {
         let res = await axios.get(`${BASE_URL}/question`)
