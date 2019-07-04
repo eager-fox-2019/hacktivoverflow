@@ -1,10 +1,9 @@
-if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-    require('dotenv').config();
-}
+
+require('dotenv').config();
 
 const express = require('express')
 const app = express()
-const port = 3000
+const port = 80
 const route = require('./routes')
 const mongoose = require('mongoose')
 const cors = require('cors')
