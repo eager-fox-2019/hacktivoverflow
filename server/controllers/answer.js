@@ -4,6 +4,7 @@ class Controller {
     static findAll(req, res, next) {
         Answer
             .find({})
+            .populate('userId')
             .then(resp => {
                 res.status(200).json(resp)
             })
@@ -13,6 +14,7 @@ class Controller {
     static findById(req, res, next) {
         Answer
             .findById(req.params.id)
+            .populate('userId')
             .then(resp => {
                 res.status(200).json(resp)
             })

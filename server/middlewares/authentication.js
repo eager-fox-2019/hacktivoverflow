@@ -13,7 +13,7 @@ module.exports = (req, res, next) => {
                 } else {
                     throw({
                         status: 401,
-                        message: "Unauthorized"
+                        message: "Unauthorized!"
                     })
                 }
             })

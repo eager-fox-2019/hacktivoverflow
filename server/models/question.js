@@ -26,7 +26,11 @@ let question = new Schema({
     answers: [{
         type: Schema.Types.ObjectId,
         ref: 'Answer'
-    }]
+    }],
+    tags: {
+        type: Array,
+        default: []
+      }
 }, {
     timestamps: true
 })

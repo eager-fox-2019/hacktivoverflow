@@ -1,15 +1,20 @@
 <template>
   <div class="container is-fluid">
     <Navbar></Navbar>
-    <h1>This is an about page</h1>
+    <NewQ></NewQ>
   </div>
 </template>
 
 <script>
 import Navbar from "@/components/Navbar.vue";
+import NewQ from '@/components/NewQ.vue'
 export default {
-  components: {
+  components:{
+    NewQ,
     Navbar
   }
 };
 </script>
+
+<style>
+</style>

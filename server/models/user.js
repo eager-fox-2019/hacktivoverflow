@@ -30,6 +30,10 @@ let user = new Schema({
     type: String,
     required: [true, 'Password cannot be empty'],
     minlength: [6, 'Password must have minimal 6 character']
+  },
+  watchtags: {
+    type: Array,
+    default: []
   }
 }, {
   timestamps: true

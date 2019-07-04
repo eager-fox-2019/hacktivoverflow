@@ -1,0 +1,98 @@
+<template>
+  <nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a class="navbar-item" @click="$router.push('/all')">
+        <img src="https://cdn3.iconfinder.com/data/icons/popular-services-brands-vol-2/512/stackoverflow-512.png" width="30" height="100" />
+      </a>
+
+      <a
+        role="button"
+        class="navbar-burger burger"
+        aria-label="menu"
+        aria-expanded="false"
+        data-target="navbarBasicExample"
+      >
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+
+    <div id="navbarBasicExample" class="navbar-menu">
+      <div class="navbar-start">
+        <a class="navbar-item" @click="$router.push('/all')">Home</a>
+        <a class="navbar-item" @click="$router.push('/about')">Help</a>
+      </div>
+      <b-field style="margin-top:13px">
+        <b-input placeholder="Search" type="search" icon-pack="fas" icon="search" rounded></b-input>
+      </b-field>
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <div class="buttons" v-if="!isLogin">
+            <a class="button is-light" @click="login">Log in</a>
+          </div>
+          <div class="buttons" v-if="isLogin">
+          <div @click="toNew" class="button">
+            <i class="fas fa-question-circle" style="font-size: 25px;"></i>
+          </div>
+            <div>
+              <b-dropdown aria-role="list">
+                <i
+                  class="fas fa-users-cog tag"
+                  slot="trigger"
+                  style="font-size:27px; margin-right:15px"
+                ></i>
+                <div>
+                  <b-dropdown-item aria-role="listitem">
+                    <i class="fas fa-user-alt"></i>
+                    <small>Profile</small>
+                  </b-dropdown-item>
+                  <b-dropdown-item aria-role="listitem" @click="mypost">
+                    <i class="fas fa-clone"></i>
+                    <small>My Post</small>
+                  </b-dropdown-item>
+                  <b-dropdown-item aria-role="listitem" @click="logout">
+                    <i class="fas fa-power-off"></i>
+                    <small>Logout</small>
+                  </b-dropdown-item>
+                </div>
+              </b-dropdown>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</template>
+
+<script>
+export default {
+  name: "navbar",
+  data() {
+    return {};
+  },
+  computed: {
+    isLogin() {
+      return this.$store.state.isLogin;
+    }
+  },
+  methods: {
+    login() {
+        this.$router.push('/')
+    },
+    logout(){
+      this.$store.commit('logout')
+      this.$router.push('/all')
+    },
+    toNew(){
+      this.$router.push('/new')
+    },
+    mypost(){
+      this.$router.push('/mypost')
+    }
+  }
+};
+</script>
+
+<style>
+</style>

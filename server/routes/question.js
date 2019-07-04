@@ -9,6 +9,7 @@ router.get('/:id', question.findById)
 
 router.use(authentication)
 
+router.get('/user/posts', question.findByUser)
 router.post('/', question.create)
 router.patch('/upvotes/:id', question.upvotes)
 router.patch('/downvotes/:id', question.downvotes)

@@ -6,10 +6,12 @@ const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 class Controller {
     static register(req, res, next) {
+        console.log(req.body)
         let data = {
             userName: req.body.userName,
             email: req.body.email,
-            password: req.body.password
+            password: req.body.password,
+            watchtags: req.body.tags
         }
         User.create(data).
         then(resp => {

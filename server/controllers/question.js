@@ -5,7 +5,7 @@ class Controller {
     static findAll(req, res, next) {
         Question
             .find({})
-            .populate('answers')
+            .populate('userId')
             .then(resp => {
                 res.status(200).json(resp)
             })
@@ -15,7 +15,24 @@ class Controller {
     static findById(req, res, next) {
         Question
             .findById(req.params.id)
-            .populate('answers')
+            .populate({
+                path: 'answers',
+                populate: {
+                    path: 'userId'
+                }
+            })
+            .populate('userId')
+            .then(resp => {
+                res.status(200).json(resp)
+            })
+    }
+
+    static findByUser(req, res, next) {
+        Question
+            .find({
+                userId: req.decoded.id
+            })
+            .populate('userId')
             .then(resp => {
                 res.status(200).json(resp)
             })
@@ -28,7 +45,8 @@ class Controller {
             desc: req.body.desc,
             upvotes: [],
             downvotes: [],
-            answers: []
+            answers: [],
+            tags: req.body.tags
         }
 
         Question
@@ -44,6 +62,7 @@ class Controller {
 
         req.body.title && (data.title = req.body.title)
         req.body.desc && (data.desc = req.body.desc)
+        req.body.tags && (data.tags = req.body.tags)
 
         Question
             .findByIdAndUpdate(req.params.id, data, {
