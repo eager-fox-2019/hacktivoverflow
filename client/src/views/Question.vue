@@ -62,32 +62,34 @@
     <br>
     <hr>
     <br>
+
     <h1>Answers</h1>
     <div v-for="(answer, index) in answers" :key="index">
-      <br>
-      <br>
-      <p v-html="answer.description"></p>
-      <h5>By: {{ answer.user.username}}</h5>
-
-      <a href="#" @click.prevent="upvoteAnswer(answer._id)">
-        <i style="font-size: 30px;" class="fas fa-sort-up"></i>
-      </a>
-      <h4>{{ answer.upvotes.length - answer.downvotes.length }}</h4>
-      <a href="#" @click.prevent="downvoteAnswer(answer._id)">
-        <i style="font-size: 30px;" class="fas fa-sort-down"></i>
-      </a>
-
-      <button
-        class="btn btn-warning"
-        v-if="answer.user._id === user._id"
-        @click.prevent="toEditAnswer(answer._id)"
-      >Edit</button>
-
-      <button
-        @click.prevent="deleteAnswer(answer._id)"
-        class="btn btn-danger"
-        v-if="answer.user._id === user._id"
-      >Delete</button>
+      <div class="row">
+        <div class="col-1">
+          <a href="#" @click.prevent="upvoteAnswer(answer._id)">
+            <i style="font-size: 30px;" class="fas fa-sort-up"></i>
+          </a>
+          <h4>{{ answer.upvotes.length - answer.downvotes.length }}</h4>
+          <a href="#" @click.prevent="downvoteAnswer(answer._id)">
+            <i style="font-size: 30px;" class="fas fa-sort-down"></i>
+          </a>
+        </div>
+        <div class="col-11">
+          <p v-html="answer.description"></p>
+          <h6>By: {{ answer.user.username}}</h6>
+          <button
+            class="btn btn-warning"
+            v-if="answer.user._id === user._id"
+            @click.prevent="toEditAnswer(answer._id)"
+          >Edit</button>
+          <button
+            @click.prevent="deleteAnswer(answer._id)"
+            class="btn btn-danger"
+            v-if="answer.user._id === user._id"
+          >Delete</button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -102,7 +104,6 @@ export default {
       editedAnswer: ""
     };
   },
-
   computed: {
     ...mapState(["isLogin", "currentQuestion", "user", "answers"])
   },

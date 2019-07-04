@@ -6,6 +6,7 @@ const QuestionAuthorization = require('../middlewares/questionAutho')
 
 // READ
 route.get('/', QuestionController.findAll)
+route.get('/random', QuestionController.random)
 route.get('/:id', QuestionController.findOne)
 
 

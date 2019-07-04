@@ -134,21 +134,21 @@
         <ul>
           <li v-if="isLogin">
             <a href="#" @click="askQuestion">
-              <i class="fas fa-feather-alt"></i>
+              <i class="fas fa-feather-alt" data-toggle="tooltip" data-placement="bottom" title="Add Question"></i>
             </a>
             <a href="#" @click="myProfile">
-              <i class="fas fa-user"></i>
+              <i class="fas fa-user" data-toggle="tooltip" data-placement="bottom" title="My Profile"></i>
             </a>
             <a href="#" @click="signOut">
-              <i class="fas fa-sign-out-alt"></i>
+              <i class="fas fa-sign-out-alt" data-toggle="tooltip" data-placement="bottom" title="Sign Out"></i>
             </a>
           </li>
           <li v-else>
-            <a href="#" data-toggle="modal" data-target="#loginForm">
-              <i class="fas fa-sign-in-alt"></i>
+            <a href="#" data-toggle="modal" data-target="#loginForm" >
+              <i class="fas fa-sign-in-alt" data-toggle="tooltip" data-placement="bottom" title="Login"></i>
             </a>
             <a href="#" data-toggle="modal" data-target="#registerForm">
-              <i class="fas fa-user-plus"></i>
+              <i class="fas fa-user-plus" data-toggle="tooltip" data-placement="bottom" title="Register"></i>
             </a>
           </li>
         </ul>

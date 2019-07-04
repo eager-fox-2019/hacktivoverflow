@@ -2,6 +2,17 @@ const Question = require('../models/question')
 const Axios = require('axios')
 
 class QuestionController {
+    static random(req, res) {
+        Axios
+            .get(`https://opentdb.com/api.php?amount=1&type=multiple`)
+            .then(({ data }) => {
+                res.status(200).json(data)
+            })
+            .catch(err => {
+                res.status(500).json(err)
+            })
+    }
+    
     static create(req, res) {
         const { title, description } = req.body
         Question
@@ -99,7 +110,7 @@ class QuestionController {
             .then(question => {
                 let count = 0
                 question.upvotes.find(el => {
-                    if (el == req.decoded._id) { count += 2 }
+                    if (el == req.decoded._id) { count+= 2 }
                 })
                 question.downvotes.find((el, i) => {
                     if (el == req.decoded._id) { count++ }
@@ -131,7 +142,7 @@ class QuestionController {
             .then(question => {
                 let count = 0
                 question.downvotes.find(el => {
-                    if (el == req.decoded._id) { count += 2 }
+                    if (el == req.decoded._id) { count += 2  }
                 })
                 question.upvotes.find((el, i) => {
                     if (el == req.decoded._id) { count++ }

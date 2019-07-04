@@ -23,8 +23,8 @@
           <div class="col-10">
             <h3 v-html="question.title"></h3>
           </div>
-          <div class="">
-            <p>By: {{ question.user.username }}</p>
+          <div class="col-10" style="line-height: 0.8;">
+            <p >By: {{ question.user.username }}</p>
             <p>{{new Date(question.createdAt).toLocaleDateString('en-US',
               { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}}</p>
           </div>
