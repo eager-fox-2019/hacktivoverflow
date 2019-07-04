@@ -14,7 +14,11 @@ const port = process.env.PORT || 3000;
 var cors = require('cors')
 app.use(cors())
 
-let dbName = process.env.dbName + '-' + process.env.NODE_ENV
+let dbName = process.env.dbName
+if(pEnv === "test" || 
+	pEnv === "development"){
+  dbName += '-' + process.env.NODE_ENV
+}
 console.log(dbName)
 mongoose.connect(dbName,  
 	{useNewUrlParser: true});
