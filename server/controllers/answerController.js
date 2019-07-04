@@ -21,7 +21,7 @@ class answerController{
     }
 
     static findAll(req, res, next){
-        Answer.find({questionId: req.params.questionId})
+        Answer.find({questionId: req.params.questionId}).populate('userId')
         .then(answers =>{
             res.status(200).json(answers)
         })

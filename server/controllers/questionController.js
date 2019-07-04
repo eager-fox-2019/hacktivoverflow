@@ -31,6 +31,14 @@ class questionController{
         .catch(next)
     }
 
+    static findMyPost(req, res, next){
+        Question.find({userId: req.decode.id}).sort({createdAt: -1})
+        .then(questions =>{
+            res.status(200).json(questions)
+        })
+        .catch(next)
+    }
+
     static findOne(req, res, next){
         Question.findById(req.params.id).populate('userId')
         .then(question =>{
@@ -71,6 +79,7 @@ class questionController{
                 if(question.upvotes.includes(userId)){
                     throw {code: 404, message: 'You have been vote'}
                 }else{
+                    // console.log(question.upvotes)
                     Promise.all([
                         Question.findByIdAndUpdate(questionId, {$addToSet : { upvotes: userId }}),
                         Question.findByIdAndUpdate(questionId , {$pull : { downvotes: userId }})

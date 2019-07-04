@@ -6,17 +6,24 @@
 - npm init
 - npm install
 - Run `nodemon app.js or npm run dev` to start the server.
-- Run `live-server --host=localhost` to start the client
+- Run `npm run serve` to start the client
 
 ## Feature
 - Register
 - Login
-- Add Item
-- Update Item
-- Delete Item
-- View Detail Item
-- Add to Cart
-- Checkout
+- Logout
+- Add Question
+- Update Question
+- Delete Question
+- Upvote Question
+- Downvote Question
+- Add Answer
+- Update Answer
+- Delete Answer
+- Upvote Answer
+- Downvote Answer
+- Note:
+    - Scoring for vote: if 1 user give upvote and another user give downvote the score is 0
 
 
 ## Routes
@@ -132,7 +139,7 @@
 
 #### Find One Question
 
-    URL: /questions/:id
+    URL: /questions/details/:id
     Method: GET
     Headers: none
     params: none
@@ -346,8 +353,8 @@
 
     URL: /answers/details/:id
     Method: GET
-    Headers: none
-    params: none
+    Headers: token
+    params: answerId
     body: NONE
     Success Response: 
         Code 200:
