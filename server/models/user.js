@@ -50,7 +50,9 @@ const userSchema = new Schema({
 });
 
 userSchema.pre('save', function(next, done) {
-    this.password = Helper.hashPassword(this.password)
+    if(this.isNew) {
+        this.password = Helper.hashPassword(this.password)
+    }
     next()
 });
 

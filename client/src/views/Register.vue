@@ -76,5 +76,6 @@ export default {
 <style>
 .register-form {
     padding: 30px;
+    margin: 0px 170px;
 }
 </style>

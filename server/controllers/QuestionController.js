@@ -103,28 +103,32 @@ class QuestionController {
         Question.findOne({_id:questionId})
         .populate('userId', 'username')
         .then((question)=>{
-            if(voteType === "upvote"){
-                if(question.upvote.includes(userId)){
-                    question.upvote.pull(userId)
-                }else if(question.downvote.includes(userId)){
-                    question.downvote.pull(userId)
-                    question.upvote.push(userId)
+            if(question) {
+                if(voteType === "upvote"){
+                    if(question.upvote.includes(userId)){
+                        question.upvote.pull(userId)
+                    }else if(question.downvote.includes(userId)){
+                        question.downvote.pull(userId)
+                        question.upvote.push(userId)
+                    }else{
+                        question.upvote.push(userId)    
+                    }
+                }else if(voteType === "downvote"){
+                    if(question.downvote.includes(userId)){
+                        question.downvote.pull(userId)
+                    }else if(question.upvote.includes(userId)){
+                        question.upvote.pull(userId)
+                        question.downvote.push(userId)
+                    }else{
+                        question.downvote.push(userId)
+                    }
                 }else{
-                    question.upvote.push(userId)    
+                    res.status(400).json({message: "Invalid voteType"})
                 }
-            }else if(voteType === "downvote"){
-                if(question.downvote.includes(userId)){
-                    question.downvote.pull(userId)
-                }else if(question.upvote.includes(userId)){
-                    question.upvote.pull(userId)
-                    question.downvote.push(userId)
-                }else{
-                    question.downvote.push(userId)
-                }
+                return question.save()
             }else{
-                res.status(400).json({message: "Invalid voteType"})
+                res.status(400).json('Question not found')
             }
-            return question.save()
         })
         .then((question)=>{
             res.status(200).json(question)

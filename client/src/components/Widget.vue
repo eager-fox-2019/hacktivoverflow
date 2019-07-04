@@ -1,27 +1,32 @@
 <template>
     <div>
-        <div class="watched-tags-container watched-tags-card">
-            <div class="watched-head">
-                <h6><i class="fas fa-tags"></i>Watched Tags</h6>
-            </div>
-            <div>
-                <div class="watched-tags-list">
-                    <ul
-                        class="tags mt-2" 
-                    >
-                        <li
-                            v-for="(tag, index) in watchedTags"
-                            :key="index"
-                            style="padding: 3px 10px;"
-                        >{{tag}} <span @click="removeTag(tag)" class="close-tags"><i class="fas fa-times-circle"></i></span></li>
-                    </ul>
+        <div v-if="isLogin">
+            <div class="watched-tags-container watched-tags-card">
+                <div class="watched-head">
+                    <h6><i class="fas fa-tags"></i>Watched Tags</h6>
                 </div>
-                <form 
-                    @submit.prevent="submitWatchTag"
-                >
-                    <input v-model="tagName" type="text">
-                </form>
+                <div>
+                    <div class="watched-tags-list">
+                        <ul
+                            class="tags mt-2" 
+                        >
+                            <li
+                                v-for="(tag, index) in watchedTags"
+                                :key="index"
+                                style="padding: 3px 10px;"
+                            >{{tag}} <span @click="removeTag(tag)" class="close-tags"><i class="fas fa-times-circle"></i></span></li>
+                        </ul>
+                    </div>
+                    <form 
+                        @submit.prevent="submitWatchTag"
+                    >
+                        <input v-model="tagName" type="text">
+                    </form>
+                </div>
             </div>
+        </div>
+        <div style="width: 14em;">
+
         </div>
     </div>
 </template>
@@ -36,6 +41,9 @@ export default {
     computed: {
         watchedTags() {
             return this.$store.getters.watchedTags
+        },
+        isLogin() {
+            return this.$store.getters.isLogin
         }
     },
     methods: {

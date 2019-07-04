@@ -73,7 +73,7 @@ export default {
 
             })
             .catch(error => {
-                console.log(error.response);
+                this.$alertify.error(error.response.data.msg);
             })
         }
     },
@@ -88,5 +88,6 @@ export default {
 <style>
 .login-form {
     padding: 30px;
+    margin: 0px 170px;
 }
 </style>

@@ -3,7 +3,7 @@
         <ul class="list-group list-group-flush" style="position: fixed;">
             <li class="link list-group-item" @click="goToHome()">Home</li>
             <li v-if="isLogin" class="link list-group-item" @click="goToMyQuestion()">My Questions</li>
-            <li class="link list-group-item" @click="goToWatchedTags()">Watched Tags</li>
+            <li v-if="isLogin" class="link list-group-item" @click="goToWatchedTags()">Watched Tags</li>
             <li class="link list-group-item" @click="goToTags()">Tags</li>
         </ul>
     </div>
