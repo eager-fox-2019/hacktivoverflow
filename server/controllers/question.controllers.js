@@ -111,7 +111,7 @@ class ControllerQuestion {
 
       // finally, update the question
       updatedQuestion = foundQuestion
-      return Question.update({_id: foundQuestion._id}, foundQuestion, {new: true})
+      return Question.updateOne({_id: foundQuestion._id}, foundQuestion, {new: true})
     })
     .then ( result => {
       res.json(updatedQuestion)

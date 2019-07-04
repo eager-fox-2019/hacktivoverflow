@@ -46,6 +46,7 @@ export default {
 
         console.log({submitAnswer:data})
         data.owner = state.user
+        data.owner._id = state.user.id
 
         let tempArray = state.answerList
         tempArray.unshift(data)
