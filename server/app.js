@@ -3,12 +3,12 @@ require('dotenv').config();
 
 const express = require('express');
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 const cors = require('cors');
 const routes = require('./routes');
 const mongoose = require('mongoose');
 
-mongoose.connect(`mongodb://localhost:27017/hacktiv-overflow`, {
+mongoose.connect(`mongodb+srv://madearyadi:madearyadi@mini-wp-k9rvg.gcp.mongodb.net/madeOverflow-1?retryWrites=true&w=majority`, {
     useNewUrlParser: true
   })
   .then(() => {
