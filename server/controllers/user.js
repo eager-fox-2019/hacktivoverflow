@@ -4,7 +4,7 @@ const { sign } = require('../helpers/jwt')
 
 class UserController{
     static login(req,res,next){
-        User.findOne({username : req.body.username})
+        User.findOne({email : req.body.email})
         .then(user =>{
             if(user){
                 let check = compare(req.body.password, user.password)

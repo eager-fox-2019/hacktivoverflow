@@ -3,8 +3,8 @@
     <v-container fluid style=" margin : 0;background-color : #260101 ;height : 100%">
     <navbar/>
     <v-container></v-container>
-      <v-layout row justify-center>
-        <v-flex lg9 md12 xs12 mr-2 style="justify-content:center; text-align : center;background-color : #735451; height : 100%">
+      <v-layout row justify-center style="min-height : 100vh">
+        <v-flex lg9 md12 xs12 mr-2 style="justify-content:center; text-align : center;background-color : #735451; min-height : 100%">
           <h1>Question Detail</h1>
           <v-layout row justify-center>
               <v-card class="ma-2" color="#8C7672" dark width="800" min-height="150px" height="auto" hover>

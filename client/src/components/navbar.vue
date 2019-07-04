@@ -98,7 +98,7 @@
                     <v-container grid-list-md>
                         <v-layout row wrap>
                             <v-flex xs12 sm12 md12>
-                                <v-text-field v-model="login.username" label="username" required></v-text-field>
+                                <v-text-field v-model="login.email" label="email" required></v-text-field>
                             </v-flex><br>
                             <v-flex xs12 sm12 md12>
                                 <v-text-field v-model="login.password" label="password" type="password" hint="example of helper text only on focus"></v-text-field>
@@ -222,7 +222,7 @@ export default {
                     {icon : 'people', text: 'user profile', route: `/myProfile`},
                 ],
             login : {
-                username : '',
+                email : '',
                 password : '',
             },
             register : {
@@ -313,7 +313,7 @@ export default {
 
         clearLogin(){
             this.login = {
-                username : '',
+                email : '',
                 password : '',
             }
         },
