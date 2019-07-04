@@ -8,7 +8,7 @@
             <img src="../assets/logo.png">
           </li>
           <a href="#" style="color: #df9a97" @click="goHome">
-            <li style="font-weight: bold; font-size: 20px">ASK.am</li>
+            <li style="font-weight: bold; font-size: 30px" class="title">ASK.am</li>
           </a>
         </ul>
 
@@ -213,6 +213,10 @@ export default {
 </script>
 
 <style>
+.title{
+  font-family: 'Barriecito', cursive;
+}
+
 header {
   background-color: #021f4d;
 }
