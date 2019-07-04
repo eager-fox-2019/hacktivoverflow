@@ -24,12 +24,12 @@ export default {
   },
   methods: {
     logout () {
-      // gapi.auth2.getAuthInstance().signOut()
-      //   .then(() => {
-      localStorage.clear()
-      this.$emit('navlinks', false)
-      this.$router.push({ path: '/login' })
-      // })
+      gapi.auth2.getAuthInstance().signOut()
+        .then(() => {
+          localStorage.clear()
+          this.$emit('navlinks', false)
+          this.$router.push({ path: '/login' })
+        })
     }
   }
 }
