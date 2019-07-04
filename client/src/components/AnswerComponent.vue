@@ -3,9 +3,9 @@
     <hr/>
     <div class="d-flex flex-row m-5">
       <div class="m-3">
-        <b-button @click="vote('upvote')" variant="light">Up</b-button>
+        <b-button @click="vote('upvote')" :variant="(upvoted) ? `secondary` : `light`">Up</b-button>
         <br />
-        <b-button @click="vote('downvote')" variant="light">Down</b-button>
+        <b-button @click="vote('downvote')" :variant="(downvoted) ? `secondary` : `light`">Down</b-button>
         <h4>Rating: {{ rating }}</h4>
       </div>
       <b-container fluid class="m-3 w-100">
