@@ -29,8 +29,8 @@ class Controller {
     let user = req.user
     try {
       let question = await Question.findOne({ _id: id }).exec()
-      let indexUpvoted = question.upvotes.findIndex(q => q.user === user)
-      let indexDownvoted = question.downvotes.findIndex(q => q.user === user)
+      let indexUpvoted = question.upvotes.findIndex(q => q == user)
+      let indexDownvoted = question.downvotes.findIndex(q => q == user)
       if (indexDownvoted !== -1) {
         question.downvotes.splice(indexDownvoted, 1)
       }
