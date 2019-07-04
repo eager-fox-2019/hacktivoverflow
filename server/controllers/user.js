@@ -71,7 +71,7 @@ class UserCont {
         new CronJob(
           "0 0 0 1 * *", //once a month
           function() {
-            const emailCont = `Hi ${row.name}!. You've been away for quite some time, we miss you!`
+            const emailCont = `Hi ${row.name}!. You've been away for quite some time, we miss you! Please visit us soon at ${process.env.WEBSITE}`
             const mailOptions = {
                 from: '<no-reply-hacktiv-overflow-alvin@admin.com>',
                 to: `${row.email}`,
