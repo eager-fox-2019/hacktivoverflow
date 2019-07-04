@@ -3,7 +3,7 @@
     <el-row type="flex" class="row-bg" justify="space-between">
       <el-col :span="3" :offset="1">
         <div class="grid-content ">
-            <h5>ini logo</h5>
+            <h5 @click="backToHome">ini logo</h5>
         </div>
       </el-col>
       <el-col :span="12">
@@ -36,6 +36,9 @@ export default {
         onLogOut() {
             this.$router.push('/')
             localStorage.removeItem('token')
+        },
+        backToHome() {
+          this.$router.push('/home')
         }
     }
 };

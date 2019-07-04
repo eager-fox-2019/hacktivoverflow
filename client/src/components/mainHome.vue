@@ -18,8 +18,10 @@
       </el-col>
       <el-col :span="19">
         <div class="grid-contentmainHomeContent" style="border: 1px">
-          <a @click="toDetailQuestion(question._id)"><h1>{{ question.title }} </h1></a>
-          <p>@{{question.userId.username}} {{question.userId.createdAt}} </p>
+          <a @click="toDetailQuestion(question._id)">
+            <h1>{{ question.title }}</h1>
+          </a>
+          <p>@{{question.userId.username}} {{question.userId.createdAt}}</p>
         </div>
       </el-col>
     </el-row>
@@ -28,12 +30,12 @@
 
 <script>
 export default {
-    methods: {
-        toDetailQuestion(questionId){
-            console.log(questionId,'menuju tak terbatas dan melampauinya')
-            this.$router.push(`/question/${questionId}`)
-        }
+  methods: {
+    toDetailQuestion(questionId) {
+      console.log(questionId, "menuju tak terbatas dan melampauinya");
+      this.$router.push(`/question/${questionId}`);
     }
+  }
 };
 </script>
 
