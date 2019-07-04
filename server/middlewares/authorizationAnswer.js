@@ -1,6 +1,6 @@
-const Model = require('../models');
+const Answer = require('../models/answer');
 module.exports = (req, res, next) => {
-  Model.Answer.find({_id: req.params.answerId})
+  Answer.find({_id: req.params.answerId})
     .then((answer) => {
       if (answer.length != 0) {
         if (answer[0].author == req.decode._id) {

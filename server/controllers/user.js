@@ -29,6 +29,8 @@ class User {
             code: 401
           })
         } else {
+          console.log(response[0]);
+          
           if (verifyPassword(req.body.password, response[0].password)) {
             res.status(201).json({
               access_token: generateToken({
