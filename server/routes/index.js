@@ -1,7 +1,9 @@
-const router = require('express').Router();
+const router = require("express").Router();
+const { Authenticate } = require('../middlewares/auth');
 
-router.use('/users', require('./users'))
-// router.use('/products', require('./products'))
-// router.use('/transactions', require('./transactions'))
+router.use('/', require('./users'));
+router.use(Authenticate);
+router.use('/question', require('./question'));
+router.use('/answer',  require('./answer'));
 
 module.exports = router;
