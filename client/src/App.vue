@@ -32,8 +32,9 @@ export default {
   created() {
     if(localStorage.access_token) {
       this.$store.dispatch('decodeToken')
+      this.$store.dispatch('getMyQuestions')
     }
-
+    
     this.$store.dispatch('getPublicQuestions')
   }
 }

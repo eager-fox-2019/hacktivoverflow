@@ -29,7 +29,20 @@ const UserSchema = new Schema({
   },
   username: {
     type: String,
-    required: [true, 'Username is required']
+    required: [true, 'Username is required'],
+    validate: {
+      validator: function(value) {
+        User.findOne({ 
+          username : value 
+        })
+          .then(user => {
+            if(user) {
+              return false
+            }
+          })
+      },
+      message: props => `Username is already registered`
+    }
   },
   email: {
     type: String,

@@ -5,16 +5,16 @@
         <v-layout align-center>
           <v-flex xs1>
             <v-layout column align-center mr-3>
-              <v-icon :class="upvoted ? 'orange--text' : 'black--text'" large v-on:click="upvote">keyboard_arrow_up</v-icon>
+              <v-icon :class="upvoted ? 'blue--text' : 'grey--text'" large v-on:click="upvote">keyboard_arrow_up</v-icon>
               <div>{{ question.upvotes.length - question.downvotes.length }}</div>
-              <v-icon :class=" downvoted ? 'orange--text' : 'black--text'" large v-on:click="downvote">keyboard_arrow_down</v-icon>
+              <v-icon :class=" downvoted ? 'orange--text' : 'grey--text'" large v-on:click="downvote">keyboard_arrow_down</v-icon>
             </v-layout>
           </v-flex>
           <v-flex xs11>
             <v-layout align-center> 
               <div class="display-1 mb-3 font-weight-medium"> {{ question.question }}  </div>
               <v-spacer></v-spacer>
-              <div class="subheading"> Asked {{ getTime }} by <span style="color: #929292">{{question.user.username}}</span></div>
+              <div class="subheading" style="color: #929292"> Asked {{ getTime }} by {{question.user.username}}</div>
             </v-layout>
             <v-divider></v-divider>
           </v-flex>
@@ -35,11 +35,20 @@
           </v-text-field>
           <ckeditor :editor="editor" v-model="editorData" :config="editorConfig"></ckeditor>
           <v-flex align-self-end mt-2>
-            <v-btn large color="#F7C10A" v-on:click="submit">Submit</v-btn>
+            <v-layout row>
+              <v-alert
+                :value="alert"
+                type="error"
+                transition="scale-transition"
+              >
+                You must log in first before answering.
+              </v-alert>
+              <v-btn large color="#F7C10A" v-on:click="submit">Submit</v-btn>
+            </v-layout>
           </v-flex>
         </v-layout>
         
-        <Answers v-for="(answer, index) in question.answers" :key="index" :answer="answer"/>
+        <Answers v-for="(answer, index) in question.answers" :key="index" :answer="answer" v-on:delete="getQuestion" v-on:edit="getQuestion"/>
       </v-flex>
     </v-layout> -
   </v-container>
@@ -69,7 +78,8 @@ export default {
       questionId: '',
       upvoted: false,
       downvoted: false,
-      rendered: false
+      rendered: false,
+      alert: false
     }
   },
   computed: {
@@ -78,33 +88,37 @@ export default {
     }
   },
   created() {
-    this.questionId = this.$route.params.id
-    axios({ 
-      method: 'GET',
-      url: `${this.$store.state.baseURL}/questions/${this.questionId}`,
-    })
-      .then(({data}) => {
-        this.question = data
-        for(let user of data.upvotes) {
-          if(user === this.$store.state.loggedUser.id) {
-            this.upvoted = true
-          }
-        }
-
-        for(let user of data.downvotes) {
-          if(user === this.$store.state.loggedUser.id) {
-            this.downvoted = true
-          }
-        }
-
-        this.rendered = true
-      })
-      .catch(({ response }) => {
-        console.log(response)
-      })
+    this.getQuestion()
   },
 
   methods: {
+    getQuestion() {
+      this.questionId = this.$route.params.id
+        axios({ 
+          method: 'GET',
+          url: `${this.$store.state.baseURL}/questions/${this.questionId}`,
+        })
+          .then(({data}) => {
+            this.question = data
+            for(let user of data.upvotes) {
+              if(user === this.$store.state.loggedUser.id) {
+                this.upvoted = true
+              }
+            }
+
+            for(let user of data.downvotes) {
+              if(user === this.$store.state.loggedUser.id) {
+                this.downvoted = true
+              }
+            }
+
+            this.rendered = true
+          })
+          .catch(({ response }) => {
+            console.log(response)
+          })
+    },
+
     submit() {
       axios({ 
         method: 'POST',
@@ -120,10 +134,14 @@ export default {
       })
         .then(({data}) => {
           this.question = data
-          this.$store.dispatch('getPublicQuestions')
+          this.title = ''
+          this.editorData = ''
         })
         .catch(({response}) => {
-          console.log(response)
+          this.alert = true
+            setTimeout(() => {
+            this.alert = false
+          }, 2000)
         })
     },
 
@@ -148,6 +166,7 @@ export default {
 
     downvote() {
       let user = this.$store.state.loggedUser.id
+      
       if(this.downvoted === false) {
         this.downvoted = true
         this.question.downvotes.push(user)

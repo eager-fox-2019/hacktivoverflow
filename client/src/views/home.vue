@@ -1,12 +1,12 @@
 <template>
-     <v-layout>
-        <v-flex xs7>
-          <Posts /> 
-        </v-flex>
-        <v-flex xs4>
-          <Profile />
-        </v-flex>
-      </v-layout> 
+  <v-layout>
+    <v-flex xs7>
+      <Posts /> 
+    </v-flex>
+    <v-flex xs4>
+      <Profile />
+    </v-flex>
+  </v-layout> 
 </template>
 
 <script>

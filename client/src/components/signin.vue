@@ -2,6 +2,14 @@
   <v-container>
     <v-layout>
       <v-flex style="background-color: white; border: 1px solid #BEBEBE;" xs4 offset-xs4>
+        <v-alert
+          :value="error"
+          type="error"
+          transition="scale-transition"
+        >
+        <span class="font-weight-bold subheading">{{ errMessage }}</span>
+        </v-alert>
+        
         <div class="title pa-3" style="text-align:center; background-color: #F7C10A;"> Sign In</div>
         <form class="pa-3">
           <v-text-field
@@ -42,7 +50,6 @@ import axios from 'axios'
 export default {
   name: 'SignIn',
   mixins: [validationMixin],
-
     validations: {
       email: { required, email },
       password: { required }
@@ -51,6 +58,8 @@ export default {
     data: () => ({
       email: '',
       password: '',
+      errMessage: '',
+      error: false
     }),
 
     computed: {
@@ -83,11 +92,17 @@ export default {
         })
           .then(({data}) => {
             localStorage.setItem('access_token', data.access_token)
+            this.$store.dispatch('getPublicQuestions')
+            this.$store.dispatch('decodeToken')
+            this.$store.dispatch('getMyQuestions')
             this.$store.commit('SET_LOGIN', data)
             this.$router.push('/')
           })
           .catch(({response}) => {
-            console.log(response)
+              let msg = response.data.message
+              // let err = msg.split(':').slice(2).join(' ')
+              this.errMessage = msg
+              this.error = true
           })
       },
       clear () {

@@ -11,40 +11,65 @@
         dense
         class="grey lighten-4"
       >
-        <template v-for="(item, i) in items">
           <v-layout
-            v-if="item.heading"
-            :key="i"
             row
             align-center
           >
             <v-flex>
-              <v-subheader v-if="item.heading">
-                {{ item.heading }}
+              <v-subheader>
+                Have something in mind?
               </v-subheader>
             </v-flex>
           </v-layout>
+          <v-list-tile v-on:click="askQuestion">
+            <v-list-tile-action>
+              <v-icon>add</v-icon>
+            </v-list-tile-action>
+            <v-list-tile-content>
+              <v-list-tile-title class="grey--text">
+                Ask a question
+              </v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+          <v-alert
+            :value="alert"
+            type="error"
+            transition="scale-transition"
+          >
+            You must log in to use this feature.
+          </v-alert>
           <v-divider
-            v-else-if="item.divider"
             :key="i"
             dark
             class="my-3"
           ></v-divider>
-          <v-list-tile
-            v-else
-            :key="i"
-            :to="item.path"
-          >
+        <div v-if="$store.state.loggedUser.id === undefined">
+          <template v-for="(item, i) in items">
+            <v-list-tile
+              :key="i"
+              :to="item.path"
+            >
+              <v-list-tile-action>
+                <v-icon>{{ item.icon }}</v-icon>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title class="grey--text">
+                  {{ item.text }}
+                </v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+          </template>
+        </div>
+          <v-list-tile v-on:click="signout" v-if="$store.state.loggedUser.id">
             <v-list-tile-action>
-              <v-icon>{{ item.icon }}</v-icon>
+              <v-icon>keyboard_return</v-icon>
             </v-list-tile-action>
             <v-list-tile-content>
               <v-list-tile-title class="grey--text">
-                {{ item.text }}
+                Sign out
               </v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
-        </template>
       </v-list>
     </v-navigation-drawer>
     <v-toolbar color="amber" app absolute clipped-left flat>
@@ -70,27 +95,34 @@ export default {
     return {
       drawer: null,
       items: [
-        { icon: 'lightbulb_outline', text: 'Notes' },
-        { icon: 'touch_app', text: 'Reminders' },
-        { divider: true },
-        { heading: 'Have something in mind?' },
-        { icon: 'add', text: 'Ask a question', path: '/askquestion'},
-        { divider: true },
-        { icon: 'archive', text: 'Archive' },
-        { icon: 'delete', text: 'Trash' },
-        { divider: true },
         { icon: 'input', text: 'Sign in', path: '/signin' },
-        { icon: 'chat_bubble', text: 'Trash' },
-        { icon: 'help', text: 'Help' },
-        { icon: 'phonelink', text: 'App downloads' },
-        { icon: 'keyboard', text: 'Keyboard shortcuts' }
-      ]
+        { icon: 'person_add', text: 'Sign up', path: '/signup' },
+      ],
+      alert: false
     }
   },
   methods: {
     toHome() {
-     
       this.$router.push('/')
+    },
+    
+    signout() {
+      this.drawer = null
+      localStorage.removeItem('access_token')   
+      this.$store.dispatch('getPublicQuestions')
+      this.$store.commit('SET_LOGOUT')
+    },
+
+    askQuestion() {
+      if(localStorage.access_token) {
+        this.$router.push('/askquestion')
+      } else {
+        this.alert = true
+
+        setTimeout(() => {
+          this.alert = false
+        }, 2000)
+      }
     }
   }
 }

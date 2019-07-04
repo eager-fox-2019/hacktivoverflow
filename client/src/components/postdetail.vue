@@ -4,20 +4,26 @@
         <v-layout row wrap>
           <v-flex xs1 style="background-color: #E5E5E5;">
             <v-layout column align-center>
-              <v-icon :class=" upvoted ? 'orange--text' : 'black--text'" large v-on:click="upvote">keyboard_arrow_up</v-icon>
+              <v-icon :class=" upvoted ? 'blue--text' : 'grey--text'" large v-on:click="upvote">keyboard_arrow_up</v-icon>
               <div>{{ question.upvotes.length - question.downvotes.length }}</div>
-              <v-icon :class=" downvoted ? 'orange--text' : 'black--text'" large v-on:click="downvote">keyboard_arrow_down</v-icon>
+              <v-icon :class=" downvoted ? 'orange--text' : 'grey--text'" large v-on:click="downvote">keyboard_arrow_down</v-icon>
             </v-layout>
           </v-flex>
-          <v-divider vertical></v-divider>
-          <v-flex xs10>
-            <v-layout column class="pt-2 pl-3" fill-height style="overflow: hidden;">
-              <div class="title post-title mt-2" @click='ViewPost(question._id)'>{{ question.question }}</div>
+          <v-flex xs11>
+            <v-layout column class="pt-2 pl-3 pr-3" fill-height style="overflow: hidden;">
+              <v-layout row wrap align-center>
+                <div class="title post-title mt-2" @click='ViewPost(question._id)'>{{ question.question }}</div>
+                <v-spacer></v-spacer>
+                <div>
+                  <v-icon v-if="validateUser" class="icons black--text mr-3" v-on:click="dialog2 = true">edit</v-icon>
+                  <v-icon v-if="validateUser" v-on:click="dialog = true" class="icons black--text">delete</v-icon>
+                </div>
+              </v-layout>
               <v-flex>
                 <v-layout row wrap align-center class="mt-3">
-                  <v-btn flat class="ma-0 pl-0"><v-icon class="mr-2">comment</v-icon>Comment</v-btn>
-                  <div class="subheading text-md-center ml-2">Posted by: {{ question.user.username }}</div>
+                  <div class="subheading text-md-center"> <span style="background-color: lightblue; padding: 8px; border-radius: 5px;" class="mr-1">{{question.answers.length}}</span> Answers</div>
                   <v-spacer></v-spacer>
+                  <div class="subheading text-md-center mr-2">Posted by: {{ question.user.username }}</div>
                   <div class="subheading" style="color: #949596;"> {{ getTime }}</div>
                 </v-layout>
               </v-flex>
@@ -25,12 +31,48 @@
           </v-flex>
         </v-layout>
       </v-card>
+       <v-dialog
+        v-model="dialog"
+        max-width="310"
+      >
+      <v-card>
+        <v-card-title class="headline">Are you sure you want to delete this post?</v-card-title>
+
+        <v-card-text>
+          Once deleted your post cannot be recovered.
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn
+            color="red darken-1"
+            flat="flat"
+            @click="dialog = false"
+          >
+            Nevermind
+          </v-btn>
+
+          <v-btn
+            color="green darken-1"
+            flat="flat"
+            @click="deleteQuestion"
+          >
+            Yes, i'm sure
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <EditQuestion :dialog2="dialog2" :question="question" @closeDialog="dialog2 = false"/>
   </v-flex>
 </template>
 
 <script>
 import axios from 'axios'
 import moment from 'moment'
+import EditQuestion from '@/components/editquestion.vue'
+
 
 export default {
   props: ['question'],
@@ -39,6 +81,8 @@ export default {
     return {
       upvoted: false,
       downvoted: false,
+      dialog: false,
+      dialog2: false
     }
   },
   created() {
@@ -58,23 +102,34 @@ export default {
   computed: {
     getTime(){ 
       return moment(this.question.createdAt).fromNow()
+    },
+
+    validateUser() {
+      return this.question.user._id === this.$store.state.loggedUser.id
     }
 
   },
+  components: {
+    EditQuestion
+  },
   methods: {
-    //  getTime(createdAt) {
-    //     let now = new Date()
-    //     let date = new Date(createdAt)
-    //     let diff = now - date
-        
-    //     if(diff < (1000 * 60 * 60)) {
-    //       return `${Math.floor(diff/ (1000 * 60))} mins ago`
-    //     } else if (diff < (1000 * 60 * 60 * 24)) {
-    //       return `${Math.floor(diff/(1000 * 60 * 60))} hours ago`
-    //     } else {
-    //       return `${Math.floor(diff/(1000 * 60 * 60 * 24))} days ago`
-    //     }
-    // },
+    deleteQuestion() {
+      axios({ 
+        method: 'DELETE',
+        url: `${this.$store.state.baseURL}/questions/${this.question._id}`,
+        headers: {
+          access_token: localStorage.access_token
+        }
+      })
+        .then(({data}) => {
+          this.dialog = false
+          this.$store.dispatch('getPublicQuestions')
+          // this.$store.dispatch('getMyQuestions')
+        })
+        .catch(({response}) => {
+          console.log(response)
+        })
+    },
 
     ViewPost(id) {
       this.$router.push(`/post/${id}`)
@@ -122,5 +177,14 @@ export default {
 </script>
 
 <style>
+.icons {
+  /* color: black; */
+  opacity: 0.5;
+}
+
+.icons:hover {
+  cursor: pointer;
+  opacity: 1
+}
 
 </style>

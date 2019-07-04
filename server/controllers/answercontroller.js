@@ -1,5 +1,6 @@
 const Answer = require('../models/answer')
 const Question = require('../models/question')
+const User = require('../models/user')
 
 class AnswerController {
   static getAnswers(req,res,next) {
@@ -30,6 +31,9 @@ class AnswerController {
       .then(edited => {
         return Answer.populate(edited, {path: 'answers', populate: { path: 'user'}})
       })
+      .then(edited2 => {
+        return User.populate(edited2, { path: 'user'})
+      })
       .then(pop => {
         res.status(200).json(pop)
       })
@@ -37,7 +41,21 @@ class AnswerController {
   }
 
   static editAnswer(req,res,next) {
-    // const { title, description, question}
+   
+    const { title, description } = req.body
+
+    Answer.findOne({ 
+      _id: req.params.id 
+    })
+      .then(answer => {
+        answer.title = title
+        answer.description = description
+        return answer.save()
+      })
+      .then(edited => {
+        res.status(200).json(edited)
+      })
+      .catch(next)
   }
 
   static voteAnswer(req, res, next) {
@@ -59,6 +77,8 @@ class AnswerController {
   }
 
   static deleteAnswer(req,res,next) {
+    // console.log('masukkk')?
+    // console.log(req.params.id)
     Answer.deleteOne({
       _id: req.params.id
     })

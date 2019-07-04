@@ -8,6 +8,8 @@ router.get('/:id', QuestionController.getQuestion )
 
 router.use(authentication)
 router.post('/', QuestionController.addQuestion)
+router.get('/', QuestionController.getMyQuestions)
+
 router.patch('/:id', questionAuthorization, QuestionController.editQuestion)
 router.delete('/:id', questionAuthorization, QuestionController.deleteQuestion)
 router.patch('/vote/:id', QuestionController.voteQuestion)

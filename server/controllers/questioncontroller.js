@@ -29,6 +29,18 @@ class QuestionController {
       .catch(next)
   }
 
+  static getMyQuestions(req,res,next) {
+    Question.find({ 
+      user: req.decode.id 
+    })
+      .populate('answers')
+      .populate('user')
+      .then(questions => {
+        res.status(200).json(questions)
+      })
+      .catch(next)
+
+  }
   static voteQuestion(req,res,next) {  
     Question.findOne({ 
       _id: req.params.id 
@@ -62,11 +74,10 @@ class QuestionController {
     const { title, description }  = req.body
 
     Question.findOne({
-      _id: req.params.id,
-      user:req.decode.id
+      _id: req.params.id
     })
       .then(question => {
-        question.title = title
+        question.question = title
         question.description = description
         return question.save()
       })

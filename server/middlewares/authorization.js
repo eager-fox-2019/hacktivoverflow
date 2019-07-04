@@ -1,4 +1,5 @@
 const Question = require('../models/question')
+const Answer = require('../models/answer')
 
 module.exports = {
     questionAuthorization(req,res,next) {
@@ -25,13 +26,13 @@ module.exports = {
     },
 
     answerAuthorization(req,res,next){
-      Question.findOne({
+      Answer.findOne({
         _id: req.params.id
       })
-        .then(question => {
-          if(question) {
+        .then(answer => {
+          if(answer) {
             const {id} = req.decode
-            let strObj = question.user + ''
+            let strObj = answer.user + ''
 
             if(strObj === id) {
               next()
