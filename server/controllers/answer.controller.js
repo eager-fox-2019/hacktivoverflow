@@ -61,7 +61,7 @@ class Controller {
   static async getAnswerDetail(req, res, next) {
     let { id } = req.params
     try {
-      let answer = await Answer.find({ question: id }).populate('user').exec()
+      let answer = await Answer.findOne({ question: id }).populate('user').exec()
       res.json(answer)
     } catch (err) {
       next(err)
