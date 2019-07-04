@@ -22,7 +22,7 @@
       </v-flex>
       <v-flex xs6 text-xs-center px-5 py-5>
         <img class="right-image" src="../assets/8922396241555931405.svg" alt="">
-        <h3 class="landing-page-text">New friends, new excitement</h3>
+        <h3 class="landing-page-text">New challenges, new excitement</h3>
         <p> ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Cursus turpis massa tincidunt dui ut ornare lectus sit amet. Nec dui nunc mattis enim. Nibh tortor id aliquet lectus proin nibh. Nullam non nisi est sit amet facilisis magna etiam. At auctor urna nunc id cursus metus aliquam eleifend mi. Ac orci phasellus egestas tellus rutrum tellus. Feugiat in fermentum posuere urna nec tincidunt praesent. Non diam phasellus vestibulum lorem sed risus ultricies. Semper auctor neque vitae tempus.</p>
       </v-flex>
     </v-layout>
