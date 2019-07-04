@@ -1,5 +1,5 @@
 const axios = require('axios').create({
-    baseURL : 'http://localhost:3000/',
+    baseURL : 'http://13.229.70.19',
     headers : {
         access_token : localStorage.getItem('access_token')
     }
