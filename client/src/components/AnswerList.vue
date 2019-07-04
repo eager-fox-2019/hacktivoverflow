@@ -1,11 +1,6 @@
 <template>
   <div>
     <AnswerCard v-for="(item, i) in answerList" :card="item" :key="i">
-    	<!-- <pre>
-    	<p>item owner Id: {{item.owner._id}}</p>
-    	<p>{{item}}</p>
-    	</pre>
-    	<p>state user Id: {{$store.state.user.id}}</p> -->
     	<div v-if="item.owner._id==$store.state.user.id">
     		<EditAnswerForm 
     		v-if="showEditForm==item._id" 

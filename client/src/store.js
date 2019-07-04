@@ -11,6 +11,7 @@ export default new Vuex.Store({
     access_token: null,
   	questionList: [],
   	currentQuestion: null,
+    selectedAnswer: null,
   	answerList: [],
     user: null
   },
@@ -37,6 +38,9 @@ export default new Vuex.Store({
       localStorage.setItem('name', payload.name)
       localStorage.setItem('email', payload.email)
       localStorage.setItem('id', payload.id)
+    },
+    SELECTANSWER(state, payload){
+      state.selectedAnswer = payload
     }
   },
   actions: {
@@ -109,9 +113,6 @@ export default new Vuex.Store({
         commit('UPDATEQUESTIONLIST', tempArray)
         console.log('updated question list')
 
-        // dispatch('getQuestions') //update questions
-        // dispatch('getQuestion', qId)
-        //data is question with updated upvotes and downvotes array
         console.log(data)
       })
       .catch(({response}) => {
@@ -119,15 +120,17 @@ export default new Vuex.Store({
       });
     },
     voteAnswer({state, commit, dispatch}, payload){
-      let aId = payload.answerId
+      commit('SELECTANSWER', payload.answer)
+      let aId = payload.answer._id
       let vote = payload.type
-      console.log({access_token:state.access_token})
+
       axios({
         method: 'patch',
         url: state.baseURL+'/answer/'+aId+'/'+vote,
         headers: {access_token: state.access_token}
       })
       .then(({data}) => {
+        data.owner = state.selectedAnswer.owner
 
         let tempArray = state.answerList
         for (let i =0; i < tempArray.length; i++){
@@ -137,6 +140,7 @@ export default new Vuex.Store({
             i = tempArray.length
           }
         }
+        commit('SELECTANSWER', data)
         commit('UPDATECURRENTANSWERLIST', [])
         commit('UPDATECURRENTANSWERLIST', tempArray)
         //data is answer with updated upvotes and downvotes array

@@ -104,7 +104,11 @@ class ControllerAnswer {
         throw ({message: 'invalid vote. only vote up, down, or reset'})
       }
 
-      res.json(found)
+      updatedAnswer = found
+      return Answer.updateOne({_id: found._id}, found)
+    })
+    .then (updated => {
+      res.json(updatedAnswer)
     })
     .catch(next)
   }
