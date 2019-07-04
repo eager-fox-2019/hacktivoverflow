@@ -18,7 +18,7 @@
 export default {
   props: ['isLogin'],
   created () {
-    if (localStorage.getItem('token')) this.isLogin = true
+    if (localStorage.getItem('token')) this.$emit('navlinks', true)
 
     gapi.load('auth2', () => gapi.auth2.init())
   },
@@ -28,7 +28,7 @@ export default {
       //   .then(() => {
       localStorage.clear()
       this.$emit('navlinks', false)
-      this.$router.push({ path: '/' })
+      this.$router.push({ path: '/login' })
       // })
     }
   }

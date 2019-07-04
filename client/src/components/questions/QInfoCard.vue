@@ -20,7 +20,10 @@
           <b-card-body>
             <h4><b-link href="#" @click="questionDetail()">{{ question.title }}</b-link></h4>
             <b-card-text>{{ question.description }}</b-card-text>
-            <b-card-text class="text-right">Asked By: <b>{{ question.userId.name }}</b></b-card-text>
+            <b-card-text class="text-right">
+              Asked By: <b>{{ question.userId.name }}</b>
+              <b-button class="text-right ml-1" variant="danger" size="sm" v-if="owner" @click="remove">DELETE</b-button>
+            </b-card-text>
          </b-card-body>
         </b-card>
       </b-col>
@@ -32,10 +35,21 @@
 <script>
 export default {
   props: ['question'],
+  data () {
+    return {
+      owner: false
+    }
+  },
   methods: {
     questionDetail () {
       this.$router.push({ path: `/question/${this.question._id}` })
+    },
+    remove () {
+      this.$store.dispatch('removeQuestion', this.question._id)
     }
+  },
+  created () {
+    if (this.question.userId.email === localStorage.getItem('email')) this.owner = true
   },
   computed: {
     totalVote () {

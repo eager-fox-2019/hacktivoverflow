@@ -20,7 +20,6 @@ const auth = (req, res, next) => {
   else next({ code: 400, message: `No token provided. Please login/register`})
 }
 
-
 module.exports = {
   auth
 }

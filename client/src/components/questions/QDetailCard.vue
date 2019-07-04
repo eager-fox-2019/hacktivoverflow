@@ -15,7 +15,10 @@
       <b-col cols="10">
         <b-card :title="question.title">
           <b-card-text>{{ question.description }}</b-card-text>
-          <b-card-text class="text-right">Asked By: <b>{{ question.userId.name }}</b></b-card-text>
+          <b-card-text class="text-right">
+            Asked By: <b>{{ question.userId.name }}</b>
+            <b-button class="text-right ml-1" variant="danger" size="sm" v-if="owner" @click="remove">DELETE</b-button>
+          </b-card-text>
         </b-card>
       </b-col>
     </b-row>
@@ -37,11 +40,14 @@ export default {
   },
   data () {
     return {
-      question: {}
+      question: {},
+      owner: false
     }
   },
   created () {
     this.question = this.$store.getters.questionById(this.$route.params.qid)[0]
+
+    if (this.question.userId.email === localStorage.getItem('email')) this.owner = true
   },
   computed: {
     totalVotes () {
@@ -54,6 +60,10 @@ export default {
     },
     downvote () {
       this.$store.dispatch('questionDownVote', this.question._id)
+    },
+    remove () {
+      this.$store.dispatch('removeQuestion', this.$route.params.qid)
+      this.$router.push({ path: '/' })
     },
     checkLogin () {
       if (!localStorage.getItem('token')) this.$router.push({ path: '/login' })
