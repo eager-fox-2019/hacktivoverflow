@@ -32,13 +32,6 @@
         ></b-form-input>
       </b-form-group>
 
-      <b-form-group id="save">
-        <b-form-checkbox-group v-model="form.checked" id="checkboxes-4">
-          <b-form-checkbox value="savePass">Save Password</b-form-checkbox>
-          <b-form-checkbox value="saveEmail">Save E-mail</b-form-checkbox>
-        </b-form-checkbox-group>
-      </b-form-group>
-
       <b-button class="m-1" type="submit" variant="primary">Login</b-button>
       <b-button class="m-1" type="reset" variant="danger">Reset</b-button>
       <br/>
@@ -84,16 +77,14 @@ export default {
       axios.post(baseURL+'/user/login', this.form)
         .then( ({data}) => {
           console.log('login result:', data)
-          this.showAlert('login success', 'success')
+          this.$swal({text:'login success', type:'success'})
           //save user detail
-          // console.log('before commit')
           this.$store.commit('SAVEUSER', 
             { id: data.id,
               name: data.name, 
               email: this.form.email,
               access_token: data.access_token
             })
-          // console.log('after commit')
           this.goToHome()
           this.onReset()
         })

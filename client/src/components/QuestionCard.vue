@@ -14,7 +14,7 @@
 </template>
 
 <script>
-
+import { mapState } from 'vuex'
 import VoteButtons from '@/components/VoteButtons.vue'
 export default {
   name: 'QuestionList',
@@ -34,7 +34,8 @@ export default {
     },
     cardOwner() {
       return 'by '+this.card.owner.name
-    }
+    },
+    ...mapState(['isLoggedin'])
   },
   methods: {
     questionDetail(){

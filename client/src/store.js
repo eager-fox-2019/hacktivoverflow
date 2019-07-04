@@ -13,9 +13,19 @@ export default new Vuex.Store({
   	currentQuestion: null,
     selectedAnswer: null,
   	answerList: [],
-    user: null
+    user: null,
+    alertMsg: '',
+    alertType: ''
   },
   mutations: {
+    SHOWMSG(state, payload){
+      state.alertMsg = payload.message
+      state.alertType = payload.type
+    },
+    CLEARMSG(state){
+      state.alertMsg = ''
+      state.alertType = ''
+    },
   	UPDATEQUESTIONLIST(state, payload){
   		state.questionList = payload
   	},
@@ -33,6 +43,8 @@ export default new Vuex.Store({
       state.selectedAnswer = null
       state.answerList = []
       state.user = null
+      state.alertMsg= ''
+      state.alertType= ''
 
       localStorage.clear()
     },
@@ -59,7 +71,11 @@ export default new Vuex.Store({
 		  })
 		  .catch(({response}) => {
 		    console.log(response.data);
-		  });
+        commit('SHOWMSG',{
+          message: response.data,
+          type:'warning'
+        })
+		  })
   	},
   	getQuestionDetail({state, commit, dispatch}, payload){
   		axios.get(state.baseURL+'/question/'+payload)
@@ -69,7 +85,11 @@ export default new Vuex.Store({
           dispatch('getAnswers', data._id)
   			})
 		  .catch(({response}) => {
-		    console.log(response.data);
+		    console.log(response.data)
+        commit('SHOWMSG',{
+          message: response.data,
+          type:'warning'
+        })
 		  });
   	},
     getQuestion({state, commit, dispatch}, payload){
@@ -80,6 +100,10 @@ export default new Vuex.Store({
         })
       .catch(({response}) => {
         console.log(response.data);
+        commit('SHOWMSG',{
+          message: response.data,
+          type:'warning'
+        })
       });
     },
   	getAnswers({state, commit, dispatch}, payload){
@@ -90,6 +114,10 @@ export default new Vuex.Store({
   			})
 		  .catch(({response}) => {
 		    console.log(response.data);
+        commit('SHOWMSG',{
+          message: response.data,
+          type:'warning'
+        })
 		  });
   	},
     voteQuestion({state, commit, dispatch}, payload){
@@ -124,6 +152,10 @@ export default new Vuex.Store({
       })
       .catch(({response}) => {
         console.log(response.data);
+        commit('SHOWMSG',{
+          message: response.data,
+          type:'warning'
+        })
       });
     },
     voteAnswer({state, commit, dispatch}, payload){
@@ -155,6 +187,10 @@ export default new Vuex.Store({
       })
       .catch(({response}) => {
         console.log(response.data);
+        commit('SHOWMSG',{
+          message: response.data,
+          type:'warning'
+        })
       });
     },
     postQuestion({state, commit, dispatch}, form){

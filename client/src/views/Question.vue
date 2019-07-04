@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="questionPage">
     <div v-if="loaded">
       <div v-if="showEditForm">
         <EditQuestionForm :originalQuestion="loaded" 
@@ -153,5 +153,9 @@ export default {
 }
 .question button {
   margin: 0.2em;
+}
+#questionPage {
+  background-color: #DCC7AA;
+  padding-bottom: 1em;
 }
 </style>

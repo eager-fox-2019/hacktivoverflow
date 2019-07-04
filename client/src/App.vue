@@ -3,6 +3,24 @@
     <div id="nav">
       <Nav />
     </div>
+    <div id="messageArea" v-if="alertMsg != ''">
+      <b-alert
+      :show="dismissCountDown"
+      dismissible
+      :variant="alertType"
+      @dismissed="dismissCountDown=0"
+      @dismiss-count-down="countDownChanged"
+      >
+      <p>{{alertMsg}}</p>
+      <p>dismissing in {{ dismissCountDown }} seconds...</p>
+      <b-progress
+        :variant="alertType"
+        :max="dismissSecs"
+        :value="dismissCountDown"
+        height="4px"
+      ></b-progress>
+      </b-alert>
+    </div>
     <router-view/>
   </div>
 </template>
@@ -15,12 +33,14 @@ router.beforeEach((to, from, next) => {
   next()
 })
 import Nav from '@/components/Nav.vue'
+import {mapState} from 'vuex'
 
 export default {
   name: 'app',
   components: {
     Nav
   },
+  computed: mapState(['alertMsg','alertType']),
   created(){
     this.$store.dispatch('getQuestions')
     let access_token = localStorage.getItem('access_token')
@@ -32,6 +52,17 @@ export default {
     } else {
       this.$store.commit('LOGOUT')
     }
+  },
+  methods :{
+    countDownChanged(dismissCountDown) {
+      this.dismissCountDown = dismissCountDown
+      if (dismissCountDown == 0) {
+        this.$store.commit('CLEARMSG')
+      }
+    },
+    showAlert() {
+      this.dismissCountDown = this.dismissSecs
+    }
   }
 }
 </script>
@@ -39,7 +70,6 @@ export default {
 <style>
 html, body, #app {
   height: 100%;
-
 }
 
 #app {

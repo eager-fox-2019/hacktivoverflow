@@ -64,9 +64,10 @@ export default {
           }
         })
         .then(({ data }) => {
-          this.showAlert('registered user', 'success')
+          this.$swal({text:'successfully registered user', type:'success'})
           this.loading = false
           this.onReset()
+          this.$router.push('/user/login')
         })
         .catch(({ response }) => {
           console.log("created error:", response)
