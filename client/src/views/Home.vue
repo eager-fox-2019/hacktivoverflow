@@ -12,7 +12,7 @@
     >
       <!-- #F8F2CB -->
       <a href="#" @click="toQuestion(question._id)" style="text-decoration: none;">
-        <div class="row" style="padding: 20px; color: black;">
+        <div class="row" style="padditanyatanya.gifng: 20px; color: black;">
           <div class="col-2" style="text-align: center;">
             <h4>Votes</h4>
             <h3>{{ question.upvotes.length - question.downvotes.length }}</h3>

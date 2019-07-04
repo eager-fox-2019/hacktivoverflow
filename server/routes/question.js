@@ -13,6 +13,7 @@ route.use(Authentication)
 
 // Create
 route.post('/', QuestionController.create)
+route.get('/findMine/:id', QuestionController.findMine)
 
 
 // UPDATE

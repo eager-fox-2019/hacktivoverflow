@@ -36,6 +36,22 @@ class QuestionController {
             })
     }
 
+    static findMine(req, res) {
+        Question
+            .find({ user: req.decoded._id })
+            .populate('upvote')
+            .populate('downvote')
+            .populate('user')
+            .then(question => {
+                console.log(question,'nemu')
+                res.status(200).json(question)
+            })
+            .catch(err => {
+                console.log(err, '====')
+                res.status(500).json(err)
+            })
+    }
+
     static findAll(req, res) {
         Question
             .find()

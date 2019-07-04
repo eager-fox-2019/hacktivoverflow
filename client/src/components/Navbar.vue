@@ -1,11 +1,11 @@
 <template>
-  <div style="background-color: #97dcdf">
+  <div style="background-color: #021f4d">
     <!-- Logo and name -->
     <div class="container">
       <header class="navbar" style="padding: 5px;">
         <ul>
           <li>
-            <img src="../assets/tanyatanya.gif">
+            <img src="../assets/logo.png">
           </li>
           <a href="#" style="color: #df9a97" @click="goHome">
             <li style="font-weight: bold; font-size: 20px">ASK.am</li>
@@ -195,7 +195,6 @@ export default {
     },
     submitRegister() {
       this.$store.dispatch('submitRegister', this.registerForm);
-      this.$router.push('/');
     },
     goHome() {
       this.$router.push('/');
@@ -215,7 +214,7 @@ export default {
 
 <style>
 header {
-  background-color: #77a2e6;
+  background-color: #021f4d;
 }
 
 .navbar {

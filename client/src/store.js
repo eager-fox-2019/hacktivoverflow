@@ -10,6 +10,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     allQuestions: [],
+    myQuestions:[],
     isLogin: false,
     user: {},
     currentQuestion: {},
@@ -92,6 +93,10 @@ export default new Vuex.Store({
       state.allQuestions = questions;
     },
 
+    getMyQuestions(state, questions) {
+      state.myQuestions = questions;
+    },    
+
     deleteQuestion(state, question) {
       state.allQuestions = state.allQuestions.filter(el => el._id !== question._id);
       Router.push('/');
@@ -126,6 +131,18 @@ export default new Vuex.Store({
         });
     },
 
+    getMyQuestions(context, userId) {
+      myServer
+        .get(`/questions/findMine/${userId}`)
+        .then(({ data }) => {
+          console.log(data)
+          context.commit('getMyQuestions', data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
     submitLogin(context, form) {
       myServer
         .post('/users/login', form)
@@ -152,7 +169,7 @@ export default new Vuex.Store({
     submitRegister(context, form) {
       myServer
         .post('/users/register', form)
-        .then(({ data }) => { })
+        .then(({ data }) => {})
         .catch((err) => {
           console.log(err);
         });
