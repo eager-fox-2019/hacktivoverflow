@@ -16,7 +16,9 @@ router.get('/api', function(req,res,next){
         url : 'https://jobs.github.com/positions.json?description=software+engineer'
     })
     .then(({data})=>{
-        console.log(data);
+        // console.log(data);
+        console.log('data job insert');
+        
         res.status(200).json(data)
     })
     .catch(next)
