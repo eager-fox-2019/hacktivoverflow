@@ -274,12 +274,14 @@ export default new Vuex.Store({
           commit('USER_LOGIN_VERIFY')
       })
         .catch(err => {
-          console.log('masuk err', err)
-          Swal.fire({
-            type: "error",
-            title: "Oops...",
-            text: `${err.response}`
-          });
+          localStorage.clear()
+          
+          // console.log('masuk err', err)
+          // Swal.fire({
+          //   type: "error",
+          //   title: "Oops...",
+          //   text: `${err.response}`
+          // });
         });
     },
     DELETE_QUESTION ({ state, commit }, payload) {

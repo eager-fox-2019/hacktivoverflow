@@ -20,6 +20,7 @@
       <div class="col m3 l3 s12">
         <!-- WATCH TAG -->
         <WatchTagCard></WatchTagCard>
+        <CronJob></CronJob>
       </div>
     </div>
   </div>
@@ -32,6 +33,7 @@ import MenuLeftBar from '@/components/MenuLeftBar'
 import SearchForm from '@/components/SearchForm'
 import QuestionCard from '@/components/QuestionCard'
 import WatchTagCard from '@/components/WatchTagCard'
+import CronJob from '@/components/CronJob'
 import { mapState } from "vuex";
 
 export default {
@@ -41,7 +43,8 @@ export default {
     MenuLeftBar,
     SearchForm,
     QuestionCard,
-    WatchTagCard
+    WatchTagCard,
+    CronJob
   },
   computed: {
     ...mapState(["allQuestions"])
