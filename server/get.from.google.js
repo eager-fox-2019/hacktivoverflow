@@ -1,14 +1,19 @@
 const puppeteer = require('puppeteer')
 
 const getFromGoogle = async function (judulPertanyaan) {
-  const browser = await puppeteer.launch({ headless: false });
+  let browser 
   try {
+    browser = await puppeteer.launch();
     const page = await browser.newPage();
     await page.goto('https://google.com');
     await page.type('input.gLFyf.gsfi', judulPertanyaan + ' site:stackoverflow.com');
     page.keyboard.press('Enter');
-    await page.waitForSelector('div#resultStats');
-    const links = await page.$$('div.r');
+    await page.waitForSelector('div#resultStats', {
+      timeout: 4000
+    });
+    const links = await page.$$('div.r', {
+      timeout: 4000
+    });
     await links[0].click()
     await page.waitForNavigation({ waitUntil: 'domcontentloaded' })
     let link = await page.url()
@@ -19,7 +24,7 @@ const getFromGoogle = async function (judulPertanyaan) {
   } catch (err) {
     console.error(err);
     browser.close()
-    return false
+    return { link: '#', judul: 'Maaf bot tidak ketemu jawabannya di google'}
   }
 }
 
