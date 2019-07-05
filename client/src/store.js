@@ -6,7 +6,7 @@ import router from './router'
 
 Vue.use(Vuex)
 
-const baseUrl = `http://localhost:3000`;
+const baseUrl = `http://13.229.73.61`;
 
 export default new Vuex.Store({
   state: {
