@@ -1,0 +1,52 @@
+#nav{
+    color:#2b332d;
+    background-color: #f8f8f8;
+}
+  
+#nav a {
+    color:#000000;
+    text-decoration:none
+}
+#nav a:hover{
+    color:rgb(143, 141, 141)
+}
+
+#nav a.router-link-exact-active {
+    color:rgb(97, 97, 97);
+    text-decoration: none;
+}
+body{
+    background-color:#f1f1f16e;
+    overflow: hidden;
+}
+.chip {
+    display: inline-block;
+    padding: 0 10px;
+    height: 30px;
+    font-size: 16px;
+    line-height: 30px;
+    border-radius: 25px;
+    background-color: #cffdce;
+  }
+  .chip.blunt{
+    color: #bbbbbb;
+    background-color: #f0efef;
+    font-size: 12px;
+  }
+  .chip.button{
+    cursor: pointer;
+  }
+  .chip.button:hover{
+    background-color: #b8fab6;
+    color:black
+  }
+  .closebtn {
+    color: #888;
+    font-weight: bold;
+    font-size: 18px;
+    cursor: pointer;
+  }
+  
+  .closebtn:hover {
+    color: #000;
+  }
