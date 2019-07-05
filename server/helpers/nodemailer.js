@@ -48,6 +48,7 @@ var task = cron.schedule(
                 await transporter
                   .sendMail(mailOptions)
                   .then(sent => {
+                    console.log("email sent to", user.email);
                     var qotw_job = queue
                       .create("qotw", {
                         title: `QOTW email on monday at 8.00 am sent to ${
