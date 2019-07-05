@@ -13,30 +13,6 @@ class UserController {
     };
     User.create(newUser)
       .then(result => {
-        var CronJob = require("cron").CronJob;
-        new CronJob(
-          "0 0 0 1 * *", //once a month
-          function() {
-            const emailCont = `Hi ${result.name}!. This is a friendly reminder to visit our website again!`
-            const mailOptions = {
-                from: '<no-reply-overflow@admin.com>',
-                to: `${result.email}`,
-                subject: 'HackTodo Reminder',
-                html: emailCont
-            }
-            
-            transporter.sendMail(mailOptions, function (err, info) {
-                if(err){
-                    console.log(err);
-                } else {
-                    console.log(info);
-                }
-              })
-          },
-          null,
-          true,
-          "America/Los_Angeles"
-        )
         res.status(201).json(result);
       })
       .catch(next);
