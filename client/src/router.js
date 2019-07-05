@@ -6,16 +6,28 @@ import LandingPage from './components/LandingPage'
 import FrontPage from './views/FrontPage'
 import EditQuestionForm from './components/EditQuestionForm'
 import EditAnswerForm from './components/EditAnswerForm'
+import store from './store'
 
 Vue.use(Router)
 
 export default new Router({
   mode: 'history',
   base: process.env.BASE_URL,
+  
   routes: [{
     path: '/',
     name: 'Front Page',
     component: FrontPage, //login register
+    beforeEnter: function (to, from, next) {
+      let s = store
+      store.commit('SETCLIENTTOKEN', 
+      localStorage.getItem('access_token'))
+      if (s.state.clientToken && to.fullPath === '/') {
+        next('/home')
+      } else {
+        next()  
+      }
+    },
     children: [{
         path: '/home',
         name: 'Home',

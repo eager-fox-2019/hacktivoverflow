@@ -20,6 +20,9 @@
       LeftMainSection,
       RightMainSection,
       CenterMainSection
+    },
+    mounted() {
+      this.$store.dispatch('readAllQuestions');
     }
   }
 </script>

@@ -17,7 +17,8 @@ export default {
       //
     }
   },
-  mounted() {
+  created() {
+    debugger
     this.$store.dispatch('readAllQuestions');
     this.$store.commit('SETCLIENTTOKEN', 
       localStorage.getItem('access_token'))

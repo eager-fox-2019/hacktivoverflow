@@ -1,5 +1,6 @@
-
-require('dotenv').config();
+if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
+  require('dotenv').config()
+}
 
 const express = require('express');
 const app = express();
@@ -8,7 +9,17 @@ const cors = require('cors');
 const routes = require('./routes');
 const mongoose = require('mongoose');
 
-mongoose.connect(`mongodb+srv://madearyadi:madearyadi@mini-wp-k9rvg.gcp.mongodb.net/madeOverflow-1?retryWrites=true&w=majority`, {
+let databaseUrl = '';
+
+if (process.env.NODE_ENV === 'test') {
+  databaseUrl = process.env.DATABASE_URL_TEST;
+} else if (process.env.NODE_ENV === 'development') {
+  databaseUrl = process.env.DATABASE_URL_DEVELOPMENT;
+} else if(process.env.NODE_ENV === 'production') {
+  databaseUrl = process.env.DATABASE_URL_PRODUCTION
+}
+
+mongoose.connect(databaseUrl, {
     useNewUrlParser: true
   })
   .then(() => {

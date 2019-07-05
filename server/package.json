@@ -17,7 +17,7 @@
   "scripts": {
     "test": "NODE_ENV=test npx mocha",
     "dev": "NODE_ENV=development nodemon app.js",
-    "start": "node app.js"
+    "start": "NODE_ENV=production node app.js"
   },
   "keywords": [],
   "author": "",
