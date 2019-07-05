@@ -1,0 +1,46 @@
+{
+  "name": "e-commerce",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "createAdmin": "cross-env node commands/create.admin.user.js",
+    "test": "cross-env NODE_ENV=test npx mocha --exit",
+    "start": "node app.js",
+    "dev": "cross-env NODE_ENV=development nodemon app.js",
+    "cron": "node app.kue.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eager-fox-2019/e-commerce.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/eager-fox-2019/e-commerce/issues"
+  },
+  "homepage": "https://github.com/eager-fox-2019/e-commerce#readme",
+  "dependencies": {
+    "@google-cloud/storage": "^2.5.0",
+    "bcryptjs": "^2.4.3",
+    "chai": "^4.2.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "kue": "^0.11.6",
+    "mocha": "^6.1.4",
+    "mongoose": "^5.6.1",
+    "mongoose-unique-validator": "^2.0.3",
+    "multer": "^1.4.1",
+    "node-cron": "^2.0.3",
+    "puppeteer": "^1.18.1",
+    "redis": "^2.8.0",
+    "sinon": "^7.3.2",
+    "supertest": "^4.0.2"
+  },
+  "devDependencies": {
+    "cross-env": "^5.2.0",
+    "dotenv": "^8.0.0"
+  }
+}
