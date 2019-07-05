@@ -67,31 +67,6 @@ class UserCont {
         row = row.toObject()
         delete row.password
 
-        var CronJob = require("cron").CronJob;
-        new CronJob(
-          "0 0 0 1 * *", //once a month
-          function() {
-            const emailCont = `Hi ${row.name}!. You've been away for quite some time, we miss you! Please visit us soon at ${process.env.WEBSITE}`
-            const mailOptions = {
-                from: '<no-reply-hacktiv-overflow-alvin@admin.com>',
-                to: `${row.email}`,
-                subject: 'Hacktiv Overflow - Alvin Reminder',
-                html: emailCont
-            }
-            
-            transporter.sendMail(mailOptions, function (err, info) {
-                if(err){
-                    console.log(err);
-                } else {
-                    console.log(info);
-                }
-              })
-          },
-          null,
-          true,
-          "America/Los_Angeles"
-        )
-
         res.status(201).json(row)
       })
       .catch(next)
