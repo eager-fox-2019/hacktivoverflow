@@ -5,7 +5,7 @@ class QuestionController {
   static create(req, res, next) {
     let obj = {}
     let exclude = ['user', 'upvotes', 'downvotes', '_id', '__v', 'createdAt', 'updatedAt']
-    
+
     Question.schema.eachPath(path => {
       if (!exclude.includes(path)) {
         if (req.body[path])
@@ -31,7 +31,7 @@ class QuestionController {
   static readAll(req, res, next) {
     console.log(req.query);
     let obj = {}
-    let exclude = ['tags','user', 'upvotes', 'downvotes', '_id', '__v', 'createdAt', 'updatedAt']
+    let exclude = ['tags', 'user', 'upvotes', 'downvotes', '_id', '__v', 'createdAt', 'updatedAt']
     Question.schema.eachPath(path => {
       if (!exclude.includes(path)) {
         if (req.query[path])
@@ -40,8 +40,8 @@ class QuestionController {
     })
     if (req.params.userId)
       obj.user = req.params.userId
-    if(req.query.tags)
-      obj.tags = { $all: req.query.tags }
+    if (req.query.tags)
+      obj.tags = { $in: req.query.tags }
 
     console.log(obj);
 
@@ -62,7 +62,7 @@ class QuestionController {
       .then(row => {
         console.log('==============>>>>>');
         console.log(row);
-        
+
         res.json(row)
       })
       .catch(next)
@@ -71,10 +71,10 @@ class QuestionController {
     Question.findById(req.params._id)
       .then(row => {
         console.log('-------------------');
-        
+
         console.log(req.body);
         console.log(req.params._id);
-        
+
         let exclude = ['user', 'upvotes', 'downvotes', '_id', '__v', 'createdAt', 'updatedAt']
         if (req.body.tags && typeof req.body.tags == 'string')
           req.body.tags = req.body.tags.split(',')
@@ -132,11 +132,18 @@ class QuestionController {
       .catch(next)
   }
   static delete(req, res, next) {
+    let result
     Question.findByIdAndDelete(req.params._id)
-    .populate('user')
-    // .populate('answeredBy')
-    .then(row => {
-        res.json(row)
+      .populate('user')
+      // .populate('answeredBy')
+      .then(row => {
+        return User.findByIdAndUpdate(req.decoded._id, {
+          $inc: { reputation: -30 }
+        }, { new: true })
+
+      })
+      .then(row => {
+        res.json(result)
       })
       .catch(next)
   }

@@ -136,7 +136,8 @@ class UserCont {
   static update(req, res, next) {
     let obj = {}
     let exclude = ['image_url', '_id', '__v', 'createdAt', 'updatedAt']
-
+    console.log(req.body);
+    
     if (req.method === "PATCH") {
       User.schema.eachPath(path => {
         if (!exclude.includes(path)) {

@@ -2,7 +2,7 @@
   <div>
     <h1>{{ title }}</h1>
     <div v-show="tags" class="my-3">
-      <v-chip  @click="$store.dispatch('searchByTags',tag)" v-for="(tag,index) in tags" color="primary" text-color="white" :key="index">{{ tag }}</v-chip>
+      <v-chip @click="$store.dispatch('searchByTags',{tag})" v-for="(tag,index) in tags" color="primary" text-color="white" :key="index">{{ tag }}</v-chip>
     </div>
     <v-layout row wrap>
       <v-list three-line>

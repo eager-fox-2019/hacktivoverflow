@@ -20,6 +20,7 @@
                 type="password"
               ></v-text-field>
             <v-btn type="submit" color="primary">{{ teks }}</v-btn>
+            <slot name="google"></slot>
             </v-form>
           </v-card-text>
         </v-card>

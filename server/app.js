@@ -4,7 +4,7 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 const url = process.env.DATABASE_URL || 'mongodb://localhost/hacktiv-overflow'
-const port = process.env.PORT || 3000
+const port = /* process.env.PORT || */ 3000
 const routes = require('./routes')
 const error = require('./middlewares/error')
 

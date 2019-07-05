@@ -7,7 +7,11 @@
       <v-text-field v-model="name" :rules="nameRules" prepend-icon="person" name="name" label="Name" type="text"></v-text-field>
     </LogRegForm>
 
-    <LogRegForm v-show="!registerForm" teks="Login" @submitted="login"></LogRegForm>
+    <LogRegForm v-show="!registerForm" teks="Login" @submitted="login">
+      <template v-slot:google>
+      <div id="google-signin-button"></div>
+      </template>
+    </LogRegForm>
   </div>
 </template>
 <script>
@@ -34,6 +38,11 @@ export default {
       else this.toggle = 'Register'
     }
   },
+  mounted() {
+    gapi.signin2.render("google-signin-button", {
+      onsuccess: this.onSignIn
+    });
+  },
   methods: {
     register(email,password){
       this.$store.dispatch('register',{ 
@@ -43,6 +52,18 @@ export default {
     login(email,password){
       this.$store.dispatch('login',{ 
         email, password })
+    },
+    onSignIn(googleUser) {
+      console.log("Google nih");
+
+      let id_token = googleUser.getAuthResponse().id_token;
+      this.$store.dispatch('googleSignIn',id_token)
+      .then(data =>{
+
+      })
+      .catch(err =>{
+        console.log(err)
+      })
     }
   }
 }

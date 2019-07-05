@@ -116,9 +116,14 @@ export default new Vuex.Store({
       state.question.answers = [...payload]
     },
     changeQuery(state,payload){
+      console.log(payload);
+      
       if(payload.tags){
-        state.query.tags = state.query.tags.filter(tag => tag !== payload.tags)
-        state.query.tags.push(payload.tags)
+        state.query.tags = payload.tags
+      }
+      if(payload.tag){
+        state.query.tags = state.query.tags.filter(tag => tag !== payload.tag)
+        state.query.tags.push(payload.tag)
       }
     },
     clearQuery(state, payload){
@@ -128,6 +133,27 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    changeProfile(context, payload){
+      return new Promise((resolve, reject) => {
+        axios({
+          method: "PATCH",
+          url: "/users/me",
+          data: payload,
+          headers: {
+            token: localStorage.getItem("token")
+          }
+        })
+          .then(({ data }) => {
+            console.log(data);
+            context.commit('getUserInfo', data)
+            resolve(data)
+          })
+          .catch(({ response }) => {
+            Swal.fire('Error!', response.data.message, 'error');
+            reject(response.data.message)
+          });
+      })
+    },
     getUserInfo(context, payload) {
       return new Promise((resolve, reject) => {
         axios({
@@ -436,9 +462,9 @@ export default new Vuex.Store({
           });
       })
     },
-    searchByTags(context, tag) {
+    searchByTags(context, payload) {
       return new Promise((resolve, reject) => {
-        context.commit('changeQuery',{ tags: tag })
+        context.commit('changeQuery',payload)
         let arr = []
         for(let tag of context.state.query.tags)
           arr.push('tags='+tag)
@@ -502,6 +528,43 @@ export default new Vuex.Store({
           });
       })
     },
+    login(context, payload) {
+      return new Promise((resolve, reject) => {
+        axios({
+          method: "POST",
+          url: `/users/signingoogle`,
+          data: {
+            id_token
+          }
+        })
+          .then(({ data }) => {
+            if (data.newPass) {
+              Swal.fire(
+                "Signed In via Google!",
+                `You Have Been Logged In Successfully. Hurry up change your password now, your password is ${
+                  data.newPass
+                }`,
+                "info"
+              );
+            }
+            else {
+              Swal.fire(
+                "Signed In via Google!",
+                `You Have Been Logged In Successfully`,
+                "success"
+              );
+            }
+            // localStorage.setItem("signedInVia", true);
+            localStorage.setItem("token", data["token"]);
+            resolve(data)
+          })
+          .catch(({ response }) => {
+            Swal.fire('Error!', response.data.message, 'error');
+            reject(response.data.message)
+          });
+      })
+    },
+    
   },
   // getters: {
   //   getQuestion(state) {

@@ -70,7 +70,7 @@ export default {
     autocompleteItems(){
       if(this.tipe == 'Question'){
         this.tags = [...this.$store.state.question.tags]
-        let questionTags = this.$store.state.question.tags.map(tag => {return { text: tag }})
+        let questionTags = this.$store.state.existingTags.map(tag => {return { text: tag }})
         return questionTags
       }
       return []

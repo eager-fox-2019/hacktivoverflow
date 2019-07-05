@@ -28,7 +28,7 @@
           </span>
           </v-list-tile-sub-title>
           <div>
-          <v-chip @click="$store.dispatch('searchByTags',tag)" v-for="(tag,index) in question.tags" color="primary" text-color="white" :key="index">{{ tag }}</v-chip>
+          <v-chip @click="$store.dispatch('searchByTags',{tag})" v-for="(tag,index) in question.tags" color="primary" text-color="white" :key="index">{{ tag }}</v-chip>
           </div>
         </v-list-tile-content>
       </v-flex>

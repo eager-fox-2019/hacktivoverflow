@@ -122,7 +122,7 @@ class AnswerController {
         array.push(row.save({ validateBeforeSave: false }))
         if (req.body.voteType && foundUpvotes.length == 0 && foundDownvotes.length == 0) {
           array.push(User.findByIdAndUpdate(req.decoded._id, {
-            $inc: { reputation: 5 }
+            $inc: { reputation: 2 }
           }, { new: true }))
         }
         return Promise.all(array)
@@ -134,11 +134,18 @@ class AnswerController {
   }
 
   static delete(req, res, next) {
+    let result
     Answer.findByIdAndDelete(req.params._id)
     .populate('user')
     .populate('question')
+    .then(row =>{
+      result = row
+      return User.findByIdAndUpdate(req.decoded._id, {
+        $inc: { reputation: -50 }
+      }, { new: true })
+    })
     .then(row => {
-        res.json(row)
+        res.json(result)
       })
       .catch(next)
   }

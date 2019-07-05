@@ -10,12 +10,20 @@
             <v-list-tile-title>Home</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
+        <v-list-tile @click="myFeedPage">
+          <v-list-tile-action>
+            <v-icon>tag_faces</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>My Feed</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
         <v-list-tile @click="whoAmI">
           <v-list-tile-action>
             <v-icon>contact_mail</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
-            <v-list-tile-title>Profile</v-list-tile-title>
+            <v-list-tile-title>My Profile</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
@@ -49,6 +57,21 @@
     </v-toolbar>
 
     <v-content>
+      <!-- <v-banner
+          v-model="$store.state.message.show"
+          sticky
+          single-line
+          icon="done"
+          color="green"
+          icon-color="white"
+          :elevation="8"
+          transition="slide-y-transition"
+        >
+        {{ $store.state.message.text }}
+        <template v-slot:actions="{ dismiss }">
+        <v-btn text color="primary" @click="dismiss">Dismiss</v-btn>
+      </template>
+      </v-banner> -->
       <router-view></router-view>
     </v-content>
   </v-app>
@@ -80,6 +103,11 @@ export default {
     this.$store.dispatch("getAllQuestions");
   },
   methods: {
+    myFeedPage(){
+      this.$store.dispatch('searchByTags',{
+        tags: this.$store.state.me.watchedTags
+      })
+    },
     checkLogin(){
       if (!localStorage.getItem("token"))
         this.$store.state.logText = "Login";
@@ -114,7 +142,7 @@ export default {
       }
       else
         this.$router.push('/auth')
-    }
+    },
   }
 };
 </script>

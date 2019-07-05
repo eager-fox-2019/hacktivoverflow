@@ -4,7 +4,7 @@
     <Post  v-model="$store.state.question" tipe="Question">
       <v-card-title primary-title class="display-1 font-weight-black">{{ $store.state.question.title }}</v-card-title>
       <div>
-      <v-chip @click="$store.dispatch('searchByTags',tag)" v-for="(tag,index) in $store.state.question.tags" color="primary" text-color="white" :key="index">{{ tag }}</v-chip>
+      <v-chip @click="$store.dispatch('searchByTags',{tag})" v-for="(tag,index) in $store.state.question.tags" color="primary" text-color="white" :key="index">{{ tag }}</v-chip>
       </div>
     </Post>
     <h1 class="success--text mt-4">Answer</h1>

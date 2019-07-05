@@ -15,33 +15,77 @@ const getPublicUrl = (filename) => {
 }
 
 const sendUploadToGCS = (req, res, next) => {
-  if (!req.file) {
-    return next()
+  console.log(req.file);
+  console.log(req.files);
+
+  if (req.file) {
+    var gcsname = 'uploads/images/' + Date.now() + req.file.originalname
+    var file = bucket.file(gcsname)
+  
+    var stream = file.createWriteStream({
+      metadata: {
+        contentType: req.file.mimetype
+      }
+    })
+  
+    stream.on('error', (err) => {
+      req.file.cloudStorageError = err
+      next({ code: 400, message: err })
+    })
+  
+    stream.on('finish', () => {
+      req.file.cloudStorageObject = gcsname
+      file.makePublic().then(() => {
+        req.file.cloudStoragePublicUrl = getPublicUrl(gcsname)
+        next()
+      })
+    })
+  
+    stream.end(req.file.buffer)
   }
+  else if(req.files.length > 0) {
+    let promises = []
+  
+    req.files.forEach((file,index) => {
+      var gcsname = 'uploads/images/' + Date.now() + req.files[index].originalname
+      var file = bucket.file(gcsname)
+      var newPromise = new Promise((resolve, reject) => {
+        var stream = file.createWriteStream({
+          metadata: {
+            contentType: req.files[index].mimetype
+          }
+        })
+  
+        stream.on('error', (err) => {
+          req.files[index].cloudStorageError = err
+          next({ code: 400, message: err })
+        })
+  
+        stream.on('finish', () => {
+          req.files[index].cloudStorageObject = gcsname
+          file.makePublic().then(() => {
+            req.files[index].cloudStoragePublicUrl = getPublicUrl(gcsname)
+          })
+        })
+  
+        stream.end(req.files[index].buffer)
+      })
 
-  const gcsname = 'uploads/images/' + Date.now() + req.file.originalname
-  const file = bucket.file(gcsname)
-
-  const stream = file.createWriteStream({
-    metadata: {
-      contentType: req.file.mimetype
-    }
-  })
-
-  stream.on('error', (err) => {
-    req.file.cloudStorageError = err
-    next(err)
-  })
-
-  stream.on('finish', () => {
-    req.file.cloudStorageObject = gcsname
-    file.makePublic().then(() => {
-      req.file.cloudStoragePublicUrl = getPublicUrl(gcsname)
+      promises.push(newPromise)
+    })
+  
+    Promise.all(promises)
+    .then((response) => {
+      console.log(response);
       next()
     })
-  })
-
-  stream.end(req.file.buffer)
+    .catch((err) => {
+      next({ code: 400, message: err.message })
+    });
+  }
+  else {
+    return next()
+  }
 }
 
 const Multer = require('multer'),
