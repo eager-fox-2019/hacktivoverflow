@@ -1,7 +1,7 @@
 const User = require('../models/user')
 const { compare } = require('../helpers/bcrypt')
 const { sign } = require('../helpers/jwt')
-const { nodeMailer } = require('../helpers/nodeMailer')
+// const { nodeMailer } = require('../helpers/nodeMailer')
 
 class UserController{
     static login(req,res,next){
@@ -46,7 +46,7 @@ class UserController{
         newUser.save()
         .then(user =>{
             console.log('registered', user);
-            nodeMailer(user.email,'welcome')
+            // nodeMailer(user.email,'welcome')
             res.status(201).json(user)
         })
         .catch(next)
