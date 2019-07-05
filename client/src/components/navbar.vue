@@ -8,7 +8,7 @@
             <v-toolbar-side-icon v-if="isLogin" class="white--text" @click="drawer = !drawer"></v-toolbar-side-icon>
             <v-toolbar-title class="white--text" >
             <span>Tanya</span>
-            <span>Aja</span>
+            <span>Ajaa</span>
             </v-toolbar-title>
             <v-spacer>
             </v-spacer>
@@ -53,7 +53,7 @@
                             prepend-inner-icon="search"
                             solo-inverted
                         ></v-text-field>
-                        <h3>Watched Tags</h3>
+                        <h3>XWatched Tags</h3>
                         <!-- {{loggedUser.watchedTags}} -->
                         <v-card style=" min-height : 150px; background-color : rgba(255, 255, 255, 0.12)">
                             <v-btn @click="resetQuery">All</v-btn>
