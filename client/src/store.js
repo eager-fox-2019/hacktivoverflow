@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import Swal from 'sweetalert2'
 import myServer from './api/myServer.js'
+import router from './router'
 import { stat } from 'fs';
 
 Vue.use(Vuex)
@@ -210,6 +211,7 @@ export default new Vuex.Store({
         })
       })
       .catch((err) => {
+        router.push('/login')
         Swal.fire({
           type: 'error',
           title: 'Oops...',
@@ -275,7 +277,8 @@ export default new Vuex.Store({
       })
         .catch(err => {
           localStorage.clear()
-          
+          router.push('/login')
+
           // console.log('masuk err', err)
           // Swal.fire({
           //   type: "error",

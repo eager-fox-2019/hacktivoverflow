@@ -54,7 +54,12 @@ export default {
           .then(() => {
             if (!this.$store.getters.error){
               this.$router.push('/')
+            } else {
+              this.$router.push('/login')
             }
+          })
+          .catch(() => {
+              this.$router.push('/login')
           })
         }
       })

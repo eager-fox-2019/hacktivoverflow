@@ -28,6 +28,9 @@ export default {
           this.$router.push('/login')
         }
       })
+      .catch(() =>{
+        this.$router.push('/login')
+      })
     }
   }
 };
