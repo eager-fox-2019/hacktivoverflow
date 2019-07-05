@@ -1,6 +1,5 @@
 # HacktivOverflow-v2
 
-## blum fix deploynya
 ### http://eager-overflow.sukmaranggapradeta.com.s3-website-ap-southeast-1.amazonaws.com/
 
 ### Register :
