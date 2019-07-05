@@ -11,7 +11,6 @@
   </div>
 </template>
 
-
 <script>
 import questiondetail from "@/components/QuestionDetail.vue";
 export default {

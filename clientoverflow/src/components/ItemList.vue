@@ -3,13 +3,15 @@
     <ul class="list-group">
       <li class="list-group-item">
         <div class="row d-flex">
-          <div v-if="type!=='question'" class="ml-3 mr-auto">
+          <div v-if="type !== 'question'" class="ml-3 mr-auto">
             <span class="badge badge-success p-1">Answer</span>
           </div>
-          <div v-if="type=='question'" class="ml-3 mr-auto">
+          <div v-if="type == 'question'" class="ml-3 mr-auto">
             <span class="badge badge-warning p-1">
               <i class="fa fa-question border rounded-circle p-1"></i>
-              <span v-if="$route.params.id && answers.length > 0">&emsp;Answered</span>
+              <span v-if="$route.params.id && answers.length > 0"
+                >&emsp;Answered</span
+              >
             </span>
           </div>
           <div class="ml-auto">{{ new Date(item.createdAt) }}</div>
@@ -20,41 +22,49 @@
             href
             @click.prevent="$router.push(`/question/${item._id}`)"
             class="nav-link mx-0 my-1 p-0"
-          >{{ item.title }}</a>
-          <a v-if="type !== 'question'" class="nav-link mx-0 my-1 p-0">{{ item.title }}</a>
+            >{{ item.title }}</a
+          >
+          <a v-if="type !== 'question'" class="nav-link mx-0 my-1 p-0">{{
+            item.title
+          }}</a>
         </h4>
         <div class="mt-3">
-          <small v-if="!$route.params.id && type == 'question'">snippet of question:</small>
+          <small v-if="!$route.params.id && type == 'question'"
+            >snippet of question:</small
+          >
           <p v-if="!$route.params.id">
             {{
-            item.description
-            .split()
-            .slice(0, 100)
-            .join(",")
+              item.description
+                .split()
+                .slice(0, 100)
+                .join(",")
             }}
             ...
           </p>
-          <p v-if="$route.params.id">
-            {{
-            item.description
-            }}
-          </p>
+          <p v-if="$route.params.id">{{ item.description }}</p>
         </div>
         <div class="d-flex justify-content-between">
           <div>
             <div class="sm">
               <small v-if="type == 'question'">Asked : {{ countddown }}</small>
-              <small v-if="type !== 'question'">Answered : {{ countddown }}</small>
+              <small v-if="type !== 'question'"
+                >Answered : {{ countddown }}</small
+              >
             </div>
-            <div v-if="type == 'question'">Asked by : {{ item.userId.username }}</div>
-            <div v-if="type !== 'question'">Answered by : {{ item.userId.username }}</div>
-            <div v-if="type =='question'">
+            <div v-if="type == 'question'">
+              Asked by : {{ item.userId.username }}
+            </div>
+            <div v-if="type !== 'question'">
+              Answered by : {{ item.userId.username }}
+            </div>
+            <div v-if="type == 'question'">
               <span
                 @click="addWT(tag)"
                 v-for="tag in item.tags"
                 :key="tag"
                 class="mr-1 badge badge-secondary"
-              >{{tag}}</span>
+                >{{ tag }}</span
+              >
             </div>
           </div>
           <div class="d-flex justify-content-end align-items-center">
@@ -63,19 +73,35 @@
               type="button"
               class="btn btn-link btn-sm"
               @click.prevent="$router.push(`/question/${item._id}`)"
-            >See Details</button>
+            >
+              See Details
+            </button>
             <button
-              v-if="item.userId._id !== user._id && $route.params.id && type =='question' && isLogin"
+              v-if="
+                item.userId._id !== user._id &&
+                  $route.params.id &&
+                  type == 'question' &&
+                  isLogin
+              "
               type="button"
               class="btn btn-link btn-sm"
-              @click.prevent="$emit('newanswer', {_id: item._id})"
-            >Answer This</button>
+              @click.prevent="$emit('newanswer', { _id: item._id })"
+            >
+              Answer This
+            </button>
             <button
-              v-if="item.userId._id !== user._id && $route.params.id && type =='question' && !isLogin"
+              v-if="
+                item.userId._id !== user._id &&
+                  $route.params.id &&
+                  type == 'question' &&
+                  !isLogin
+              "
               type="button"
               class="btn btn-link btn-sm"
               @click.prevent="$emit('loginfirst')"
-            >Answer This</button>
+            >
+              Answer This
+            </button>
             <button
               v-if="item.userId._id !== user._id && isLogin && upvoted"
               type="button"
@@ -123,7 +149,10 @@
               {{ item.upvotes.length }}
             </button>
             <button
-              v-if="(item.userId._id === user._id && item.upvotes.length == 0) || !isLogin"
+              v-if="
+                (item.userId._id === user._id && item.upvotes.length == 0) ||
+                  !isLogin
+              "
               type="button"
               class="btn btn-outline-secondary btn-sm"
               disabled
@@ -141,7 +170,10 @@
               {{ item.downvotes.length }}
             </button>
             <button
-              v-if="(item.userId._id === user._id && item.downvotes.length == 0) || !isLogin"
+              v-if="
+                (item.userId._id === user._id && item.downvotes.length == 0) ||
+                  !isLogin
+              "
               type="button"
               class="btn btn-outline-primary btn-sm ml-3"
               disabled
@@ -155,13 +187,17 @@
               @click="edit(item)"
               type="button"
               class="bt btn-secondary n btn-sm ml-3"
-            >Edit</button>
+            >
+              Edit
+            </button>
             <button
-              v-if="item.userId._id === user._id && this.type=='question'"
-              @click="del(item)"
+              v-if="item.userId._id === user._id && this.type == 'question'"
+              @click="del"
               type="button"
               class="btn btn-danger btn-sm ml-3"
-            >delete</button>
+            >
+              delete
+            </button>
           </div>
         </div>
       </li>
@@ -220,7 +256,7 @@ export default {
         })
         .then(result => {
           if (result.value) {
-            let { watchedTags, _id } = this.user;
+            let { watchedTags } = this.user;
             if (watchedTags.indexOf(tag) == -1) {
               watchedTags.push(String(tag));
               this.$store.dispatch("CHANGE_WT", { watchedTags });
@@ -269,7 +305,7 @@ export default {
         this.$emit("editanswer", data);
       }
     },
-    del(data) {
+    del() {
       if (this.type == "question") {
         swal
           .fire({
@@ -285,10 +321,12 @@ export default {
             if (result.value) {
               this.$store
                 .dispatch("DELETE_QUESTION", this.item._id)
-                .then(res => {
+                .then(() => {
                   swal.fire(
                     "success",
-                    `successfully delete your question with id : ${this.item._id} and titled ${this.item.title}`,
+                    `successfully delete your question with id : ${
+                      this.item._id
+                    } and titled ${this.item.title}`,
                     "success"
                   );
                   this.$router.push("/");
@@ -315,10 +353,12 @@ export default {
             if (result.value) {
               this.$store
                 .dispatch("DELETE_ANSWER", this.item._id)
-                .then(res => {
+                .then(() => {
                   swal.fire(
                     "success",
-                    `successfully delete your answer with id : ${this.item._id} and titled ${this.item.title}`,
+                    `successfully delete your answer with id : ${
+                      this.item._id
+                    } and titled ${this.item.title}`,
                     "success"
                   );
                 })

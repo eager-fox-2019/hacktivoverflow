@@ -6,16 +6,22 @@
           <h1>Hacktiv Overflow</h1>
         </center>
         <div v-if="isLogin">
-          <span
-            v-if="user.watchedTags.length < 1"
-          >No watched Tags found, to add watched tag, just click on the tag on this question feeds</span>
-          <small
-            v-if="user.watchedTags.length > 0"
-          >To add watched tag, just click on the tag on this question feeds. To remove it, just click the 'x' symbol on the tag below</small>
+          <span v-if="user.watchedTags.length < 1">
+            No watched Tags found, to add watched tag, just click on the tag on
+            this question feeds
+          </span>
+          <small v-if="user.watchedTags.length > 0">
+            To add watched tag, just click on the tag on this question feeds. To
+            remove it, just click the 'x' symbol on the tag below
+          </small>
           <br />
           <div class="row m-0 p-0">
-            <span class="badge badge-light mr-2" v-for="tag in user.watchedTags" :key="tag">
-              {{tag}}&emsp;
+            <span
+              class="badge badge-light mr-2"
+              v-for="tag in user.watchedTags"
+              :key="tag"
+            >
+              {{ tag }}&emsp;
               <i @click="rmTag(tag)" class="fa fa-times"></i>
             </span>
           </div>
@@ -37,7 +43,7 @@
         <b-tab
           v-for="item in filters"
           :key="item.tag"
-          :title="'Tagged: '+item.tag +'('+item.questions.length+')'"
+          :title="'Tagged: ' + item.tag + '(' + item.questions.length + ')'"
         >
           <div v-for="question in item.questions" :key="question._id">
             <QuestionList
@@ -49,7 +55,11 @@
           </div>
         </b-tab>
       </b-tabs>
-      <b-tabs v-if="!isLogin" content-class="border border-top-0 pt-3" justified>
+      <b-tabs
+        v-if="!isLogin"
+        content-class="border border-top-0 pt-3"
+        justified
+      >
         <b-tab title="Feeds" active>
           <div v-for="question in questions" :key="question._id">
             <QuestionList
@@ -86,7 +96,7 @@ export default {
       let tags = this.user.watchedTags;
       let filterResult = [];
 
-      tags.forEach((tag, i) => {
+      tags.forEach(tag => {
         let temp = {};
         temp.questions = [];
         temp.tag = tag;

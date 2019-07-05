@@ -35,25 +35,26 @@
           @keyup.space="addTag"
           @keyup.enter="addTag"
         />
-        <small
-          class="my-1"
-        >type the tags and press space or enter to add tag, click the tag to remove it</small>
+        <small class="my-1">
+          type the tags and press space or enter to add tag, click the tag to
+          remove it
+        </small>
         <span
           v-for="tag in tags"
           :key="tag"
           @click="removeTag(tag)"
           class="badge badge-secondary mr-2"
-        >{{tag}}</span>
+        >{{ tag }}</span>
       </div>
       <b-button
-        v-if="modal ==='Write new question, ' + user.username"
+        v-if="modal === 'Write new question, ' + user.username"
         @click="submitquestion"
         class="mt-2 form-control"
         variant="outline-success"
         block
       >Submit Question</b-button>
       <b-button
-        v-if="modal ==='Edit this question: ' + questionId"
+        v-if="modal === 'Edit this question: ' + questionId"
         @click="editquestion"
         class="mt-2 form-control"
         variant="outline-success"
@@ -163,11 +164,12 @@ export default {
         this.tags = [];
         this.tag = "";
       } else {
+        let tags = [...emit.tags];
         this.modal = "Edit this question: " + emit._id;
         this.title = emit.title;
         this.description = emit.description;
         this.questionId = emit._id;
-        this.tags = emit.tags;
+        this.tags = tags;
         this.tag = "";
       }
       this.$refs["questionmodal"].show();
@@ -219,7 +221,6 @@ export default {
       this.tag = "";
     },
     removeTag(tag) {
-      let arr = this.tags;
       let index = "";
       for (let i = 0; i < this.tags.length; i++) {
         if (this.tags[i] == tag) {
@@ -277,7 +278,42 @@ export default {
 
     // QUESTION RELATED => FUNGSI NYA DI STORE
     submitquestion() {
-      if (this.title !== "" || this.description !== "" || this.tags !== []) {
+      if (this.tag != "" && this.tags.length < 5) {
+        if (this.tag.length > 12 || this.tag.length < 3) {
+          swal.fire("Tag should consist of 3 - 12 characters");
+        } else {
+          this.tags.push(this.tag);
+          this.processquestion();
+        }
+      } else if (this.tag != "" && this.tags.length == 5) {
+        swal
+          .fire({
+            title: "Confirm Submission",
+            text:
+              "You can only add 5 tags, your inputted tag will be dismissed because you had already add 5 tag to this question",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            cancelButtonText: "Change the tag",
+            confirmButtonText: "I dont mind, submit it!"
+          })
+          .then(result => {
+            if (result.value) {
+              this.tag = "";
+              this.processquestion();
+            }
+          });
+      } else {
+        this.processquestion();
+      }
+    },
+    processquestion() {
+      if (
+        this.title !== "" &&
+        this.description !== "" &&
+        this.tags.length > 0
+      ) {
         this.$store
           .dispatch("SUBMIT_QUESTION", {
             userId: this.user._id,
@@ -300,6 +336,37 @@ export default {
       }
     },
     editquestion() {
+      if (this.tag != "" && this.tags.length < 5) {
+        if (this.tag.length > 12 || this.tag.length < 3) {
+          swal.fire("Tag should consist of 3 - 12 characters");
+        } else {
+          this.tags.push(this.tag);
+          this.processquestion();
+        }
+      } else if (this.tag != "" && this.tags.length == 5) {
+        swal
+          .fire({
+            title: "Confirm Submission",
+            text:
+              "You can only add 5 tags, your inputted tag will be dismissed because you had already add 5 tag to this question",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            cancelButtonText: "Change the tag",
+            confirmButtonText: "I dont mind, submit it!"
+          })
+          .then(result => {
+            if (result.value) {
+              this.tag = "";
+              this.processquestion();
+            }
+          });
+      } else {
+        this.processquestion();
+      }
+    },
+    processeditquestion() {
       this.$store
         .dispatch("UPDATE_QUESTION", {
           _id: this.questionId,

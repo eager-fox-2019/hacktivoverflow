@@ -23,19 +23,21 @@
         ></textarea>
       </div>
       <b-button
-        v-if="modal ==='Answer question'"
+        v-if="modal === 'Answer question'"
         @click="submitanswer"
         class="mt-2 form-control"
         variant="outline-success"
         block
-      >Submit Answer</b-button>
+        >Submit Answer</b-button
+      >
       <b-button
-        v-if="modal ==='Edit answer'"
+        v-if="modal === 'Edit answer'"
         @click="editanswer"
         class="mt-2 form-control"
         variant="outline-success"
         block
-      >Edit answer</b-button>
+        >Edit answer</b-button
+      >
     </b-modal>
     <div class="container" v-if="question">
       <div class="container my-3">
@@ -50,15 +52,24 @@
       ></list>
       <div class="container my-3">
         <h3 v-if="$store.state.answers.length > 0">The answers</h3>
-        <h3 v-if="$store.state.answers.length == 0 && isLogin && question.userId._id !== user._id">
+        <h3
+          v-if="
+            $store.state.answers.length == 0 &&
+              isLogin &&
+              question.userId._id !== user._id
+          "
+        >
           No one answered this, be the first one to answer this
-          <a
-            href
-            @click.prevent="showanswerform"
-          >Click Here</a>
+          <a href @click.prevent="showanswerform">Click Here</a>
           contribute with your answer
         </h3>
-        <h3 v-if="$store.state.answers.length == 0 && isLogin && question.userId._id == user._id">
+        <h3
+          v-if="
+            $store.state.answers.length == 0 &&
+              isLogin &&
+              question.userId._id == user._id
+          "
+        >
           <center>
             <span class="badge badge-info p-3">
               No one have answered this&nbsp;
@@ -69,15 +80,17 @@
         <h3 v-if="$store.state.answers.length == 0 && !isLogin">
           <center>
             No one answered this, be the first one to answer this
-            <a
-              href
-              @click.prevent="$emit('loginfirst')"
-            >Click Here</a> contribute with your answer
+            <a href @click.prevent="$emit('loginfirst')">Click Here</a>
+            contribute with your answer
           </center>
         </h3>
       </div>
       <div v-for="answer in $store.state.answers" :key="answer._id">
-        <list :item="answer" :type="'answer'" @editanswer="showanswerform(answer)"></list>
+        <list
+          :item="answer"
+          :type="'answer'"
+          @editanswer="showanswerform(answer)"
+        ></list>
       </div>
     </div>
   </div>
@@ -107,7 +120,6 @@ export default {
       this.$store.dispatch("FETCH_ALL_ANSWERS", this.$route.params.id);
     }
   },
-  mounted() {},
   computed: {
     ...mapState(["questions", "user", "answers", "isLogin"]),
     question: function() {
@@ -123,7 +135,6 @@ export default {
       return [];
     }
   },
-  mounted() {},
   methods: {
     editanswer() {
       if (this.title !== "" && this.description !== "") {
@@ -148,6 +159,7 @@ export default {
     },
     submitanswer() {
       if (this.title == "" || this.description == "") {
+        swal.fire("complete the form to submit the answer");
       } else {
         swal
           .fire({
