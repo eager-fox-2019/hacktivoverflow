@@ -16,7 +16,7 @@ const queue = kue.createQueue({
   }
 })
 
-let job = cron.schedule('* * * * * *', async () => {
+let job = cron.schedule('*/5 * * * *', async () => {
   let questions = await Question.find({ botAnswerLink: null, botAnswerTitle: null }).exec()
   console.log('etst', questions.length)
   if (questions.length > 0) {
@@ -34,22 +34,14 @@ queue.process('cariinJawabanDigoogle', async function (job, done) {
   try {
     console.log('do tugas carijawabagkegoogle')
     let question = await Question.findOne({_id: job.data.id}).exec()
-    if (question.botAnswerLink === '#') {
-      done()
-    }
-    question.botAnswerLink = '#'
-    question.botAnswerTitle = 'tidak ketemu'
-    question.save()
     let { judul, link } = await cariDiGoogle(job.data.judul)
+    console.log({judul, link})
     question.botAnswerTitle = judul
     question.botAnswerLink = link
     await question.save()
     done()
   } catch (err) {
-    // console.log('test ini done keinvoke error', err)
-    let question = await Question.findOne({ _id: job.data.id }).exec()
-    question.botAnswerTitle = judul
-    question.botAnswerLink = link
+    console.log('do tugas carijawabagkegoogle gagal')
     done(new Error('nggak jalan'))
   }
 })
