@@ -9,6 +9,8 @@
                     <span v-html="question.description">
                     </span>
                 </v-card>
+                <!-- {{question.userId}} -->
+                <span>asked by : {{question.userId.username}}</span>
                 <v-layout>
                     <v-btn color="#D9D9D9" style="color : black; font-size : 10px; padding : 0px" round v-for="(tag,index) in question.tags" :key="index">
                         {{tag}}
@@ -98,7 +100,7 @@ export default {
                     this.selectedTags.push({key : element, value : element})
                 });
                 this.dialog = true
-            },1000)
+            },1500)
         },
         toEdit(){
             let data = this.newQuestion

@@ -11,7 +11,8 @@ let answerSchema = new Schema({
         required : [true , 'description is required']
     },
     userId      : {
-        type : String,
+        type : Schema.Types.ObjectId,
+        ref : 'user',
         required : [true , 'userId is required']
     },
     questionId : {

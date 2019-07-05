@@ -15,11 +15,8 @@ export default new Vuex.Store({
   },
   mutations: {
     setJobList(state,data){
-      console.log('data mau ke job list',data);
       
       state.jobList = data
-      console.log(this.jobList);
-      
     },
 
     setIsLogin(state,data){
@@ -29,7 +26,6 @@ export default new Vuex.Store({
       state.userTag = data
     },
     setAllQuestion(state,data){
-      console.log(data);
       
       state.allQuestion = data
     },
@@ -46,12 +42,10 @@ export default new Vuex.Store({
   actions: {
     filterByTag(context,data){
       let query = data
-      console.log('masuk ke store',data);
       ax.get('/questions')
       .then(({data})=>{
         let arr = []
         data.forEach(el =>{
-          console.log('lllllll',el.tags);
           if(el.tags.indexOf(query) !== -1){
             arr.push(el)
           }
@@ -130,7 +124,7 @@ export default new Vuex.Store({
 
       ax.get('/questions')
       .then(({data})=>{
-        console.log('pokoke iso',data);
+        console.log('pokoke iso all',data);
         
         context.commit('setAllQuestion',data)
       })

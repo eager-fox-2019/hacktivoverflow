@@ -12,6 +12,7 @@
                         {{answer.description}}
                     </v-card>
               </v-card-text>
+              <h4>Answered by : {{answer.userId.username}}</h4>
               <v-card-actions>
                 <v-layout row align-center>
                   <v-spacer></v-spacer>

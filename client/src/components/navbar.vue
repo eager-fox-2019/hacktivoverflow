@@ -283,6 +283,8 @@ export default {
                 title : '',
                 description : ''
             }
+            this.userTags = []
+
         },
 
         toLogin(){
@@ -326,8 +328,8 @@ export default {
                 username : '',
                 email : '',
                 password : '',
-                selectedTags : []
             }
+            this.userTags = []
         },
         editTagUser(){
             console.log(localStorage.tags)

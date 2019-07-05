@@ -6,6 +6,7 @@ class QuestionController{
         Question
         .find({})
         .populate('answerList')
+        .populate('userId')
         .then(questions =>{
             res.status(201).json(questions)
         })
@@ -17,7 +18,13 @@ class QuestionController{
         
         Question
         .findById(req.params.questionId)
-        .populate('answerList')
+        .populate({
+            path : 'answerList',
+            populate : {
+                path : 'userId'
+            }
+        })
+        .populate('userId')
         .then(question =>{
             res.status(200).json(question)
         })

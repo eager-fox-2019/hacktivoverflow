@@ -5,8 +5,8 @@
     <v-container></v-container>
       <v-layout row justify-center style="min-height : 100vh">
         <v-flex lg9 md12 xs12 mr-2 style="justify-content:center; text-align : center;background-color : #735451; min-height : 100vh">
-          <h1 v-if="page === 'home'">List of Question</h1>
-          <h1 v-if="page === 'profile'">List of Your Question</h1>
+          <h1 v-show="page === 'home' || !isLogin">List of Question</h1>
+          <h1 v-show="page === 'profile'">List of Your Question</h1>
           <v-flex lg6 offset-lg3>
             <v-text-field
               v-model="searchQuery"
@@ -65,7 +65,7 @@
                 return this.allQuestion
             }
       },
-      ...mapState(['allQuestion', 'jobList'])
+      ...mapState(['allQuestion', 'jobList', 'isLogin'])
     },
     watch : {
       '$route'(){

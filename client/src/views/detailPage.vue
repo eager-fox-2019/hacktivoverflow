@@ -11,6 +11,7 @@
               <v-card-title>
                   <h1>Question : {{detailQuestion.title}}</h1>
               </v-card-title>
+                <h4>asked by : {{detailQuestion.userId.username}}</h4>
               <v-card-text style ="padding : 10px; font-size : 20px" class="text-truncate">
                 
                   <v-card class="mb-2" style="display : flex; align-items : center;min-height : 50px;text-align : left; padding : 10px; background-color: #D9D9D9; color : black">

@@ -7,6 +7,7 @@ class AnswerController{
     static getAll(req,res,next){
         Answer
         .find({})
+        .populate('userId')
         .then(answers =>{
             res.status(200).json(answers)
         })
@@ -18,6 +19,7 @@ class AnswerController{
         
         Answer
         .findById(req.params.answerId)
+        .populate('userId')
         .then(answer =>{
             console.log('ini answer========',answer);
             
@@ -29,6 +31,7 @@ class AnswerController{
     static getUserAnswer(req,res,next){
         Answer
         .find({userId : req.params.userId})
+        .populate('userId')
         .then(answers =>{
             res.status(200).json(answers)
         })
@@ -38,6 +41,7 @@ class AnswerController{
     static getAnswerByQuestion(req,res,next){
         Answer
         .find({questionId : req.params.questionId})
+        .populate('userId')
         .then(answers =>{
             res.status(200).json(answers)
         })
