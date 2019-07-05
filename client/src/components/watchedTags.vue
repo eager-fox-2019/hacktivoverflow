@@ -36,6 +36,9 @@ export default {
     },
     tagSearch(){
         return this.$store.state.tagSearch
+    },
+    islogin(){
+        return this.$store.state.islogin
     }
   },
   data() {
@@ -43,6 +46,13 @@ export default {
       edit: false,
       newTag:'',
     };
+  },
+  watch:{
+      islogin(){
+          if(!this.islogin){
+              this.$store.commit('updateTags', [])
+          }
+      }
   },
   methods:{
       tagSearching(tag){

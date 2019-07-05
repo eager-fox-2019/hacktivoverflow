@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid">
     <div class="row">
-      <div class="col-md-7 col-sm-12 p-4" >
+      <div class="col-md-7 questionDiv col-sm-12 p-4" >
         <div v-if="!showEdit">
           <!-- {{question.creator}} -->
           <b-row>
@@ -32,7 +32,7 @@
 
           <p>
             <vue-editor
-              disabled="true"
+              :disabled="disabled"
               :editor-toolbar="customToolbar"
               style="background-color:rgb(233, 233, 233)"
               id="editor"
@@ -66,7 +66,7 @@
         </div>
 
         <eachAnswer
-        style='box-shadow: 2px 1px 5px 1px rgb(190, 190, 190);'
+          style='box-shadow: 2px 1px 5px 1px rgb(190, 190, 190);'
           v-for="(answer, index) in answers"
           :key="index"
           :answer="answer"
@@ -103,7 +103,8 @@ export default {
       showEdit: false,
       userId: "",
       createAnswer: false,
-      customToolbar: []
+      customToolbar: [],
+      disabled:true
     };
   },
   watch: {
@@ -176,7 +177,10 @@ export default {
     /* box-shadow: -1px -1px 1px 5px grey; */
     height:100vh; 
     overflow:scroll; 
-   overflow:scroll
 
+}
+.questionDiv{
+  height:100vh;
+  overflow:scroll
 }
 </style>

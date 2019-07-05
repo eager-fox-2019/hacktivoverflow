@@ -16,7 +16,8 @@
     text-decoration: none;
 }
 body{
-    background-color:#f1f1f16e
+    background-color:#f1f1f16e;
+    overflow: hidden;
 }
 .chip {
     display: inline-block;

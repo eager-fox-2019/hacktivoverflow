@@ -3,8 +3,8 @@
     <div>
       <b-card v-if="!showEdit">
         <b-row>
-          <vote class="col col-1" :data="answer" :type="'answers'" @updateData="updateData"/>
-          <div class='col col-11'><h2>{{answer.title}}</h2></div>
+          <vote class="col col-2" :data="answer" :type="'answers'" @updateData="updateData"/>
+          <div class='col col-10'><h2>{{answer.title}}</h2></div>
         </b-row>
         <b-row align-h="between" class="px-3">
           <div class="col col-5">
@@ -19,19 +19,19 @@
               @click.prevent="deleteThis"
             >delete</b-button>
           </div>
-        <h7 style='color:grey'>Answered by: {{answer.creator.name}}</h7>
+        <p style='color:grey'>Answered by: {{answer.creator.name}}</p>
         </b-row>
           <hr role="separator" aria-orientation="horizontal" class="my-4 dropdown-divider">
 
         <b-card-text>
           <vue-editor
-              disabled="true"
+              :disabled="disabled"
               :editor-toolbar="customToolbar"
               style="background-color:rgb(233, 233, 233)"
               id="editor"
               v-model="answer.description"
             ></vue-editor>
-          <span v-html="answer.description"></span>
+          <!-- <span v-html="answer.description"></span> -->
         </b-card-text>
         <!-- @updateData="updateData" inside vote-->
       </b-card>
@@ -63,7 +63,8 @@ export default {
     return {
       userId: "",
       showEdit: false,
-      customToolbar:[]
+      customToolbar:[],
+      disabled:true
     };
   },
   components: {
@@ -106,7 +107,5 @@ export default {
 };
 </script>
 <style>
-h7{
-  color:rgb(233, 233, 233)
-}
+
 </style>

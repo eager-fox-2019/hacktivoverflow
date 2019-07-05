@@ -18,6 +18,15 @@ export default new Vuex.Store({
     tagSearch: ''
   },
   mutations: {
+    deleteAnswer(state, deletedAnswer){
+      console.log(deletedAnswer, 'deleted')
+      state.answers = state.answers.filter((item)=>{
+        console.log(item, 'item')
+        if(item._id !== deletedAnswer){
+          return item
+        }
+      })
+    }, 
     tagSearch(state, tag){
       state.tagSearch = tag
     },
@@ -92,9 +101,11 @@ export default new Vuex.Store({
       api
         .delete(`/answers/${payload.answerId}`)
         .then(({data})=>{
+          console.log(data, 'delete answers')
+          console.log(payload.answerId)
             // let payload = {data:{}, index:this.index}
-            context.dispatch('setAnswers', payload.questionId)
-            console.log(data)
+            context.commit('deleteAnswer', payload.answerId)
+            // console.log(data)
         })
         .catch(err=>{
             console.log(err)

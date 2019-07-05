@@ -5,13 +5,13 @@
         <h2 class='mx-4'>Questions</h2>
       <b-form-input class='col-sm-8' v-model='search' placeholder="search"></b-form-input>
       </div>
-        <b-row>
+        <b-row style='overflow:scroll; height:100vh'>
       <b-col cols='8'>
       <div v-for="(question, index) in filteredQuestions" :key="index">
         <EachQuestion :question="question" :index="index" class='py-2'/>
       </div>
       </b-col>
-      <b-col cols='4'><watchedTags/></b-col>
+      <b-col cols='4' v-if='islogin'><watchedTags/></b-col>
     </b-row>
     </div>
   </div>
@@ -31,6 +31,9 @@ export default {
     }
   },
   computed: {
+    islogin(){
+      return this.$store.state.islogin
+    },
     tagSearch(){
       return this.$store.state.tagSearch
     }, 
