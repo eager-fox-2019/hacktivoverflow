@@ -8,7 +8,7 @@ const app = express();
 const errorHandler = require("./helpers/error-handler.js");
 const User = require("./models/user.js");
 var kue = require("kue"),
-  queue = kue.createQueue();
+  jobs = kue.createQueue();
 
 let local = "mongodb://localhost/hacktiv-overflow";
 let uri =
@@ -69,3 +69,4 @@ new CronJob(
   true,
   "America/Los_Angeles"
 );
+
