@@ -3,6 +3,9 @@
 Postman API documentation:
 https://documenter.getpostman.com/view/6691212/S1a7WR4Z
 
+Deployed:
+http://minioverflow.stefkwan.com/
+
 Instructions:
 Buatlah clone sederhana dari Stack Overflow menggunakan Client-server model dengan spesifikasi sebagai berikut:
 
