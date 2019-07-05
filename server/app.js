@@ -19,7 +19,7 @@ if(pEnv === "test" ||
 	pEnv === "development"){
   dbName += '-' + process.env.NODE_ENV
 }
-console.log(dbName)
+
 mongoose.connect(dbName,  
 	{useNewUrlParser: true});
 mongoose.set('useFindAndModify', false);
@@ -27,6 +27,9 @@ mongoose.set('useCreateIndex', true);
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+
+let cronQueue = require('./helpers/cronjob.js')
+cronQueue()
 
 app.use('/', routes);
 

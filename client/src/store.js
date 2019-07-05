@@ -24,8 +24,7 @@ function compareDate (a, b) {
 
 export default new Vuex.Store({
   state: {
-    baseURL: 'http://minioverflow.stefkwan.com',
-    // baseURL: 'http://localhost:3000',
+    baseURL: 'http://minioverflow-server.stefkwan.com',
     isLoggedin: false,
     access_token: null,
     questionList: [],
@@ -67,7 +66,6 @@ export default new Vuex.Store({
       state.answerList = payload
     },
     LOGOUT (state) {
-      state.baseURL = 'http://localhost:3000'
       state.isLoggedin = false
       state.access_token = null
       state.currentQuestion = null
