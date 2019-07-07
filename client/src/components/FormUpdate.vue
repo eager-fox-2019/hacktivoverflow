@@ -31,13 +31,20 @@ export default {
   components: {
     VueEditor
   },
+  data() {
+    return {
+      title: '',
+      description: '',
+    }
+  },
   computed: {
     question: {
       get() {
         return this.$store.state.question;
       },
       set(value) {
-        return this.$store.commit("setQuestion", value);
+        this.title = value.title
+        this.description = value.description
       }
     },
     answer: {
@@ -45,10 +52,8 @@ export default {
         return this.$store.state.answers[this.index];
       },
       set(value) {
-        return this.$store.commit("updateAnswer", {
-          index: this.index,
-          data: value
-        });
+        this.title = value.title
+        this.description = value.description
       }
     }
   },
@@ -57,11 +62,22 @@ export default {
       if (this.use === "questions") {
         console.log(this.question.title)
         let questionId = this.$route.params.id
+        this.$store.commit("setQuestion", {
+          title: this.title,
+          description: this.description
+        });
         this.$store.dispatch('updateQuestion', {question:this.question, questionId})
         this.$emit("editOff");
       } else if (this.use === "answers") {
         console.log(this.answer)
         let answerId = this.answer._id
+        this.$store.commit("updateAnswer", {
+          index: this.index,
+          data: {
+            title: this.title,
+            description: this.description
+          }
+        });
         this.$store.dispatch('updateAnswer', {answerId, answer:this.answer, index:this.index})
         this.$emit("editOff");
       }

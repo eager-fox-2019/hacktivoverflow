@@ -3,7 +3,7 @@
     <div class="container">
       <div class="mt-5 row" style="margin-top: 10px; margin-bottom: 10px">
       </div>
-      <div v-for="(question, index) in filteredQuestions" :key="index">
+      <div v-for="(question, index) in questions" :key="index">
         <EachQuestion :question="question" :index="index"/>
       </div>
     </div>
@@ -25,21 +25,21 @@ export default {
     questions() {
       return this.$store.state.questions;
     },
-    filteredQuestions() {
-      if (this.search) {
-        let result = [];
-        this.questions.filter( (item) => {
-          result.push(item.title.toLowerCase().includes(this.search.toLowerCase()));
-        });
-        if (result.length === 0) {
-          return this.questions;
-        } else {
-          return result;
-        }
-      } else {
-        return this.questions;
-      }
-    }
+    // filteredQuestions() {
+    //   if (this.search) {
+    //     let result = [];
+    //     this.questions.filter( (item) => {
+    //       result.push(item.title.toLowerCase().includes(this.search.toLowerCase()));
+    //     });
+    //     if (result.length === 0) {
+    //       return this.questions;
+    //     } else {
+    //       return result;
+    //     }
+    //   } else {
+    //     return this.questions;
+    //   }
+    // }
   },
   components: {
     EachQuestion
