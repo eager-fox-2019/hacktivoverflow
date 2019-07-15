@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <div>
+    <div class="columns is-mobile is-centered">
+        <div class="column is-half">
             <registerForm/>
         </div>
     </div>

@@ -1,6 +1,8 @@
 <template>
-    <div>
-        <Aform/>
+    <div class="columns is-mobile is-centered">
+        <div class="column is-half">
+            <Aform/>
+        </div>
     </div>
 </template>
 
