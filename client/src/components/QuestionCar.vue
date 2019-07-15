@@ -19,7 +19,7 @@
                 <b-button @click="getDetail(each._id)" type="is-primary"
                     inverted
                     outlined>
-                    Invert Outlined
+                    Answer Question
                 </b-button>
             </div>
         </div>

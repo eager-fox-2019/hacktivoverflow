@@ -3,23 +3,20 @@
         <div class="columns is-mobile is-centered">
         </div>
         <div class="columns">
-            <div class="column is-one-quarter" style="border : 1px solid black">
-                <h1>
-                    halo
-                </h1>
+            <div class="column is-one-quarter" >
             </div>
-            <div class="column" style="border : 1px solid blue">
-                <h1>allQuestion</h1>
+            <div class="column" >
+                <h1><b>allQuestion</b></h1>
             </div>
         </div>
         <div class="columns">
-            <div class="column is-one-quarter" style="border : 1px solid black">
+            <div class="column is-one-quarter" >
                 <h1>
                     <button @click.prevent="fillForm" type="submit" class="button is-primary"> Add Question </button>
                 </h1>
-                    <button @click.prevent="logout" type="submit" class="button is-primary"  style="margin-top : 100px"> LogOut </button>
+                    <button @click.prevent="logout" type="submit" class="button is-danger"  style="margin-top : 100px"> LogOut </button>
             </div>
-            <div class="column" style="border : 1px solid blue">
+            <div class="column" >
                 <QuestionCard/>
             </div>
         </div>

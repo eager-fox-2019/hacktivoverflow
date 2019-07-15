@@ -30,7 +30,7 @@
                     <b-input type="password" v-model="confirmPassword" name="confirm-password"
                         v-validate="{ required: true, is: password }" />
                 </b-field>
-                <button @click="registerData" type="submit" class="button is-primary"> Submit </button>
+                <button @click="registerData" type="submit" class="button is-primary"> Register </button>
             </form>
         </section>
                 <button @click.prevent="goLogin" class="button is-primary"> Login </button>
@@ -46,7 +46,7 @@
                 <b-field label="Password">
                     <b-input type="password" v-model="passwordLog" name="password" />
                 </b-field>
-                <button @click.prevent="loginData" type="submit" class="button is-primary"> Submit </button>
+                <button @click.prevent="loginData" type="submit" class="button is-primary"> Login </button>
             </form>
         </section>
     </div>
@@ -72,7 +72,7 @@ export default {
                 this.$validator.validateAll().then((result) => {
                     if (result) {
                         this.$toast.open({
-                            message: 'Form is valid!',
+                            message: 'Register Success, please click the login button',
                             type: 'is-success',
                             position: 'is-bottom'
                         })
