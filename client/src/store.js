@@ -59,7 +59,7 @@ export default new Vuex.Store({
   },
   actions: {
     goRegister(context, payload){
-      axios.post('http://localhost:3000/user/signup', payload)
+      axios.post('http://52.221.246.33/user/signup', payload)
       .then(({data}) => {
         console.log('register success')
         context.commit('REGISTER', data)
@@ -69,7 +69,7 @@ export default new Vuex.Store({
     },
     goLogin(context, payload){
       console.log('masuk ke login axios')
-      return axios.post('http://localhost:3000/user/signin', payload)
+      return axios.post('http://52.221.246.33/user/signin', payload)
       .then(({data}) => {
         context.commit('LOGIN', data.payload)
         console.log('success login', data)
@@ -79,7 +79,7 @@ export default new Vuex.Store({
     },
     getQuestion(context){
       let thisToken = localStorage.getItem("token")
-      axios.get('http://localhost:3000/question/showAll', {headers : {token : thisToken}})
+      axios.get('http://52.221.246.33/question/showAll', {headers : {token : thisToken}})
       .then(({data}) => {
         console.log(data, 'ini data')
         context.commit('QUESTIONDATA', data)
@@ -87,14 +87,14 @@ export default new Vuex.Store({
     },
     getQuestionOne(context, payload){
       console.log(payload, 'ini apa?')
-      axios.get(`http://localhost:3000/question/getOne/${payload}`, {headers : {token : localStorage.getItem("token")}})
+      axios.get(`http://52.221.246.33/question/getOne/${payload}`, {headers : {token : localStorage.getItem("token")}})
       .then(({data}) => {
         console.log('ini data', data)
         context.commit('GETONEDATA', data)
       })
     },
     createQuestion(context, payload){
-      return axios.post('http://localhost:3000/question/create', payload, {headers : { token : localStorage.getItem("token")}})
+      return axios.post('http://52.221.246.33/question/create', payload, {headers : { token : localStorage.getItem("token")}})
       .then(({data}) => {
         context.commit('GOCREATEDATA', data)
         return true
@@ -102,21 +102,21 @@ export default new Vuex.Store({
     },
     createAnswer(context, payload){
       console.log('sampai sini', payload)
-      return axios.post(`http://localhost:3000/question/answer/${payload.QidS}`, {title : payload.title, description : payload.description}, {headers : {token : localStorage.getItem("token")}})
+      return axios.post(`http://52.221.246.33/question/answer/${payload.QidS}`, {title : payload.title, description : payload.description}, {headers : {token : localStorage.getItem("token")}})
       .then(({data}) => {
         context.commit('HERETHEANSWER', data)
         return true
       })
     },
     voteUp(context, payload){
-      axios.patch(`http://localhost:3000/question/upvote/${payload}`, null, {headers : {token : localStorage.getItem("token")}})
+      axios.patch(`http://52.221.246.33/question/upvote/${payload}`, null, {headers : {token : localStorage.getItem("token")}})
       .then(({data}) => {
         context.commit('UPVOTE', data)
         console.log(data, 'data up')
       })
     },
     voteDown(context, payload){
-      axios.patch(`http://localhost:3000/question/downvote/${payload}`,null, {headers : {token : localStorage.getItem("token")}})
+      axios.patch(`http://52.221.246.33/question/downvote/${payload}`,null, {headers : {token : localStorage.getItem("token")}})
       .then(({data}) => {
         context.commit('DOWNVOTE' ,data)
         console.log(data, 'data down')
@@ -124,13 +124,13 @@ export default new Vuex.Store({
     },
     storeEdit(context, payload){
       console.log('ini apa?', payload, '==================================')
-      axios.patch(`http://localhost:3000/question/editQuestion/${payload.Qid}/${payload.Uid}`, {title : payload.title, description : payload.description}, {headers : {token : localStorage.getItem("token")}})
+      axios.patch(`http://52.221.246.33/question/editQuestion/${payload.Qid}/${payload.Uid}`, {title : payload.title, description : payload.description}, {headers : {token : localStorage.getItem("token")}})
       .then(({data}) => {
         context.commit('EDIT', data)
       })
     },
     storeDelete(context, payload){
-      axios.delete(`http://localhost:3000/question/delete/${payload.questId}/${payload.UserId}`, {headers : {token : localStorage.getItem("token")}})
+      axios.delete(`http://52.221.246.33/question/delete/${payload.questId}/${payload.UserId}`, {headers : {token : localStorage.getItem("token")}})
       .then(({data}) => {
         context.commit('DELETE', data)
       })
