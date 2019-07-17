@@ -103,6 +103,7 @@ class questionController{
         .catch(next)
     }
     static Qedit(req, res, next){
+        console.log('here?', req.body.title, req.body.description)
         let updated = {}
         let msg = 'updated'
         if(req.body.title){
@@ -113,7 +114,7 @@ class questionController{
         }
         Question.findOneAndUpdate({
             _id : req.params.Qid
-        }, updated)
+        }, { $set: updated }, { new: true })
         .then(() => {
             res.json(msg)
         })

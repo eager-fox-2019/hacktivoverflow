@@ -11,7 +11,7 @@ router.get('/getOne/:Qid', questionController.findOne)
 router.patch('/upvote/:Qid', questionController.Qupvote)
 router.patch('/downvote/:Qid', questionController.Qdownvote)
 
-router.patch('/editQuestion/:Qid/:userId', Authorization, questionController.Qedit)
 router.delete('/delete/:Qid/:userId', Authorization, questionController.Qdelete)
+router.patch('/editQuestion/:Qid/:userId', Authorization, questionController.Qedit)
 
 module.exports = router

@@ -50,7 +50,6 @@ module.exports = {
         })
         .then(found => {
             console.log(found.userId, 'params')
-            console.log(typeof found.userId)
             console.log(req.params.userId, 'dari params')
             console.log('masuk authorizationg?', found)
             if(!found){
