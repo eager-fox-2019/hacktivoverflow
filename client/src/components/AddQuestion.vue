@@ -17,6 +17,7 @@
 
 <script>
 import {mapState} from 'vuex'
+import Swal from 'sweetalert2';
 export default {
     data(){
         return{
@@ -31,6 +32,13 @@ export default {
                 description : this.description
             })
             .then(result => {
+                Swal.fire({
+                    position: 'top-end',
+                    type: 'success',
+                    title: 'Your Question has been saved',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
                 this.$router.push('/MainPage')
             })
         }

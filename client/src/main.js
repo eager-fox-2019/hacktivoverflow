@@ -4,6 +4,7 @@ import router from './router'
 import store from './store'
 import Buefy from 'buefy'
 import VeeValidate from 'vee-validate'
+import SweetAlert from 'sweetalert2'
 import 'buefy/dist/buefy.css'
 
 Vue.use(Buefy)

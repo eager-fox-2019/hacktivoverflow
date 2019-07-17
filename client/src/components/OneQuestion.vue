@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="columns">
-            <div class="column">
+            <div v-if="whoLogin == oneQuestion.userId.username" class="column">
                 <button @click.prevent="anserQ" type="submit" class="button is-primary"> Add Answer </button>
                 <div class="buttons">
                     <b-button @click.prevent="goDelete(oneQuestion._id, oneQuestion.userId._id)" type="is-danger">Delet</b-button>
@@ -20,6 +20,10 @@
                         </form>
                     </section> 
                 </div>
+            </div>
+            <div v-if="whoLogin !== oneQuestion.userId.username" class="column">
+                <button @click.prevent="anserQ" type="submit" class="button is-primary"> Add Answer </button>
+                
             </div>
             <div class="column">
                 <h1>QUESTION</h1>
@@ -44,16 +48,18 @@
 
 <script>
 import {mapState} from 'vuex'
+import Swal from 'sweetalert2'
 export default {
     data(){
         return{
             doingEdit : '',
             title : '',
-            description : ''
+            description : '',
+            whoLogin : localStorage.getItem("username")
         }
     },
     computed : {
-        ...mapState(['oneQuestion'])
+        ...mapState(['oneQuestion', 'getQuestionOne'])
     },
     methods : {
         showFormEdit(){
@@ -63,10 +69,42 @@ export default {
             this.$router.push(`/formAns/${this.$route.params.Qid}`)
         },
         goDelete(questId, UserId){
-            this.$store.dispatch('storeEdit', {Qid : questId , Uid : UserId})
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                if (result.value) {
+                    Swal.fire(
+                        'Deleted!',
+                        'Your file has been deleted.',
+                        'success'
+                    )
+                    this.$store.dispatch('storeDelete', {Qid : questId , Uid : UserId})
+                    this.$store.dispatch('getQuestion')
+                    this.$router.push(`/MainPage`)
+                }
+            })
+           
         },
         goEdit(questId, UserId){
-            this.$store.dispatch('storeDelete',{Qid : questId, Uid : UserId, title : this.title, description : this.description})
+            this.$store.dispatch('storeEdit',{Qid : questId, Uid : UserId, title : this.title, description : this.description})
+            .then(result => {
+                this.$store.dispatch('getQuestionOne', questId)
+                this.$router.push(`/detail/${questId}`)
+                Swal.fire({
+                    position: 'top-end',
+                type: 'success',
+                title: 'Your question has been edited',
+                showConfirmButton: false,
+                timer: 1500
+                })
+                 this.doingEdit = ''
+            })
         }
     }
 }
